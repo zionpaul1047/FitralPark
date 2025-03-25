@@ -15,7 +15,7 @@
 <body>
    <!-- 메인 홈 페이지 -->
    <h1>제목</h1>
-   
+   <h2>안녕</h2>
    
    
    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
