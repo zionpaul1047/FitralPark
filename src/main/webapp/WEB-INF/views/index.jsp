@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<<<<<<< HEAD
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -21,6 +22,13 @@
 	<script src="assets/mainMenu/wrest.js"></script>
 	<script src="assets/mainMenu/placeholders.min.js"></script>
 
+=======
+<meta charset="UTF-8">
+<title>FITRALPACK</title>
+    <style>
+        body {background-color: beige !important;}
+    </style>
+>>>>>>> ced34c8 (헤더,사이드,푸터,레이아웃까지)
 </head>
 <body data-aos-easing="ease" data-aos-duration="400" data-aos-delay="0" style ="background-color: beige;">
     <header id="header" class="">	
