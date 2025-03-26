@@ -1,32 +1,72 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-   
-   
-   
-%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
-   <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
+
+ 
+    <link rel="stylesheet" href="assets/mainMenu/default.css">
+    <link rel="stylesheet" href="assets/mainMenu/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/mainMenu/style.css">
+    <link rel="stylesheet" href="assets/mainMenu/common.css"><!-- 공통 -->
+    <link rel="stylesheet" href="assets/mainMenu/layout.css"><!-- 레이아웃 -->
+    <link rel="stylesheet" href="assets/mainMenu/modal.css"><!-- 모달 -->
+    <link rel="stylesheet" href="assets/mainMenu/style(1).css"><!-- 메인페이지 -->
+    <script src="assets/mainMenu/jquery-1.12.4.min(1).js"></script>
+    <script src="assets/mainMenu/jquery-migrate-1.4.1.min.js"></script>
+    <script src="assets/mainMenu/jquery.menu.js"></script>
+    <script src="assets/mainMenu/common.js"></script>
+    <script src="assets/mainMenu/wrest.js"></script>
+    <script src="assets/mainMenu/placeholders.min.js"></script>
    <style>
       
    </style>
-</head>
-<body>
+
    <!-- 좌측 사이드 메뉴바 -->
-   
-   
-   
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-   <script src="https://bit.ly/4cMuheh"></script>
-   <script>
-      
-      
-      
-      
-   </script>
-</body>
-</html>
+   <div class="fix-menu">
+        <ul>
+            <li class="open go_home">
+                <a href="">
+                    <i class="xi-home"></i>
+                    HOME
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    <i><img src="" alt="공지사항"></i>
+                    공지사항
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    <i><img src="" alt="의료진소개"></i>
+                    의료진 <br>소개
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    <i><img src="" alt="전화번호안내"></i>
+                    전화번호 <br>안내
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    <i><img src="" alt="진료시간"></i>
+                    진료시간
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    <i><img src="" alt="오시는길"></i>
+                    오시는길
+                </a>
+            </li>
+            <li class="button">
+                <a href="javascript:void(0)">
+                    <i><img src="" alt="메뉴 더보기"></i>
+                </a>
+            </li>
+        </ul>
+    
+        <div class="top">
+            <i><img src="./assets/mainMenu/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
+        </div>
+    
+    </div>
+    <!-- //fix-menu -->
