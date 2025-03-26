@@ -1,5 +1,16 @@
 @charset "utf-8";
 
+#header .welcome_msg{
+	position: absolute;
+	top: -21px;
+	right: 72px;
+	font-size: 12px;
+}
+
+#header .login_btn{
+
+}
+
 #header .wrapper{
 	width: 90%;
 	height: 100%;
@@ -19,6 +30,7 @@
 	margin-left: 0px;
     margin-right: 10px;
 	}
+	
 #header .wrapper .btn_open{
 	margin-left: 0px;
 	margin-right: 0px;
@@ -57,17 +69,14 @@
 
 
 #header{
-	width: 100%;
+	width: 1280px;
 	height: 80px;
-
 	position: fixed;
 	top: 30px;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 99;
-
 	border-bottom: 1px solid transparent;
-
 	transition: var(--transition);
 }
 
@@ -142,8 +151,8 @@
 
 #header .h_logo{
 	position: relative;
-    top: -4%;
-	width: 250px;
+	top: -4%;
+	width: 200px;
 }
 #header .h_logo a{
 	display: block;
@@ -165,10 +174,10 @@
 #header nav .main_menu .menu_col > a{
 	display: block;
 	position: relative;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	line-height: 80px;
 
-	padding: 0 10px;
+	padding: 0 15px;
 
 	transition: color 0.25s;
 }
@@ -237,14 +246,14 @@
 }
 
 #header nav .sub_menu li{
-	font-size: 1.125rem;
+	font-size: 1rem;
 }
 
 #header nav .sub_menu li a{
 	display: flex;
 	align-items: center;
 	
-	font-size: 1.125rem;
+	font-size: 1rem;
 	color: var(--gray01);
 
 	transition: var(--transition);
@@ -418,7 +427,7 @@
 	margin-top: 0;
 }
 #full-menu .depth02 li a{
-	font-size: 1.1rem;
+	font-size: 1rem;
 	color: var(--gray01);
 	padding: 7px 0;
 
