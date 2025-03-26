@@ -29,31 +29,31 @@
             </li>
             <li class="open">
                 <a href="">
-                    <i><img src="" alt="공지사항"></i>
+                    
                     공지사항
                 </a>
             </li>
             <li class="open">
                 <a href="">
-                    <i><img src="" alt="의료진소개"></i>
+                    
                     의료진 <br>소개
                 </a>
             </li>
             <li class="open">
                 <a href="">
-                    <i><img src="" alt="전화번호안내"></i>
+                    
                     전화번호 <br>안내
                 </a>
             </li>
             <li class="open">
                 <a href="">
-                    <i><img src="" alt="진료시간"></i>
+                    
                     진료시간
                 </a>
             </li>
             <li class="open">
                 <a href="">
-                    <i><img src="" alt="오시는길"></i>
+                    
                     오시는길
                 </a>
             </li>
