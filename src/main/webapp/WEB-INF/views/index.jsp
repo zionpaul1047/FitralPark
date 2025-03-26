@@ -110,12 +110,6 @@
             
             <nav class="nav2">
             	<ul class="icon_menu_grup">
-            		<!-- 로그인/로그아웃 버튼 -->
-	                <li class="icon_menu">
-	                    <button id="authButton">로그인</button>
-	                </li>
-	                <!-- //로그인/로그아웃 버튼 -->
-                    
                     <!-- 우측아이콘버튼 -->
                     <li class="icon_menu">
 	                    <a href="#">
@@ -124,15 +118,15 @@
 	                </li>
 	                <li class="icon_menu">
 	                    <a href="#">
-	                        <img src="assets/mainMenu/settings.png" alt="설정" style="width: 24px; height: 24px;">
-	                    </a>
-	                </li>
-	                <li class="icon_menu">
-	                    <a href="#">
 	                        <img src="assets/mainMenu/dashboard (1).png" alt="대시보드" style="width: 24px; height: 24px;">
 	                    </a>
 	                </li>
 	                <!-- //우측아이콘버튼 -->
+	                <!-- 로그인/로그아웃 버튼 -->
+	                <li class="icon_menu">
+	                    <button id="authButton">로그인</button>
+	                </li>
+	                <!-- //로그인/로그아웃 버튼 -->
             	</ul>
             </nav>
 

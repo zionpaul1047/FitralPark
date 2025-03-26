@@ -1,30 +1,12 @@
 @charset "utf-8";
 
-#header .wrapper{
-	width: 90%;
-	height: 100%;
-
+.nav2{
+	  
+}
+.nav2 .icon_menu_grup{
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-
-	padding: 0 40px;
 }
-
-#header .wrapper .nav{
-	margin-left: auto;
-	margin-right: auto;
-	}
-#header .wrapper .nav2{
-	margin-left: 0px;
-    margin-right: 10px;
-	}
-#header .wrapper .btn_open{
-	margin-left: 0px;
-	margin-right: 0px;
-}
-	
-	
 
 #authButton {
     border: none;
@@ -37,12 +19,6 @@
 
 #authButton:hover {
     background: #218838;
-}
-
-.icon_menu_grup{
-	display: flex;
-		align-items: center;
-	
 }
 
 .icon_menu {
@@ -131,9 +107,16 @@
 	border-radius: 0;
 }
 
+#header .wrapper{
+	width: 90%;
+	height: 100%;
 
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-
+	padding: 0 40px;
+}
 
 /* 헤더 풀메뉴 효과 */
 #header.active::before{
@@ -141,9 +124,8 @@
 }
 
 #header .h_logo{
-	position: relative;
-    top: -4%;
-	width: 250px;
+	width: 158px;
+	
 }
 #header .h_logo a{
 	display: block;
