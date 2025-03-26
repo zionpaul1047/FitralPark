@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
     <link rel="stylesheet" href="assets/mainMenu/default.css">
-    <link rel="stylesheet" href="assets/mainMenu/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/font.css">
     <link rel="stylesheet" href="assets/mainMenu/style.css">
     <link rel="stylesheet" href="assets/mainMenu/common.css"><!-- 공통 -->
     <link rel="stylesheet" href="assets/mainMenu/layout.css"><!-- 레이아웃 -->
@@ -21,6 +21,10 @@
         .nav2 {
  	       display: flex;
         } 
+		#header .menu_col, .icon_menu, .depth01{
+			font-family: 'Paperlogy-8ExtraBold'
+		}	
+
    </style>
 
     <header id="header" class="">	
