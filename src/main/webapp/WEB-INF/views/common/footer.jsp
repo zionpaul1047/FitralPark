@@ -94,7 +94,7 @@ footer .copyright {
 				02-1234-5678
 			</p>
 		</div>
-		<div class="copyright">Copyright(C) 2025 FitralPark, All Right
+		<div class="copyright">Copyrightⓒ 2025 FitralPark, All Right
 			Reserved.</div>
 	</footer>
 
