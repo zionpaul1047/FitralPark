@@ -1,9 +1,16 @@
 @charset "utf-8";
 
-.auth_menu {
-    position: absolute;
-    right: 325px;
-    top: 24px;
+.nav2{
+	/* margin-left: auto; */
+	/* margin-right: 0; */
+	float: right;
+}
+.nav2 .icon_menu_grup{
+	/* posion: relative; */
+	text-align: right;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 #authButton {
@@ -20,39 +27,10 @@
 }
 
 .icon_menu {
-    position: absolute;
-    right: 240px;
-    top: 50%;
-    transform: translateY(-50%);
+
 }
 
 .icon_menu a img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.icon_menu2 {
-    position: absolute;
-    right: 200px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.icon_menu2 a img {
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
-}
-
-.icon_menu3 {
-    position: absolute;
-    right: 280px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.icon_menu3 a img {
     width: 24px;
     height: 24px;
     cursor: pointer;
