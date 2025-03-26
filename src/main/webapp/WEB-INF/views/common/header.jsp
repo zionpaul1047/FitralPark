@@ -14,11 +14,124 @@
     <script src="assets/mainMenu/common.js"></script>
     <script src="assets/mainMenu/wrest.js"></script>
     <script src="assets/mainMenu/placeholders.min.js"></script>
+    
     <style>
-        button::before {
-            content: '' !important;
-        }
-   </style>
+
+/* Global CSS */
+body {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+button::before {
+	content: '' !important;
+}
+
+/* 기본 스타일 */
+body {
+  font-family: Arial, sans-serif;
+}
+
+.nav2 {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
+
+.icon_menu {
+  margin-right: 10px;
+}
+
+.alarm-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.alarm-toggle {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+</style>
 
     <header id="header" class="">	
         <div class="wrapper">	
@@ -105,30 +218,43 @@
             </nav>
             <!-- //nav -->
             
-            <nav class="nav2">
-            	<ul class="icon_menu_grup">
-                    <!-- 우측아이콘버튼 -->
-                    <li class="icon_menu">
-	                    <a href="#">
-	                        <img src="assets/mainMenu/bell (2).png" alt="알림" style="width: 24px; height: 24px;">
-	                    </a>
-	                </li>
-	                <li class="icon_menu">
-	                    <a href="#">
-	                        <img src="assets/mainMenu/dashboard (1).png" alt="대시보드" style="width: 24px; height: 24px;">
-	                    </a>
-	                </li>
-	                <!-- //우측아이콘버튼 -->
-	                <!-- 로그인/로그아웃 버튼 -->
-	                <li class="icon_menu">
-	                    <button id="authButton">로그인</button>
-	                </li>
-	                <!-- //로그인/로그아웃 버튼 -->
-            	</ul>
-            </nav>
+           <nav class="nav2">
+  <ul class="icon_menu_grup">
+    <!-- 알림 아이콘 버튼 -->
+    <li class="icon_menu">
+      <div class="alarm-container">
+  <button id="alarmButton">
+    <img id="alarmIcon" src="assets/mainMenu/bell (3).png" alt="알람" style="width: 24px; height: 24px;">
+  </button>
+  <div id="alarmDropdown" class="dropdown-content">
+    <div class="alarm-toggle">
+      <span>알람 설정</span>
+      <label class="switch">
+        <input type="checkbox" id="alarmToggle" checked>
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <div class="alarm-list">
+      <!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
+    </div>
+  </div>
+</div>
+    </li>
+	<!-- 대시보드 아이콘 버튼 -->
+    <li class="icon_menu">
+      <a href="#">
+        <img src="assets/mainMenu/dashboard.png" alt="대시보드" style="width: 24px; height: 24px;">
+      </a>
+    </li>
+    <!-- 로그인 버튼 -->
+    <li class="icon_menu">
+      <button id="authButton">로그인</button>
+    </li>
+  </ul>
+</nav>
 
-			
-            <!-- btn_open -->
+
+		<!-- btn_open -->
             <div class="btn_open">		
                 <span class="top"></span>
                 <span class="middle"></span>
@@ -226,6 +352,7 @@
     
     
     <script>
+
     
     document.addEventListener("DOMContentLoaded", function() {
     var authButton = document.getElementById('authButton');
@@ -305,30 +432,6 @@
     
     
     
-        //fullOpenBtn.click(function(){		
-            //클래스 붙이기
-            //$(this).toggleClass('active');
-            //만약 해당 클래스가 붙어있다면 풀메뉴를 연다
-            //if($(this).hasClass('active') == true){
-                //$('#full-menu').fadeIn();
-                //아닐시엔 닫는다
-            //} else{
-                //$('#full-menu').fadeOut();
-                //}
-        //});
-    
-    
-        //1차 메뉴 색상변경
-    
-        //$("#full-menu .depth02 > li").hover(function(){
-            //상위 부모를 찾아 클래스를 붙인다 
-          //$(this).parents('.depth01').addClass('add');
-          //마우스가 떠났을때는 클래스를 지운다.
-          //}, function(){
-         // $("#full-menu .depth01").removeClass('add');
-        //});
-    
-    
         //스크롤시 헤더 변경
          $(window).scroll(function () {
         
@@ -356,8 +459,45 @@
             });
     
     }
-        
     
+    const alarmButton = document.getElementById('alarmButton');
+    const alarmIcon = document.getElementById('alarmIcon');
+    const alarmDropdown = document.getElementById('alarmDropdown');
+    const alarmToggle = document.getElementById('alarmToggle');
+    const alarmList = document.querySelector('.alarm-list');
+
+    alarmButton.addEventListener('click', () => {
+      alarmDropdown.style.display = alarmDropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    alarmToggle.addEventListener('change', () => {
+      if (alarmToggle.checked) {
+        alarmIcon.src = 'assets/mainMenu/bell (3).png';
+        // 알람 활성화 로직
+      } else {
+        alarmIcon.src = 'assets/mainMenu/bell (2).png';
+        // 알람 비활성화 로직
+      }
+    });
+
+    // 알람 내용 추가 예시
+    function addAlarmItem(content) {
+      const alarmItem = document.createElement('div');
+      alarmItem.textContent = content;
+      alarmList.appendChild(alarmItem);
+    }
+
+    // 예시 알람 추가
+    addAlarmItem('새로운 메시지가 도착했습니다.');
+    addAlarmItem('시스템 업데이트가 필요합니다.');
+
+    // 클릭 이벤트 외부 영역 처리
+    window.addEventListener('click', (event) => {
+      if (!alarmButton.contains(event.target) && !alarmDropdown.contains(event.target)) {
+        alarmDropdown.style.display = 'none';
+      }
+    });
+
     </script>
 
     
