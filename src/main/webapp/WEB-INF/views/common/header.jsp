@@ -19,105 +19,117 @@
             content: '' !important;
         }
    </style>
-    <header id="header" class="">   
-        <div class="wrapper">   
+
+    <header id="header" class="">	
+        <div class="wrapper">	
             <!-- logo -->
             <h1 class="h_logo">
                 <a href="">
-                    <img alt="핏트럴파크" src="assets/logo/widthlogo.png">
+                	<img alt="핏트럴파크" src="assets/logo/widthlogo.png">
                 </a>
             </h1>
             <!-- //logo -->
             <!-- nav -->
-            <nav class="nav">           
+            <nav class="nav">			
                 <ul class="main_menu">
-                   
+                
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">메뉴2</a>
+                        <a href="">식단관리</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">의료진소개</a></li>
-                            <li><a href="">외래진료안내</a></li>
-                            <li><a href="">입퇴원안내</a></li>
-                            <li><a href="">치료 프로그램</a></li>
+                            <li><a href="">식단계획캘린더</a></li>
+                            <li><a href="">식단만들기</a></li>
+                            <li><a href="">식단추천</a></li>
+                            <li><a href="">식단분석</a></li>			
                         </ul>
                         <!--  //sub_menu -->
                     </li>
                     <!-- //menu_col -->
+  
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">메뉴3</a>
+                        <a href="">운동관리</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">입원생활 안내</a></li>
-                            <li><a href="">제증명 발급안내</a></li>
-                            <li><a href="">비급여목록표</a></li>          
+                            <li><a href="">운동계획캘린더</a></li>
+                            <li><a href="">운동루틴만들기</a></li>
+                            <li><a href="">사용자정의운동</a></li>
+                            <li><a href="">핏트럴맵</a></li>
                         </ul>
                         <!--  //sub_menu -->
                     </li>
                     <!-- //menu_col -->
-    
+                    
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">메뉴4</a>
+                        <a href="">음식성분찾기</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">조현병</a></li>
-                            <li><a href="">기분장애</a></li>
-                            <li><a href="">알코올 사용장애</a></li>
-                            <li><a href="">불안장애</a></li>
+                            <li><a href="">음식검색</a></li>
+                            <li><a href="">영양성분비교</a></li>
+                            <li><a href="">비타민검색추천</a></li>
                         </ul>
                         <!--  //sub_menu -->
                     </li>
                     <!-- //menu_col -->
-    
+                    
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">메뉴5</a>
+                        <a href="">커뮤니티</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
                             <li><a href="">공지사항</a></li>
-                            <li><a href="">병원소식</a></li>
-                            <li><a href="">자주묻는질문</a></li>
+                            <li><a href="">자유게시판</a></li>
+                            <li><a href="">Q&A게시판</a></li>
                         </ul>
                         <!--  //sub_menu -->
                     </li>
                     <!-- //menu_col -->
                     
-                    <li class="icon_menu">
-                    <a href="#">
-                        <img src="assets/mainMenu/bell (2).png" alt="알림" style="width: 24px; height: 24px;">
-                    </a>
+                    <!-- menu_col -->
+                    <li class="menu_col">
+                        <a href="">마이페이지</a>
+                        <!-- sub_menu -->
+                        <ul class="sub_menu" style="display: none;">
+                            <li><a href="">대시보드</a></li>
+                            <li><a href="">나의활동</a></li>
+                            <li><a href="">회원정보</a></li>
+                        </ul>
+                        <!--  //sub_menu -->
                     </li>
-    
-                    <li class="icon_menu2">
-                        <a href="#">
-                            <img src="assets/mainMenu/settings.png" alt="설정" style="width: 24px; height: 24px;">
-                        </a>
-                    </li>
-    
-                    <li class="icon_menu3">
-                        <a href="#">
-                            <img src="assets/mainMenu/dashboard (1).png" alt="대시보드" style="width: 24px; height: 24px;">
-                        </a>
-                    </li>
-    
-                    <!-- 로그인/로그아웃 버튼 -->
-                    <li class="auth_menu">
-                        <button id="authButton">로그인</button>
-                    </li>
+                    <!-- //menu_col -->
                     
                 </ul>
                 <!-- //main_menu -->
-                 
             </nav>
             <!-- //nav -->
-
-            <!-- btn1 -->    
             
+            <nav class="nav2">
+            	<ul class="icon_menu_grup">
+                    <!-- 우측아이콘버튼 -->
+                    <li class="icon_menu">
+	                    <a href="#">
+	                        <img src="assets/mainMenu/bell (2).png" alt="알림" style="width: 24px; height: 24px;">
+	                    </a>
+	                </li>
+	                <li class="icon_menu">
+	                    <a href="#">
+	                        <img src="assets/mainMenu/dashboard (1).png" alt="대시보드" style="width: 24px; height: 24px;">
+	                    </a>
+	                </li>
+	                <!-- //우측아이콘버튼 -->
+	                <!-- 로그인/로그아웃 버튼 -->
+	                <li class="icon_menu">
+	                    <button id="authButton">로그인</button>
+	                </li>
+	                <!-- //로그인/로그아웃 버튼 -->
+            	</ul>
+            </nav>
+
+			
             <!-- btn_open -->
-            <div class="btn_open">      
+            <div class="btn_open">		
                 <span class="top"></span>
                 <span class="middle"></span>
                 <span class="bottom"></span>
@@ -143,13 +155,13 @@
                 </li>
     
                 <li>
-                    <a href="">메뉴1</a>
+                    <a href="">식단관리</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                        <li><a href="">이사장 인사말</a></li>
-                        <li><a href="">연혁</a></li>
-                        <li><a href="">병원둘러보기</a></li>
-                        <li><a href="">오시는길&amp;전화번호안내</a></li>
+                        <li><a href="">식단계획캘린더</a></li>
+                        <li><a href="">식단만들기</a></li>
+                        <li><a href="">식단추천</a></li>
+                        <li><a href="">식단분석</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -157,13 +169,13 @@
     
                 <!-- depth01 -->
                 <li>
-                    <a href="">메뉴2</a>
+                    <a href="">운동관리</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                        <li><a href="">의료진소개</a></li>
-                        <li><a href="">외래진료안내</a></li>
-                        <li><a href="">입퇴원안내</a></li>
-                        <li><a href="">치료 프로그램</a></li>
+                        <li><a href="">운동계획캘린더</a></li>
+                        <li><a href="">운동루틴만들기</a></li>
+                        <li><a href="">사용자정의운동</a></li>
+                        <li><a href="">핏트럴맵</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -171,12 +183,12 @@
     
                 <!-- depth01 -->
                 <li>
-                    <a href="">메뉴3</a>
+                    <a href="">음식성분찾기</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                        <li><a href="">입원생활 안내</a></li>
-                        <li><a href="">제증명 발급안내</a></li>
-                        <li><a href="">비급여목록표</a></li>          
+                    	<li><a href="">음식검색</a></li>
+                        <li><a href="">영양성분비교</a></li>
+                        <li><a href="">비타민검색추천</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -184,26 +196,25 @@
     
                 <!-- depth01 -->
                 <li>
-                    <a href="">메뉴4</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">조현병</a></li>
-                        <li><a href="">기분장애</a></li>
-                        <li><a href="">알코올 사용장애</a></li>
-                        <li><a href="">불안장애</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-    
-                <!-- depth01 -->
-                <li>
-                    <a href="">메뉴5</a>
+                    <a href="">커뮤니티</a>
                     <!-- depth02 -->
                     <ul class="depth02">
                         <li><a href="">공지사항</a></li>
-                        <li><a href="">병원소식</a></li>
-                        <li><a href="">자주묻는질문</a></li>
+                        <li><a href="">자유게시판</a></li>
+                        <li><a href="">Q&A게시판</a></li>
+                    </ul>
+                    <!--  //depth02-->
+                </li>
+                <!-- //depth01 -->
+    
+                <!-- depth01 -->
+                <li>
+                    <a href="">마이페이지</a>
+                    <!-- depth02 -->
+                    <ul class="depth02">
+                        <li><a href="">대시보드</a></li>
+                        <li><a href="">나의활동</a></li>
+                        <li><a href="">회원정보</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -276,7 +287,7 @@
     
         //풀메뉴 열림 닫힘
     
-        fullOpenBtn.click(function(){       
+        fullOpenBtn.click(function(){		
             //클래스 붙이기
             $(this).toggleClass('active');
             header.addClass('active');
@@ -294,7 +305,7 @@
     
     
     
-        //fullOpenBtn.click(function(){     
+        //fullOpenBtn.click(function(){		
             //클래스 붙이기
             //$(this).toggleClass('active');
             //만약 해당 클래스가 붙어있다면 풀메뉴를 연다
@@ -348,4 +359,5 @@
         
     
     </script>
+
     

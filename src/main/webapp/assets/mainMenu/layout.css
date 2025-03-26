@@ -165,10 +165,10 @@
 #header nav .main_menu .menu_col > a{
 	display: block;
 	position: relative;
-	font-size: 1.25rem;
+	font-size: 1.1rem;
 	line-height: 80px;
 
-	padding: 0 30px;
+	padding: 0 10px;
 
 	transition: color 0.25s;
 }
@@ -418,7 +418,7 @@
 	margin-top: 0;
 }
 #full-menu .depth02 li a{
-	font-size: 1.25rem;
+	font-size: 1.1rem;
 	color: var(--gray01);
 	padding: 7px 0;
 
@@ -798,7 +798,7 @@
 	width: 100%;
 	border: 1px solid var(--blue04);
 	border-radius: 10px;
-	background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgb(222, 252, 234) 100%);
+	background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(196,231,239,1) 100%);
 }
 .fix-menu ul li{
 	padding: 0 5px;
