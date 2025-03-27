@@ -1,19 +1,19 @@
 @charset "utf-8";
 
-@font-face {
+/* @font-face {
     font-family: 'GmarketSansMedium';
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"); */
 
 
-font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+/* font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 
 *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;}
 ::before,::after{--tw-content:''}
-html{/* line-height:1.5; */-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4; font-family: font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;}
+html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4; font-family: font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;}
 body{margin:0;line-height:inherit}
 hr{height:0;color:inherit;border-top-width:1px}
 abbr:where([title]){text-decoration:underline dotted}
@@ -78,13 +78,6 @@ pre {
     --transition: all 0.3s;
 }
 
-/* *{
-	font-size: 16px;
-	font-weight: 400;
-	letter-spacing: -0.4px;
-	font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-	color: var(--black);
-} */
 
 .montserrat {
   font-family: "Montserrat", sans-serif;
@@ -93,10 +86,6 @@ pre {
   font-style: normal;
 }
 
-
-/* @media screen and (max-width: 1200px){
-	*{ font-size: 15px; }
-} */
 
 @media screen and (max-width: 1000px){
 	*{ font-size: 16px; }
@@ -108,11 +97,11 @@ pre {
 
 @media screen and (max-width: 320px){
 	*{ font-size: 14px; }
-}
+} */
 
 
-
-/* 마진 및 패딩값 */
+/* 
+마진 및 패딩값
 .mt5{ margin-top: 5px !important; }
 .mt15{ margin-top: 15px !important; }
 .mt20{ margin-top: 20px !important; }
@@ -127,9 +116,9 @@ pre {
 .mt70{ margin-top: 70px !important; }
 .mt80{ margin-top: 80px !important; }
 .mt90{ margin-top: 90px !important; }
-.mt100{ margin-top: 100px !important; }
+.mt100{ margin-top: 100px !important; } */
 
-.mb15{ margin-bottom: 15px !important; }
+/* .mb15{ margin-bottom: 15px !important; }
 .mb20{ margin-bottom: 20px !important; }
 .mb25{ margin-bottom: 25px !important; }
 .mb30{ margin-bottom: 30px !important; }
@@ -142,9 +131,9 @@ pre {
 .mb70{ margin-bottom: 70px !important; }
 .mb80{ margin-bottom: 80px !important; }
 .mb90{ margin-bottom: 90px !important; }
-.mb100{ margin-bottom: 100px !important; }
+.mb100{ margin-bottom: 100px !important; } */
 
-.pt40{ padding-top: 40px !important; }
+/* .pt40{ padding-top: 40px !important; }
 .pt50{ padding-top: 50px !important; }
 .pt60{ padding-top: 60px !important; }
 .pt70{ padding-top: 70px !important; }
@@ -159,9 +148,9 @@ pre {
 .pt160{ padding-top: 160px !important; }
 .pt170{ padding-top: 170px !important; }
 .pt180{ padding-top: 180px !important; }
-.pt190{ padding-top: 190px !important; }
+.pt190{ padding-top: 190px !important; } */
 
-.pb50{ padding-bottom: 50px !important; }
+/* .pb50{ padding-bottom: 50px !important; }
 .pb60{ padding-bottom: 60px !important; }
 .pb70{ padding-bottom: 70px !important; }
 .pb80{ padding-bottom: 80px !important; }
@@ -175,11 +164,11 @@ pre {
 .pb160{ padding-bottom: 160px !important; }
 .pb170{ padding-bottom: 170px !important; }
 .pb180{ padding-bottom: 180px !important; }
-.pb190{ padding-bottom: 190px !important; }
+.pb190{ padding-bottom: 190px !important; } */
 
 
 
-@media screen and (max-width: 1500px){}
+/* @media screen and (max-width: 1500px){}
 
 @media screen and (max-width: 1300px){
 	.mt50{ margin-top: 40px !important; }
@@ -196,10 +185,10 @@ pre {
 	.mb70{ margin-bottom: 60px !important; }
 	.mb80{ margin-bottom: 70px !important; }
 	.mb90{ margin-bottom: 80px !important; }
-	.mb100{ margin-bottom: 90px !important; }
+	.mb100{ margin-bottom: 90px !important; } */
 
 
-	.pt40{ padding-top: 30px !important; }
+	/* .pt40{ padding-top: 30px !important; }
 	.pt50{ padding-top: 40px !important; }
 	.pt60{ padding-top: 50px !important; }
 	.pt70{ padding-top: 60px !important; }
@@ -231,9 +220,9 @@ pre {
 	.pb170{ padding-bottom: 160px !important; }
 	.pb180{ padding-bottom: 170px !important; }
 	.pb190{ padding-bottom: 180px !important; }
-}
+} */
 
-@media screen and (max-width: 1200px){
+/* @media screen and (max-width: 1200px){
 	.mt80{ margin-top: 55px !important; }
     .mt70{ margin-top: 60px !important; }
 	.mt60{ margin-top: 50px !important; }
@@ -252,9 +241,9 @@ pre {
 	.mb40{ margin-bottom: 30px !important; }
 	.mb35{ margin-bottom: 25px !important; }
 	.mb30{ margin-bottom: 20px !important; }
-	.mb20{ margin-bottom: 15px !important; }
+	.mb20{ margin-bottom: 15px !important; } */
 
-
+/* 
 	.pt130{ padding-top: 115px !important; }
 	.pt140{ padding-top: 120px !important; }
 	.pt150{ padding-top: 125px !important; }
@@ -270,9 +259,9 @@ pre {
 	.pb170{ padding-bottom: 140px !important; }
 	.pb180{ padding-bottom: 150px !important; }
 	.pb190{ padding-bottom: 160px !important; }
-}
+} */
 
-@media screen and (max-width: 1000px){
+/* @media screen and (max-width: 1000px){
 	.mt100{ margin-top: 70px !important; }
 	.mt90{ margin-top: 60px !important; }
 	.mt80{ margin-top: 55px !important; }
@@ -312,10 +301,10 @@ pre {
 	.pb160{ padding-bottom: 115px !important; }
 	.pb170{ padding-bottom: 120px !important; }
 	.pb180{ padding-bottom: 125px !important; }
-	.pb190{ padding-bottom: 130px !important; }
+/* 	.pb190{ padding-bottom: 130px !important; } */
 }
 
-@media screen and (max-width: 640px){
+/* @media screen and (max-width: 640px){
 	.mt15{ margin-top: 7px !important; }
 	.mt20{ margin-top: 10px !important; }
 	.mt25{ margin-top: 12px !important; }
@@ -374,10 +363,10 @@ pre {
 	.pb160{ padding-bottom: 95px !important; }
 	.pb170{ padding-bottom: 100px !important; }
 	.pb180{ padding-bottom: 105px !important; }
-	.pb190{ padding-bottom: 110px !important; }
+	.pb190{ padding-bottom: 110px !important; } */
 }
 
-@media screen and (max-width: 320px){
+/* @media screen and (max-width: 320px){
 	.mt15{ margin-top: 7px !important; }
 	.mt20{ margin-top: 10px !important; }
 	.mt25{ margin-top: 12px !important; }
@@ -402,9 +391,9 @@ pre {
 	.mb70{ margin-bottom: 45px !important; }
 	.mb80 { margin-bottom: 45px !important; }
 	.mb90 { margin-bottom: 50px !important; }
-	.mb100 { margin-bottom: 55px !important; }
+	.mb100 { margin-bottom: 55px !important; } */
 
-
+/* 
 	.pt40{ padding-top: 20px !important; }
 	.pt50{ padding-top: 25px !important; }
 	.pt60{ padding-top: 30px !important; }
@@ -437,198 +426,4 @@ pre {
 	.pb170{ padding-bottom: 85px !important; }
 	.pb180{ padding-bottom: 90px !important; }
 	.pb190{ padding-bottom: 95px !important; }
-}
-
-
-
-/* wrapper 넓이 설정 */
-.wrapper{ width: 1300px; height: 100%; margin: 0 auto; }
-
-
-@media screen and (max-width: 1300px){
-	.wrapper{ width: 90%; }
-}
-
-
-
-/* 타이틀 공통스타일 */
-/* .title{ 
-	font-size: 2.8125rem;
-	font-weight: var(--fw-400);
-	line-height: 1.3;
-	text-transform: uppercase;
-	color: var(--gray01);
-}
-
-.title strong{
-	display: inline-block;
-	font-size: inherit;
-	font-weight: var(--fw-700);
-	font-family: inherit;
-	text-transform: inherit;
-	color: var(--black);
-}
-
-.desc{
-	font-size: 1rem;
-	font-weight: 700;
-	color: var(--blue01);
-	line-height: 1;
-	word-break: keep-all;
-	font-family: 'GmarketSansMedium';
-}
-
-.text{
-	font-size: 1.125rem;
-	font-weigth: 400;
-	color: var(--gray01);
-	line-height: 1.5;
-	word-break: keep-all;
-	font-family: inherit;
-}
-
-
-.italic{
-	font-style: italic;
-	font-size: 1.75rem;
-	line-height: 1.4;
-}
-
-.italic span,
-.italic strong{
-	display: inline-block;
-	font-style: inherit;
-	font-size: inherit;
-	line-height: inherit;
-	font-family: inherit;
-}
-
-.italic span{
-	font-weight: var(--fw-600);
-}
-
-.italic strong{
-	font-weight: var(--fw-700);
-}
-
-
-@media screen and (max-width: 1100px){
-	.title{ font-size: 2.625rem; }
-
-	.italic{ font-size: 1.5rem; }
-}
-
-
-@media screen and (max-width: 767px){
-	.title{
-		line-height: 1.3;
-		font-size: 2.375rem;
-	}
-	.title strong{
-		display: block;
-	}
 } */
-
-
-/* 버튼 공통스타일 */
-.btn_more{
-	display: inline-flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 12px;
-	padding-bottom: 5px;
-	position: relative;
-}
-
-.btn_more::before{
-	content: "";
-	width: 100%;
-	height: 1px;
-	background-color: var(--gray01);
-	position: absolute;
-	bottom: 0; left: 0;
-}
-
-.btn_more.white::before{
-	background-color: var(--gray01);
-}
-
-.btn_more.green::before{
-	background-color: var(--green);
-}
-
-.btn_more::after{
-	content: "";
-	width: 0%;
-	height: 1px;
-	background-color: var(--white);
-	position: absolute;
-	left: 0; bottom: 0;
-	transition: var(--transition);
-}
-
-
-.btn_more:hover::after{
-	width: 100%;
-}
-
-.btn_more .text{
-	font-family: "Montserrat", sans-serif;
-	font-size: 0.875rem;
-	transition: var(--transition);
-}
-
-.btn_more.white .text{
-	color: rgba(255,255,255,0.9);
-}
-
-
-.btn_more.green .text{
-	color: var(--green);
-}
-
-
-.btn_more .circle{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 20px; height: 20px;
-	border-radius: 50%;
-	transition: var(--transition);
-}
-
-.btn_more.white .circle{
-	background-color: var(--white);
-}
-
-.btn_more.green .circle{
-	background-color: var(--green);
-}
-
-.btn_more .circle i{
-	font-size: 0.875rem;
-}
-
-.btn_more.white .circle i{
-	color: var(--green);
-}
-
-.btn_more.green .circle i{
-	color: var(--white);
-}
-
-.pc{
-	display: block;
-}
-.mb{
-	display: none;
-}
-
-@media all and (max-width: 640px){
-	.pc{
-		display: none;
-	}
-	.mb{
-		display: block;
-	
-}

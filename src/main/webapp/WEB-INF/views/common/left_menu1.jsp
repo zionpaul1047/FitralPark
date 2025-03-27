@@ -1,33 +1,25 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-	<meta charset="UTF-8">
-	<style>
-	.box {
-		    width: 200px;
-		    height: 400px;
-		    /* border: 1px solid black; */
-		    position: fixed;
-		    left: 50%;
-		    top: 125px;
-		    transform: translate(-640px, 0);
-		    background: var(--white);
-		    border-radius: 20px;
-		}
-	</style>
-</head>
-<body>
-	<!--  -->
-	<div class="box"></div>
+	<link rel="stylesheet" href="assets/css/font.css">
+	<link rel="stylesheet" href="assets/css/left_menu1.css">
+
+	<!-- 왼쪽사이드바 -->
+	<div class="side_menu_bg"><!-- 백그라운드 -->
+			<ul class="side_menu_ul">
+				<li class="side_menu_item"><a href="">식단 관리</a></li>
+
+				<li class="side_menu_item"><a href="">식단 계획캘린더</a></li>
+
+				<li class="side_menu_item"><a href="">식단 라이브러리</a></li>
+
+				<li class="side_menu_item"><a href="">식단 분석</a></li>
+				<!-- <hr>
+				<li><a href=""></a></li> -->
+			</ul>
+	</div>
+	<!-- //왼쪽사이드바 -->
 	
-	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	<script>
-		
-	</script>
-</body>
-</html>
+
 
 

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
 
 <!DOCTYPE html>
@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>FITRALPACK</title>
     <style>
-        body {background-color: beige !important;}  
+        body {background-color: rgb(218, 243, 211);}  
     </style>
 </head>
 <body>
