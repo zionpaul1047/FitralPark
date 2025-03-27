@@ -1,19 +1,11 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
  
-    <link rel="stylesheet" href="assets/mainMenu/default.css">
-    <link rel="stylesheet" href="assets/mainMenu/font-awesome.min.css">
-    <link rel="stylesheet" href="assets/mainMenu/style.css">
-    <link rel="stylesheet" href="assets/mainMenu/common.css"><!-- 공통 -->
-    <link rel="stylesheet" href="assets/mainMenu/layout.css"><!-- 레이아웃 -->
-    <link rel="stylesheet" href="assets/mainMenu/modal.css"><!-- 모달 -->
-    <link rel="stylesheet" href="assets/mainMenu/style(1).css"><!-- 메인페이지 -->
-    <script src="assets/mainMenu/jquery-1.12.4.min(1).js"></script>
-    <script src="assets/mainMenu/jquery-migrate-1.4.1.min.js"></script>
-    <script src="assets/mainMenu/jquery.menu.js"></script>
-    <script src="assets/mainMenu/common.js"></script>
-    <script src="assets/mainMenu/wrest.js"></script>
-    <script src="assets/mainMenu/placeholders.min.js"></script>
+    <link rel="stylesheet" href="assets/css/common.css">
+    <script src="assets/js/jquery-1.12.4.min(1).js"></script>
+    <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+
+
    <style>
     #div .xi-home, .open{
 	font-family: 'Paperlogy-8ExtraBold'
@@ -67,7 +59,7 @@
         </ul>
     
         <div class="top">
-            <i><img src="./assets/mainMenu/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
+            <i><img src="./assets/images/icon/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
         </div>
     
     </div>
