@@ -1,22 +1,23 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-    
-    <link rel="stylesheet" href="assets/css/font.css">
-    <link rel="stylesheet" href="assets/css/common.css">
-    <script src="assets/js/jquery-1.12.4.min(1).js"></script>
-    <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
 
-    
-    <style>
+<link rel="stylesheet" href="assets/css/font.css">
+<link rel="stylesheet" href="assets/css/common.css">
+<script src="assets/js/jquery-1.12.4.min(1).js"></script>
+<script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+
+
+<style>
 .login_btn {
-    position: relative;
-    left: 15px;
+	position: relative;
+	left: 15px;
 }
 
 .icon_menu_grup {
-    position: relative;
-    left: 15px;
+	position: relative;
+	left: 15px;
 }
 
 button::before {
@@ -140,78 +141,74 @@ input:checked+.slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
+.sub_menu {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  position: absolute;
+  z-index: 10;
+}
+
+.menu_col:hover .sub_menu {
+  opacity: 1;
+  visibility: visible;
+}
 
 #alarmButton {
-    border: 0;
+	border: 0;
 }
 </style>
 
-    <header id="header" class="">	
-        <div class="wrapper">	
-            <!-- logo -->
-            <h1 class="h_logo">
-                <a href="">
-                	<img alt="핏트럴파크" src="assets/images/logo/widthlogo.png">
-                </a>
-            </h1>
-            <!-- //logo -->
-            <!-- nav -->
-            <nav class="nav">			
-                <ul class="main_menu">
-                
-                    <!-- menu_col -->
-                    <li class="menu_col">
-                        <a href="">식단 관리</a>
-                        <!-- sub_menu -->
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">식단 계획캘린더</a></li>
-                            <li><a href="">식단 라이브러리</a></li>
-                            <li><a href="">식단 분석</a></li>			
-                        </ul>
-                        <!--  //sub_menu -->
-                    </li>
-                    <!-- //menu_col -->
-  
-                    <!-- menu_col -->
-                    <li class="menu_col">
-                        <a href="">운동 관리</a>
-                        <!-- sub_menu -->
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">운동 계획캘린더</a></li>
-                            <li><a href="">운동 라이브러리</a></li>
-                            <li><a href="">피트럴맵</a></li>
-                        </ul>
-                        <!--  //sub_menu -->
-                    </li>
-                    <!-- //menu_col -->
-                    
-                    <!-- menu_col -->
-                    <li class="menu_col">
-                        <a href="">식품 영양정보</a>
-                        <!-- sub_menu -->
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">식품 검색</a></li>
-                            <li><a href="">영양 성분비교</a></li>
-                            <li><a href="">비타민 정보</a></li>
-                        </ul>
-                        <!--  //sub_menu -->
-                    </li>
-                    <!-- //menu_col -->
-                    
-                    <!-- menu_col -->
-                    <li class="menu_col">
-                        <a href="">커뮤니티</a>
-                        <!-- sub_menu -->
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">공지사항</a></li>
-                            <li><a href="">자유게시판</a></li>
-                            <li><a href="">Q&A게시판</a></li>
-                        </ul>
-                        <!--  //sub_menu -->
-                    </li>
-                    <!-- //menu_col -->
-                    
-					<!-- <li class="menu_col">
+<header id="header" class="">
+	<div class="wrapper">
+		<!-- logo -->
+		<h1 class="h_logo">
+			<a href=""> <img alt="핏트럴파크"
+				src="assets/images/logo/widthlogo.png">
+			</a>
+		</h1>
+		<!-- //logo -->
+		<!-- nav -->
+		<nav class="nav">
+			<ul class="main_menu">
+
+				<!-- menu_col -->
+				<li class="menu_col"><a href="">식단 관리</a> <!-- sub_menu -->
+					<ul class="sub_menu" style="display: none;">
+						<li><a href="">식단 계획캘린더</a></li>
+						<li><a href="">식단 라이브러리</a></li>
+						<li><a href="">식단 분석</a></li>
+					</ul> <!--  //sub_menu --></li>
+				<!-- //menu_col -->
+
+				<!-- menu_col -->
+				<li class="menu_col"><a href="">운동 관리</a> <!-- sub_menu -->
+					<ul class="sub_menu" style="display: none;">
+						<li><a href="">운동 계획캘린더</a></li>
+						<li><a href="">운동 라이브러리</a></li>
+						<li><a href="">피트럴맵</a></li>
+					</ul> <!--  //sub_menu --></li>
+				<!-- //menu_col -->
+
+				<!-- menu_col -->
+				<li class="menu_col"><a href="">식품 영양정보</a> <!-- sub_menu -->
+					<ul class="sub_menu" style="display: none;">
+						<li><a href="">식품 검색</a></li>
+						<li><a href="">영양 성분비교</a></li>
+						<li><a href="">비타민 정보</a></li>
+					</ul> <!--  //sub_menu --></li>
+				<!-- //menu_col -->
+
+				<!-- menu_col -->
+				<li class="menu_col"><a href="">커뮤니티</a> <!-- sub_menu -->
+					<ul class="sub_menu" style="display: none;">
+						<li><a href="">공지사항</a></li>
+						<li><a href="">자유게시판</a></li>
+						<li><a href="">Q&A게시판</a></li>
+					</ul> <!--  //sub_menu --></li>
+				<!-- //menu_col -->
+
+				<!-- <li class="menu_col">
 						<a href="">마이페이지</a>
                         <ul class="sub_menu" style="display: none;">
                             <li><a href="">대시보드</a></li>
@@ -219,161 +216,136 @@ input:checked+.slider:before {
                             <li><a href="">회원정보</a></li>
                         </ul>
                     </li> -->
-                    
-                </ul>
-                <!-- //main_menu -->
-            </nav>
-            <!-- //nav -->
-            
-            
-            
-            <nav class="nav2">
-            	<!-- ■■■■■■■■■■로그인 후 보이는 코드■■■■■■■■■■ -->
-				<!-- 우측아이콘버튼 -->
-				<div class="welcome_msg">홍길동 님 반갑습니다. 어서오세요.</div>
-            	<ul class="icon_menu_grup">
+
+			</ul>
+			<!-- //main_menu -->
+		</nav>
+		<!-- //nav -->
+
+
+
+		<nav class="nav2">
+			<!-- ■■■■■■■■■■로그인 후 보이는 코드■■■■■■■■■■ -->
+			<!-- 우측아이콘버튼 -->
+			<div class="welcome_msg">홍길동 님 반갑습니다. 어서오세요.</div>
+			<ul class="icon_menu_grup">
 				<li class="icon_menu">
 					<!-- 알림 아이콘 버튼 -->
-      <div class="alarm-container">
-  <button id="alarmButton">
-    <img id="alarmIcon" src="assets/images/icon/bellon.png" alt="알람" style="width: 24px; height: 24px;">
-  </button>
-  <div id="alarmDropdown" class="dropdown-content">
-    <div class="alarm-toggle">
-      <span>알람 설정</span>
-      <label class="switch">
-        <input type="checkbox" id="alarmToggle" checked>
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div class="alarm-list">
-      <!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
-    </div>
-  </div>
+					<div class="alarm-container">
+						<button id="alarmButton">
+							<img id="alarmIcon" src="assets/images/icon/bellon.png" alt="알람"
+								style="width: 24px; height: 24px;">
+						</button>
+						<div id="alarmDropdown" class="dropdown-content">
+							<div class="alarm-toggle">
+								<span>알람 설정</span> <label class="switch"> <input
+									type="checkbox" id="alarmToggle" checked> <span
+									class="slider round"></span>
+								</label>
+							</div>
+							<div class="alarm-list">
+								<!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
+							</div>
+						</div>
+					</div>
+				</li>
+				<li class="icon_menu"><a href="#"> <img
+						src="assets/images/icon/dashboard (2).png" alt="대시보드"
+						style="width: 24px; height: 24px;">
+				</a></li>
+				<li class="icon_menu"><a href="#"> <img
+						src="assets/images/icon/people.png" alt="마이페이지"
+						style="width: 24px; height: 24px;">
+				</a></li>
+			</ul>
+			<!-- //우측아이콘버튼 -->
+			<!-- ■■■■■■■■■■//로그인 후 보이는 코드■■■■■■■■■■ -->
+
+			<!-- 로그인/로그아웃 버튼 -->
+			<ul class="login_btn">
+				<li class="icon_menu">
+					<button id="authButton">로그인</button>
+				</li>
+			</ul>
+			<!-- //로그인/로그아웃 버튼 -->
+
+		</nav>
+
+
+
+		<!-- btn_open -->
+		<div class="btn_open">
+			<span class="top"></span> <span class="middle"></span> <span
+				class="bottom"></span>
+		</div>
+		<!-- //btn_open -->
+	</div>
+	<!-- //wrapper -->
+</header>
+<!-- //header -->
+
+<!-- full-menu -->
+<div id="full-menu" style="display: none;">
+	<div class="wrapper">
+
+		<!-- depth01 -->
+		<ul class="depth01">
+			<li><a href="">HOME</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">HOME</a></li>
+				</ul></li>
+
+			<li><a href="">식단 관리</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">식단 계획캘린더</a></li>
+					<li><a href="">식단 라이브러리</a></li>
+					<li><a href="">식단 분석</a></li>
+				</ul> <!--  //depth02--></li>
+			<!-- //depth01 -->
+
+			<!-- depth01 -->
+			<li><a href="">운동 관리</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">운동 계획캘린더</a></li>
+					<li><a href="">운동 루틴만들기</a></li>
+					<li><a href="">운동 라이브러리</a></li>
+					<li><a href="">피트럴맵</a></li>
+				</ul> <!--  //depth02--></li>
+			<!-- //depth01 -->
+
+			<!-- depth01 -->
+			<li><a href="">식품 영양정보</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">음식 검색</a></li>
+					<li><a href="">영양 성분비교</a></li>
+					<li><a href="">비타민 정보</a></li>
+				</ul> <!--  //depth02--></li>
+			<!-- //depth01 -->
+
+			<!-- depth01 -->
+			<li><a href="">커뮤니티</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">공지사항</a></li>
+					<li><a href="">자유게시판</a></li>
+					<li><a href="">Q&A게시판</a></li>
+				</ul> <!--  //depth02--></li>
+			<!-- //depth01 -->
+
+			<!-- depth01 -->
+			<li><a href="">마이페이지</a> <!-- depth02 -->
+				<ul class="depth02">
+					<li><a href="">대시보드</a></li>
+					<li><a href="">나의활동</a></li>
+					<li><a href="">회원정보</a></li>
+				</ul> <!--  //depth02--></li>
+			<!-- //depth01 -->
+		</ul>
+	</div>
 </div>
-    </li><li class="icon_menu">
-	                    <a href="#">
-	                        <img src="assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;">
-	                    </a>
-	                </li>
-	                <li class="icon_menu">
-	                    <a href="#">
-	                        <img src="assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;">
-	                    </a>
-	                </li>
-	            </ul>
-	            <!-- //우측아이콘버튼 -->
-	            <!-- ■■■■■■■■■■//로그인 후 보이는 코드■■■■■■■■■■ -->
-	            
-	            <!-- 로그인/로그아웃 버튼 -->
-	        	<ul class="login_btn">
-	                <li class="icon_menu">
-	                    <button id="authButton">로그인</button>
-	                </li>
-            	</ul>
-            	<!-- //로그인/로그아웃 버튼 -->
-            	
-            </nav>
-            
+<!-- //full-menu -->
 
 
-            <!-- btn_open -->
-            <div class="btn_open">		
-                <span class="top"></span>
-                <span class="middle"></span>
-                <span class="bottom"></span>
-            </div>
-            <!-- //btn_open -->
-        </div>
-        <!-- //wrapper -->
-    </header>
-    <!-- //header -->
-    
-    <!-- full-menu -->
-    <div id="full-menu" style="display: none;">
-        <div class="wrapper">
-    
-            <!-- depth01 -->
-            <ul class="depth01">
-                <li>
-                    <a href="">HOME</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">HOME</a></li>
-                    </ul>
-                </li>
-    
-                <li>
-                    <a href="">식단 관리</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">식단 계획캘린더</a></li>
-                        <li><a href="">식단 라이브러리</a></li>
-                        <li><a href="">식단 분석</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-    
-                <!-- depth01 -->
-                <li>
-                    <a href="">운동 관리</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">운동 계획캘린더</a></li>
-                        <li><a href="">운동 루틴만들기</a></li>
-                        <li><a href="">운동 라이브러리</a></li>
-                        <li><a href="">피트럴맵</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-    
-                <!-- depth01 -->
-                <li>
-                    <a href="">식품 영양정보</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                    	<li><a href="">음식 검색</a></li>
-                        <li><a href="">영양 성분비교</a></li>
-                        <li><a href="">비타민 정보</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-    
-                <!-- depth01 -->
-                <li>
-                    <a href="">커뮤니티</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">공지사항</a></li>
-                        <li><a href="">자유게시판</a></li>
-                        <li><a href="">Q&A게시판</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-    
-                <!-- depth01 -->
-                <li>
-                    <a href="">마이페이지</a>
-                    <!-- depth02 -->
-                    <ul class="depth02">
-                        <li><a href="">대시보드</a></li>
-                        <li><a href="">나의활동</a></li>
-                        <li><a href="">회원정보</a></li>
-                    </ul>
-                    <!--  //depth02-->
-                </li>
-                <!-- //depth01 -->
-            </ul>
-        </div>
-    </div>
-    <!-- //full-menu -->
-    
-    
-    <script>
+<script>
     
     //로그인 로그아웃 버튼
     document.addEventListener("DOMContentLoaded", function() {
@@ -407,29 +379,27 @@ input:checked+.slider:before {
         SubMenu.hide();
     
         MainMenu.hover(function(){
-    
+
             header.addClass('hover');
-            
+
             var targetMenu = $(this).index();
-    
-            SubMenu.eq(targetMenu).stop().fadeIn();
-    
+
+            SubMenu.hide(); // 기존 서브메뉴 모두 숨김
+            SubMenu.eq(targetMenu).show(); // 해당 메뉴만 바로 표시
+
         }, function(){
             
             header.removeClass('hover');
-    
-            SubMenu.fadeOut(200);
-    
+
+            SubMenu.hide(); // 모든 서브메뉴 즉시 숨김
+
         });
-    
+
+        // 기존과 동일하게 서브메뉴에 hover 시 상위 메뉴 활성화
         SubMenu.hover(function(){
-            
             $(this).siblings('a').addClass('active');
-    
         }, function(){
-            
             MainMenu.children('a').removeClass('active');
-    
         });
     
     
@@ -521,8 +491,20 @@ input:checked+.slider:before {
         alarmDropdown.style.display = 'none';
       }
     });
+    
+    <!-- 로그인 팝업 열기 -->
+    document.addEventListener("DOMContentLoaded", function () {
+        const authButton = document.getElementById("authButton");
+
+        authButton.addEventListener("click", function () {
+        	window.open(
+        			  "${pageContext.request.contextPath}/login.do",
+        			  "LoginPopup",
+        			  "width=500,height=600"
+          );
+        });
+      });
 
 
     </script>
 
-    
