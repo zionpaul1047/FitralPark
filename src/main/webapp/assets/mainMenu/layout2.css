@@ -1,42 +1,12 @@
 @charset "utf-8";
 
-#header .welcome_msg{
-	position: absolute;
-	top: -21px;
-	right: 18px;
-	font-size: 12px;
+.nav2{
+	  
 }
-
-#header .login_btn{
-
-}
-
-#header .wrapper{
-	width: 100%;
-	height: 100%;
-
+.nav2 .icon_menu_grup{
 	display: flex;
-	justify-content: space-between;
 	align-items: center;
-
-	padding: 0 40px;
 }
-
-#header .wrapper .nav{
-	margin-left: auto;
-	margin-right: auto;
-	}
-#header .wrapper .nav2{
-	margin-left: 0px;
-    margin-right: 10px;
-	}
-	
-#header .wrapper .btn_open{
-	margin-left: 0px;
-	margin-right: 0px;
-}
-	
-	
 
 #authButton {
     border: none;
@@ -51,14 +21,8 @@
     background: #218838;
 }
 
-.icon_menu_grup{
-	display: flex;
-		align-items: center;
-	
-}
-
 .icon_menu {
-	padding: 2px;
+	padding: 10px;
 }
 
 .icon_menu a img {
@@ -69,14 +33,17 @@
 
 
 #header{
-	width: 1280px;
+	width: 100%;
 	height: 80px;
+
 	position: fixed;
 	top: 30px;
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 99;
+
 	border-bottom: 1px solid transparent;
+
 	transition: var(--transition);
 }
 
@@ -99,7 +66,7 @@
 #header:before{
 	content: "";
 
-	width: 100%;
+	width: 90%;
     height: 100%;
     background: var(--white);
 
@@ -140,9 +107,16 @@
 	border-radius: 0;
 }
 
+#header .wrapper{
+	width: 90%;
+	height: 100%;
 
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
-
+	padding: 0 40px;
+}
 
 /* 헤더 풀메뉴 효과 */
 #header.active::before{
@@ -150,9 +124,8 @@
 }
 
 #header .h_logo{
-	position: relative;
-	top: -4%;
-	width: 200px;
+	width: 158px;
+	
 }
 #header .h_logo a{
 	display: block;
@@ -174,7 +147,7 @@
 #header nav .main_menu .menu_col > a{
 	display: block;
 	position: relative;
-	font-size: 1rem;
+	font-size: 1.25rem;
 	line-height: 80px;
 
 	padding: 0 30px;
@@ -246,14 +219,14 @@
 }
 
 #header nav .sub_menu li{
-	font-size: 1rem;
+	font-size: 1.125rem;
 }
 
 #header nav .sub_menu li a{
 	display: flex;
 	align-items: center;
 	
-	font-size: 1rem;
+	font-size: 1.125rem;
 	color: var(--gray01);
 
 	transition: var(--transition);
@@ -427,7 +400,7 @@
 	margin-top: 0;
 }
 #full-menu .depth02 li a{
-	font-size: 1rem;
+	font-size: 1.25rem;
 	color: var(--gray01);
 	padding: 7px 0;
 
