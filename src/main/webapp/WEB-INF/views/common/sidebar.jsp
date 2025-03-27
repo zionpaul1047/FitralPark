@@ -15,10 +15,12 @@
     <script src="assets/mainMenu/wrest.js"></script>
     <script src="assets/mainMenu/placeholders.min.js"></script>
    <style>
-      
+    #div .xi-home, .open{
+	font-family: 'Paperlogy-8ExtraBold'
+		}	
    </style>
 
-   <!-- 좌측 사이드 메뉴바 -->
+   <!-- 우측 사이드 메뉴바 -->
    <div class="fix-menu">
         <ul>
             <li class="open go_home">
@@ -69,4 +71,4 @@
         </div>
     
     </div>
-    <!-- //fix-menu -->
+    <!-- //우측 사이드 메뉴바 -->
