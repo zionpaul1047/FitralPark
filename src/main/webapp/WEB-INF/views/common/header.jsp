@@ -158,7 +158,7 @@ input:checked+.slider:before {
             <!-- logo -->
             <h1 class="h_logo">
                 <a href="">
-                	<img alt="핏트럴파크" src="./assets/images/logo/widthlogo.png">
+                	<img alt="핏트럴파크" src="assets/images/logo/widthlogo.png">
                 </a>
             </h1>
             <!-- //logo -->
