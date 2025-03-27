@@ -1,19 +1,12 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <link rel="stylesheet" href="assets/mainMenu/default.css">
+    
     <link rel="stylesheet" href="assets/css/font.css">
-    <link rel="stylesheet" href="assets/mainMenu/style.css">
-    <link rel="stylesheet" href="assets/mainMenu/common.css"><!-- 공통 -->
-    <link rel="stylesheet" href="assets/mainMenu/layout.css"><!-- 레이아웃 -->
-    <link rel="stylesheet" href="assets/mainMenu/modal.css"><!-- 모달 -->
-    <link rel="stylesheet" href="assets/mainMenu/style(1).css"><!-- 메인페이지 -->
-    <script src="assets/mainMenu/jquery-1.12.4.min(1).js"></script>
-    <script src="assets/mainMenu/jquery-migrate-1.4.1.min.js"></script>
-    <script src="assets/mainMenu/jquery.menu.js"></script>
-    <script src="assets/mainMenu/common.js"></script>
-    <script src="assets/mainMenu/wrest.js"></script>
-    <script src="assets/mainMenu/placeholders.min.js"></script>
+    <link rel="stylesheet" href="assets/css/common.css">
+    <script src="assets/js/jquery-1.12.4.min(1).js"></script>
+    <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+
     
     <style>
 .login_btn {
@@ -158,7 +151,7 @@ input:checked+.slider:before {
             <!-- logo -->
             <h1 class="h_logo">
                 <a href="">
-                	<img alt="핏트럴파크" src="assets/logo/widthlogo.png">
+                	<img alt="핏트럴파크" src="assets/images/logo/widthlogo.png">
                 </a>
             </h1>
             <!-- //logo -->
@@ -243,7 +236,7 @@ input:checked+.slider:before {
 					<!-- 알림 아이콘 버튼 -->
       <div class="alarm-container">
   <button id="alarmButton">
-    <img id="alarmIcon" src="assets/mainMenu/bellon.png" alt="알람" style="width: 24px; height: 24px;">
+    <img id="alarmIcon" src="assets/images/icon/bellon.png" alt="알람" style="width: 24px; height: 24px;">
   </button>
   <div id="alarmDropdown" class="dropdown-content">
     <div class="alarm-toggle">
@@ -260,12 +253,12 @@ input:checked+.slider:before {
 </div>
     </li><li class="icon_menu">
 	                    <a href="#">
-	                        <img src="assets/mainMenu/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;">
+	                        <img src="assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;">
 	                    </a>
 	                </li>
 	                <li class="icon_menu">
 	                    <a href="#">
-	                        <img src="assets/mainMenu/people.png" alt="마이페이지" style="width: 24px; height: 24px;">
+	                        <img src="assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;">
 	                    </a>
 	                </li>
 	            </ul>
@@ -503,10 +496,10 @@ input:checked+.slider:before {
 
     alarmToggle.addEventListener('change', () => {
       if (alarmToggle.checked) {
-        alarmIcon.src = 'assets/mainMenu/bellon.png';
+        alarmIcon.src = 'assets/images/icon/bellon.png';
         // 알람 활성화 로직
       } else {
-        alarmIcon.src = 'assets/mainMenu/belloff.png';
+        alarmIcon.src = 'assets/images/icon/belloff.png';
         // 알람 비활성화 로직
       }
     });
