@@ -16,7 +16,6 @@
     <script src="assets/mainMenu/placeholders.min.js"></script>
     
     <style>
-
 /* Global CSS */
 body {
   display: grid;
@@ -55,6 +54,7 @@ body {
 
 .icon_menu {
   margin-right: 10px;
+  z-index: 100;
 }
 
 .alarm-container {
@@ -129,7 +129,23 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+.icon_menu_grup {
+    /* border: 1px solid black; */
+    width: 300px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    transform: translate(90px, 0);
+}
 
+.icon_menu_grup * {
+    display: block;
+    margin-left: 3px;
+}
+
+#alarmButton {
+    border: 0;
+}
 
 </style>
 
@@ -216,42 +232,41 @@ input:checked + .slider:before {
                 </ul>
                 <!-- //main_menu -->
             </nav>
-            <!-- //nav -->
             
-           <nav class="nav2">
-  <ul class="icon_menu_grup">
-    <!-- 알림 아이콘 버튼 -->
-    <li class="icon_menu">
-      <div class="alarm-container">
-  <button id="alarmButton">
-    <img id="alarmIcon" src="assets/mainMenu/bell (3).png" alt="알람" style="width: 24px; height: 24px;">
-  </button>
-  <div id="alarmDropdown" class="dropdown-content">
-    <div class="alarm-toggle">
-      <span>알람 설정</span>
-      <label class="switch">
-        <input type="checkbox" id="alarmToggle" checked>
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div class="alarm-list">
-      <!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
-    </div>
-  </div>
-</div>
-    </li>
-	<!-- 대시보드 아이콘 버튼 -->
-    <li class="icon_menu">
-      <a href="#">
-        <img src="assets/mainMenu/dashboard.png" alt="대시보드" style="width: 24px; height: 24px;">
-      </a>
-    </li>
-    <!-- 로그인 버튼 -->
-    <li class="icon_menu">
-      <button id="authButton">로그인</button>
-    </li>
-  </ul>
-</nav>
+            <!-- //nav -->
+		<nav class="nav2">
+			<ul class="icon_menu_grup">
+				<!-- 알림 아이콘 버튼 -->
+				<li class="icon_menu" >
+					<div class="alarm-container">
+						<button id="alarmButton">
+							<img id="alarmIcon" src="assets/mainMenu/bell (3).png" alt="알람"
+								style="width: 24px; height: 24px;">
+						</button>
+						<div id="alarmDropdown" class="dropdown-content">
+							<div class="alarm-toggle">
+								<span>알람 설정</span> <label class="switch"> <input
+									type="checkbox" id="alarmToggle" checked> <span
+									class="slider round"></span>
+								</label>
+							</div>
+							<div class="alarm-list">
+								<!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
+							</div>
+						</div>
+					</div>
+				</li>
+				<!-- 대시보드 아이콘 버튼 -->
+				<li class="icon_menu"><a href="#"> <img
+						src="assets/mainMenu/dashboard.png" alt="대시보드"
+						style="width: 24px; height: 24px;">
+				</a></li>
+				<!-- 로그인 버튼 -->
+				<li class="icon_menu">
+					<button id="authButton">로그인</button>
+				</li>
+			</ul>
+		</nav>
 
 
 		<!-- btn_open -->

@@ -20,10 +20,10 @@
 }
 
 .icon_menu {
-    position: absolute;
+    /* position: absolute;
     right: 240px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 50%; */
+    /* transform: translateY(-50%); */
 }
 
 .icon_menu a img {
