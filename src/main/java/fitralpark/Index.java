@@ -21,4 +21,3 @@ public class Index extends HttpServlet {
 	}
 
 }
-//

@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>FITRALPACK</title>
     <style>
-        body {background-color: beige !important;}  
+        body {background-color: rgb(193, 229, 185);}  
     </style>
 </head>
 <body>
