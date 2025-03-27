@@ -51,6 +51,11 @@
                     오시는길
                 </a>
             </li>
+            <li class="setup">
+               <a href="#">
+                            <img src="assets/images/icon/settings.png" alt="설정" style="width: 24px; height: 24px;">
+                        </a>
+            </li>
             <li class="button">
                 <a href="javascript:void(0)">
                     <i><img src="" alt="메뉴 더보기"></i>
