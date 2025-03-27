@@ -38,7 +38,7 @@
 	}
 
 	.side_menu_item:hover {	/* 마우스 올렸을때 색변환 */
-  		color: red;
+  		color: #244D82;
 	}
 	
 	.side_menu_item:last-child{ /* 마지막 메뉴 요소 */
