@@ -1,30 +1,28 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-   
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-   <meta charset="UTF-8">
-   <title>🌳FITRALPARK🌳</title>
-   <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
-   <style>
-      
-   </style>
+<meta charset="UTF-8">
+<title>FITRALPACK</title>
+    <style>
+        body {background-color: beige !important;}  
+    </style>
 </head>
 <body>
-   <!-- 메인 홈 페이지 -->
-   <h1>제목</h1>
-   <h2>안녕</h2>
-   
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-   <script src="https://bit.ly/4cMuheh"></script>
-   <script>
-      
-     
-      
-      
-   </script>
+	<!-- 메인메뉴 -->
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    <!-- 오른쪽메뉴 -->
+    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+
+<main>
+
+</main>
+    
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+    
 </body>
 </html>
