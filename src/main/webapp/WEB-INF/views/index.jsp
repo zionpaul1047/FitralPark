@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FITRALPACK</title>
+<title>FITRALPARK</title>
     <style>
         body {background-color: rgb(218, 243, 211);}  
     </style>
