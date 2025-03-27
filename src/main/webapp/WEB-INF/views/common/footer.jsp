@@ -35,18 +35,16 @@ main {
 
 footer {
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 30px 20px;
   text-align: center;
   border-top: 1px solid #ddd;
-  display: flex; /* Flexbox 사용 */
-  flex-direction: column; /* 세로 방향 배치 */
-  align-items: center; /* 모든 요소를 중앙 정렬 */
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
 footer .footer-content {
-	max-width: 800px;
-	margin: 0 auto;
-	color: #333;
+  width: 100%; 
+  color: #333;
 }
 
 footer .footer-content h3 {
