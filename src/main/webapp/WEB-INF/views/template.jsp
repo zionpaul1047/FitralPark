@@ -8,14 +8,15 @@
 <meta charset="UTF-8">
 <title>FITRALPACK</title>
     <style>
-        body {background-color: beige !important;}  
+        body {background-color: #4CB8A5 !important;}  
     </style>
 </head>
 <body>
 	<!-- 메인메뉴 -->
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <!-- 오른쪽메뉴 -->
+    <!-- 오른쪽 메뉴 -->
     <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    <!-- 왼쪽 메뉴 -->
     <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
 
 <main>
