@@ -1,37 +1,31 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-   
-   
-   
-%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
-   <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
-   <style>
-      
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+    <link rel="stylesheet" href="assets/mainMenu/default.css">
+    <link rel="stylesheet" href="assets/css/font.css">
+    <link rel="stylesheet" href="assets/mainMenu/style.css">
+    <link rel="stylesheet" href="assets/mainMenu/common.css"><!-- 공통 -->
+    <link rel="stylesheet" href="assets/mainMenu/layout.css"><!-- 레이아웃 -->
+    <link rel="stylesheet" href="assets/mainMenu/modal.css"><!-- 모달 -->
+    <link rel="stylesheet" href="assets/mainMenu/style(1).css"><!-- 메인페이지 -->
+    <script src="assets/mainMenu/jquery-1.12.4.min(1).js"></script>
+    <script src="assets/mainMenu/jquery-migrate-1.4.1.min.js"></script>
+    <script src="assets/mainMenu/jquery.menu.js"></script>
+    <script src="assets/mainMenu/common.js"></script>
+    <script src="assets/mainMenu/wrest.js"></script>
+    <script src="assets/mainMenu/placeholders.min.js"></script>
+    <style>
+        button::before {
+            content: '' !important;
+        }
+        .nav2 {
+ 	       display: flex;
+        } 
+		#header .menu_col, .icon_menu, .depth01{
+			font-family: 'Paperlogy-8ExtraBold'
+		}	
+
    </style>
-<<<<<<< HEAD
-</head>
-<body>
-   <!-- 사이트 공통 상단 메뉴바 -->
-   
-   
-   
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-   <script src="https://bit.ly/4cMuheh"></script>
-   <script>
-      
-      
-      
-      
-   </script>
-</body>
-</html>
-=======
 
     <header id="header" class="">	
         <div class="wrapper">	
@@ -48,13 +42,12 @@
                 
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">식단관리</a>
+                        <a href="">식단 관리</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">식단계획캘린더</a></li>
-                            <li><a href="">식단만들기</a></li>
-                            <li><a href="">식단추천</a></li>
-                            <li><a href="">식단분석</a></li>			
+                            <li><a href="">식단 계획캘린더</a></li>
+                            <li><a href="">식단 라이브러리</a></li>
+                            <li><a href="">식단 분석</a></li>			
                         </ul>
                         <!--  //sub_menu -->
                     </li>
@@ -62,13 +55,12 @@
   
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">운동관리</a>
+                        <a href="">운동 관리</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">운동계획캘린더</a></li>
-                            <li><a href="">운동루틴만들기</a></li>
-                            <li><a href="">사용자정의운동</a></li>
-                            <li><a href="">핏트럴맵</a></li>
+                            <li><a href="">운동 계획캘린더</a></li>
+                            <li><a href="">운동 라이브러리</a></li>
+                            <li><a href="">피트럴맵</a></li>
                         </ul>
                         <!--  //sub_menu -->
                     </li>
@@ -76,12 +68,12 @@
                     
                     <!-- menu_col -->
                     <li class="menu_col">
-                        <a href="">음식성분찾기</a>
+                        <a href="">식품 영양정보</a>
                         <!-- sub_menu -->
                         <ul class="sub_menu" style="display: none;">
-                            <li><a href="">음식검색</a></li>
-                            <li><a href="">영양성분비교</a></li>
-                            <li><a href="">비타민검색추천</a></li>
+                            <li><a href="">식품 검색</a></li>
+                            <li><a href="">영양 성분비교</a></li>
+                            <li><a href="">비타민 정보</a></li>
                         </ul>
                         <!--  //sub_menu -->
                     </li>
@@ -100,27 +92,27 @@
                     </li>
                     <!-- //menu_col -->
                     
-                    <!-- menu_col -->
-                    <li class="menu_col">
-                        <a href="">마이페이지</a>
-                        <!-- sub_menu -->
+					<!-- <li class="menu_col">
+						<a href="">마이페이지</a>
                         <ul class="sub_menu" style="display: none;">
                             <li><a href="">대시보드</a></li>
                             <li><a href="">나의활동</a></li>
                             <li><a href="">회원정보</a></li>
                         </ul>
-                        <!--  //sub_menu -->
-                    </li>
-                    <!-- //menu_col -->
+                    </li> -->
                     
                 </ul>
                 <!-- //main_menu -->
             </nav>
             <!-- //nav -->
             
+            
+            
             <nav class="nav2">
+            	<!-- ■■■■■■■■■■로그인 후 보이는 코드■■■■■■■■■■ -->
+				<!-- 우측아이콘버튼 -->
+				<div class="welcome_msg">홍길동 님 반갑습니다. 어서오세요.</div>
             	<ul class="icon_menu_grup">
-                    <!-- 우측아이콘버튼 -->
                     <li class="icon_menu">
 	                    <a href="#">
 	                        <img src="assets/mainMenu/bell (2).png" alt="알림" style="width: 24px; height: 24px;">
@@ -131,16 +123,27 @@
 	                        <img src="assets/mainMenu/dashboard (1).png" alt="대시보드" style="width: 24px; height: 24px;">
 	                    </a>
 	                </li>
-	                <!-- //우측아이콘버튼 -->
-	                <!-- 로그인/로그아웃 버튼 -->
+	                <li class="icon_menu">
+	                    <a href="#">
+	                        <img src="assets/mainMenu/people.png" alt="마이페이지" style="width: 24px; height: 24px;">
+	                    </a>
+	                </li>
+	            </ul>
+	            <!-- //우측아이콘버튼 -->
+	            <!-- ■■■■■■■■■■//로그인 후 보이는 코드■■■■■■■■■■ -->
+	            
+	            <!-- 로그인/로그아웃 버튼 -->
+	        	<ul class="login_btn">
 	                <li class="icon_menu">
 	                    <button id="authButton">로그인</button>
 	                </li>
-	                <!-- //로그인/로그아웃 버튼 -->
             	</ul>
+            	<!-- //로그인/로그아웃 버튼 -->
+            	
             </nav>
+            
 
-			
+
             <!-- btn_open -->
             <div class="btn_open">		
                 <span class="top"></span>
@@ -168,13 +171,12 @@
                 </li>
     
                 <li>
-                    <a href="">식단관리</a>
+                    <a href="">식단 관리</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                        <li><a href="">식단계획캘린더</a></li>
-                        <li><a href="">식단만들기</a></li>
-                        <li><a href="">식단추천</a></li>
-                        <li><a href="">식단분석</a></li>
+                        <li><a href="">식단 계획캘린더</a></li>
+                        <li><a href="">식단 라이브러리</a></li>
+                        <li><a href="">식단 분석</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -182,13 +184,13 @@
     
                 <!-- depth01 -->
                 <li>
-                    <a href="">운동관리</a>
+                    <a href="">운동 관리</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                        <li><a href="">운동계획캘린더</a></li>
-                        <li><a href="">운동루틴만들기</a></li>
-                        <li><a href="">사용자정의운동</a></li>
-                        <li><a href="">핏트럴맵</a></li>
+                        <li><a href="">운동 계획캘린더</a></li>
+                        <li><a href="">운동 루틴만들기</a></li>
+                        <li><a href="">운동 라이브러리</a></li>
+                        <li><a href="">피트럴맵</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -196,12 +198,12 @@
     
                 <!-- depth01 -->
                 <li>
-                    <a href="">음식성분찾기</a>
+                    <a href="">식품 영양정보</a>
                     <!-- depth02 -->
                     <ul class="depth02">
-                    	<li><a href="">음식검색</a></li>
-                        <li><a href="">영양성분비교</a></li>
-                        <li><a href="">비타민검색추천</a></li>
+                    	<li><a href="">음식 검색</a></li>
+                        <li><a href="">영양 성분비교</a></li>
+                        <li><a href="">비타민 정보</a></li>
                     </ul>
                     <!--  //depth02-->
                 </li>
@@ -240,24 +242,27 @@
     
     <script>
     
+    //로그인 로그아웃 버튼
     document.addEventListener("DOMContentLoaded", function() {
     var authButton = document.getElementById('authButton');
     var isLoggedIn = false; // 초기 상태는 로그아웃
 
     authButton.addEventListener('click', function() {
         isLoggedIn = !isLoggedIn; // 상태 전환
-
-        if (isLoggedIn) {
-            authButton.textContent = '로그아웃';
-            authButton.style.background = '#dc3545'; // 빨간색 (로그아웃 상태)
-            console.log("로그인 성공");
-        } else {
-            authButton.textContent = '로그인';
-            authButton.style.background = '#28a745'; // 녹색 (로그인 상태)
-            console.log("로그아웃 성공");
-        }
-            });
+        
+	        if (isLoggedIn) {
+	            authButton.textContent = '로그아웃';
+	            authButton.style.background = '#dc3545'; // 빨간색 (로그아웃 상태)
+	            console.log("로그인 성공");
+	        } else {
+	            authButton.textContent = '로그인';
+	            authButton.style.background = '#28a745'; // 녹색 (로그인 상태)
+	            console.log("로그아웃 성공");
+	        }
         });
+    });
+  	//!!로그인 로그아웃 버튼
+    
     
     var header = $('#header'),
         MainMenu = $('nav .main_menu .menu_col'),
@@ -374,4 +379,3 @@
     </script>
 
     
->>>>>>> ced34c8 (헤더,사이드,푸터,레이아웃까지)
