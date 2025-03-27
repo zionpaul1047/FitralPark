@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+	.side_menu_bg {
+		/* border: 1px solid black; */
+		
+	    width: 200px;
+	    height: 235px; /*■■■■■■■■■■■ 상하크기조절 ■■■■■■■■■■ */
+	    border-radius: 20px;
+	    
+	    position: fixed;
+	    left: 50%;
+	    top: 125px;
+	    transform: translate(-640px, 0);
+	    
+	    background: var(--white);
+	}
+	
+	
+	.side_menu_ul{
+		list-style: none; /* 기본 목록 스타일 제거 */
+  		margin: 0;
+  		padding: 0;
+	}
+	
+	.side_menu_item:first-child{/* 첫번째 메뉴 요소 */
+		font-family: 'Paperlogy-8ExtraBold';
+		font-size: 16px;
+	}
+	
+	.side_menu_item {
+	  padding: 20px; /* 내부 패딩 */
+	  margin-left: 20px; /* 왼쪽 여백 */
+	  margin-right: 20px;	/* 오른쪽 여백 */
+	  border-bottom: 1px solid #ccc; /* 구분선 추가 */
+	  font-family: 'Paperlogy-6';
+	  font-size: 14px;
+	   transition: color 0.4s ease; /* 색상 변화에 트랜지션 효과 추가 */
+	}
+
+	.side_menu_item:hover {	/* 마우스 올렸을때 색변환 */
+  		color: #244D82;
+	}
+	
+	.side_menu_item:last-child{ /* 마지막 메뉴 요소 */
+		border-bottom: none; /* 구분선 제거 */
+	}

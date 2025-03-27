@@ -1,32 +1,66 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-   
-   
-   
-%>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
-   <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
+
+ 
+    <link rel="stylesheet" href="assets/css/common.css">
+    <script src="assets/js/jquery-1.12.4.min(1).js"></script>
+    <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+
+
    <style>
-      
+    #div .xi-home, .open{
+	font-family: 'Paperlogy-8ExtraBold'
+		}	
    </style>
-</head>
-<body>
-   <!-- 좌측 사이드 메뉴바 -->
-   
-   
-   
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-   <script src="https://bit.ly/4cMuheh"></script>
-   <script>
-      
-      
-      
-      
-   </script>
-</body>
-</html>
+
+   <!-- 우측 사이드 메뉴바 -->
+   <div class="fix-menu">
+        <ul>
+            <li class="open go_home">
+                <a href="">
+                    <i class="xi-home"></i>
+                    HOME
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    
+                    공지사항
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    
+                    의료진 <br>소개
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    
+                    전화번호 <br>안내
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    
+                    진료시간
+                </a>
+            </li>
+            <li class="open">
+                <a href="">
+                    
+                    오시는길
+                </a>
+            </li>
+            <li class="button">
+                <a href="javascript:void(0)">
+                    <i><img src="" alt="메뉴 더보기"></i>
+                </a>
+            </li>
+        </ul>
+    
+        <div class="top">
+            <i><img src="./assets/images/icon/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
+        </div>
+    
+    </div>
+    <!-- //우측 사이드 메뉴바 -->
