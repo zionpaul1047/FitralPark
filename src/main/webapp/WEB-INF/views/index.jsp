@@ -18,6 +18,8 @@
     <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
     <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
 
+	<h1>안녕</h1>
+
 <main>
 
 </main>
