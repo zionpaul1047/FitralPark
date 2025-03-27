@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+	<!-- favicon.png" -->
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {background-color: rgb(218, 243, 211);}  
     </style>
