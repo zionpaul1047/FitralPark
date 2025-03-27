@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 //로그인, 로그아웃, 회원가입, 비밀번호/아이디 찾기 컨트롤러
-@WebServlet("/login.do")
+@WebServlet("/auth.do")
 public class AuthController extends HttpServlet {
 
 	@Override
