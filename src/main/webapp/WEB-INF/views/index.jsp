@@ -6,12 +6,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<<<<<<< HEAD
 <title>FITRALPACK</title>
+=======
+<title>FITRALPARK</title>
+	<!-- favicon.png" -->
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+>>>>>>> 2c1e3df (수정)
     <style>
         body {background-color: rgb(218, 243, 211);}  
     </style>
 </head>
 <body>
+
 	<!-- 메인메뉴 -->
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
     <!-- 오른쪽메뉴 -->
