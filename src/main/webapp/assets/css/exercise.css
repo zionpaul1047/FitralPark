@@ -1,1 +1,242 @@
 @charset "UTF-8";
+
+
+main {
+	width: 1040px; /* 파란 테두리 기준 너비 */
+	height: 450px; /* 필요 시 높이도 지정 */
+	display: flex;
+	justify-content: flex-start; /* 왼쪽 정렬 */
+	align-items: flex-start; /* 위쪽 정렬 (필요 시 center도 가능) */
+}
+
+.calendar-container {
+	width: 500px;
+	height: 450px;
+	padding: 30px;
+	background-color: #ffffff;
+	border: 2px solid #000;
+	border-radius: 20px;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+	font-family: 'Arial', sans-serif;
+	margin-right: 20px;
+}
+
+.calendar-header {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+	font-size: 20px;
+	margin: 0;
+}
+
+.calendar-header button {
+	margin-left: 10px; padding : 4px 10px;
+	font-size: 13px;
+	border: 1px solid #000;
+	border-radius: 6px;
+	background-color: white;
+	cursor: pointer;
+	padding: 4px 10px;
+}
+
+.calendar-days {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	font-weight: bold;
+	font-size: 13px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 5px;
+}
+
+.day {
+	text-align: center;
+	xpadding: 4px 0;
+}
+
+.day:nth-child(1) {
+	color: red;
+} /* 일 */
+.day:nth-child(7) {
+	color: blue;
+} /* 토 */
+.calendar-dates {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+}
+
+.date {
+	height: 35px;
+	text-align: center;
+	line-height: 35px;
+	font-size: 13px;
+	cursor: pointer;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 10px;
+}
+
+.date:hover {
+	background-color: #f5f5f5;
+}
+
+.routine-panel {
+	width: 500px;
+	height: 450px;
+	background: #fff;
+	border: 2px solid #333;
+	border-radius: 16px;
+	padding: 20px;
+	font-family: 'Arial', sans-serif;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.routine-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.username {
+	margin: 0;
+	font-weight: bold;
+}
+
+.routine-date {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.routine-controls {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 15px;
+}
+
+.routine-controls button {
+	padding: 6px 12px;
+	border: 1px solid #999;
+	border-radius: 6px;
+	background: white;
+	cursor: pointer;
+}
+
+.routine-table {
+	border: 1px solid #999;
+	border-radius: 12px;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+.routine-table table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.routine-table th, .routine-table td {
+	text-align: center;
+	padding: 6px;
+}
+
+.routine-table input[type="text"] {
+	border: 1px solid gray;
+	width: 80px;
+	padding: 4px;
+	border-radius: 6px;
+}
+
+.add-exercise {
+	width: 100%;
+	margin-top: 10px;
+	padding: 8px;
+	border: 1px dashed #666;
+	background: #f9f9f9;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.routine-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: space-between;
+	margin-top: 20px;
+}
+
+.routine-actions button {
+	flex: 1;
+	padding: 10px;
+	background: white;
+	border: 1px solid #999;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.routine-detail-panel {
+	width: 1020px;
+	padding: 20px;
+	border: 2px solid #000;
+	border-radius: 16px;
+	font-family: 'Arial', sans-serif;
+	background: #fff;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.routine-tabs, .sub-tabs {
+	display: flex;
+	gap: 10px;
+	margin-bottom: 15px;
+}
+
+.main-tab, .sub-tab {
+	padding: 8px 16px;
+	border: 1px solid #888;
+	border-radius: 6px;
+	background: white;
+	cursor: pointer;
+}
+
+.main-tab.active, .sub-tab.active {
+	border: 2px solid #1e90ff;
+	font-weight: bold;
+}
+
+.routine-grid {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.routine-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fdfdfd;
+}
+
+.exercise-title {
+  grid-column: 1 / -1; /* 두 칸 전체를 차지하게 만듦 */
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.routine-card label {
+  font-weight: bold;
+  align-self: center;
+}
+
+.routine-card input[type="text"] {
+  padding: 6px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  width: 200px;
+}
