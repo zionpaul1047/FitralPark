@@ -3,7 +3,11 @@
 *,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;}
 ::before,::after{--tw-content:''}
 
-body{margin:0;line-height:inherit}
+html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
 hr{height:0;color:inherit;border-top-width:1px}
 abbr:where([title]){text-decoration:underline dotted}
 h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit; font-family:inherit !important;}
