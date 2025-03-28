@@ -1,82 +1,86 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>FITRALPARK</title>
-    <style>
-        body {
-        background-color: rgb(218, 243, 211);
-        
-        }  
-        .grid{
-            display: grid;
-		    grid-template-rows: 125px auto 1fr;
-		    grid-template-columns: 1fr;
-		    min-height: 100%;
-        }
-        .grid_top{
-        	/* border: 1px solid black; */
-            grid-row: 1;
-        }
-        .grid_center{
-        	/* border: 1px solid black; */
-            grid-row: 2;
-		    display: grid;
-		    grid-template-columns: calc(50% - 424px) auto;
-        }
-        .grid_center_L{
-        /* border: 1px solid black; */
-        }
-        .grid_center_R{
-        /* border: 1px solid black; */
-        }
-        .grid_bottom{
-        /* border: 1px solid black; */
-            grid-row: 3;
-        }
-        
-    </style>
+  <meta charset="UTF-8">
+  <title>FITRALPARK</title>
+
+  <%@ include file="/WEB-INF/views/common/asset.jsp" %>
+
+<style>
+body {
+  background-color: rgb(218, 243, 211);
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.layout-container {
+  flex: 1;
+  display: flex;
+  width: 1200px;
+  margin: 0 auto;
+  padding: 130px 0 60px; /* header 높이 고려 */
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+.left-menu {
+  width: 200px;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f5fbf6;
+  padding: 30px;
+  border: 1px solid #cde7d1;
+  border-radius: 16px;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar {
+  width: 220px;
+}
+
+footer {
+  margin-top: auto;
+}
+
+</style>
+
 </head>
 <body>
-	<div class="grid">
-	
-		<div class="grid_top">
 
-				<!-- 메인메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-			    <!-- 오른쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
-			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
-		</div>
-		
-		<div class="grid_center">
-		
-			<div class="grid_center_L"></div>
-			
-			<div class="grid_center_R">
-				<!-- 컨텐츠페이지 -->
-    			<%@ include file="/WEB-INF/views/common/content_page.jsp" %>
-			</div>
-			
-		</div>
-		
-		<div class="grid_bottom">
-				<%@ include file="/WEB-INF/views/common/footer.jsp" %>
-		</div>
-		
-	</div>
+  <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-
+  <div class="layout-container">
     
+    <div class="left-menu">
+      <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+    </div>
 
+    <div class="main-content">
+      <h2>👋 FitralPark에 오신 걸 환영합니다!</h2>
+      <p>이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.이곳은 대시보드나 주요 콘텐츠가 들어갈 메인 영역입니다.</p>
 
+      <!-- 예시 콘텐츠가 많아졌을 때 스크롤 생김 -->
+      <div style="height: 900px;">
+        <p>스크롤 테스트용 콘텐츠...</p>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    </div>
+
+  </div>
+
+  <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 </body>
-
-
 </html>
