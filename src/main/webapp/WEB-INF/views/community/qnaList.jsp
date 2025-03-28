@@ -1,32 +1,31 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-   
-   
-   
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
-   <meta charset="UTF-8">
-   <title>Insert title here</title>
-   <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
-   <style>
-      
-   </style>
+<meta charset="UTF-8">
+<title>FITRALPACK</title>
+    <style>
+        body {background-color: rgb(218, 243, 211);}  
+    </style>
 </head>
 <body>
-   <!-- Q&A 목록 화면 -->
-   
-   
-   
-   
-   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-   <script src="https://bit.ly/4cMuheh"></script>
-   <script>
-      
-      
-      
-      
-   </script>
+
+	<!-- 메인메뉴 -->
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+    
+    <!-- 오른쪽메뉴 -->
+    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+
+
+<main>
+
+</main>
+    
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+    
 </body>
 </html>
