@@ -33,12 +33,7 @@ button::before {
 }
 
 /* Global CSS */
-body {
-	display: grid;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-}
+
 
 fieldset {
 	border: none;
