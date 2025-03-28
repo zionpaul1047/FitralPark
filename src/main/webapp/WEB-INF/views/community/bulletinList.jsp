@@ -60,23 +60,24 @@
 		}
 
 		#boardtable th:nth-child(1) {
-			text-align: center;
+			width: 60px;
 		}
 
 		#boardtable th:nth-child(2) {
 			width: auto;
 		}
 
-		#boardtable th:nth-child(2) {
-			text-align: center;
-		}
-
 		#boardtable th:nth-child(3) {
-			width: 120px;
+			width: 100px;
 		}
 
 		#boardtable th:nth-child(4) {
-			width: 120px;
+			width: 150px;
+		}
+
+		#boardtable th:nth-child(5),
+					th:nth-child(6) {
+			width: 80px;
 		}
 				
 		#board_etc_box {
@@ -137,7 +138,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>2</td>
@@ -145,7 +146,31 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
+						<td>15</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>아 운동 너무 어렵다</td>
+						<td>김진혁</td>
 						<td>2025-03-28</td>
+						<td>김진혁</td>
+						<td>15</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>아 운동 너무 어렵다</td>
+						<td>김진혁</td>
+						<td>2025-03-28</td>
+						<td>김진혁</td>
+						<td>15</td>
+					</tr>
+					<tr>
+						<td>2</td>
+						<td>아 운동 너무 어렵다</td>
+						<td>김진혁</td>
+						<td>2025-03-28</td>
+						<td>김진혁</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>3</td>
@@ -153,7 +178,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>4</td>
@@ -161,7 +186,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>5</td>
@@ -169,7 +194,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>					
+						<td>15</td>					
 					</tr>
 					<tr>
 						<td>1</td>
@@ -177,7 +202,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>2</td>
@@ -185,7 +210,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>3</td>
@@ -193,7 +218,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>4</td>
@@ -201,7 +226,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>5</td>
@@ -209,7 +234,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>					
+						<td>15</td>					
 					</tr>
 					<tr>
 						<td>1</td>
@@ -217,7 +242,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>2</td>
@@ -225,7 +250,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>
+						<td>15</td>
 					</tr>
 					<tr>
 						<td>3</td>
@@ -233,7 +258,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>4</td>
@@ -241,7 +266,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>						
+						<td>15</td>						
 					</tr>
 					<tr>
 						<td>5</td>
@@ -249,7 +274,7 @@
 						<td>김진혁</td>
 						<td>2025-03-28</td>
 						<td>김진혁</td>
-						<td>2025-03-28</td>					
+						<td>15</td>					
 					</tr>
 					<%-- </c:forEach> --%>
 				</table>
