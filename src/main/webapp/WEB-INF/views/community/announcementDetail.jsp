@@ -3,10 +3,12 @@
 
 
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>FITRALPACK</title>
+<title>FITRALPARK</title>
+	<!-- favicon.png" -->
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {background-color: rgb(218, 243, 211);}  
     </style>
@@ -18,6 +20,7 @@
     
     <!-- 오른쪽메뉴 -->
     <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    <!-- 왼쪽메뉴 -->
     <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
 
 

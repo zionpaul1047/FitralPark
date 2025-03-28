@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 //커뮤니티 자유게시판 관련 컨트롤러
 @WebServlet("/bulletinList.do")
-public class BoardController extends HttpServlet {
+public class BulletinController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
