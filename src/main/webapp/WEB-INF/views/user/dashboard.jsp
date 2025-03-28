@@ -7,15 +7,44 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
-	<!-- favicon.png" -->
-	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
-    	body {background-color: rgb(218, 243, 211);}
-    	
-    	#dashboard {
-        	position: absolute;
+        body {
+        background-color: rgb(218, 243, 211);
+        
+        }  
+        .grid{
+            display: grid;
+		    grid-template-rows: 125px auto 1fr;
+		    grid-template-columns: 1fr;
+		    min-height: 100%;
+        }
+        .grid_top{
+        	/* border: 1px solid black; */
+            grid-row: 1;
+        }
+        .grid_center{
+        	/* border: 1px solid black; */
+            grid-row: 2;
+		    display: grid;
+		    grid-template-columns: calc(50% - 424px) auto;
+        }
+        .grid_center_L{
+        /* border: 1px solid black; */
+        }
+        .grid_center_R{
+        /* border: 1px solid black; */
+        }
+        .grid_bottom{
+        /* border: 1px solid black; */
+            grid-row: 3;
+        }
+        
+        #dashboard {
+        	position: relative;
         	/* top: 125px;
         	width: 1024px; */
+        	top: 0;
+        	width: 0;
             border: 1px solid black;
 
             display: grid;
@@ -168,7 +197,7 @@
 
         }
 
-        #today_exercise >.dash_subject {
+        .dash_subject {
             display: inline-block;
             width: 150px;
             font-size: 1.1rem;
@@ -198,7 +227,7 @@
             font-size: 0;
         }
 
-        #crt_excs_nm {
+        .card_mid_subj {
             border: 1px solid black;
             padding-top: 10px;
             padding-left: 25px;
@@ -219,7 +248,7 @@
         .prgres_chart {
             width: 80px;
             height: 80px;
-            border: 1px solid black;
+            /* border: 1px solid black; */
 
             margin-left: 10px;
 
@@ -238,9 +267,11 @@
             border-radius: 50%;
             text-align:center; 
             line-height: 100px;
-            font-size:30px;
+            font-size:1rem;
             transform: translate(-50%, -50%);
         }
+        
+        
 
         .hist_content {    
             border: 1px solid black;
@@ -251,6 +282,7 @@
 
             display: flex;
             flex-wrap: wrap;
+            font-size: 0.9rem;
             
         }
 
@@ -304,133 +336,182 @@
             display: inline-block;
             width: 120px;
             height: 30px;
-        }  
-        
-        
+            border: 1px solid black;
+            border-radius: 10px;
+            
+        }
         
     </style>
 </head>
 <body>
+	<div class="grid">
+	
+		<div class="grid_top">
 
-	<!-- 메인메뉴 -->
-    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <!-- 오른쪽메뉴 -->
-    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
-    <!-- 왼쪽메뉴 -->
-    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+				<!-- 메인메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+			    <!-- 오른쪽메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+			    <!-- 왼쪽메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+		</div>
+		
+		<div class="grid_center">
+		
+			<div class="grid_center_L"></div>
+			
+			<div class="grid_center_R">
+				<!-- 컨텐츠페이지 -->
+				<script src="https://kit.fontawesome.com/0c27eb5545.js" crossorigin="anonymous"></script>
+			    <main id="dashboard">
+			        <div id="profile">
+			            <div id="prf_head">
+			                <div id="prf_head_info">홍길동님의 신체 정보</div>
+			                <div id="rnk">
+			                    <img id="rnk_img" src="circle_icon05.png">
+			                    <div id="rnk_name">beginner</div>
+			                </div>
+			            </div>
+			            <div class="prf_box">
+			                <div>키(cm)</div>
+			                <div>182.1</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>성별</div>
+			                <div>남성</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>체중(kg)</div>
+			                <div>65.7</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>나이</div>
+			                <div>만 20세</div>
+			            </div>
+			        </div>
+			        <div id="today_exercise">
+				        <div class="dash_subject">오늘의 운동</div>
+				        <div id ="today_exercise_list_btn" class="dot_btn_group">
+				            <!-- <button class="dot_btn"></button>
+				            <button class="dot_btn"></button>
+				            <button class="dot_btn"></button> -->
+				            <img src="dot.png" class="dot_btn">
+				            <img src="dot.png" class="dot_btn">
+				            <img src="dot.png" class="dot_btn">
+				        </div>
+				        <div id="tdy_excs_nm" class="card_mid_subj">스쿼트</div>
+				        
+				        <div class="mid_part">
+				            <div class="prgres_chart">
+				                <span class="chart_center">80%</span>
+				            </div>
+				            <div class="hist_content">
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 10회
+				                </div>
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 3세트
+				                </div>
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 50kg
+				                </div>
+				            </div>
+				        </div>
+				        <div class="bottom_part">
+				            <button id="" class="card_btn">운동 등록/수정</button>
+				            <button id="" class="card_btn">운동 완료</button>
+				        </div>
+			        </div>
+			        
+			        <div id="today_diet">
+			            <div class="dash_subject" class="card_mid_subj">오늘의 식사</div>
+						<div id ="today_diet_list_btn" class="dot_btn_group">
+				            <!-- <button class="dot_btn"></button>
+				            <button class="dot_btn"></button>
+				            <button class="dot_btn"></button> -->
+				            <img src="dot.png" class="dot_btn">
+				            <img src="dot.png" class="dot_btn">
+				            <img src="dot.png" class="dot_btn">
+				        </div>
+				        <div id="tdy_diet_nm">아침식사</div>
+				        
+				        <div class="mid_part">
+				            <div class="prgres_chart">
+				                <span class="chart_center">80%</span>
+				            </div>
+				            <div class="hist_content">
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 10회
+				                </div>
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 3세트
+				                </div>
+				                <div>
+				                    <i class="fa-solid fa-arrow-right"></i> 50kg
+				                </div>
+				            </div>
+				        </div>
+				        <div class="bottom_part">
+				            <button id="" class="card_btn">운동 등록/수정</button>
+				            <button id="" class="card_btn">운동 완료</button>
+				        </div>
+			        </div>
+			        <div id="current_exercise">
+			            <div class="dash_subject">최근 운동 기록</div>
+			        </div>
+			        <div id="current_diet">
+			            <div class="dash_subject">최근 식사 기록</div>
+			        </div>
+			        <div id="intake_diagram">
+			            <div class="dash_subject">하루 영양소 섭취량</div>
+			        </div>
+			        
+			    </main>
 
-<main>
-	<script src="js/jquery-3.7.1.js"></script>
-    <script src="js/jquery-ui.js"></script>
-    <script src="https://kit.fontawesome.com/0c27eb5545.js" crossorigin="anonymous"></script>
-    <main id="dashboard">
-        <div id="profile">
-            <div id="prf_head">
-                <div id="prf_head_info">홍길동님의 신체 정보</div>
-                <div id="rnk">
-                    <img id="rnk_img" src="circle_icon05.png">
-                    <div id="rnk_name">beginner</div>
-                </div>
-            </div>
-            <div class="prf_box">
-                <div>키(cm)</div>
-                <div>182.1</div>
-            </div>
-            <div class="prf_box">
-                <div>성별</div>
-                <div>남성</div>
-            </div>
-            <div class="prf_box">
-                <div>체중(kg)</div>
-                <div>65.7</div>
-            </div>
-            <div class="prf_box">
-                <div>나이</div>
-                <div>만 20세</div>
-            </div>
-        </div>
-        <div id="today_exercise">
-            <div class="dash_subject">오늘의 운동</div>
-            <div id ="today_exercise_list_btn" class="dot_btn_group">
-                <!-- <button class="dot_btn"></button>
-                <button class="dot_btn"></button>
-                <button class="dot_btn"></button> -->
-                <img src="dot.png" class="dot_btn">
-                <img src="dot.png" class="dot_btn">
-                <img src="dot.png" class="dot_btn">
-            </div>
-            <div id="crt_excs_nm">스쿼트</div>
-            
-            <div class="mid_part">
-                <div class="prgres_chart">
-                    <span class="chart_center"></span>
-                </div>
-                <div class="hist_content">
-                    <div>
-                        <i class="fa-solid fa-arrow-right"></i> 10회
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-arrow-right"></i> 3세트
-                    </div>
-                    <div>
-                        <i class="fa-solid fa-arrow-right"></i> 50kg
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bottom_part">
-                <button id="" class="card_btn">운동 등록/수정</button>
-                <button id="" class="card_btn">운동 완료</button>
-            </div>
-            
-        </div>
-        <div id="today_diet">
-            <div class="dash_subject">오늘의 식사</div>
-        </div>
-        <div id="current_exercise">
-            <div class="dash_subject">최근 운동 기록</div>
-        </div>
-        <div id="current_diet">
-            <div class="dash_subject">최근 식사 기록</div>
-        </div>
-        <div id="intake_diagram">
-            <div class="dash_subject">하루 영양소 섭취량</div>
-        </div>
-        
-    </main>
+    			
+			</div>
+			
+		</div>
+		
+		
+		<div class="grid_bottom">
+				<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+		</div>
+		
+	</div>
 
+	<script>
+       const colorname='#115500';
+       const max = 100;
+       const classname = '.prgres_chart';
+       $(window).ready(function(){
+       	/* 퍼센티지: 첫번째 인자 */
+           draw(80, '.prgres_chart', '#ccc');
+       });
 
+       function draw(max, classname, colorname){
+           var i=1;
+           var func1 = setInterval(function() {
+               if(i<max){
+                   color1(i,classname,colorname);
+                   i++;
+               } else{
+                   clearInterval(func1);
+               }
+           },10);
+       }
+       function color1(i, classname,colorname){
+           $(classname).css({
+                   "background":"conic-gradient("+colorname+" 0% "+i+"%, #ffffff "+i+"% 100%)"
+           });
+       }
 
-
-    <script>
-        const colorname='#115500';
-        const max = 100;
-        const classname = '.prgres_chart';
-        $(window).ready(function(){
-            draw(80, '.prgres_chart', '#ccc');
-        });
-
-        function draw(max, classname, colorname){
-            var i=1;
-            var func1 = setInterval(function() {
-                if(i<max){
-                    color1(i,classname,colorname);
-                    i++;
-                } else{
-                    clearInterval(func1);
-                }
-            },10);
-        }
-        function color1(i, classname,colorname){
-            $(classname).css({
-                    "background":"conic-gradient("+colorname+" 0% "+i+"%, #ffffff "+i+"% 100%)"
-            });
-        }
-
-    </script>
-</main>
+   </script>
     
-    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-    
+
+
+
 </body>
+
+
 </html>
