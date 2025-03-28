@@ -14,6 +14,10 @@
 
 		main {
 			margin-left: 200px;
+			display: flex;
+			justify-content: flex-start;
+			margin-top: 150px;
+			margin-bottom: 30px;
 		}
 
 		body>main h1 {
@@ -22,10 +26,8 @@
 		}
 
 		#mainbox {
-			margin-top: 120px;
 			border-radius: 20px;
 			background-color: #FFFFFF;
-			
 		}
 
 		#smallbox {
@@ -252,6 +254,10 @@
 					<%-- </c:forEach> --%>
 				</table>
 
+			</div>
+			
+			<div id="board_no">
+				
 			</div>
 			
 			<div id="board_etc_box">

@@ -9,25 +9,21 @@
 <meta charset="UTF-8">
 <style>
 
-html, body {
+/* html, body {
   margin: 0;
   padding: 0;
-  height: 100%; /* 전체 화면 높이를 차지하도록 설정 */
+  height: 100%;
   display: flex;
-  flex-direction: column; /* 세로 방향 배치 */
-}
+  flex-direction: column;
+} */
 
-main {
-  flex: 1; /* 메인 콘텐츠가 남은 공간을 채우도록 설정 */
-}
-
-body {
+/* body {
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column; /* Flexbox를 사용하여 세로 방향 배치 */
-    min-height: 100vh; /* 페이지 높이를 화면 높이로 설정 */
-}
+    flex-direction: column;
+    min-height: 100vh;
+} */
 
 main {
     flex: 1; /* 메인 콘텐츠가 남은 공간을 채우도록 설정 */
