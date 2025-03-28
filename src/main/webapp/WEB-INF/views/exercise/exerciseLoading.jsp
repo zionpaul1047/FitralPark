@@ -260,7 +260,7 @@
             </label>
             <label class="checkbox-container">
               <input type="checkbox" class="my-meal-filter">
-              <span>나의 식단</span>
+              <span>나의 루틴</span>
             </label>
           </div>
           <br>
