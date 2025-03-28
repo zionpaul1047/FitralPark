@@ -1,83 +1,219 @@
 @charset "utf-8";
 
-*,::before,::after{box-sizing:border-box;border-width:0;border-style:solid;}
-::before,::after{--tw-content:''}
+*, ::before, ::after {
+	box-sizing: border-box;
+	border-width: 0;
+	border-style: solid;
+}
 
-body{margin:0;line-height:inherit}
-hr{height:0;color:inherit;border-top-width:1px}
-abbr:where([title]){text-decoration:underline dotted}
-h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit; font-family:inherit !important;}
-a{color:inherit;text-decoration:inherit}
-b,strong{font-weight:bolder}
-small{font-size:80%}
-sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
-sub{bottom:-0.25em}
-sup{top:-0.5em}
-table{text-indent:0;border-color:inherit;border-collapse:collapse}
-button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:inherit;color:inherit;margin:0;padding:0}
-button,select{text-transform:none}
-button,[type='button'],[type='reset'],[type='submit']{-webkit-appearance:button;background-color:transparent;background-image:none}
-:-moz-focusring{outline:auto}
-:-moz-ui-invalid{box-shadow:none}
-progress{vertical-align:baseline}
-::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}
-[type='search']{-webkit-appearance:textfield;outline-offset:-2px}
-::-webkit-search-decoration{-webkit-appearance:none}
-::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
-summary{display:list-item}
-blockquote,dl,dd,h1,h2,h3,h4,h5,h6,hr,figure,p,pre{margin:0}
-fieldset{margin:0;padding:0}
-legend{padding:0}
-ol,ul,menu{list-style:none;margin:0;padding:0}
-textarea{resize:vertical}
-button,[role="button"]{cursor:pointer}:disabled{cursor:default}
-img{pointer-events: none;}
-img,svg,video,canvas,audio,iframe,embed,object{display:block;vertical-align:middle}
-img,video{max-width:100%;height:auto}
-[hidden]{display:none}
+::before, ::after {
+	--tw-content: ''
+}
+
+body {
+	height: 100%;
+	margin: 0;
+	line-height: inherit
+}
+
+hr {
+	height: 0;
+	color: inherit;
+	border-top-width: 1px
+}
+
+abbr:where([title]) {
+	text-decoration: underline dotted
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: inherit;
+	font-weight: inherit;
+	font-family: inherit !important;
+}
+
+a {
+	color: inherit;
+	text-decoration: inherit
+}
+
+b, strong {
+	font-weight: bolder
+}
+
+small {
+	font-size: 80%
+}
+
+sub, sup {
+	font-size: 75%;
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline
+}
+
+sub {
+	bottom: -0.25em
+}
+
+sup {
+	top: -0.5em
+}
+
+table {
+	text-indent: 0;
+	border-color: inherit;
+	border-collapse: collapse
+}
+
+button, input, optgroup, select, textarea {
+	font-family: inherit;
+	font-size: 100%;
+	line-height: inherit;
+	color: inherit;
+	margin: 0;
+	padding: 0
+}
+
+button, select {
+	text-transform: none
+}
+
+button, [type='button'], [type='reset'], [type='submit'] {
+	-webkit-appearance: button;
+	background-color: transparent;
+	background-image: none
+}
+
+:-moz-focusring {
+	outline: auto
+}
+
+:-moz-ui-invalid {
+	box-shadow: none
+}
+
+progress {
+	vertical-align: baseline
+}
+
+::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+	height: auto
+}
+
+[type='search'] {
+	-webkit-appearance: textfield;
+	outline-offset: -2px
+}
+
+::-webkit-search-decoration {
+	-webkit-appearance: none
+}
+
+::-webkit-file-upload-button {
+	-webkit-appearance: button;
+	font: inherit
+}
+
+summary {
+	display: list-item
+}
+
+blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, pre {
+	margin: 0
+}
+
+fieldset {
+	margin: 0;
+	padding: 0
+}
+
+legend {
+	padding: 0
+}
+
+ol, ul, menu {
+	list-style: none;
+	margin: 0;
+	padding: 0
+}
+
+textarea {
+	resize: vertical
+}
+
+button, [role="button"] {
+	cursor: pointer
+}
+
+:disabled {
+	cursor: default
+}
+
+img {
+	pointer-events: none;
+}
+
+img, svg, video, canvas, audio, iframe, embed, object {
+	display: block;
+	vertical-align: middle
+}
+
+img, video {
+	max-width: 100%;
+	height: auto
+}
+
+[hidden] {
+	display: none
+}
+
 pre {
-    white-space: pre-line;
-    word-break: break-all;
-    overflow-x: auto !important;
+	white-space: pre-line;
+	word-break: break-all;
+	overflow-x: auto !important;
 }
 
-:root{
-    --fw-100: 100;
-    --fw-200: 200;
-    --fw-300: 300;
-    --fw-400: 400;
-    --fw-500: 500;
-    --fw-600: 600;
-    --fw-700: 700;
-    --fw-800: 800;
-    --fw-900: 900;
-    --white: #fff;
-    --black: #010101;
-    --black02: #343434;
-    --gray01: #666666;
-    --gray02: #e8e8e8;
-    --blue01: #244d8e;
-    --blue02: #dae3f3;
-    --blue03: #f0f4fa;
-    --blue04: #83d2de;
-    --blue05: #c1cee5;
-    --red: #df0202;
-    --transition: all 0.3s;
+:root {
+	--fw-100: 100;
+	--fw-200: 200;
+	--fw-300: 300;
+	--fw-400: 400;
+	--fw-500: 500;
+	--fw-600: 600;
+	--fw-700: 700;
+	--fw-800: 800;
+	--fw-900: 900;
+	--white: #fff;
+	--black: #010101;
+	--black02: #343434;
+	--gray01: #666666;
+	--gray02: #e8e8e8;
+	--blue01: #244d8e;
+	--blue02: #dae3f3;
+	--blue03: #f0f4fa;
+	--blue04: #83d2de;
+	--blue05: #c1cee5;
+	--red: #df0202;
+	--transition: all 0.3s;
 }
 
-
-
-
-@media screen and (max-width: 1000px){
-    *{ font-size: 16px; }
+@media screen and (max-width: 1000px) {
+	* {
+		font-size: 16px;
+	}
 }
 
-@media screen and (max-width: 640px){
-    *{ font-size: 15px; }
+@media screen and (max-width: 640px) {
+	* {
+		font-size: 15px;
+	}
 }
 
-@media screen and (max-width: 320px){
-    *{ font-size: 14px; }
+@media screen and (max-width: 320px) {
+	* {
+		font-size: 14px;
+	}
 }
 
 #header .welcome_msg {
@@ -1051,4 +1187,71 @@ pre {
 	.wrapper {
 		width: 90%;
 	}
+}
+
+/* html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}*/
+
+main {
+  flex: 1; /* 메인 콘텐츠가 남은 공간을 채우도록 설정 */
+}
+
+/* body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+} */
+
+main {
+    flex: 1; /* 메인 콘텐츠가 남은 공간을 채우도록 설정 */
+}
+
+footer {
+  background-color: #f9f9f9;
+  padding: 30px 20px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+footer .footer-content {
+  width: 100%; 
+  color: #333;
+}
+
+footer .footer-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+footer .footer-content p {
+    margin: 5px 0;
+}
+
+footer .footer-content p span {
+    font-weight: bold;
+}
+
+footer .logo {
+  display: flex; /* Flexbox 사용 */
+  justify-content: center; /* 로고를 중앙 정렬 */
+}
+
+footer .logo img {
+    width: 200px; /* 로고 너비를 설정 */
+    height: auto; /* 비율 유지 */
+}
+
+footer .copyright {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #777;
 }

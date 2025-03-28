@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="java.util.*, java.time.*" %>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE html>
@@ -10,7 +12,7 @@
 <title>FITRALPACK</title>
 	<link rel="stylesheet" href="assets/css/exercise.css">
     <style>
-        body {background-color: rgb(218, 243, 211);}  
+        body { background-color: rgb(218, 243, 211);}  
     </style>
 </head>
 <body>
@@ -22,69 +24,99 @@
     <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
 
 	<main>
-		<div class="calendar">
-    <div class="calendar-header">2025.03</div>
-    <div class="calendar-nav">
-      <button>&lt;</button>
-      <button>오늘</button>
-      <button>&gt;</button>
-    </div>
-    <div class="calendar-grid">
-      <div class="calendar-day sunday">일</div>
-      <div class="calendar-day">월</div>
-      <div class="calendar-day">화</div>
-      <div class="calendar-day">수</div>
-      <div class="calendar-day">목</div>
-      <div class="calendar-day">금</div>
-      <div class="calendar-day saturday">토</div>
+		<div class="calendar-container">
+			<div class="calendar-header">
+				<h2 id="currentMonth"></h2>
+				<button id="prevBtn">&lt;</button>
+				<button id="nextBtn">&gt;</button>
+				<button id="todayBtn">오늘</button>
+			</div>
+			<div class="calendar-days">
+				<div class="day">일</div>
+				<div class="day">월</div>
+				<div class="day">화</div>
+				<div class="day">수</div>
+				<div class="day">목</div>
+				<div class="day">금</div>
+				<div class="day">토</div>
+			</div>
+			<div class="calendar-dates" id="calendarDates"></div>
+		</div>
+		<div class="routine-panel">
+			<div class="routine-header">
+				<div>
+					<p class="username">홍길동님의</p>
+					<p class="title">일일 루틴</p>
+				</div>
+				<div class="routine-date" id="currentMonth"></div>
+			</div>
 
-      <div class="calendar-date"></div>
-      <div class="calendar-date"></div>
-      <div class="calendar-date"></div>
-      <div class="calendar-date"></div>
-      <div class="calendar-date"></div>
-      <div class="calendar-date"></div>
-      <div class="calendar-date saturday">1</div>
+			<div class="routine-controls">
+				<button>체지방 줄이기 루틴</button>
+				<button>루틴 불러오기</button>
+				<button>선택 삭제</button>
+			</div>
 
-      <div class="calendar-date sunday">2</div>
-      <div class="calendar-date">3</div>
-      <div class="calendar-date">4</div>
-      <div class="calendar-date">5</div>
-      <div class="calendar-date">6</div>
-      <div class="calendar-date">7</div>
-      <div class="calendar-date saturday">8</div>
+			<div class="routine-table">
+				<table>
+					<thead>
+						<tr>
+							<th>선택</th>
+							<th>운동명</th>
+							<th>소모열량(kcal)</th>
+							<th>시간(분)</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="checkbox" /></td>
+							<td>천국의 계단</td>
+							<td>300</td>
+							<td>40</td>
+							<td>
+								<button>✎</button>
+								<button>✕</button>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="checkbox" /></td>
+							<td>런지</td>
+							<td>100</td>
+							<td>15</td>
+							<td>
+								<button>✎</button>
+								<button>✕</button>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="text" id="" value="팔굽혀펴기" /></td>
+							<td><input type="text" value="100" /></td>
+							<td><input type="text" value="20" /></td>
+							<td>
+								<button>등록하기</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 
-      <div class="calendar-date sunday">9</div>
-      <div class="calendar-date highlight">10</div>
-      <div class="calendar-date">11</div>
-      <div class="calendar-date">12</div>
-      <div class="calendar-date">13</div>
-      <div class="calendar-date">14</div>
-      <div class="calendar-date saturday">15</div>
+				<button class="add-exercise">+ 운동 추가하기</button>
+			</div>
 
-      <div class="calendar-date sunday">16</div>
-      <div class="calendar-date">17</div>
-      <div class="calendar-date">18</div>
-      <div class="calendar-date">19</div>
-      <div class="calendar-date">20</div>
-      <div class="calendar-date">21</div>
-      <div class="calendar-date saturday">22</div>
-
-      <div class="calendar-date sunday">23</div>
-      <div class="calendar-date">24</div>
-      <div class="calendar-date">25</div>
-      <div class="calendar-date">26</div>
-      <div class="calendar-date">27</div>
-      <div class="calendar-date">28</div>
-      <div class="calendar-date saturday">29</div>
-
-      <div class="calendar-date sunday">30</div>
-      <div class="calendar-date">31</div>
-    </div>
-  </div>
+			<div class="routine-actions">
+				<button>선택 운동 정보 조회</button>
+				<button>선택 루틴 정보 조회</button>
+				<button>루틴 생성</button>
+				<button>루틴 삭제</button>
+			</div>
+		</div>
 	</main>
+	
+
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
     
-    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-    
+    <script src="assets/js/calendar.js">
+    </script>
 </body>
 </html>
