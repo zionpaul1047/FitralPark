@@ -33,12 +33,7 @@ button::before {
 }
 
 /* Global CSS */
-body {
-	display: grid;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-}
+
 
 fieldset {
 	border: none;
@@ -500,8 +495,8 @@ input:checked+.slider:before {
         	window.open(
         			  "${pageContext.request.contextPath}/login.do",
         			  "LoginPopup",
-        			  "width=500,height=600"
-          );
+        			  "width=550,height=850,resizable=no,scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no"
+        	);
         });
       });
 
