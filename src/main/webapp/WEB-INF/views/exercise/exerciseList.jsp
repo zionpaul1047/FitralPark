@@ -112,11 +112,69 @@
 			</div>
 		</div>
 	</main>
-	
+	<form method="POST" action="">
+	<div class="routine-detail-panel">
+		<div class="routine-tabs">
+			<button class="main-tab active" data-tab="info">루틴 정보</button>
+		</div>
+
+		<div class="sub-tabs">
+			<button class="sub-tab active" data-tab="fatburn">체지방 줄이기 루틴</button>
+			<button class="sub-tab" data-tab="category">루틴 카테고리</button>
+		</div>
+
+		<div class="routine-content" id="fatburn">
+			<div class="routine-grid">
+				<div class="routine-card">
+					<strong>천국의 계단</strong>
+					<div>소모열량(kcal)</div>
+					<div>300</div>
+					<div>시간(분)</div>
+					<div>40</div>
+					<div>세트(회)</div>
+					<div>3</div>
+					<div>세트 당 횟수(회)</div>
+					<div>15</div>
+					<div>중량(kg)</div>
+					<div>0</div>
+				</div>
+
+				<div class="routine-card">
+					<strong>런지</strong>
+					<div>소모열량(kcal)</div>
+					<div>100</div>
+					<div>시간(분)</div>
+					<div>15</div>
+					<div>세트(회)</div>
+					<div>4</div>
+					<div>세트 당 횟수(회)</div>
+					<div>20</div>
+					<div>중량(kg)</div>
+					<div>10</div>
+				</div>
+
+				<div class="routine-card">
+					<strong>팔굽혀펴기</strong>
+					<div>소모열량(kcal)</div>
+					<div>80</div>
+					<div>시간(분)</div>
+					<div>10</div>
+					<div>세트(회)</div>
+					<div>4</div>
+					<div>세트 당 횟수(회)</div>
+					<div>12</div>
+					<div>중량(kg)</div>
+					<div>0</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</form>
 
 	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
     
     <script src="assets/js/calendar.js">
-    </script>
+					
+				</script>
 </body>
 </html>
