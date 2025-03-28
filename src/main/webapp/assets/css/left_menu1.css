@@ -34,7 +34,7 @@
 	  border-bottom: 1px solid #ccc; /* 구분선 추가 */
 	  font-family: 'Paperlogy-6';
 	  font-size: 14px;
-	   transition: color 0.4s ease; /* 색상 변화에 트랜지션 효과 추가 */
+	  transition: color 0.4s ease; /* 색상 변화에 트랜지션 효과 추가 */
 	}
 
 	.side_menu_item:hover {	/* 마우스 올렸을때 색변환 */
