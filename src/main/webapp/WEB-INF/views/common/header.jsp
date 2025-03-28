@@ -34,6 +34,7 @@ button::before {
 
 /* Global CSS */
 body {
+
 	display: grid;
 	justify-content: center;
 	align-items: center;
@@ -443,7 +444,7 @@ input:checked+.slider:before {
     
     
     
-    if($(window).width() < 640){ //모바일화면 사이즈
+/*      if($(window).width() < 640){ //모바일화면 사이즈
                     
          $('#full-menu .depth02').hide(); //pc에서 보여지던 하위메뉴숨김
     
@@ -451,8 +452,7 @@ input:checked+.slider:before {
                 $('#full-menu .depth02').stop().slideUp(); //열려있는 하위메뉴 닫기
                 $(this).siblings('.depth02').stop().slideToggle(); //클릭한 메뉴의 하위메뉴 토글
             });
-    
-    }
+    } */
     
     const alarmButton = document.getElementById('alarmButton');
     const alarmIcon = document.getElementById('alarmIcon');
