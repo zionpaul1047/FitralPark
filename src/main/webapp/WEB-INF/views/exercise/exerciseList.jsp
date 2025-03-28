@@ -126,45 +126,22 @@
 		<div class="routine-content" id="fatburn">
 			<div class="routine-grid">
 				<div class="routine-card">
-					<strong>천국의 계단</strong>
-					<div>소모열량(kcal)</div>
-					<div>300</div>
-					<div>시간(분)</div>
-					<div>40</div>
-					<div>세트(회)</div>
-					<div>3</div>
-					<div>세트 당 횟수(회)</div>
-					<div>15</div>
-					<div>중량(kg)</div>
-					<div>0</div>
-				</div>
+					<div class="exercise-title">천국의 계단</div>
 
-				<div class="routine-card">
-					<strong>런지</strong>
-					<div>소모열량(kcal)</div>
-					<div>100</div>
-					<div>시간(분)</div>
-					<div>15</div>
-					<div>세트(회)</div>
-					<div>4</div>
-					<div>세트 당 횟수(회)</div>
-					<div>20</div>
-					<div>중량(kg)</div>
-					<div>10</div>
-				</div>
+					<label>소모열량(kcal)</label>
+					<input type="text" value="300" />
 
-				<div class="routine-card">
-					<strong>팔굽혀펴기</strong>
-					<div>소모열량(kcal)</div>
-					<div>80</div>
-					<div>시간(분)</div>
-					<div>10</div>
-					<div>세트(회)</div>
-					<div>4</div>
-					<div>세트 당 횟수(회)</div>
-					<div>12</div>
-					<div>중량(kg)</div>
-					<div>0</div>
+					<label>시간(분)</label>
+					<input type="text" value="40" />
+
+					<label>세트(회)</label>
+					<input type="text" value="3" />
+
+					<label>세트 당 횟수(회)</label>
+					<input type="text" value="15" />
+
+					<label>중량(kg)</label>
+					<input type="text" value="0" />
 				</div>
 			</div>
 		</div>

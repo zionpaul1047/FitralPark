@@ -85,6 +85,7 @@ main {
 
 .routine-panel {
 	width: 500px;
+	height: 450px;
 	background: #fff;
 	border: 2px solid #333;
 	border-radius: 16px;
@@ -183,46 +184,61 @@ main {
 	border-radius: 16px;
 	font-family: 'Arial', sans-serif;
 	background: #fff;
-  }
-  
-  .routine-tabs,
-  .sub-tabs {
+	margin-left: 200px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.routine-tabs, .sub-tabs {
 	display: flex;
 	gap: 10px;
 	margin-bottom: 15px;
-  }
-  
-  .main-tab,
-  .sub-tab {
+}
+
+.main-tab, .sub-tab {
 	padding: 8px 16px;
 	border: 1px solid #888;
 	border-radius: 6px;
 	background: white;
 	cursor: pointer;
-  }
-  
-  .main-tab.active,
-  .sub-tab.active {
+}
+
+.main-tab.active, .sub-tab.active {
 	border: 2px solid #1e90ff;
 	font-weight: bold;
-  }
-  
-  .routine-grid {
+}
+
+.routine-grid {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-  }
-  
-  .routine-card {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 6px 12px;
-	border: 1px solid #ccc;
-	border-radius: 12px;
-	padding: 16px;
-  }
-  .routine-card strong {
-	grid-column: 1 / -1;
-	font-size: 16px;
-	margin-bottom: 8px;
-  }
+}
+
+.routine-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fdfdfd;
+}
+
+.exercise-title {
+  grid-column: 1 / -1; /* 두 칸 전체를 차지하게 만듦 */
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.routine-card label {
+  font-weight: bold;
+  align-self: center;
+}
+
+.routine-card input[type="text"] {
+  padding: 6px;
+  border: 1px solid #999;
+  border-radius: 4px;
+  width: 200px;
+}
