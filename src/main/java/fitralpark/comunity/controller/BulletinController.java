@@ -18,7 +18,7 @@ public class BulletinController extends HttpServlet {
 		//BoardController
 		
 
-		req.getRequestDispatcher("/WEB-INF/views/bulletinList.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinList.jsp").forward(req, resp);
 	}
 
 }

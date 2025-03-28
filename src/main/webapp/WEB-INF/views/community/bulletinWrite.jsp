@@ -17,7 +17,6 @@
 
 	<!-- 메인메뉴 -->
     <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    
     <!-- 오른쪽메뉴 -->
     <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
     <!-- 왼쪽메뉴 -->
