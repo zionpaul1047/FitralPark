@@ -36,23 +36,18 @@
       margin-bottom: 1.5rem;
     }
     #findID {
-    	margin-right: 10px;
+      margin-right: 10px;
     }
-    
-
-	
-    .already_member_box { margin-top: 10px;}
+    .already_member_box { margin-top: 10px; }
   </style>
 </head>
 <body>
   <div class="login_section">
     <div class="login_popup_box">
-      <!-- 이미지 영역 -->
       <div class="accounts_image">
         <img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
       </div>
 
-      <!-- 로그인 Form -->
       <div class="accounts_forms login_form w-100" id="login">
         <div class="title text-center">
           <h1>로그인</h1>
@@ -74,21 +69,20 @@
           </div>
         </form>
         <div class="already_member_box d-flex justify-content-between px-2">
-          <span id="to_signup">회원가입하기</span>
+          <span id="to_signup" onclick="moveToRegister()">회원가입하기</span>
           <div>
-	          <span name=findId id=findID>아이디 찾기</span>
-	          <span name=findPw id=findPw>비밀번호 찾기</span>
+            <span name=findId id=findID>아이디 찾기</span>
+            <span name=findPw id=findPw>비밀번호 찾기</span>
           </div>
         </div>
       </div>
 
-      <!-- 회원가입 Form -->
       <div class="accounts_forms signup_form w-100" id="signup" style="display: none;">
         <div class="title text-center">
           <h1>회원가입</h1>
           <p class="mt-2">서비스 이용을 위해 정보를 입력해주세요.</p>
         </div>
-        <form method="post" action="/register.do" class="form">
+        <form method="get" onsubmit="redirectToRegister(event)" class="form">
           <div class="form-group">
             <label for="name">이름</label>
             <input type="text" name="name" class="form-control" id="name" onfocus="labelUp(this)" onblur="labelDown(this)" required />
@@ -116,9 +110,23 @@
         </div>
       </div>
     </div>
- 	</div>
-	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
+  <script>
+    function moveToRegister() {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("signup").style.display = "block";
+    }
+
+    function redirectToRegister(e) {
+      e.preventDefault();
+      const name = document.getElementById("name")?.value || '';
+      const email = document.getElementById("signup_email")?.value || '';
+      window.opener.location.href = '/fitralpark/register.do?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
+      window.close();
+    }
+  </script>
 </body>
 </html>
