@@ -6,13 +6,15 @@
     <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 
-   <style>
-    #div .xi-home, .open{
+<style>
+#div .xi-home, .open {
 	font-family: 'Paperlogy-8ExtraBold'
-		}	
-   </style>
+}
 
-   <!-- 우측 사이드 메뉴바 -->
+
+</style>
+
+<!-- 우측 사이드 메뉴바 -->
    <div class="fix-menu">
         <ul>
             <li class="open go_home">
@@ -63,9 +65,15 @@
             </li>
         </ul>
     
-        <div class="top">
+        <div id="scrollToTopBtn" class="top">
             <i><img src="./assets/images/icon/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
         </div>
     
     </div>
     <!-- //우측 사이드 메뉴바 -->
+    
+     <script>
+        document.getElementById("scrollToTopBtn").addEventListener("click", () => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    </script>
