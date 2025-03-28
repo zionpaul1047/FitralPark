@@ -1,99 +1,150 @@
-:root{
-    --background-theme:#e6e9f0;
-    --text-color:#000;
+:root {
+  --background-theme: #e6e9f0;
+  --text-color: #000;
 }
 
-*,html{
-    margin:0px;
-    padding:0px;
-    font-size: 10px;
-    color: var(--text-color);
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+*, html {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color);
 }
 
-body{
-    width:100%;
-    background-color:var(--background-theme);
-}
-h1{
-    font-size: 3.2rem;
-}
-p{
-  font-size: 1.2rem;  
-}
-/* Sections */
-.login_section{
-    min-height: 100vh;
-    display: flex;
-    align-items:center;
-    position: relative;
-    justify-content:center;
+body {
+  width: 100%;
+  background-color: var(--background-theme);
 }
 
-.accounts_container{
-    height: 550px;
-    min-height: 550px;
-    max-height: 100%;
-    border-radius:10px;
-    box-shadow: 8px 8px 8px rgba(0,0,0,0.1);
-    background-color: #fcfcfc;
-    overflow: hidden; 
+h1 {
+  font-size: 3.2rem;
 }
 
+p {
+  font-size: 1.2rem;
+}
 
-.accounts_image img{
-    object-fit: cover;
-    object-position: center;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
+.login_section {
+  height: 100vh;
+  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('../../images/background/login-bg.jpg') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
 }
-.accounts_col form .form-group{
-    position: relative !important;
+
+.login_popup_box {
+  width: 420px;
+  min-height: 600px;
+  background: #fcfcfc;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: left;
+  overflow: hidden;
+  outline: none;
+  caret-color: transparent;
 }
-.accounts_col form .form-control{
-    font-size:1.6rem;
-    padding:20px 10px;
-    margin-bottom:20px;
-    background:transparent !important;
+
+.login_popup_box input {
+  caret-color: auto !important;
+  user-select: text !important;
 }
+
+.login_popup_box *:focus {
+  outline: none;
+}
+
+.accounts_image {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.accounts_image img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  user-drag: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+}
+
+.accounts_col form .form-group {
+  position: relative !important;
+}
+
+.accounts_col form .form-control {
+  font-size: 1.6rem;
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  background: transparent !important;
+}
+
 .accounts_col form label,
-.accounts_col form .form-group i{
-    position:absolute;
-    z-index: 1;
-    pointer-events: none;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size:1.2rem;
-    left:10px;
+.accounts_col form .form-group i {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  left: 10px;
+}
 
+.accounts_col form label {
+  transition: 0.2s linear;
 }
-.accounts_col form label{
-    transition: .2s linear;
-}
-.change_label{
-    background-color:#fcfcfc;
-    transition: .2s linear;
-    transform: scale(0.8);
-    top:0 !important;
-}
-.accounts_col form .form-group i{
-    left:90% !important;
-    cursor: pointer;
-    pointer-events:visible;
-}
-.register_btn{
-    padding:10px 0!important;
-    font-size: 1.6rem !important;
-    font-weight: 600 !important;
 
+.change_label {
+  background-color: #fcfcfc;
+  transition: 0.2s linear;
+  transform: scale(0.8);
+  top: 0 !important;
+}
+
+.accounts_col form .form-group i {
+  left: 90% !important;
+  cursor: pointer;
+  pointer-events: visible;
+}
+
+.register_btn {
+  padding: 10px 0 !important;
+  font-size: 1.6rem !important;
+  font-weight: 600 !important;
 }
 
 .already_member_box p,
-.already_member_box span{
-    cursor: pointer;
+.already_member_box span,
+.title,
+label,
+button,
+h1 {
+  user-select: none;
+  -webkit-user-select: none;
 }
+
 .login_form,
-.signup_form{
-    display:none;
+.signup_form {
+  display: none;
+  width: 100%;
+}
+
+.already_member_box {
+  margin-top: 10px;
+}
+
+#findID {
+  margin-right: 10px;
+}
+
+#to_signup:hover,
+#findID:hover,
+#findPw:hover,
+#to_login:hover {
+  text-decoration: underline;
+  color: #007bff;
 }
