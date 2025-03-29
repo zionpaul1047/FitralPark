@@ -174,11 +174,12 @@
 				<form class="write-form" action="/community/bulletinWrite" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
-						<select name="category" id="category">
+						<select name="category" id="category" required>
 							<option value="">말머리 선택</option>
+							<option value="공지">공지</option>
 							<option value="이벤트">이벤트</option>
-							<option value="공지사항">공지사항</option>
-							<option value="업데이트">업데이트</option>
+							<option value="점검">점검</option>
+							<option value="안내">안내</option>
 						</select>
 					</div>
 					<div class="form-group">

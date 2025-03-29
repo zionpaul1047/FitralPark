@@ -174,10 +174,10 @@
 				<form class="write-form" action="/community/bulletinWrite" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
-						<select name="category" id="category">
+						<select name="category" id="category" required>
 							<option value="">말머리 선택</option>
-							<option value="일반">운동</option>
-							<option value="질문">식단</option>
+							<option value="운동">운동</option>
+							<option value="식단">식단</option>
 							<option value="헬스장">헬스장</option>
 							<option value="후기">후기</option>
 						</select>
