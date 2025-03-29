@@ -123,22 +123,26 @@ body main #boardtable td, th {
 }
 
 #boardtable th:nth-child(1) {
-	width: 60px;
+	width: 40px;
 }
 
 #boardtable th:nth-child(2) {
-	width: auto;
+	width: 40px;
 }
 
 #boardtable th:nth-child(3) {
-	width: 100px;
+	width: auto;
 }
 
 #boardtable th:nth-child(4) {
+	width: 100px;
+}
+
+#boardtable th:nth-child(5) {
 	width: 150px;
 }
 
-#boardtable th:nth-child(5), th:nth-child(6) {
+#boardtable th:nth-child(6), th:nth-child(7) {
 	width: 80px;
 }
 
@@ -177,13 +181,22 @@ body main #boardtable td, th {
     position: relative;
     padding: 20px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
 .search_area {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     align-items: center;
+    gap: 10px;
+}
+
+.button_group {
+    margin-left: auto;
+    display: flex;
     gap: 10px;
 }
 
@@ -194,9 +207,7 @@ body main #boardtable td, th {
     border: 2px solid #000000;
 }
 
-#btnadd_post {
-    position: absolute;
-    right: 20px;
+#btnadd_post, #btn_answer {
     display: inline-block;
     padding: 10px 20px;
     border-radius: 20px;
@@ -209,7 +220,8 @@ body main #boardtable td, th {
 /* 버튼 호버 효과 */
 .search_btn:hover,
 #search_sel:hover,
-#btnadd_post:hover {
+#btnadd_post:hover,
+#btn_answer:hover {
     background-color: #f5f5f5;
     border-color: #999;
 }
@@ -239,10 +251,11 @@ body main #boardtable td, th {
 				<div id="mainbox">
 					<div id="smallbox">
 						<h1>
-							<strong>자유 게시판</strong>
+							<strong>Q&A 게시판</strong>
 						</h1>
 						<table id="boardtable" >
 							<tr>
+								<th><input type="checkbox" id="selectAll"></th>
 								<th>번호</th>
 								<th>제목</th>
 								<th>작성자</th>
@@ -251,163 +264,183 @@ body main #boardtable td, th {
 								<th>조회수</th>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[운동] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[식단] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[헬스장] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[후기] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[운동] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>3</td>
 								<td>[식단] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>4</td>
 								<td>[헬스장] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>5</td>
 								<td>[후기] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>1</td>
 								<td>[운동] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[식단] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>3</td>
 								<td>[헬스장] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>4</td>
 								<td>[후기] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>5</td>
 								<td>[운동] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>1</td>
 								<td>[식단] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[헬스장] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>3</td>
 								<td>[후기] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>4</td>
 								<td>[운동] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>5</td>
 								<td>[식단] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>1</td>
 								<td>[헬스장] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 							<tr>
+								<td><input type="checkbox" class="post-checkbox"></td>
 								<td>2</td>
 								<td>[후기] 아 운동 너무 어렵다</td>
 								<td>김진혁</td>
 								<td>2025-03-28</td>
-								<td>김진혁</td>
+								<td>15</td>
 								<td>15</td>
 							</tr>
 						</table>
@@ -444,7 +477,10 @@ body main #boardtable td, th {
 							<input type="search" class="search_txt" placeholder="  검색">
 							<button type="submit" class="search_btn" id="btn_search">검색</button>
 						</div>
-						<button type="button" id="btnadd_post" onclick="location.href='qnaQuestion.do'">글쓰기</button>
+						<div class="button_group">
+							<button type="button" id="btnadd_post" onclick="location.href='qnaQuestion.do'">질문하기</button>
+							<button type="button" id="btn_answer" onclick="location.href='qnaAnswer.do'">답변하기</button>
+						</div>
 					</div>
 				</div>
 	
