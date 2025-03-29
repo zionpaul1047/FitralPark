@@ -77,14 +77,49 @@ body h1 {
 	border-bottom: 2px solid #000000;
 }
 
-#boardtable td, th {
+body main #boardtable td, th {
 	text-align: center;
 	padding-top: 15px;
 	padding-bottom: 15px;
 	border-top: 1px solid #000000;
 	border-bottom: 1px solid #000000;
 	
-	font-size: 16px;
+	font-size: 12px;
+}
+
+/* 게시글 호버 효과 */
+#boardtable tr:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+.pagination .active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
 }
 
 #boardtable th:nth-child(1) {
@@ -105,6 +140,42 @@ body h1 {
 
 #boardtable th:nth-child(5), th:nth-child(6) {
 	width: 80px;
+}
+
+/* 게시글 호버 효과 */
+#boardtable tr:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    gap: 5px;
+}
+
+.pagination a {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.pagination a:hover {
+    background-color: #f5f5f5;
+    border-color: #999;
+}
+
+.pagination .active {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
 }
 
 #board_etc_box {
@@ -308,6 +379,22 @@ body h1 {
 							</tr>
 							<%-- </c:forEach> --%>
 						</table>
+						
+						<!-- 페이지네이션 -->
+						<div class="pagination">
+							<a href="#" class="active">1</a>
+							<a href="#">2</a>
+							<a href="#">3</a>
+							<a href="#">4</a>
+							<a href="#">5</a>
+							<a href="#">6</a>
+							<a href="#">7</a>
+							<a href="#">8</a>
+							<a href="#">9</a>
+							<a href="#">10</a>
+							<a href="#">다음</a>
+						</div>
+						
 					</div>
 
 					<div>

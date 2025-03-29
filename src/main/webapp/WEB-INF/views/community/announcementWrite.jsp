@@ -170,16 +170,15 @@
 				<main>
 				
 				<div id="mainbox">
-				<h1>자유 게시판 글쓰기</h1>
+				<h1>공지사항 쓰기</h1>
 				<form class="write-form" action="/community/bulletinWrite" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
 						<select name="category" id="category">
 							<option value="">말머리 선택</option>
-							<option value="일반">운동</option>
-							<option value="질문">식단</option>
-							<option value="헬스장">헬스장</option>
-							<option value="후기">후기</option>
+							<option value="이벤트">이벤트</option>
+							<option value="공지사항">공지사항</option>
+							<option value="업데이트">업데이트</option>
 						</select>
 					</div>
 					<div class="form-group">

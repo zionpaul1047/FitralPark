@@ -8,14 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//공지사항 조회 및 상세 컨트롤러
-@WebServlet("/announcementList.do")
-public class AnnouncementController extends HttpServlet {
+@WebServlet("/bulletinWrite.do")
+public class BulletinWrite extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		req.getRequestDispatcher("/WEB-INF/views/community/announcementList.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinWrite.jsp").forward(req, resp);
 	}
 
 }
