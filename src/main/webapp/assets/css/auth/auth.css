@@ -151,9 +151,11 @@ p {
 	margin-right: 10px;
 }
 
-#to_signup:hover, #findID:hover, #findPw:hover, #to_login:hover {
+#to_signup:hover, #findID:hover, #findPw:hover, #to_login:hover,
+	.already_member_box p:hover, .already_member_box span:hover {
 	text-decoration: underline;
 	color: #007bff;
+	cursor: pointer;
 }
 
 /* 애니메이션 효과 (라벨 등) */

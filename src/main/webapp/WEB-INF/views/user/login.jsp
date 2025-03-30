@@ -26,7 +26,7 @@
 					<h1>로그인</h1>
 					<p class="mt-2">환영합니다! 로그인하여 서비스를 이용하세요.</p>
 				</div>
-				<form method="post" action="/login.do" class="form">
+				<form method="POST" action="/login.do" class="form">
 					<div class="form-group">
 						<label for="username">아이디</label>
 						<input type="text" name="username" class="form-control" id="username" required />
@@ -42,7 +42,7 @@
 					</div>
 				</form>
 				<div class="already_member_box d-flex justify-content-between px-2">
-					<span onclick="moveToRegister()">회원가입하기</span>
+					<span role="button" onclick="moveToRegister()">회원가입하기</span>
 					<div>
 						<span id="findID">아이디 찾기</span>
 						<span id="findPw">비밀번호 찾기</span>
@@ -56,7 +56,7 @@
 					<h1>회원가입</h1>
 					<p class="mt-2">서비스 이용을 위해 정보를 입력해주세요.</p>
 				</div>
-				<form method="get" onsubmit="redirectToRegister(event)" class="form">
+				<form method="POST" onsubmit="redirectToRegister(event)" class="form">
 					<div class="form-scroll-box">
 
 						<%-- 아이디 --%>
@@ -202,7 +202,7 @@
 					</div>
 				</form>
 				<div class="already_member_box text-center">
-					<p onclick="moveToLogin()">이미 회원이신가요? 로그인하기</p>
+					<p role="button" onclick="moveToLogin()">이미 회원이신가요? 로그인하기</p>
 				</div>
 			</div>
 
