@@ -1,5 +1,24 @@
 package fitralpark.exercise.controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 //운동 추천 기능 컨트롤러
-public class ExerciseRecommendationController {
+@WebServlet("/exerciseRecommend.do")
+public class ExerciseRecommendationController extends HttpServlet {
+
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+		//ExerciseRecommendationController.java
+		
+
+		req.getRequestDispatcher("/WEB-INF/views/exercise/exerciseRecommend.jsp").forward(req, resp);
+	}
 
 }

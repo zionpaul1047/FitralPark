@@ -342,27 +342,6 @@ input:checked+.slider:before {
 
 <script>
     
-    //로그인 로그아웃 버튼
-    document.addEventListener("DOMContentLoaded", function() {
-    var authButton = document.getElementById('authButton');
-    var isLoggedIn = false; // 초기 상태는 로그아웃
-
-    authButton.addEventListener('click', function() {
-        isLoggedIn = !isLoggedIn; // 상태 전환
-        
-	        if (isLoggedIn) {
-	            authButton.textContent = '로그아웃';
-	            authButton.style.background = '#dc3545'; // 빨간색 (로그아웃 상태)
-	            console.log("로그인 성공");
-	        } else {
-	            authButton.textContent = '로그인';
-	            authButton.style.background = '#28a745'; // 녹색 (로그인 상태)
-	            console.log("로그아웃 성공");
-	        }
-        });
-    });
-  	//!!로그인 로그아웃 버튼
-    
     
     var header = $('#header'),
         MainMenu = $('nav .main_menu .menu_col'),

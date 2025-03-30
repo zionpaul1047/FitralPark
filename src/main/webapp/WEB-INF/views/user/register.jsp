@@ -8,6 +8,10 @@
 	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
 	<style>
 		body {background-color: rgb(218, 243, 211);}  
+		
+		main {
+			margin-bottom: 205px;
+		}
 	    .register-wrapper {
 		max-width: 800px;
 		margin: 2rem auto;
@@ -15,6 +19,7 @@
 		padding: 2rem;
 		border-radius: 10px;
 		box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+		margin-top: 125px; !important;
 		}
 		.register-wrapper h2 {
 		  text-align: center;
