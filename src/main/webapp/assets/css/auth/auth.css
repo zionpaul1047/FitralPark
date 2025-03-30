@@ -1,150 +1,168 @@
 :root {
-  --background-theme: #e6e9f0;
-  --text-color: #000;
+	--background-theme: #e6e9f0;
+	--text-color: #000;
 }
 
+/* 공통 초기화 */
 *, html {
-  margin: 0;
-  padding: 0;
-  font-size: 13px;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  color: var(--text-color);
+	margin: 0;
+	padding: 0;
+	font-size: 13px;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	color: var(--text-color);
 }
 
 body {
-  width: 100%;
-  background-color: var(--background-theme);
+	width: 100%;
+	background-color: var(--background-theme);
+	margin: 0;
+	padding: 0;
+	font-family: 'Poppins', sans-serif;
 }
 
+/* 제목 및 문단 */
 h1 {
-  font-size: 3.2rem;
+	font-size: 3.2rem;
 }
 
 p {
-  font-size: 1.2rem;
+	font-size: 1.2rem;
 }
 
+/* 로그인/회원가입 공통 레이아웃 */
 .login_section {
-  height: 100vh;
-  background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.6)), url('../../images/background/login-bg.jpg') no-repeat center center;
-  background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: none;
+	height: 100vh;
+	background: linear-gradient(rgba(255, 255, 255, 0.2),
+		rgba(255, 255, 255, 0.2)),
+		url('/fitralpark/assets/images/auth_bg.png') no-repeat center center;
+	background-size: cover;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	user-select: none;
 }
 
 .login_popup_box {
-  width: 420px;
-  min-height: 600px;
-  background: #fcfcfc;
-  border-radius: 10px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
-  text-align: left;
-  overflow: hidden;
-  outline: none;
-  caret-color: transparent;
+	width: 600px;
+	min-height: 500px;
+	height: auto;
+	background: #fcfcfc;
+	flex-direction: column;
+	border-radius: 10px;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+	padding: 2rem;
+	text-align: left;
+	overflow: hidden; /* 넘치는 건 숨기고 */
+	outline: none;
+	caret-color: transparent;
 }
 
 .login_popup_box input {
-  caret-color: auto !important;
-  user-select: text !important;
+	caret-color: auto !important;
+	user-select: text !important;
 }
 
 .login_popup_box *:focus {
-  outline: none;
+	outline: none;
 }
 
+/* 로고 이미지 */
 .accounts_image {
-  margin-bottom: 2rem;
-  text-align: center;
+	margin-bottom: 2rem;
+	text-align: center;
 }
 
 .accounts_image img {
-  width: 150px;
-  height: auto;
-  object-fit: contain;
-  user-drag: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  -webkit-user-select: none;
+	width: 150px;
+	height: auto;
+	object-fit: contain;
+	margin-bottom: 1.5rem;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	user-drag: none;
+	user-select: none;
 }
 
-.accounts_col form .form-group {
-  position: relative !important;
+/* 폼 내부 스크롤 영역 */
+.form-scroll-box {
+	max-height: 400px;
+	overflow-y: auto;
+	padding-right: 10px;
 }
 
-.accounts_col form .form-control {
-  font-size: 1.6rem;
-  padding: 20px 10px;
-  margin-bottom: 20px;
-  background: transparent !important;
+.form-scroll-box::-webkit-scrollbar {
+	width: 6px;
 }
 
-.accounts_col form label,
-.accounts_col form .form-group i {
-  position: absolute;
-  z-index: 1;
-  pointer-events: none;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1.2rem;
-  left: 10px;
+.form-scroll-box::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
 }
 
-.accounts_col form label {
-  transition: 0.2s linear;
+/* 입력 폼 및 버튼 */
+.form-group .form-control, .form-group .btn {
+	height: 38px;
+	font-size: 14px;
 }
 
-.change_label {
-  background-color: #fcfcfc;
-  transition: 0.2s linear;
-  transform: scale(0.8);
-  top: 0 !important;
+#zipcode, #address, #address_detail {
+	font-size: 14px;
 }
 
-.accounts_col form .form-group i {
-  left: 90% !important;
-  cursor: pointer;
-  pointer-events: visible;
+/* 텍스트 입력창 크기 */
+.input-small {
+	width: 140px;
 }
 
-.register_btn {
-  padding: 10px 0 !important;
-  font-size: 1.6rem !important;
-  font-weight: 600 !important;
+.input-medium {
+	width: 200px;
 }
 
-.already_member_box p,
-.already_member_box span,
-.title,
-label,
-button,
-h1 {
-  user-select: none;
-  -webkit-user-select: none;
+.input-large {
+	width: 500px;
 }
 
-.login_form,
-.signup_form {
-  display: none;
-  width: 100%;
+/* 로그인/회원가입 폼 구분 */
+.login_form, .signup_form {
+	display: none;
+	width: 100%;
 }
 
+/* 아이콘 (비밀번호 보기 등) */
+.form-group i.fa {
+	top: 35px;
+	cursor: pointer;
+}
+
+/* 안내 텍스트 및 링크 스타일 */
 .already_member_box {
-  margin-top: 10px;
+	margin-top: 10px;
+}
+
+.already_member_box p, .already_member_box span, .title, label, button,
+	h1 {
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 #findID {
-  margin-right: 10px;
+	margin-right: 10px;
 }
 
-#to_signup:hover,
-#findID:hover,
-#findPw:hover,
-#to_login:hover {
-  text-decoration: underline;
-  color: #007bff;
+#to_signup:hover, #findID:hover, #findPw:hover, #to_login:hover {
+	text-decoration: underline;
+	color: #007bff;
+}
+
+/* 애니메이션 효과 (라벨 등) */
+.accounts_col form label {
+	transition: 0.2s linear;
+}
+
+.change_label {
+	background-color: #fcfcfc;
+	transform: scale(0.8);
+	top: 0 !important;
 }
