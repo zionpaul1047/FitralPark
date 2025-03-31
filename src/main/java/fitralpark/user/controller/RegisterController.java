@@ -21,25 +21,44 @@ public class RegisterController extends HttpServlet {
 			throws ServletException, IOException {
 
 		request.setCharacterEncoding("UTF-8");
+		System.out.println("[DEBUG] RegisterController 호출됨");
 
 		// 1. 입력값 받아오기
-		String id = request.getParameter("id");
-		String pw = request.getParameter("password");
-		String name = request.getParameter("name");
-		String jumin = request.getParameter("jumin1") + "-" + request.getParameter("jumin2_first")
-				+ request.getParameter("jumin2_rest");
-		String nickname = request.getParameter("nickname");
-		String tel = request.getParameter("custom_phone") != null && !request.getParameter("custom_phone").isEmpty()
-				? request.getParameter("custom_phone")
-				: request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-"
-						+ request.getParameter("phone3");
+		String id = nvl(request.getParameter("id"));
+		String pw = nvl(request.getParameter("password"));
+		String name = nvl(request.getParameter("name"));
 
-		String domain = request.getParameter("email_domain").equals("etc") ? request.getParameter("email_domain_custom")
-				: request.getParameter("email_domain");
+		String jumin1 = nvl(request.getParameter("jumin1"));
+		String jumin2_first = nvl(request.getParameter("jumin2_first"));
+		String jumin2_rest = nvl(request.getParameter("jumin2_rest"));
+		String jumin = request.getParameter("jumin1")
+	            + request.getParameter("jumin2_first")
+	            + request.getParameter("jumin2_rest");
 
-		String email = request.getParameter("email_prefix") + "@" + domain;
-		String address = request.getParameter("zipcode") + " " + request.getParameter("address") + " "
-				+ request.getParameter("address_detail");
+
+		String nickname = nvl(request.getParameter("nickname"));
+
+		String customPhone = request.getParameter("custom_phone");
+		String tel;
+		if (customPhone != null && !customPhone.trim().isEmpty()) {
+			tel = customPhone;
+		} else {
+			tel = nvl(request.getParameter("phone1")) + "-" +
+				  nvl(request.getParameter("phone2")) + "-" +
+				  nvl(request.getParameter("phone3"));
+		}
+
+		String emailDomain = nvl(request.getParameter("email_domain"));
+		String emailCustomDomain = nvl(request.getParameter("email_domain_custom"));
+		String emailPrefix = nvl(request.getParameter("email_prefix"));
+
+		String domain = "etc".equals(emailDomain) ? emailCustomDomain : emailDomain;
+		String email = emailPrefix + "@" + domain;
+
+		String zipcode = nvl(request.getParameter("zipcode"));
+		String addressBasic = nvl(request.getParameter("address"));
+		String addressDetail = nvl(request.getParameter("address_detail"));
+		String address = zipcode + " " + addressBasic + " " + addressDetail;
 
 		// 2. DTO에 담기
 		UserDTO dto = new UserDTO();
@@ -51,7 +70,8 @@ public class RegisterController extends HttpServlet {
 		dto.setTel(tel);
 		dto.setEmail(email);
 		dto.setAddress(address);
-		dto.setMemberPic(null); // 추후 프로필 사진 기능 구현 예정
+
+		dto.setMemberPic(null); // 프로필 사진 추후 구현
 		dto.setBackgroundPic(null);
 		dto.setAllergy(null);
 
@@ -69,4 +89,8 @@ public class RegisterController extends HttpServlet {
 		}
 	}
 
+	// 널 방지 헬퍼 메소드
+	private String nvl(String str) {
+		return str == null ? "" : str.trim();
+	}
 }
