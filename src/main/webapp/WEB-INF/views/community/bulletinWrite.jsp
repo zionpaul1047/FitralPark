@@ -173,16 +173,6 @@
 				<h1>자유 게시판 글쓰기</h1>
 				<form class="write-form" action="/community/bulletinWrite" method="post">
 					<div class="form-group">
-						<label for="category">말머리</label>
-						<select name="category" id="category" required>
-							<option value="">말머리 선택</option>
-							<option value="운동">운동</option>
-							<option value="식단">식단</option>
-							<option value="헬스장">헬스장</option>
-							<option value="후기">후기</option>
-						</select>
-					</div>
-					<div class="form-group">
 						<label for="title">제목</label>
 						<input type="text" name="title" id="title" required>
 					</div>
