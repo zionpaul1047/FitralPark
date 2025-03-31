@@ -123,6 +123,7 @@ CREATE TABLE diet_food_list(
     food_no NUMBER NOT NULL,
     custom_food_no NUMBER NOT NULL,
     public_check NUMBER NOT NULL CHECK (public_check IN (0, 1)),
+    food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
     intake NUMBER(6, 2) NOT NULL,
     
     CONSTRAINT PK_diet_food_list PRIMARY KEY(diet_food_list_no)
@@ -180,6 +181,7 @@ CREATE TABLE intake_record(
     food_no NUMBER NOT NULL,
     custom_food_no NUMBER NOT NULL,
     diet_no NUMBER NOT NULL,
+    food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
 
     CONSTRAINT PK_intake_record PRIMARY KEY(intake_record_no),
     CONSTRAINT FK_intake_record_creator_id FOREIGN KEY(creator_id) REFERENCES member(member_id),
@@ -201,7 +203,12 @@ CREATE TABLE diet_feedback(
     CONSTRAINT FK_diet_feedback_diet_plan_no FOREIGN KEY(diet_plan_no) REFERENCES diet_plan(diet_plan_no)
 );
 
-
+--식단 카테고리 시퀀스
+create sequence seqDietCategory;
+--식단 시퀀스
+create sequence seqDiet;
+-- 식단 계획 시퀀스
+create sequence seqDietPlan;
 
 
 
