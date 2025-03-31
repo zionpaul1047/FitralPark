@@ -120,8 +120,8 @@ CREATE TABLE diet_category(
 CREATE TABLE diet_food_list(
     diet_food_list_no NUMBER NOT NULL,
     diet_no NUMBER NOT NULL,
-    food_no NUMBER NOT NULL,
-    custom_food_no NUMBER NOT NULL,
+    food_no NUMBER NULL,
+    custom_food_no NUMBER NULL,
     public_check NUMBER NOT NULL CHECK (public_check IN (0, 1)),
     food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
     intake NUMBER(6, 2) NOT NULL,
@@ -178,8 +178,8 @@ CREATE TABLE intake_record(
     intake_kcal NUMBER(6, 2) NOT NULL,
     meal_classify VARCHAR2(10) NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
-    food_no NUMBER NOT NULL,
-    custom_food_no NUMBER NOT NULL,
+    food_no NUMBER NULL,
+    custom_food_no NUMBER NULL,
     diet_no NUMBER NOT NULL,
     food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
 
