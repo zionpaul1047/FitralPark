@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {
         background-color: rgb(218, 243, 211);
@@ -43,40 +42,26 @@
 </head>
 <body>
 	<div class="grid">
-	
 		<div class="grid_top">
-
-				<!-- 메인메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-			    <!-- 오른쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
-			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			<!-- 메인메뉴 -->
+			<%@ include file="/WEB-INF/views/common/header.jsp" %>
+		    <!-- 오른쪽메뉴 -->
+		    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+		    <!-- 왼쪽메뉴 -->
+		    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
 		</div>
-		
 		<div class="grid_center">
-		
 			<div class="grid_center_L"></div>
-			
 			<div class="grid_center_R">
 				<!-- 컨텐츠페이지 -->
     			<%@ include file="/WEB-INF/views/common/content_page.jsp" %>
+    			
 			</div>
-			
 		</div>
-		
 		<div class="grid_bottom">
 				<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 		</div>
-		
 	</div>
-
-
-    
-
-
-
 </body>
-
 
 </html>

@@ -3,10 +3,11 @@
 
 
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {
         background-color: rgb(218, 243, 211);
