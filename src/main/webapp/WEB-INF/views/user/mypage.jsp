@@ -9,6 +9,7 @@
 <head>
    <meta charset="UTF-8">
    <title>Insert title here</title>
+   	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
    <link rel="stylesheet" href="http://bit.ly/3WJ5ilK">
    <style>
       

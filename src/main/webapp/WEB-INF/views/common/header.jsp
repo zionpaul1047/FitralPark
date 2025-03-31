@@ -495,7 +495,7 @@ input:checked+.slider:before {
         	window.open(
         			  "${pageContext.request.contextPath}/login.do",
         			  "LoginPopup",
-        			  "width=550,height=850,resizable=no,scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no"
+        			  "width=800,height=850,resizable=no,scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no"
         	);
         });
       });
