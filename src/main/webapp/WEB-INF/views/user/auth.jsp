@@ -56,7 +56,7 @@
 					<h1>회원가입</h1>
 					<p class="mt-2">서비스 이용을 위해 정보를 입력해주세요.</p>
 				</div>
-				<form method="POST" action="/register.do" class="form">
+				<form method="POST" action="${pageContext.request.contextPath}/register.do" class="form">
 					<div class="form-scroll-box">
 
 						<%-- 아이디 --%>
