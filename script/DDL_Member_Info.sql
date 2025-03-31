@@ -139,3 +139,10 @@ CREATE TABLE menu_bookmark(
 );
 
 commit;
+
+ALTER TABLE routine_exercise modify exercise_creation_type NUMBER DEFAULT 1;
+ALTER TABLE routine add views number default 1;
+ALTER TABLE qna_post add views number default 1;
+ALTER TABLE announcement_post add views number default 1;
+ALTER TABLE bulletin_post add views number default 1;
+ALTER TABLE diet add views number default 1;
