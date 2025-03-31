@@ -6,6 +6,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import fitralpark.user.dao.UserDAO;
+import fitralpark.user.dto.UserDTO;
+
 import java.io.IOException;
 
 @WebServlet("/register.do")
@@ -18,43 +22,51 @@ public class RegisterController extends HttpServlet {
 
 		request.setCharacterEncoding("UTF-8");
 
-		// 1. 입력값 받기
+		// 1. 입력값 받아오기
 		String id = request.getParameter("id");
-		String password = request.getParameter("password");
+		String pw = request.getParameter("password");
 		String name = request.getParameter("name");
-		String jumin1 = request.getParameter("jumin1");
-		String jumin2_first = request.getParameter("jumin2_first");
-		String jumin2_rest = request.getParameter("jumin2_rest");
+		String jumin = request.getParameter("jumin1") + "-" + request.getParameter("jumin2_first")
+				+ request.getParameter("jumin2_rest");
 		String nickname = request.getParameter("nickname");
-		String phone1 = request.getParameter("phone1");
-		String phone2 = request.getParameter("phone2");
-		String phone3 = request.getParameter("phone3");
-		String customPhone = request.getParameter("custom_phone");
-		String emailPrefix = request.getParameter("email_prefix");
-		String emailDomain = request.getParameter("email_domain");
-		String emailDomainCustom = request.getParameter("email_domain_custom");
-		String zipcode = request.getParameter("zipcode");
-		String address = request.getParameter("address");
-		String addressDetail = request.getParameter("address_detail");
+		String tel = request.getParameter("custom_phone") != null && !request.getParameter("custom_phone").isEmpty()
+				? request.getParameter("custom_phone")
+				: request.getParameter("phone1") + "-" + request.getParameter("phone2") + "-"
+						+ request.getParameter("phone3");
 
-		// 2. 유효성 검증(선택적으로 로그 찍기)
-		System.out.println("회원가입 요청 ID: " + id);
-		System.out.println("닉네임: " + nickname);
+		String domain = request.getParameter("email_domain").equals("etc") ? request.getParameter("email_domain_custom")
+				: request.getParameter("email_domain");
 
-		// 3. 이메일 도메인 처리
-		String finalEmail = emailDomain.equals("etc") ? emailDomainCustom : emailDomain;
-		String email = emailPrefix + "@" + finalEmail;
+		String email = request.getParameter("email_prefix") + "@" + domain;
+		String address = request.getParameter("zipcode") + " " + request.getParameter("address") + " "
+				+ request.getParameter("address_detail");
 
-		// 4. 연락처 처리
-		String phone = customPhone != null && !customPhone.isEmpty()
-				? customPhone
-				: phone1 + "-" + phone2 + "-" + phone3;
+		// 2. DTO에 담기
+		UserDTO dto = new UserDTO();
+		dto.setMemberId(id);
+		dto.setPw(pw);
+		dto.setMemberName(name);
+		dto.setMemberNickname(nickname);
+		dto.setPersonalNumber(jumin);
+		dto.setTel(tel);
+		dto.setEmail(email);
+		dto.setAddress(address);
+		dto.setMemberPic(null); // 추후 프로필 사진 기능 구현 예정
+		dto.setBackgroundPic(null);
+		dto.setAllergy(null);
 
-		// 5. 주민등록번호 전체
-		String jumin = jumin1 + "-" + jumin2_first + jumin2_rest;
+		// 3. DB 저장
+		UserDAO dao = new UserDAO();
+		int result = dao.insertMember(dto);
 
-		// 6. (임시 처리) DB 저장 없이 완료 메시지
+		// 4. 결과 처리
 		response.setContentType("text/html; charset=UTF-8");
-		response.getWriter().println("<script>alert('회원가입 정보가 정상적으로 전달되었습니다.'); window.opener.location.href='/index.do'; window.close();</script>");
+		if (result > 0) {
+			response.getWriter().println(
+					"<script>alert('회원가입 성공!'); window.opener.location.href='/index.do'; window.close();</script>");
+		} else {
+			response.getWriter().println("<script>alert('회원가입 실패!'); history.back();</script>");
+		}
 	}
+
 }
