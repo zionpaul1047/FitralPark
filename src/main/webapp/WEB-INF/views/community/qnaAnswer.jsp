@@ -97,9 +97,6 @@
             padding: 8px 12px;
             font-size: 14px;
             margin-left: 15px;
-        }
-
-        .write-form input[type="text"] {
             width: calc(100% - 95px);
         }
 
@@ -112,10 +109,15 @@
         }
 
         .write-form textarea {
-            width: calc(100% - 95px);
             height: 350px;
             line-height: 1.5;
             resize: none;
+        }
+
+        .write-form textarea.auto-height {
+            height: auto;
+            min-height: 100px;
+            overflow-y: hidden;
         }
 
         .write-form .button-group {
@@ -146,6 +148,24 @@
             opacity: 0.9;
         }
 
+        /* 원본 질문 스타일 */
+        .original-question {
+            background-color: #f5f5f5;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+        }
+
+        .original-question h3 {
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .original-question input[readonly],
+        .original-question textarea[readonly] {
+            background-color: #e9ecef;
+        }
+
     </style>
 </head>
 <body>
@@ -171,6 +191,24 @@
 				
 				<div id="mainbox">
 				<h1>답변하기</h1>
+				
+				<!-- 기존 질문 내용 -->
+				<div class="write-form original-question">
+					<h3>원본 질문</h3>
+					<div class="form-group">
+						<label>작성자</label>
+						<input type="text" value="홍길동" readonly>
+					</div>
+					<div class="form-group">
+						<label>제목</label>
+						<input type="text" value="운동이 너무 어려워요 어떻게 할 까요??" readonly>
+					</div>
+					<div class="form-group">
+						<label>내용</label>
+						<textarea readonly class="auto-height">운동이 너무 어려워요 어떻게 할 까요??</textarea>
+					</div>
+				</div>
+
 				<form class="write-form" action="/community/bulletinWrite" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
