@@ -3,10 +3,10 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<link rel="stylesheet" href="assets/css/font.css">
-<link rel="stylesheet" href="assets/css/common.css">
-<script src="assets/js/jquery-1.12.4.min(1).js"></script>
-<script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
+<script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min(1).js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 
 <style>
@@ -158,8 +158,8 @@ input:checked+.slider:before {
 	<div class="wrapper">
 		<!-- logo -->
 		<h1 class="h_logo">
-			<a href=""> <img alt="핏트럴파크"
-				src="assets/images/logo/widthlogo.png">
+			<a href="${pageContext.request.contextPath}/index.do"> <img alt="핏트럴파크"
+				src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png">
 			</a>
 		</h1>
 		<!-- //logo -->
@@ -188,7 +188,7 @@ input:checked+.slider:before {
 				<!-- menu_col -->
 				<li class="menu_col"><a href="">식품 영양정보</a> <!-- sub_menu -->
 					<ul class="sub_menu" style="display: none;">
-						<li><a href="">식품 검색</a></li>
+						<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
 						<li><a href="">영양 성분비교</a></li>
 						<li><a href="">비타민 정보</a></li>
 					</ul> <!--  //sub_menu --></li>
@@ -228,7 +228,7 @@ input:checked+.slider:before {
 					<!-- 알림 아이콘 버튼 -->
 					<div class="alarm-container">
 						<button id="alarmButton">
-							<img id="alarmIcon" src="assets/images/icon/bellon.png" alt="알람"
+							<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/bellon.png" alt="알람"
 								style="width: 24px; height: 24px;">
 						</button>
 						<div id="alarmDropdown" class="dropdown-content">
@@ -245,11 +245,11 @@ input:checked+.slider:before {
 					</div>
 				</li>
 				<li class="icon_menu"><a href="#"> <img
-						src="assets/images/icon/dashboard (2).png" alt="대시보드"
+						src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드"
 						style="width: 24px; height: 24px;">
 				</a></li>
 				<li class="icon_menu"><a href="#"> <img
-						src="assets/images/icon/people.png" alt="마이페이지"
+						src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지"
 						style="width: 24px; height: 24px;">
 				</a></li>
 			</ul>
@@ -285,9 +285,9 @@ input:checked+.slider:before {
 
 		<!-- depth01 -->
 		<ul class="depth01">
-			<li><a href="">HOME</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/index.do">HOME</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">HOME</a></li>
+					<li><a href="${pageContext.request.contextPath}/index.do">HOME</a></li>
 				</ul></li>
 
 			<li><a href="">식단 관리</a> <!-- depth02 -->
@@ -311,7 +311,7 @@ input:checked+.slider:before {
 			<!-- depth01 -->
 			<li><a href="">식품 영양정보</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">음식 검색</a></li>
+					<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
 					<li><a href="">영양 성분비교</a></li>
 					<li><a href="">비타민 정보</a></li>
 				</ul> <!--  //depth02--></li>
@@ -440,10 +440,10 @@ input:checked+.slider:before {
 
     alarmToggle.addEventListener('change', () => {
       if (alarmToggle.checked) {
-        alarmIcon.src = 'assets/images/icon/bellon.png';
+        alarmIcon.src = '${pageContext.request.contextPath}/assets/images/icon/bellon.png';
         // 알람 활성화 로직
       } else {
-        alarmIcon.src = 'assets/images/icon/belloff.png';
+        alarmIcon.src = '${pageContext.request.contextPath}/assets/images/icon/belloff.png';
         // 알람 비활성화 로직
       }
     });

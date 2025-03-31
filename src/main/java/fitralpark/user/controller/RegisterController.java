@@ -1,39 +1,91 @@
 package fitralpark.user.controller;
 
-import javax.servlet.RequestDispatcher;
+import fitralpark.user.dao.UserDAO;
+import fitralpark.user.dto.UserDTO;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/register.do")
 public class RegisterController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        // login.jsp로 포워딩
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/login.jsp");
-        dispatcher.forward(request, response);
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
+        System.out.println("[DEBUG] RegisterController 호출됨");
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        // 1. 입력값 수집
+        String id = req.getParameter("id");
+        String pw = req.getParameter("password");
+        String name = req.getParameter("name");
+        String nickname = req.getParameter("nickname");
 
-        // 간단한 로그인 예시 (실제 프로젝트에서는 DB와 연동 필요)
-        if ("admin".equals(username) && "1234".equals(password)) {
-            request.getSession().setAttribute("loginUser", username);
-            response.getWriter().println("<script>alert('로그인 성공!'); window.opener.location.href='/index.do'; window.close();</script>");
+        String jumin = req.getParameter("jumin1")
+                     + req.getParameter("jumin2_first")
+                     + req.getParameter("jumin2_rest");
+
+        String tel = "";
+        if (req.getParameter("custom_phone") != null && !req.getParameter("custom_phone").trim().isEmpty()) {
+            tel = req.getParameter("custom_phone").replaceAll("-", "");
         } else {
-            response.getWriter().println("<script>alert('아이디 또는 비밀번호가 일치하지 않습니다.'); history.back();</script>");
+            tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
+        }
+
+        String email = req.getParameter("email_prefix");
+        String domain = req.getParameter("email_domain");
+        String customDomain = req.getParameter("email_domain_custom");
+
+        if ("etc".equals(domain) && customDomain != null && !customDomain.isEmpty()) {
+            domain = customDomain;
+        }
+
+        if (email != null && domain != null && !domain.isEmpty()) {
+            email = email + "@" + domain;
+        }
+
+        String address = req.getParameter("zipcode") + " "
+                       + req.getParameter("address") + " "
+                       + req.getParameter("address_detail");
+
+        // 2. DTO 생성
+        UserDTO dto = new UserDTO();
+        dto.setMemberId(id);
+        dto.setPw(pw);
+        dto.setMemberName(name);
+        dto.setMemberNickname(nickname);
+        dto.setPersonalNumber(jumin);
+        dto.setTel(tel);
+        dto.setEmail(email);
+        dto.setAddress(address);
+
+        // 기본값 (이미지는 추후 구현)
+        dto.setMemberPic(null);
+        dto.setBackgroundPic(null);
+        dto.setAllergy(null);
+        dto.setFitnessScore(0);
+        dto.setCommunityScore(0);
+        dto.setRestrictCheck(0);
+        dto.setWithdrawCheck(0);
+        dto.setMentorCheck(0);
+        dto.setAdminCheck(0);
+        dto.setPlanPublicCheck(0);
+
+        // 3. DB 저장
+        UserDAO dao = new UserDAO();
+        int result = dao.insertMember(dto);
+
+        // 4. 결과 처리
+        resp.setContentType("text/html; charset=UTF-8");
+
+        if (result > 0) {
+            resp.getWriter().write("<script>alert('회원가입이 완료되었습니다.'); window.opener.location.href='/index.do'; window.close();</script>");
+        } else {
+            // alert + 이전 화면으로
+            resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
         }
     }
 }

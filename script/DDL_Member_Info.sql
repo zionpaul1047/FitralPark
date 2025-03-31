@@ -158,6 +158,7 @@ ALTER TABLE announcement_post add recommend NUMBER DEFAULT 0;
 ALTER TABLE announcement_post add disrecommend NUMBER DEFAULT 0;
 ALTER TABLE bulletin_post add recommend NUMBER DEFAULT 0;
 ALTER TABLE bulletin_post add disrecommend NUMBER DEFAULT 0;
+<<<<<<< HEAD
 ALTER TABLE individual_diet_record_food_nutrient modify food_cd VARCHAR2(50) NULL;
 ALTER TABLE individual_diet_record_food_nutrient modify food_name VARCHAR2(50) NULL;
 ALTER TABLE individual_diet_record_food_nutrient modify foodLv4_name VARCHAR2(50) NULL;
@@ -190,6 +191,8 @@ ALTER TABLE individual_diet_record_food_nutrient modify fatm NUMBER(6,2) NULL;
 ALTER TABLE individual_diet_record_food_nutrient modify chole NUMBER(6,2) NULL;
 ALTER TABLE individual_diet_record_food_nutrient modify rest_name VARCHAR2(50) NULL;
 ALTER TABLE individual_diet_record_food_nutrient modify food_size VARCHAR2(50) NULL;
+=======
+>>>>>>> main
 
 create sequence seq_weight_unit;
 create sequence seq_routine;

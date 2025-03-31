@@ -249,7 +249,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// customPhone에서 하이픈(-) 자동 제거
 	customPhone.addEventListener("input", function() {
-		this.value = this.value.replace(/-/g, '');
+		// 숫자와 +만 허용
+		let val = this.value.replace(/[^0-9+]/g, '');
+
+		// +는 맨 앞에만 허용
+		if (val.indexOf('+') > 0) {
+			val = val.replace(/\+/g, ''); // +가 맨 앞이 아닌 경우 제거
+		}
+
+		this.value = val;
 	});
 });
 

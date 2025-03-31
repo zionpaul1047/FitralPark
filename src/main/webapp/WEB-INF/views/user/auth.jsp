@@ -56,7 +56,7 @@
 					<h1>회원가입</h1>
 					<p class="mt-2">서비스 이용을 위해 정보를 입력해주세요.</p>
 				</div>
-				<form method="POST" onsubmit="redirectToRegister(event)" class="form">
+				<form method="POST" action="${pageContext.request.contextPath}/register.do" class="form">
 					<div class="form-scroll-box">
 
 						<%-- 아이디 --%>
@@ -165,9 +165,9 @@
 						<div class="form-group">
 							<label for="email_prefix">이메일<span class="text-danger"> *</span></label>
 							<div class="d-flex align-items-center">
-								<input type="text" id="email_prefix" class="form-control mr-1" placeholder="아이디" style="width: 30%;" required>
+								<input type="text" id="email_prefix" name="email_prefix" class="form-control mr-1" placeholder="아이디" style="width: 30%;" required>
 								<span class="mx-1">@</span>
-								<select id="email_domain" class="form-control mr-1" style="width: 30%;" onchange="handleDomainChange()" required>
+								<select id="email_domain" name="email_domain" class="form-control mr-1" style="width: 30%;" onchange="handleDomainChange()" required>
 									<option value="">선택</option>
 									<option value="gmail.com">gmail.com</option>
 									<option value="naver.com">naver.com</option>
@@ -179,7 +179,7 @@
 								</select>
 								<button type="button" class="btn btn-outline-secondary" onclick="checkEmail()" style="white-space: nowrap;">이메일 인증</button>
 							</div>
-							<input type="text" id="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none; width: 50%;" />
+							<input type="text" id="email_domain_custom" name="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none; width: 50%;" />
 							<small id="emailMessage" class="form-text"></small>
 						</div>
 
