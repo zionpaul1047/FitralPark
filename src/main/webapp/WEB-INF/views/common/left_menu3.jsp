@@ -7,13 +7,13 @@
 	<!-- 왼쪽사이드바 -->
 	<div class="side_menu_bg"><!-- 백그라운드 -->
 			<ul class="side_menu_ul">
-				<li class="side_menu_item"><a href="">식단 관리</a></li>
+				<li class="side_menu_item"><a href="">식품 영양정보</a></li>
 
-				<li class="side_menu_item"><a href="">식단 계획캘린더</a></li>
+				<li class="side_menu_item"><a href="">식품 검색</a></li>
 
-				<li class="side_menu_item"><a href="">식단 라이브러리</a></li>
+				<li class="side_menu_item"><a href="">영양 성분비교</a></li>
 
-				<li class="side_menu_item"><a href="">식단 분석</a></li>
+				<li class="side_menu_item"><a href="">비타민 정보</a></li>
 				<!-- <hr>
 				<li><a href=""></a></li> -->
 			</ul>
