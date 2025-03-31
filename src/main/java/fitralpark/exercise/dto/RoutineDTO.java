@@ -10,8 +10,11 @@ import lombok.ToString;
 public class RoutineDTO {
 	private String routineNo;
     private String routineName;
-    private String categoryName;
+    private String routineCategoryName;
+    private String exerciseCategories;
+    private String exerciseParts;
+    private String totalCalories;
     private String creationDate;
-    private String nickname;
+    private String memberNickname;
     private String views;
 }

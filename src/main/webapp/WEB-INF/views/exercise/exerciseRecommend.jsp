@@ -1,4 +1,5 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
    
    
@@ -137,11 +138,12 @@
 	<table class="routine-table">
     <thead>
         <tr>
-            <th><input type="checkbox" /></th>
+            <th>선택</th>
             <th>루틴 이름</th>
             <th>루틴 카테고리</th>
-            <th>운동 목록</th>
-            <th>소모 열량 (kcal)</th>
+            <th>포함 운동 카테고리</th>
+            <th>포함 운동 부위</th>
+            <th>소모 총 열량(kcal)</th>
             <th>등록일</th>
             <th>작성자</th>
             <th>즐겨찾기</th>
@@ -149,17 +151,20 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td><input type="checkbox" /></td>
-            <td>하체 강화 루틴</td>
-            <td>중급자 운동 루틴</td>
-            <td>스쿼트, 런지</td>
-            <td>500</td>
-            <td>2025-03-28</td>
-            <td>김트레이너</td>
-            <td>⭐</td>
-            <td>153</td>
-        </tr>
+    	<c:forEach items="${list}" var="dto">
+	        <tr>
+	            <td><input type="checkbox" /></td>
+	            <td>${dto.routineName}</td>
+	            <td>${dto.routineCategoryName}</td>
+	            <td>${dto.exerciseCategories}</td>
+	            <td>${dto.exerciseParts}</td>
+	            <td>${dto.totalCalories}</td>
+	            <td>${dto.creationDate}</td>
+	            <td>${dto.memberNickname}</td>
+	            <td>⭐</td>
+	            <td>${dto.views}</td>
+	        </tr>
+	    </c:forEach>
         <!-- 반복 루프 처리 영역 -->
         <%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
         
