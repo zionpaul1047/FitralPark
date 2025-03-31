@@ -8,37 +8,82 @@ import java.sql.PreparedStatement;
 
 public class UserDAO {
 
+	// 회원 가입 (INSERT)
 	public int insertMember(UserDTO dto) {
 		String sql = "INSERT INTO member (member_no, member_id, pw, member_nickname, member_name, personalnumber, tel, email, address, member_pic, background_pic, allergy, fitness_score, community_score, restrict_check, withdraw_check, mentor_check, admin_check, plan_public_check) "
-				+ "VALUES (SEQMEMBER.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, 0, 0, 0, 0, 0)";
+				+ "VALUES (SEQMEMBER.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
 			pstmt.setString(1, dto.getMemberId());
 			pstmt.setString(2, dto.getPw());
-			pstmt.setString(3, dto.getMemberPic());
-			pstmt.setString(4, dto.getBackgroundPic());
-			pstmt.setString(5, dto.getMemberNickname());
-			pstmt.setString(6, dto.getMemberName());
-			pstmt.setString(7, dto.getPersonalNumber());
-			pstmt.setString(8, dto.getAllergy());
-			pstmt.setString(9, dto.getTel());
-			pstmt.setString(10, dto.getEmail());
-			pstmt.setString(11, dto.getAddress());
+			pstmt.setString(3, dto.getMemberNickname());
+			pstmt.setString(4, dto.getMemberName());
+			pstmt.setString(5, dto.getPersonalNumber());
+			pstmt.setString(6, dto.getTel());
+			pstmt.setString(7, dto.getEmail());
+			pstmt.setString(8, dto.getAddress());
+			pstmt.setString(9, dto.getMemberPic());
+			pstmt.setString(10, dto.getBackgroundPic());
+			pstmt.setString(11, dto.getAllergy());
 			pstmt.setInt(12, dto.getFitnessScore());
 			pstmt.setInt(13, dto.getCommunityScore());
-			pstmt.setInt(14, dto.getWithdrawCheck());
-			pstmt.setInt(15, dto.getMentorCheck());
-			pstmt.setInt(16, dto.getAdminCheck());
-			pstmt.setInt(17, dto.getPlanPublicCheck());
+			pstmt.setInt(14, dto.getRestrictCheck());
+			pstmt.setInt(15, dto.getWithdrawCheck());
+			pstmt.setInt(16, dto.getMentorCheck());
+			pstmt.setInt(17, dto.getAdminCheck());
+			pstmt.setInt(18, dto.getPlanPublicCheck());
 
-			return pstmt.executeUpdate(); // 성공 시 1 반환
+			System.out.println("[DEBUG] 회원가입 시도: " + dto);
+
+			return pstmt.executeUpdate();
 
 		} catch (Exception e) {
 			System.err.println("[회원가입 실패 - 예외 발생]");
 			e.printStackTrace();
 		}
 
-		return 0; // 실패 시 0 반환
+		return 0;
+	}
+
+	// 회원 정보 수정 (UPDATE)
+	public int updateMember(UserDTO dto) {
+		String sql = "UPDATE member SET "
+				+ "pw = ?, member_pic = ?, background_pic = ?, member_nickname = ?, member_name = ?, "
+				+ "personalnumber = ?, allergy = ?, tel = ?, email = ?, address = ?, "
+				+ "fitness_score = ?, community_score = ?, restrict_check = ?, withdraw_check = ?, "
+				+ "mentor_check = ?, admin_check = ?, plan_public_check = ? " + "WHERE member_no = ?";
+
+		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, dto.getPw());
+			pstmt.setString(2, dto.getMemberPic());
+			pstmt.setString(3, dto.getBackgroundPic());
+			pstmt.setString(4, dto.getMemberNickname());
+			pstmt.setString(5, dto.getMemberName());
+			pstmt.setString(6, dto.getPersonalNumber());
+			pstmt.setString(7, dto.getAllergy());
+			pstmt.setString(8, dto.getTel());
+			pstmt.setString(9, dto.getEmail());
+			pstmt.setString(10, dto.getAddress());
+			pstmt.setInt(11, dto.getFitnessScore());
+			pstmt.setInt(12, dto.getCommunityScore());
+			pstmt.setInt(13, dto.getRestrictCheck());
+			pstmt.setInt(14, dto.getWithdrawCheck());
+			pstmt.setInt(15, dto.getMentorCheck());
+			pstmt.setInt(16, dto.getAdminCheck());
+			pstmt.setInt(17, dto.getPlanPublicCheck());
+			pstmt.setInt(18, dto.getMemberNo());
+
+			System.out.println("[DEBUG] 회원가입 시도: " + dto);
+
+			return pstmt.executeUpdate();
+
+		} catch (Exception e) {
+			System.err.println("[회원정보 수정 실패 - 예외 발생]");
+			e.printStackTrace();
+		}
+
+		return 0;
 	}
 }
