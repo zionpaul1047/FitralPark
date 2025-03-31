@@ -119,7 +119,7 @@ CREATE TABLE routine_exercise (
     routine_no NUMBER NOT NULL,
     exercise_no NUMBER NOT NULL,
     custom_exercise_no NUMBER NOT NULL,
-    exercise_creation_type VARCHAR2(50),
+    exercise_creation_type NUMBER,
     sets NUMBER DEFAULT 0,
     reps_per_set NUMBER DEFAULT 0,
     exercise_time NUMBER DEFAULT 0,
@@ -128,6 +128,7 @@ CREATE TABLE routine_exercise (
     CONSTRAINT fk_routine_exercise_exercise FOREIGN KEY (exercise_no) REFERENCES exercise(exercise_no),
     CONSTRAINT fk_routine_exercise_custom_exercise FOREIGN KEY (custom_exercise_no) REFERENCES custom_exercise(custom_exercise_no)
 );
+
 
 CREATE TABLE exercise_plan (
     exercise_plan_no NUMBER PRIMARY KEY,
