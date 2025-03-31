@@ -1,3 +1,6 @@
 eclipse.preferences.version=1
+<<<<<<< Updated upstream
 encoding//src/main/webapp/WEB-INF/views/user/login.jsp=UTF-8
+=======
+>>>>>>> Stashed changes
 encoding/<project>=UTF-8

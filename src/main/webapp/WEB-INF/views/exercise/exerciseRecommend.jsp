@@ -136,48 +136,93 @@
 		</div>
 	</form>
 	<table class="routine-table">
-    <thead>
-        <tr>
-            <th>선택</th>
-            <th>루틴 이름</th>
-            <th>루틴 카테고리</th>
-            <th>포함 운동 카테고리</th>
-            <th>포함 운동 부위</th>
-            <th>소모 총 열량(kcal)</th>
-            <th>등록일</th>
-            <th>작성자</th>
-            <th>즐겨찾기</th>
-            <th>조회수</th>
-        </tr>
-    </thead>
-    <tbody>
-    	<c:forEach items="${list}" var="dto">
-	        <tr>
-	            <td><input type="checkbox" /></td>
-	            <td>${dto.routineName}</td>
-	            <td>${dto.routineCategoryName}</td>
-	            <td>${dto.exerciseCategories}</td>
-	            <td>${dto.exerciseParts}</td>
-	            <td>${dto.totalCalories}</td>
-	            <td>${dto.creationDate}</td>
-	            <td>${dto.memberNickname}</td>
-	            <td>⭐</td>
-	            <td>${dto.views}</td>
-	        </tr>
-	    </c:forEach>
-        <!-- 반복 루프 처리 영역 -->
-        <%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
-        
-    </tbody>
-</table>
+		<thead>
+			<tr>
+				<th>선택</th>
+				<th>루틴 이름</th>
+				<th>루틴 카테고리</th>
+				<th>포함 운동 카테고리</th>
+				<th>포함 운동 부위</th>
+				<th>소모 총 열량(kcal)</th>
+				<th>등록일</th>
+				<th>작성자</th>
+				<th>즐겨찾기</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${list}" var="dto">
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>${dto.routineName}</td>
+					<td>${dto.routineCategoryName}</td>
+					<td>${dto.exerciseCategories}</td>
+					<td>${dto.exerciseParts}</td>
+					<td>${dto.totalCalories}</td>
+					<td>${dto.creationDate}</td>
+					<td>${dto.memberNickname}</td>
+					<td>⭐</td>
+					<td>${dto.views}</td>
+				</tr>
+				
+				<!-- 상세 운동 목록 (초기에는 숨김) -->
+				<tr class="exercise-detail" data-parent="${routine.routineNo}"
+					style="display: none;">
+					<td colspan="10">
+						<table class="sub-table">
+							<thead>
+								<tr>
+									<th>운동 이름</th>
+									<th>운동 카테고리</th>
+									<th>운동 부위</th>
+									<th>소모 열량(kcal)</th>
+									<th>시간(분)</th>
+									<th>세트(회)</th>
+									<th>세트 당 회수(회)</th>
+									<th>중량(kg)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="exercise" items="${routine.exerciseList}">
+									<tr>
+										<td>${exercise.name}</td>
+										<td>${exercise.category}</td>
+										<td>${exercise.part}</td>
+										<td>${exercise.calories}</td>
+										<td>${exercise.time}</td>
+										<td>${exercise.sets}</td>
+										<td>${exercise.reps}</td>
+										<td>${exercise.weight}</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</c:forEach>
+			<!-- 반복 루프 처리 영역 -->
+			<%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
+
+		</tbody>
+	</table>
 
 
 
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script>
-      
-      
-      
+	
+		$(document).ready(function () {
+		    $('.routine-row').click(function () {
+		        const routineNo = $(this).data('routine-no');
+	
+		        // 다른 펼쳐진 행은 닫기
+		        $('.exercise-detail').not('[data-parent="' + routineNo + '"]').slideUp();
+	
+		        // 해당 루틴의 상세 영역만 toggle
+		        const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
+		        target.slideToggle();
+		    });
+		});
       
    </script>
 </body>
