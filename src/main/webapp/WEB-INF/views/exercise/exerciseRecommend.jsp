@@ -507,7 +507,7 @@
         <!-- 운동 검색 영역 -->
         <div class="search-section">
             <div class="search-header">
-                <h3>운동 검색</h3>
+                <h3>루틴 검색</h3>
                 <div class="search-input-group">
                     <input type="text" class="search-input" placeholder="운동 검색">
                     <button class="search-btn">검색</button>
@@ -627,7 +627,7 @@
                     </table>
                 </td>
             </tr>
-				</c:forEach>
+			</c:forEach>
         <!-- 반복 루프 처리 영역 -->
         <%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
         
