@@ -179,7 +179,6 @@
 							<option value="일반">운동</option>
 							<option value="질문">식단</option>
 							<option value="헬스장">헬스장</option>
-							<option value="후기">후기</option>
 						</select>
 					</div>
 					<div class="form-group">

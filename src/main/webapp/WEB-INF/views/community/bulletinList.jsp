@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,7 +87,7 @@ body h1 {
 /* 테이블 컬럼 너비 */
 #boardtable th:nth-child(1) { width: 60px; }  /* 번호 */
 #boardtable th:nth-child(2) { width: auto; }  /* 제목 */
-#boardtable th:nth-child(3) { width: 100px; } /* 작성자 */
+#boardtable th:nth-child(3) { width: 150px; } /* 작성자 */
 #boardtable th:nth-child(4) { width: 150px; } /* 날짜 */
 #boardtable th:nth-child(5), 
 #boardtable th:nth-child(6) { width: 80px; }  /* 추천수, 조회수 */
@@ -145,7 +145,8 @@ body h1 {
 
 #board_etc_box #search_sel, 
 .search_btn, 
-.search_txt {
+.search_txt, 
+#search_category {
     display: inline-block;
     padding: 10px;
     border-radius: 20px;
@@ -165,12 +166,14 @@ body h1 {
 }
 
 /* 버튼 호버 효과 */
+#search_category:hover,
 #btnadd_post:hover,
 .search_btn:hover,
 #search_sel:hover {
     background-color: #f5f5f5;
     border-color: #999;
 }
+
 </style>
 </head>
 <body>
@@ -207,166 +210,16 @@ body h1 {
 								<th>추천수</th>
 								<th>조회수</th>
 							</tr>
+							<c:forEach items="${bulletin_list}" var="dto">
 							<tr>
-								<td>2</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
+								<td>${dto.post_no}</td>
+								<td>[${dto.post_header_name}] ${dto.post_subject}</td>
+								<td>${dto.nickname}(${dto.creator_id})</td>
+								<td>${dto.regdate}</td>
+								<td>${dto.post_recommend}</td>
+								<td>${dto.post_record_cnt}</td>
 							</tr>
-							<tr>
-								<td>2</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
+							</c:forEach>
 						</table>
 						
 						<!-- 페이지네이션 -->
@@ -393,6 +246,12 @@ body h1 {
 
 					<div id="board_etc_box">
 						<div class="search_area">
+							<select id="search_category">
+								<option value="1">운동</option>
+								<option value="2">식단</option>
+								<option value="3">헬스장</option>
+								<option value="4">후기</option>								
+							</select>
 							<select id="search_sel">
 								<option value="제목">제목</option>
 								<option value="작성자">작성자</option>

@@ -12,9 +12,10 @@ DROP TABLE bulletin_post_header;
 
 
 
-
-
-
+-- 시퀀스 생성
+CREATE SEQUENCE seq_qna_post_no START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE seq_bulletin_post_no START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE SEQUENCE seq_announcement_post_no START WITH 1 INCREMENT BY 1 NOCACHE;
 
 
 

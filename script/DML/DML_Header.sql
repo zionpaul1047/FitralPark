@@ -21,5 +21,10 @@ INSERT INTO qna_post_header (qna_post_header_no, qna_post_header_name) VALUES (3
 select * from bulletin_post_header;
 select * from announcement_post_header;
 
+select bulletin_post_subject, 
+        (select member_nickname from member where creator_id = member.member_id) as member_nickname, 
+        creator_id, to_char(regdate, 'yyyy-mm-dd') as regdate, 
+        bulletin_post_recommend, 
+        post_record_cnt from bulletin_post order by bulletin_post_no desc;
 
 commit;
