@@ -481,15 +481,15 @@
 		}
 		
 		.popup {
-			/* display: grid; */
-			display:none;
+			display: grid;
+			/* display:none; */
 			grid-template-columns: 1fr;
-		    grid-template-rows: 10px 90px 450px 80px;
+		    grid-template-rows: 90px 300px 50px;
 		    
 			border: 1px solid black;
 			background-color: white;
-			width: 800px;
-			height: 630px;
+			width: 790px;
+			height: 480px;
 			position: fixed;
 			top: 50%;
 			left: 50%;
@@ -499,10 +499,6 @@
 			
 		}
 		
-		.popup_content {
-			position: relative;
-			text-align: center;
-		}
 
 		.popup_close {
 			position: absolute;
@@ -535,14 +531,19 @@
 			font-weight: bold;
 		}
 		
-		#popup_head > div {
+		#popup_head > div:nth-child(2) {
 			/* border: 1px solid black; */
 			margin: 10px;
 		}
 		
-		#popup_head > div > input {
+		#popup_head > div:nth-child(2) > input {
 			border: 1px solid black;
 			border-radius: 3px;
+		}
+		
+		#popup_head > div:nth-child(3) {
+			display: none;
+			margin: 10px;
 		}
 		
 		.popup_in_btn {
@@ -556,7 +557,10 @@
 
 		#popup_content {
 			overflow: auto;
-			height: 450px;
+			height: 300px;
+			position: relative;
+			top: 0;
+			left: 0;
 		}
 		#physical_hist_tbl {
 			border: 1px solid black;
@@ -581,14 +585,88 @@
 			position: relative;
 			top: 0;
 			left: 0;
-			border: 1px solid black;
+			/* border: 1px solid black; */
+			display: flex;
+			justify-content: right;
 		}
 		
 		#popup_bottom #put_hist_btn {
-			position: absolute;
-			bottom: 0;
-			right: 0;
 			
+			
+		}
+		
+		#physical_hist_input {
+			display: none;
+			width: 300px;
+			height: 120px;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -90%);
+			
+			
+		}
+		
+		#physical_hist_input > div:nth-child(1) {
+			display: flex;
+			flex-direction:column;
+			
+			align-items: center;
+			justify-content: space-around;
+			
+			border: 1px solid black;
+			border-radius: 5px;
+			margin: 10px;
+			padding: 10px;
+			width: 300px;
+			height: 120px;
+			
+			
+		}
+		
+		#physical_hist_input > div:nth-child(1) > div {
+			
+			display:flex;
+			justify-content: space-around;
+			padding: 5px auto;
+			
+		}
+		
+		
+		#physical_hist_input > div:nth-child(1) span {
+			display: inline-block;
+			text-align: right;
+			width: 80px;
+			height: 30px;
+			/* border: 1px solid black; */
+			
+		}
+		
+		#physical_hist_input > div:nth-child(1) input {
+			border: 1px solid black;
+			border-radius: 5px;
+			width: 100px;
+			height: 30px;
+			flex-basis: 50%;
+			flex-grow: 50%;
+			
+		}
+
+		
+		#physical_hist_input button {
+			display: block;
+			width: 200px;
+            height: 30px;
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 5px auto;
+            
+		}
+		
+		#popup_bottom button#view_hist_btn {
+			display: none;
+			
+            
 		}
         
     </style>
@@ -1007,47 +1085,59 @@
 	</div>
 	<div id="modalBackdrop" class="modal-backdrop"></div>
 	<div id="popup_physical_hist" class="popup">
-		<span id="close_popup_btn" class="close">&times;</span>
 		<div id="popup_head">
 			<h2>신체 기록</h2>
 			<div>원하시는 월을 선택해주세요: <input type="month"><button id="get_hist_btn" class="popup_in_btn">조회하기</button></div>
+			<div>각 항목에 맞는 정보를 입력해주세요.</div>
 		</div>
 		<div id="popup_content">
-			<table id="physical_hist_tbl">
-				<tr>
-					<th>날짜</th>
-					<th>키(cm)</th>
-					<th>몸무게(kg)</th>
-				</tr>
-				<tr>
-					<td>2025.01.31.(월)</td>
-					<td>182.1</td>
-					<td>80</td>
-				</tr>
-				<tr>
-					<td>2025.02.28.(월)</td>
-					<td>182.1</td>
-					<td>80</td>
-				</tr>
-				<tr>
-					<td>2025.03.01.(월)</td>
-					<td>182.1</td>
-					<td>80</td>
-				</tr>
-				<tr>
-					<td>2025.03.15.(월)</td>
-					<td>182.1</td>
-					<td>80</td>
-				</tr>
-				<tr>
-					<td>2025.03.25.(월)</td>
-					<td>182.1</td>
-					<td>80</td>
-				</tr>
-			</table>
+			<div id="physical_hist_div">
+				<table id="physical_hist_tbl">
+					<tr>
+						<th>날짜</th>
+						<th>키(cm)</th>
+						<th>몸무게(kg)</th>
+					</tr>
+					<tr>
+						<td>2025.01.31.(월)</td>
+						<td>182.1</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>2025.02.28.(월)</td>
+						<td>182.1</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>2025.03.01.(월)</td>
+						<td>182.1</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>2025.03.15.(월)</td>
+						<td>182.1</td>
+						<td>80</td>
+					</tr>
+					<tr>
+						<td>2025.03.25.(월)</td>
+						<td>182.1</td>
+						<td>80</td>
+					</tr>
+				</table>
+			</div>
+			<div id="physical_hist_input">
+				<div>
+					<div><span> 키: </span><input type="number" min="0" max="300"></div>
+					<div><span> 몸무게: </span><input type="number" min="0" max="200"></div>
+				</div>
+				<div><button id="hist_input_btn">저장하기</button></div>
+				
+			</div>
 		</div>
 		<div id="popup_bottom">
-			<button id="put_hist_btn" class="popup_in_btn">등록하기</button>
+			<button id="put_hist_btn" class="popup_in_btn" onclick="physical_info_regist();">기록 등록하기</button>
+			<button id="view_hist_btn" class="popup_in_btn" onclick="physical_info_view();">기록 확인하기</button>			
+			<button id="close_popup_btn" class="popup_in_btn">닫기</button>
 		</div>
 	</div>
 
@@ -1056,6 +1146,9 @@
 		    document.getElementById('popup_physical_hist').style.display = 'grid';
 		    document.getElementById("modalBackdrop").style.display = "block"; // 배경 활성화
 		    document.body.style.overflow = "hidden"; // 스크롤 방지
+		    
+		    $('#popup_content > #physical_hist_div').css('display', 'block');
+    		$('#popup_content > #physical_hist_input').css('display', 'none');
 		});
 		
 		document.getElementById('close_popup_btn').addEventListener('click', function() {
@@ -1063,6 +1156,14 @@
 		    document.getElementById("modalBackdrop").style.display = "none"; // 배경 숨김
 		    document.body.style.overflow = "auto"; // 스크롤 다시 활성화
 		});
+		
+		$('#popup_close_btn').click(function(){
+			document.getElementById('popup_physical_hist').style.display = 'none';
+		    document.getElementById("modalBackdrop").style.display = "none"; // 배경 숨김
+		    document.body.style.overflow = "auto"; // 스크롤 다시 활성화
+		});
+		
+		
 	
 		const colorname='#115500';
 		const max = 100;
@@ -1126,24 +1227,6 @@
     		//main_cash_bn_idx = i;
     	}
        
-		function cash_bn() {
-			const len = $(".main_cash_con li").length;
-			
-			main_cash_bn_idx++;
-			if (main_cash_bn_idx >= len) {
-				main_cash_bn_idx = 0;
-			}
-			pos_list_btn(main_cash_bn_idx);
-		}
-		
-		//let cn_bn;
-		//let interTime = 5000;
-		/* 
-		$(window).on('load', () => {
-			cn_bn = setInterval(() => cash_bn(), interTime);
-		});
-
-		*/
  		
 		function getTdyExcsList() {
 			$.ajax({
@@ -1167,6 +1250,31 @@
 					console.log(a,b,c);
 				}
 			});
+		}
+		
+		
+		function physical_info_regist() {
+			$('#popup_content > #physical_hist_div').css('display', 'none');
+    		$('#popup_content > #physical_hist_input').css('display', 'block');
+    		$('#popup_bottom button#put_hist_btn').css('display', 'none');
+    		$('#popup_bottom button#view_hist_btn').css('display', 'block');
+    		
+    		
+    		$('#popup_head > div:nth-child(2)').css('display', 'none');
+    		$('#popup_head > div:nth-child(3)').css('display', 'block');
+    		
+    		
+		}
+		
+		function physical_info_view() {
+			$('#popup_content > #physical_hist_div').css('display', 'block');
+    		$('#popup_content > #physical_hist_input').css('display', 'none');
+    		$('#popup_bottom button#put_hist_btn').css('display', 'block');
+    		$('#popup_bottom button#view_hist_btn').css('display', 'none');
+    		
+    		
+    		$('#popup_head > div:nth-child(2)').css('display', 'block');
+    		$('#popup_head > div:nth-child(3)').css('display', 'none');
 		}
 		
 	       
