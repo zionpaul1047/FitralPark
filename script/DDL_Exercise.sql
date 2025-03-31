@@ -117,8 +117,8 @@ CREATE TABLE routine (
 CREATE TABLE routine_exercise (
     routine_exercise_no NUMBER PRIMARY KEY,
     routine_no NUMBER NOT NULL,
-    exercise_no NUMBER NOT NULL,
-    custom_exercise_no NUMBER NOT NULL,
+    exercise_no NUMBER NULL,
+    custom_exercise_no NUMBER NULL,
     exercise_creation_type NUMBER,
     sets NUMBER DEFAULT 0,
     reps_per_set NUMBER DEFAULT 0,
@@ -161,9 +161,16 @@ commit;
 
 
 
-
-
-
+-- 운동계획 시퀀스
+create sequence seqExercisePlan;
+--운동 + 루틴 시퀀스
+create sequence seqRoutineExercise;
+--운동 기록 시퀀스
+create sequence seqExerciseRecord;
+--회원 신체 정보 시퀀스
+create sequence seqMemberPhysical;
+--운동계획 + 루틴 시퀀스
+create sequence seqExercisePlanRoutineNo;
 
 
 
