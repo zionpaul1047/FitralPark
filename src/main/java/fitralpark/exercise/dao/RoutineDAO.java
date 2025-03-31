@@ -51,25 +51,32 @@ public class RoutineDAO {
 		
 		try {
 
-			List<RoutineDTO> list = new ArrayList<>();
+			ArrayList<RoutineDTO> list = new ArrayList<>();
 
-			 String sql = "SELECT r.routine_no, r.routine_name, rc.routine_category_name, "
-		               + "TO_CHAR(r.creation_date, 'YYYY.MM.DD') AS creation_date, "
-		               + "m.member_nickname, r.views, "
-		               + "LISTAGG(DISTINCT ec.exercise_category_name, ', ') WITHIN GROUP (ORDER BY ec.exercise_category_name) AS exercise_categories, "
-		               + "LISTAGG(DISTINCT ep.exercise_part_name, ', ') WITHIN GROUP (ORDER BY ep.exercise_part_name) AS exercise_parts, "
-		               + "SUM(e.calories_per_unit) AS total_calories "
-		               + "FROM routine r "
-		               + "JOIN routine_category rc ON r.routine_category_no = rc.routine_category_no "
-		               + "JOIN member m ON r.creator_id = m.member_id "
-		               + "JOIN routine_exercise re ON r.routine_no = re.routine_no "
-		               + "JOIN exercise e ON re.exercise_no = e.exercise_no "
-		               + "LEFT JOIN exercise_category_group ecg ON e.exercise_no = ecg.exercise_no "
-		               + "LEFT JOIN exercise_category ec ON ecg.exercise_category_no = ec.exercise_category_no "
-		               + "LEFT JOIN exercise_part_link epl ON e.exercise_no = epl.exercise_no "
-		               + "LEFT JOIN exercise_part ep ON epl.exercise_part_no = ep.exercise_part_no "
-		               + "GROUP BY r.routine_no, r.routine_name, rc.routine_category_name, r.creation_date, m.member_nickname, r.views "
-		               + "ORDER BY r.creation_date DESC";
+			String sql = "SELECT "
+	                + "r.routine_no as routine_no, "
+	                + "r.routine_name as routine_name, "
+	                + "rc.routine_category_name as routine_category_name, "
+	                + "TO_CHAR(r.creation_date, 'YYYY-MM-DD') as creation_date, "
+	                + "m.member_nickname as member_nickname, "
+	                + "r.views as views, "
+	                + "LISTAGG(DISTINCT ec.exercise_category_name, ', ') "
+	                + "   WITHIN GROUP (ORDER BY ec.exercise_category_name) as exercise_categories, "
+	                + "LISTAGG(DISTINCT ep.exercise_part_name, ', ') "
+	                + "   WITHIN GROUP (ORDER BY ep.exercise_part_name) as exercise_parts, "
+	                + "SUM(e.calories_per_unit) as total_calories "
+	                + "FROM routine r "
+	                + "JOIN routine_category rc ON r.routine_category_no = rc.routine_category_no "
+	                + "JOIN member m ON r.creator_id = m.member_id "
+	                + "JOIN routine_exercise re ON r.routine_no = re.routine_no "
+	                + "JOIN exercise e ON re.exercise_no = e.exercise_no "
+	                + "LEFT JOIN exercise_category_group ecg ON e.exercise_no = ecg.exercise_no "
+	                + "LEFT JOIN exercise_category ec ON ecg.exercise_category_no = ec.exercise_category_no "
+	                + "LEFT JOIN exercise_part_link epl ON e.exercise_no = epl.exercise_no "
+	                + "LEFT JOIN exercise_part ep ON epl.exercise_part_no = ep.exercise_part_no "
+	                + "GROUP BY r.routine_no, r.routine_name, rc.routine_category_name, "
+	                + "r.creation_date, m.member_nickname, r.views "
+	                + "ORDER BY r.creation_date DESC";
 
 			rs = stat.executeQuery(sql);
 
@@ -86,7 +93,9 @@ public class RoutineDAO {
 	            dto.setViews(rs.getString("views"));
 	            list.add(dto);
 			}
-
+			
+			return list;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
