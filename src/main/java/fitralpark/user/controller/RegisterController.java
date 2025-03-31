@@ -10,30 +10,51 @@ import java.io.IOException;
 
 @WebServlet("/register.do")
 public class RegisterController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // login.jsp로 포워딩
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/login.jsp");
-        dispatcher.forward(request, response);
-    }
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+		// 1. 입력값 받기
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
+		String name = request.getParameter("name");
+		String jumin1 = request.getParameter("jumin1");
+		String jumin2_first = request.getParameter("jumin2_first");
+		String jumin2_rest = request.getParameter("jumin2_rest");
+		String nickname = request.getParameter("nickname");
+		String phone1 = request.getParameter("phone1");
+		String phone2 = request.getParameter("phone2");
+		String phone3 = request.getParameter("phone3");
+		String customPhone = request.getParameter("custom_phone");
+		String emailPrefix = request.getParameter("email_prefix");
+		String emailDomain = request.getParameter("email_domain");
+		String emailDomainCustom = request.getParameter("email_domain_custom");
+		String zipcode = request.getParameter("zipcode");
+		String address = request.getParameter("address");
+		String addressDetail = request.getParameter("address_detail");
 
-        // 간단한 로그인 예시 (실제 프로젝트에서는 DB와 연동 필요)
-        if ("admin".equals(username) && "1234".equals(password)) {
-            request.getSession().setAttribute("loginUser", username);
-            response.getWriter().println("<script>alert('로그인 성공!'); window.opener.location.href='/index.do'; window.close();</script>");
-        } else {
-            response.getWriter().println("<script>alert('아이디 또는 비밀번호가 일치하지 않습니다.'); history.back();</script>");
-        }
-    }
+		// 2. 유효성 검증(선택적으로 로그 찍기)
+		System.out.println("회원가입 요청 ID: " + id);
+		System.out.println("닉네임: " + nickname);
+
+		// 3. 이메일 도메인 처리
+		String finalEmail = emailDomain.equals("etc") ? emailDomainCustom : emailDomain;
+		String email = emailPrefix + "@" + finalEmail;
+
+		// 4. 연락처 처리
+		String phone = customPhone != null && !customPhone.isEmpty()
+				? customPhone
+				: phone1 + "-" + phone2 + "-" + phone3;
+
+		// 5. 주민등록번호 전체
+		String jumin = jumin1 + "-" + jumin2_first + jumin2_rest;
+
+		// 6. (임시 처리) DB 저장 없이 완료 메시지
+		response.setContentType("text/html; charset=UTF-8");
+		response.getWriter().println("<script>alert('회원가입 정보가 정상적으로 전달되었습니다.'); window.opener.location.href='/index.do'; window.close();</script>");
+	}
 }
