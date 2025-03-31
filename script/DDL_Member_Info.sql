@@ -148,6 +148,16 @@ ALTER TABLE bulletin_post add views number default 1;
 ALTER TABLE diet add views number default 1;
 ALTER TABLE routine_exercise modify custom_exercise_no NUMBER NULL;
 ALTER TABLE routine_exercise modify exercise_no NUMBER NULL;
+ALTER TABLE routine add recommend NUMBER DEFAULT 0;
+ALTER TABLE routine add disrecommend NUMBER DEFAULT 0;
+ALTER TABLE diet add recommend NUMBER DEFAULT 0;
+ALTER TABLE diet add disrecommend NUMBER DEFAULT 0;
+ALTER TABLE qna_post add recommend NUMBER DEFAULT 0;
+ALTER TABLE qna_post add disrecommend NUMBER DEFAULT 0;
+ALTER TABLE announcement_post add recommend NUMBER DEFAULT 0;
+ALTER TABLE announcement_post add disrecommend NUMBER DEFAULT 0;
+ALTER TABLE bulletin_post add recommend NUMBER DEFAULT 0;
+ALTER TABLE bulletin_post add disrecommend NUMBER DEFAULT 0;
 
 create sequence seq_weight_unit;
 create sequence seq_routine;
