@@ -146,3 +146,12 @@ ALTER TABLE qna_post add views number default 1;
 ALTER TABLE announcement_post add views number default 1;
 ALTER TABLE bulletin_post add views number default 1;
 ALTER TABLE diet add views number default 1;
+
+create sequence seqWeightUnit;
+create sequence seqRoutine;
+create sequence seqExcercisePart;
+create sequence seqExcerciseCategory;
+create sequence seqRoutineCategory;
+create sequence seqExercise;
+create sequence seqEcgn;
+create sequence seqMember;
