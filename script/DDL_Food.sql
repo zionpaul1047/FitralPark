@@ -180,9 +180,10 @@ CREATE TABLE intake_record(
     creator_id VARCHAR2(50) NOT NULL,
     food_no NUMBER NULL,
     custom_food_no NUMBER NULL,
-    diet_no NUMBER NOT NULL,
+    diet_no NUMBER NULL,
     food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
-
+    intake number(6,2) not null,
+	
     CONSTRAINT PK_intake_record PRIMARY KEY(intake_record_no),
     CONSTRAINT FK_intake_record_creator_id FOREIGN KEY(creator_id) REFERENCES member(member_id),
     CONSTRAINT FK_intake_record_food_no FOREIGN KEY(food_no) REFERENCES food(food_no),
