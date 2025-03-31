@@ -1,18 +1,11 @@
-<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-   
-   
-   
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-   <meta charset="UTF-8">
-   <title>FITRALPARK</title>
-   <script src="https://kit.fontawesome.com/11104cc7aa.js" crossorigin="anonymous"></script>
-   <style>
-		:root {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운동 라이브러리</title>
+    <style>
+        :root {
             --primary-color: #333;
             --secondary-color: #f8f8f8;
             --border-color: #ddd;
@@ -498,7 +491,7 @@
                 margin: 2px;
             }
         }
-	</style>
+    </style>
 </head>
 <body>
     <div class="container">
@@ -569,79 +562,167 @@
             <table class="exercise-table">
                 <thead>
                     <tr>
-						<th>선택</th>
-						<th>루틴 이름</th>
-						<th>루틴 카테고리</th>
-						<th>포함 운동 카테고리</th>
-						<th>포함 운동 부위</th>
-						<th>소모 총 열량(kcal)</th>
-						<th>등록일</th>
-						<th>작성자</th>
-						<th>즐겨찾기</th>
-						<th>조회수</th>
+                        <th></th>
+                        <th>운동 이름</th>
+                        <th>운동 카테고리</th>
+                        <th>운동 효과 카테고리</th>
+                        <th>소모 칼로리(kcal/시간)</th>
+                        <th>운동 시간(분)</th>
+                        <th>작성일</th>
+                        <th>작성자(닉네임)</th>
+                        <th>즐겨찾기</th>
+                        <th>조회수</th>
                     </tr>
                 </thead>
                 <tbody>
-    			<c:forEach items="${list}" var="dto">
-					<tr class="routine-row" data-routine-no="${dto.routineNo}">
-						<td><input type="checkbox" /></td>
-						<td>${dto.routineName}</td>
-						<td>${dto.routineCategoryName}</td>
-						<td>${dto.exerciseCategories}</td>
-						<td>${dto.exerciseParts}</td>
-						<td>${dto.totalCalories}</td>
-						<td>${dto.creationDate}</td>
-						<td>${dto.memberNickname}</td>
-						<td>⭐</td>
-						<td>${dto.views}</td>
-					</tr>
-					<tr class="exercise-detail" data-parent="${routine.routineNo}" style="display: none;">
-                	<td colspan="10">
-                    <table class="sub-table">
-                        <thead>
-                            <tr>
-                                <th>운동 이름</th>
-                                <th>운동 카테고리</th>
-                                <th>운동 부위</th>
-                                <th>소모 열량(kcal)</th>
-                                <th>시간(분)</th>
-                                <th>세트(회)</th>
-                                <th>세트 당 회수(회)</th>
-                                <th>중량(kg)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="exercise" items="${routine.exerciseList}">
-                                <tr>
-                                    <td>${exercise.name}</td>
-                                    <td>${exercise.category}</td>
-                                    <td>${exercise.part}</td>
-                                    <td>${exercise.calories}</td>
-                                    <td>${exercise.time}</td>
-                                    <td>${exercise.sets}</td>
-                                    <td>${exercise.reps}</td>
-                                    <td>${exercise.weight}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-				</c:forEach>
-        <!-- 반복 루프 처리 영역 -->
-        <%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
-        
-    			</tbody>
-
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>전신 유산소 루틴</td>
+                        <td>유산소 운동 전신</td>
+                        <td>스트레스 감소, 심폐지구력 향상</td>
+                        <td>600</td>
+                        <td>45</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>전신 유산소 루틴</td>
+                        <td>유산소 운동 전신</td>
+                        <td>스트레스 감소, 심폐지구력 향상</td>
+                        <td>600</td>
+                        <td>45</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>전신 유산소 루틴</td>
+                        <td>유산소 운동 전신</td>
+                        <td>스트레스 감소, 심폐지구력 향상</td>
+                        <td>600</td>
+                        <td>45</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>전신 유산소 루틴</td>
+                        <td>유산소 운동 전신</td>
+                        <td>스트레스 감소, 심폐지구력 향상</td>
+                        <td>600</td>
+                        <td>45</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
             </table>
             
             <!-- 운동 세부 정보 테이블 -->
-            
+            <div class="exercise-detail">
+                <h3>운동 세부</h3>
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>운동 이름</th>
+                            <th>세부적 효과</th>
+                            <th>난이도</th>
+                            <th>소모 칼로리(kcal)</th>
+                            <th>세트 수</th>
+                            <th>횟수(회)</th>
+                            <th>휴식 시간(초)</th>
+                            <th>총시간(분)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>스쿼트</td>
+                            <td>하체근육, 코어근육 강화</td>
+                            <td>중급</td>
+                            <td>600</td>
+                            <td>3</td>
+                            <td>15</td>
+                            <td>30</td>
+                            <td>15</td>
+                        </tr>
+                        <tr>
+                            <td>푸쉬업</td>
+                            <td>가슴근육, 삼두근 강화</td>
+                            <td>중급</td>
+                            <td>600</td>
+                            <td>4</td>
+                            <td>12</td>
+                            <td>30</td>
+                            <td>20</td>
+                        </tr>
+                        <tr>
+                            <td>버피 테스트</td>
+                            <td>전신근육, 심폐지구력 향상</td>
+                            <td>고급</td>
+                            <td>600</td>
+                            <td>5</td>
+                            <td>8</td>
+                            <td>45</td>
+                            <td>10</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="button-group">
                     <button class="btn">운동 추가</button>
                     <button class="btn">비워진 것</button>
                     <button class="btn">가져오기</button>
                 </div>
+            </div>
+            
+            <!-- 추가 운동 리스트 -->
+            <table class="exercise-table">
+                <tbody>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>상체 근력 운동</td>
+                        <td>근력 운동 상체</td>
+                        <td>스트레스 감소, 근력 향상</td>
+                        <td>500</td>
+                        <td>30</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>상체 근력 운동</td>
+                        <td>근력 운동 상체</td>
+                        <td>스트레스 감소, 근력 향상</td>
+                        <td>500</td>
+                        <td>30</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>상체 근력 운동</td>
+                        <td>근력 운동 상체</td>
+                        <td>스트레스 감소, 근력 향상</td>
+                        <td>500</td>
+                        <td>30</td>
+                        <td>2023.03.26</td>
+                        <td>김제트</td>
+                        <td><span class="star">★</span></td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+            </table>
             
             <!-- 페이지네이션 -->
             <div class="pagination">
@@ -659,25 +740,57 @@
             </div>
         </div>
     </div>
-
-
-
-	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	<script>
-	
-		$(document).ready(function () {
-		    $('.routine-row').click(function () {
-		        const routineNo = $(this).data('routine-no');
-	
-		        // 다른 펼쳐진 행은 닫기
-		        $('.exercise-detail').not('[data-parent="' + routineNo + '"]').slideUp();
-	
-		        // 해당 루틴의 상세 영역만 toggle
-		        const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
-		        target.slideToggle();
-		    });
-		});
-      
-   </script>
+    
+    
 </body>
 </html>
+<script>
+//     document.addEventListener('DOMContentLoaded', function() {
+//     // 검색 버튼 이벤트 리스너
+//     const searchBtn = document.querySelector('.search-btn');
+//     if (searchBtn) {
+//         searchBtn.addEventListener('click', function() {
+//             searchExercises();
+//         });
+//     }
+    
+//     // 별표(즐겨찾기) 토글 기능
+//     const stars = document.querySelectorAll('.star');
+//     stars.forEach(star => {
+//         star.addEventListener('click', function() {
+//             toggleFavorite(this);
+//         });
+//     });
+    
+//     // 운동 추가 버튼 이벤트 리스너
+//     const addExerciseBtn = document.querySelector('.button-group .btn:first-child');
+//     if (addExerciseBtn) {
+//         addExerciseBtn.addEventListener('click', function() {
+//             addExercise();
+//         });
+//     }
+    
+//     // 운동 생성 버튼 이벤트 리스너
+//     const createExerciseBtn = document.querySelector('.btn-large');
+//     if (createExerciseBtn) {
+//         createExerciseBtn.addEventListener('click', function() {
+//             createNewExercise();
+//         });
+//     }
+    
+//     // 체크박스 이벤트 리스너 (필터링)
+//     const filterCheckboxes = document.querySelectorAll('.filter-row input[type="checkbox"]');
+//     filterCheckboxes.forEach(checkbox => {
+//         checkbox.addEventListener('change', function() {
+//             applyFilters();
+//         });
+//     });
+// });
+
+// // 운동 검색 함수
+// function searchExercises() {
+//     const minCalorie = document.querySelector('.calorie-min').value;
+//     const maxCalorie = document.querySelector('.calorie
+
+
+</script>
