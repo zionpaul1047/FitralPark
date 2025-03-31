@@ -16,5 +16,4 @@ public class QnaAnswer extends HttpServlet {
 
 		req.getRequestDispatcher("/WEB-INF/views/community/qnaAnswer.jsp").forward(req, resp);
 	}
-
 }

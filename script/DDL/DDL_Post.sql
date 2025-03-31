@@ -57,9 +57,12 @@ CREATE TABLE qna_post(
     post_record_cnt NUMBER NOT NULL,
     regdate DATE NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
-    
+    qna_post_header_no NUMBER NOT NULL,
+
+
     CONSTRAINT PK_qna_post_no PRIMARY KEY (qna_post_no),
-    CONSTRAINT FK_qna_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id)
+    CONSTRAINT FK_qna_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_qna_post_header_no FOREIGN KEY (qna_post_header_no) REFERENCES qna_post_header(qna_post_header_no)
 );
 
 -- 자유게시판 게시글
@@ -73,9 +76,11 @@ CREATE TABLE bulletin_post(
     post_record_cnt NUMBER NOT NULL,
     regdate DATE NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
+    bulletin_post_header_no NUMBER NOT NULL,
     
     CONSTRAINT PK_bulletin_post_no PRIMARY KEY (bulletin_post_no),
-    CONSTRAINT FK_bulletin_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id)
+    CONSTRAINT FK_bulletin_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_bulletin_post_header_no FOREIGN KEY (bulletin_post_header_no) REFERENCES bulletin_post_header(bulletin_post_header_no)
 );
 
 -- 공지사항 게시글
@@ -89,9 +94,11 @@ CREATE TABLE announcement_post(
     post_record_cnt NUMBER NOT NULL,
     regdate DATE NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
-    
+    announcement_post_header_no NUMBER NOT NULL,
+
     CONSTRAINT PK_announcement_post_no PRIMARY KEY (announcement_post_no),
-    CONSTRAINT FK_announcement_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id)
+    CONSTRAINT FK_announcement_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_announcement_post_header_no FOREIGN KEY (announcement_post_header_no) REFERENCES announcement_post_header(announcement_post_header_no)
 );
 
 

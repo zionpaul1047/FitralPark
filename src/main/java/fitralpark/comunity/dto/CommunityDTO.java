@@ -1,5 +1,9 @@
 package fitralpark.comunity.dto;
 //(데이터 전달 DTO 클래스 자리)
-public class CommunityDTO {
 
+
+public class CommunityDTO {
+	private String post_no;
+	private String post_subject;
+	private String post_
 }
