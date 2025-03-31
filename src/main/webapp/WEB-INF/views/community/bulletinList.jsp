@@ -213,7 +213,7 @@ body h1 {
 							<c:forEach items="${bulletin_list}" var="dto">
 							<tr>
 								<td>${dto.post_no}</td>
-								<td>[${dto.post_header_name}] ${dto.post_subject}</td>
+								<td><a href="">[${dto.post_header_name}] ${dto.post_subject}</a></td>
 								<td>${dto.nickname}(${dto.creator_id})</td>
 								<td>${dto.regdate}</td>
 								<td>${dto.post_recommend}</td>
