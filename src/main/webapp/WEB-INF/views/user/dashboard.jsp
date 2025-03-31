@@ -481,8 +481,8 @@
 		}
 		
 		.popup {
-			display: grid;
-			/* display:none; */
+			/* display: grid; */
+			display:none;
 			grid-template-columns: 1fr;
 		    grid-template-rows: 90px 300px 50px;
 		    
