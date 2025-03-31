@@ -1,96 +1,91 @@
 package fitralpark.user.controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.UserDTO;
 
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
 
 @WebServlet("/register.do")
 public class RegisterController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");
-		System.out.println("[DEBUG] RegisterController 호출됨");
+        req.setCharacterEncoding("UTF-8");
+        System.out.println("[DEBUG] RegisterController 호출됨");
 
-		// 1. 입력값 받아오기
-		String id = nvl(request.getParameter("id"));
-		String pw = nvl(request.getParameter("password"));
-		String name = nvl(request.getParameter("name"));
+        // 1. 입력값 수집
+        String id = req.getParameter("id");
+        String pw = req.getParameter("password");
+        String name = req.getParameter("name");
+        String nickname = req.getParameter("nickname");
 
-		String jumin1 = nvl(request.getParameter("jumin1"));
-		String jumin2_first = nvl(request.getParameter("jumin2_first"));
-		String jumin2_rest = nvl(request.getParameter("jumin2_rest"));
-		String jumin = request.getParameter("jumin1")
-	            + request.getParameter("jumin2_first")
-	            + request.getParameter("jumin2_rest");
+        String jumin = req.getParameter("jumin1")
+                     + req.getParameter("jumin2_first")
+                     + req.getParameter("jumin2_rest");
 
+        String tel = "";
+        if (req.getParameter("custom_phone") != null && !req.getParameter("custom_phone").trim().isEmpty()) {
+            tel = req.getParameter("custom_phone").replaceAll("-", "");
+        } else {
+            tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
+        }
 
-		String nickname = nvl(request.getParameter("nickname"));
+        String email = req.getParameter("email_prefix");
+        String domain = req.getParameter("email_domain");
+        String customDomain = req.getParameter("email_domain_custom");
 
-		String customPhone = request.getParameter("custom_phone");
-		String tel;
-		if (customPhone != null && !customPhone.trim().isEmpty()) {
-			tel = customPhone;
-		} else {
-			tel = nvl(request.getParameter("phone1")) + "-" +
-				  nvl(request.getParameter("phone2")) + "-" +
-				  nvl(request.getParameter("phone3"));
-		}
+        if ("etc".equals(domain) && customDomain != null && !customDomain.isEmpty()) {
+            domain = customDomain;
+        }
 
-		String emailDomain = nvl(request.getParameter("email_domain"));
-		String emailCustomDomain = nvl(request.getParameter("email_domain_custom"));
-		String emailPrefix = nvl(request.getParameter("email_prefix"));
+        if (email != null && domain != null && !domain.isEmpty()) {
+            email = email + "@" + domain;
+        }
 
-		String domain = "etc".equals(emailDomain) ? emailCustomDomain : emailDomain;
-		String email = emailPrefix + "@" + domain;
+        String address = req.getParameter("zipcode") + " "
+                       + req.getParameter("address") + " "
+                       + req.getParameter("address_detail");
 
-		String zipcode = nvl(request.getParameter("zipcode"));
-		String addressBasic = nvl(request.getParameter("address"));
-		String addressDetail = nvl(request.getParameter("address_detail"));
-		String address = zipcode + " " + addressBasic + " " + addressDetail;
+        // 2. DTO 생성
+        UserDTO dto = new UserDTO();
+        dto.setMemberId(id);
+        dto.setPw(pw);
+        dto.setMemberName(name);
+        dto.setMemberNickname(nickname);
+        dto.setPersonalNumber(jumin);
+        dto.setTel(tel);
+        dto.setEmail(email);
+        dto.setAddress(address);
 
-		// 2. DTO에 담기
-		UserDTO dto = new UserDTO();
-		dto.setMemberId(id);
-		dto.setPw(pw);
-		dto.setMemberName(name);
-		dto.setMemberNickname(nickname);
-		dto.setPersonalNumber(jumin);
-		dto.setTel(tel);
-		dto.setEmail(email);
-		dto.setAddress(address);
+        // 기본값 (이미지는 추후 구현)
+        dto.setMemberPic(null);
+        dto.setBackgroundPic(null);
+        dto.setAllergy(null);
+        dto.setFitnessScore(0);
+        dto.setCommunityScore(0);
+        dto.setRestrictCheck(0);
+        dto.setWithdrawCheck(0);
+        dto.setMentorCheck(0);
+        dto.setAdminCheck(0);
+        dto.setPlanPublicCheck(0);
 
-		dto.setMemberPic(null); // 프로필 사진 추후 구현
-		dto.setBackgroundPic(null);
-		dto.setAllergy(null);
+        // 3. DB 저장
+        UserDAO dao = new UserDAO();
+        int result = dao.insertMember(dto);
 
-		// 3. DB 저장
-		UserDAO dao = new UserDAO();
-		int result = dao.insertMember(dto);
+        // 4. 결과 처리
+        resp.setContentType("text/html; charset=UTF-8");
 
-		// 4. 결과 처리
-		response.setContentType("text/html; charset=UTF-8");
-		if (result > 0) {
-			response.getWriter().println(
-					"<script>alert('회원가입 성공!'); window.opener.location.href='/index.do'; window.close();</script>");
-		} else {
-			response.getWriter().println("<script>alert('회원가입 실패!'); history.back();</script>");
-		}
-	}
-
-	// 널 방지 헬퍼 메소드
-	private String nvl(String str) {
-		return str == null ? "" : str.trim();
-	}
+        if (result > 0) {
+            resp.getWriter().write("<script>alert('회원가입이 완료되었습니다.'); window.opener.location.href='/index.do'; window.close();</script>");
+        } else {
+            // alert + 이전 화면으로
+            resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
+        }
+    }
 }
