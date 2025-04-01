@@ -47,11 +47,11 @@ public class RoutineDAO {
 		}
 	}
 
-	public ArrayList<RoutineDTO> list() {
+	public ArrayList<RoutineDTO> routineList() {
 		
 		try {
 
-			ArrayList<RoutineDTO> list = new ArrayList<>();
+			ArrayList<RoutineDTO> routineList = new ArrayList<RoutineDTO>();
 
 			String sql = "SELECT "
 	                + "r.routine_no as routine_no, "
@@ -61,9 +61,9 @@ public class RoutineDAO {
 	                + "m.member_nickname as member_nickname, "
 	                + "r.views as views, "
 	                + "LISTAGG(DISTINCT ec.exercise_category_name, ', ') "
-	                + "   WITHIN GROUP (ORDER BY ec.exercise_category_name) as exercise_categories, "
+	                + "WITHIN GROUP (ORDER BY ec.exercise_category_name) as exercise_categories, "
 	                + "LISTAGG(DISTINCT ep.exercise_part_name, ', ') "
-	                + "   WITHIN GROUP (ORDER BY ep.exercise_part_name) as exercise_parts, "
+	                + "WITHIN GROUP (ORDER BY ep.exercise_part_name) as exercise_parts, "
 	                + "SUM(e.calories_per_unit) as total_calories "
 	                + "FROM routine r "
 	                + "JOIN routine_category rc ON r.routine_category_no = rc.routine_category_no "
@@ -81,7 +81,9 @@ public class RoutineDAO {
 			rs = stat.executeQuery(sql);
 
 			while (rs.next()) {
+				
 				RoutineDTO dto = new RoutineDTO();
+				
 	            dto.setRoutineNo(rs.getString("routine_no"));
 	            dto.setRoutineName(rs.getString("routine_name"));
 	            dto.setRoutineCategoryName(rs.getString("routine_category_name"));
@@ -91,10 +93,11 @@ public class RoutineDAO {
 	            dto.setCreationDate(rs.getString("creation_date"));
 	            dto.setMemberNickname(rs.getString("member_nickname"));
 	            dto.setViews(rs.getString("views"));
-	            list.add(dto);
+	            
+	            routineList.add(dto);
 			}
 			
-			return list;
+			return routineList;
 			
 		} catch (Exception e) {
 			e.printStackTrace();

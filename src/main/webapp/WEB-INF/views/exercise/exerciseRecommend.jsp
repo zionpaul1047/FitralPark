@@ -1,22 +1,50 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%
-   
-   
-   
-%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
    <meta charset="UTF-8">
    <title>FITRALPARK</title>
-   <script src="https://kit.fontawesome.com/11104cc7aa.js" crossorigin="anonymous"></script>
+   <%@ include file="/WEB-INF/views/common/asset.jsp" %>
    <style>
+   
+   		body {
+        background-color: rgb(218, 243, 211);
+        
+        }  
+        .grid{
+            display: grid;
+		    grid-template-rows: 125px auto 1fr;
+		    grid-template-columns: 1fr;
+		    min-height: 100%;
+        }
+        .grid_top{
+        	/* border: 1px solid black; */
+            grid-row: 1;
+        }
+        .grid_center{
+        	/* border: 1px solid black; */
+            grid-row: 2;
+		    display: grid;
+		    grid-template-columns: calc(50% - 424px) auto;
+        }
+        .grid_center_L{
+        /* border: 1px solid black; */
+        }
+        .grid_center_R{
+        /* border: 1px solid black; */
+        	width: 1060px;
+        }
+        .grid_bottom{
+        /* border: 1px solid black; */
+            grid-row: 3;
+        }
+   
 		:root {
             --primary-color: #333;
             --secondary-color: #f8f8f8;
-            --border-color: #ddd;
-            --container-width: 1000px;
+            --border-color: black;
+            --container-width: 1060px;
             --spacing-unit: 20px;
             --font-family: 'Noto Sans KR', sans-serif;
             --transition-speed: 0.3s;
@@ -37,10 +65,13 @@
         }
 
         .container {
+        	background-color: #FFF;
             max-width: var(--container-width);
             margin: 0 auto;
             padding: var(--spacing-unit);
-            border: 1px solid var(--border-color);
+            /* border: 1px solid var(--border-color); */
+            margin-bottom: 20px;	
+            border-radius: 20px;
         }
 
         /* 제목 스타일 조정 */
@@ -56,14 +87,14 @@
 
         /* 공통 스타일 */
         .table-cell {
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             border-bottom: 1px solid var(--border-color);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 200px; /* 기본 최대 너비 설정 */
-            vertical-align: middle; /* 수직 정렬 추가 */
+            max-width: 200px;
+            vertical-align: middle;
         }
 
         /* 체크박스 정렬 */
@@ -168,6 +199,7 @@
         }
 
         .search-header .search-input {
+        	border: 1px solid black;
             width: 200px;
         }
 
@@ -291,6 +323,8 @@
         .exercise-table td {
             composes: table-cell;
             font-size: 14px;
+            height: 50px;
+            line-height: 1.5;
         }
 
         .exercise-table th {
@@ -497,10 +531,40 @@
             .pagination a {
                 margin: 2px;
             }
+            
+            .sub-table {
+		        width: 100%;
+		        border-collapse: collapse;
+		        background-color: #f9f9f9;
+		    }
+		    
+		    .sub-table th, .sub-table td {
+		        border: 1px solid #ccc;
+		        padding: 6px;
+		        text-align: center;
+		        font-size: 14px;
+		    }
         }
 	</style>
 </head>
 <body>
+<div class="grid">
+	
+		<div class="grid_top">
+
+				<!-- 메인메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+			    <!-- 오른쪽메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+			    <!-- 왼쪽메뉴 -->
+			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+		</div>
+		
+		<div class="grid_center">
+		
+			<div class="grid_center_L"></div>
+			
+			<div class="grid_center_R">
     <div class="container">
         <h2 class="title">운동 라이브러리</h2>
         
@@ -566,9 +630,9 @@
         <!-- 운동 리스트 영역 -->
         <div class="exercise-list-section">
             <h3>운동 리스트</h3>
-            <table class="exercise-table">
-                <thead>
-                    <tr>
+			<table class="exercise-table">
+				<thead>
+					<tr>
 						<th>선택</th>
 						<th>루틴 이름</th>
 						<th>루틴 카테고리</th>
@@ -579,105 +643,109 @@
 						<th>작성자</th>
 						<th>즐겨찾기</th>
 						<th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-    			<c:forEach items="${list}" var="dto">
-					<tr class="routine-row" data-routine-no="${dto.routineNo}">
-						<td><input type="checkbox" /></td>
-						<td>${dto.routineName}</td>
-						<td>${dto.routineCategoryName}</td>
-						<td>${dto.exerciseCategories}</td>
-						<td>${dto.exerciseParts}</td>
-						<td>${dto.totalCalories}</td>
-						<td>${dto.creationDate}</td>
-						<td>${dto.memberNickname}</td>
-						<td>⭐</td>
-						<td>${dto.views}</td>
 					</tr>
-					<tr class="exercise-detail" data-parent="${routine.routineNo}" style="display: none;">
-                	<td colspan="10">
-                    <table class="sub-table">
-                        <thead>
-                            <tr>
-                                <th>운동 이름</th>
-                                <th>운동 카테고리</th>
-                                <th>운동 부위</th>
-                                <th>소모 열량(kcal)</th>
-                                <th>시간(분)</th>
-                                <th>세트(회)</th>
-                                <th>세트 당 회수(회)</th>
-                                <th>중량(kg)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="exercise" items="${routine.exerciseList}">
-                                <tr>
-                                    <td>${exercise.name}</td>
-                                    <td>${exercise.category}</td>
-                                    <td>${exercise.part}</td>
-                                    <td>${exercise.calories}</td>
-                                    <td>${exercise.time}</td>
-                                    <td>${exercise.sets}</td>
-                                    <td>${exercise.reps}</td>
-                                    <td>${exercise.weight}</td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-			</c:forEach>
-        <!-- 반복 루프 처리 영역 -->
-        <%-- 예시용, 실제로는 루틴 목록을 forEach 등으로 출력 --%>
-        
-    			</tbody>
-
-            </table>
-            
-            <!-- 운동 세부 정보 테이블 -->
-            
-                <div class="button-group">
-                    <button class="btn">운동 추가</button>
-                    <button class="btn">비워진 것</button>
-                    <button class="btn">가져오기</button>
-                </div>
-            
-            <!-- 페이지네이션 -->
-            <div class="pagination">
-                <a href="#">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">7</a>
-            </div>
-            
+				</thead>
+				<tbody>
+					<c:forEach items="${list}" var="dto">
+						<tr class="routine-row" data-routine-no="${dto.routineNo}">
+							<td><input type="checkbox" /></td>
+							<td>${dto.routineName}</td>
+							<td>${dto.routineCategoryName}</td>
+							<td>${dto.exerciseCategories}</td>
+							<td>${dto.exerciseParts}</td>
+							<td>${dto.totalCalories}</td>
+							<td>${dto.creationDate}</td>
+							<td>${dto.memberNickname}</td>
+							<td>⭐</td>
+							<td>${dto.views}</td>
+						</tr>
+						<tr class="exercise-detail" data-parent="${routine.routineNo}"
+							style="display: none;">
+							<td colspan="10">
+								<table class="sub-table">
+									<thead>
+										<tr>
+											<th>운동 이름</th>
+											<th>운동 카테고리</th>
+											<th>운동 부위</th>
+											<th>소모 열량(kcal)</th>
+											<th>시간(분)</th>
+											<th>세트(회)</th>
+											<th>세트 당 회수(회)</th>
+											<th>중량(kg)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%-- <c:forEach var="exercise" items="${routine.exerciseList}"> --%>
+											<tr>
+												<td>${exercise.name}</td>
+												<td>${exercise.category}</td>
+												<td>${exercise.part}</td>
+												<td>${exercise.calories}</td>
+												<td>${exercise.time}</td>
+												<td>${exercise.sets}</td>
+												<td>${exercise.reps}</td>
+												<td>${exercise.weight}</td>
+											</tr>
+										<%-- </c:forEach> --%>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
             <div class="button-section">
                 <button class="btn-large">+ 운동 생성</button>
             </div>
         </div>
     </div>
-
+</div>
+			
+		</div>
+		
+		<div class="grid_bottom">
+				<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+		</div>
+		
+	</div>
 
 
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script>
 	
+	const menuItems = document.querySelectorAll('.sf_submenu_1 div');
+	
+	    // 클릭 이벤트 추가
+	    menuItems.forEach(item => {
+	        item.addEventListener('click', () => {
+                // 모든 항목의 스타일 초기화
+                menuItems.forEach(menu => {
+                menu.classList.remove('active'); // active 클래스 제거
+                menu.style.backgroundColor = 'lightgray'; // 기본 배경색 설정
+                menu.style.fontWeight = 'normal'; // 기본 글씨 굵기 설정
+                });
+        
+                // 클릭된 항목에 스타일 적용
+                item.classList.add('active'); // active 클래스 추가
+                item.style.backgroundColor = 'oldlace'; // 클릭된 항목 배경색 설정
+                item.style.fontWeight = 'bold'; // 클릭된 항목 글씨 굵게 설정
+	        });
+	    });
+	
+	
+	
 		$(document).ready(function () {
-		    $('.routine-row').click(function () {
-		        const routineNo = $(this).data('routine-no');
-	
-		        // 다른 펼쳐진 행은 닫기
-		        $('.exercise-detail').not('[data-parent="' + routineNo + '"]').slideUp();
-	
-		        // 해당 루틴의 상세 영역만 toggle
-		        const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
-		        target.slideToggle();
-		    });
+		    $('.routine-row').click(function() {
+				const routineNo = $(this).data('routine-no');
+                // 다른 펼쳐진 행은 닫기
+				$('.exercise-detail').not('[data-parent="' + routineNo+ '"]').slideUp();
+                // 해당 루틴의 상세 영역만 toggle
+				const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
+				target.slideToggle();
+			});
 		});
-      
-   </script>
+        
+	</script>
 </body>
 </html>
