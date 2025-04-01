@@ -11,81 +11,85 @@ import java.io.IOException;
 @WebServlet("/register.do")
 public class RegisterController extends HttpServlet {
 
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        req.setCharacterEncoding("UTF-8");
-        System.out.println("[DEBUG] RegisterController 호출됨");
+		req.setCharacterEncoding("UTF-8");
+		System.out.println("[DEBUG] RegisterController 호출됨");
 
-        // 1. 입력값 수집
-        String id = req.getParameter("id");
-        String pw = req.getParameter("password");
-        String name = req.getParameter("name");
-        String nickname = req.getParameter("nickname");
+		// 1. 입력값 수집
+		String id = req.getParameter("id");
+		String pw = req.getParameter("password");
+		String name = req.getParameter("name");
+		String nickname = req.getParameter("nickname");
 
-        String jumin = req.getParameter("jumin1")
-                     + req.getParameter("jumin2_first")
-                     + req.getParameter("jumin2_rest");
+		String jumin = req.getParameter("jumin1") + req.getParameter("jumin2_first") + req.getParameter("jumin2_rest");
 
-        String tel = "";
-        if (req.getParameter("custom_phone") != null && !req.getParameter("custom_phone").trim().isEmpty()) {
-            tel = req.getParameter("custom_phone").replaceAll("-", "");
-        } else {
-            tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
-        }
+		String tel = "";
+		if (req.getParameter("custom_phone") != null && !req.getParameter("custom_phone").trim().isEmpty()) {
+			tel = req.getParameter("custom_phone").replaceAll("-", "");
+		} else {
+			tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
+		}
 
-        String email = req.getParameter("email_prefix");
-        String domain = req.getParameter("email_domain");
-        String customDomain = req.getParameter("email_domain_custom");
+		String email = req.getParameter("email_prefix");
+		String domain = req.getParameter("email_domain");
+		String customDomain = req.getParameter("email_domain_custom");
 
-        if ("etc".equals(domain) && customDomain != null && !customDomain.isEmpty()) {
-            domain = customDomain;
-        }
+		if ("etc".equals(domain) && customDomain != null && !customDomain.isEmpty()) {
+			domain = customDomain;
+		}
 
-        if (email != null && domain != null && !domain.isEmpty()) {
-            email = email + "@" + domain;
-        }
+		if (email != null && domain != null && !domain.isEmpty()) {
+			email = email + "@" + domain;
+		}
 
-        String address = req.getParameter("zipcode") + " "
-                       + req.getParameter("address") + " "
-                       + req.getParameter("address_detail");
+		String address = req.getParameter("zipcode") + " " + req.getParameter("address") + " "
+				+ req.getParameter("address_detail");
 
-        // 2. DTO 생성
-        UserDTO dto = new UserDTO();
-        dto.setMemberId(id);
-        dto.setPw(pw);
-        dto.setMemberName(name);
-        dto.setMemberNickname(nickname);
-        dto.setPersonalNumber(jumin);
-        dto.setTel(tel);
-        dto.setEmail(email);
-        dto.setAddress(address);
+		// 2. DTO 생성
+		UserDTO dto = new UserDTO();
+		dto.setMemberId(id);
+		dto.setPw(pw);
+		dto.setMemberName(name);
+		dto.setMemberNickname(nickname);
+		dto.setPersonalNumber(jumin);
+		dto.setTel(tel);
+		dto.setEmail(email);
+		dto.setAddress(address);
 
-        // 기본값 (이미지는 추후 구현)
-        dto.setMemberPic(null);
-        dto.setBackgroundPic(null);
-        dto.setAllergy(null);
-        dto.setFitnessScore(0);
-        dto.setCommunityScore(0);
-        dto.setRestrictCheck(0);
-        dto.setWithdrawCheck(0);
-        dto.setMentorCheck(0);
-        dto.setAdminCheck(0);
-        dto.setPlanPublicCheck(0);
+		// 기본값 (이미지는 추후 구현)
+		dto.setMemberPic(null);
+		dto.setBackgroundPic(null);
+		dto.setAllergy(null);
+		dto.setFitnessScore(0);
+		dto.setCommunityScore(0);
+		dto.setRestrictCheck(0);
+		dto.setWithdrawCheck(0);
+		dto.setMentorCheck(0);
+		dto.setAdminCheck(0);
+		dto.setPlanPublicCheck(0);
 
-        // 3. DB 저장
-        UserDAO dao = new UserDAO();
-        int result = dao.insertMember(dto);
+		// 3. DB 저장
+		UserDAO dao = new UserDAO();
+		int result = dao.insertMember(dto);
 
-        // 4. 결과 처리
-        resp.setContentType("text/html; charset=UTF-8");
+		// 4. 결과 처리
+		resp.setContentType("text/html; charset=UTF-8");
 
-        if (result > 0) {
-            resp.getWriter().write("<script>alert('회원가입이 완료되었습니다.'); window.opener.location.href='/index.do'; window.close();</script>");
-        } else {
-            // alert + 이전 화면으로
-            resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
-        }
-    }
+		String contextPath = req.getContextPath(); // /fitralpark
+
+		if (result > 0) {
+		    resp.getWriter().write("<script>"
+		        + "alert('회원가입이 완료되었습니다.');"
+		        + "window.opener.location.href='" + contextPath + "/index.do';"
+		        + "document.getElementById('signup').style.display = 'none';"
+		        + "document.getElementById('login').style.display = 'block';"
+		        + "</script>");
+		} else {
+		    resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
+		}
+
+
+	}
 }
