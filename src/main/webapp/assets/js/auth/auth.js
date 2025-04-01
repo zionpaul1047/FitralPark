@@ -263,7 +263,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		const email = `${prefix}@${domain}`;
 		const emailMessage = document.getElementById("emailMessage");
 		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		
+
 		const hiddenInput = document.getElementById("email_hidden");
 		if (hiddenInput) hiddenInput.value = email;
 
@@ -300,7 +300,7 @@ window.addEventListener("DOMContentLoaded", function() {
 						timeLeft--;
 						if (timeLeft < 0) {
 							clearInterval(authTimerInterval);
-							authTimer.innerText = "인증 시간이 만료되었습니다.";
+							authTimer.inneraText = "인증 시간이 만료되었습니다.";
 						}
 					}, 1000);
 
