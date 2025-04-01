@@ -257,6 +257,7 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
+            
         }
         
         .mid_part_empty {
@@ -300,19 +301,21 @@
         .hist_content {    
             /* border: 1px solid black; */
             width: 150px;
-            height: 80px;
+            height: 120px;
             margin-right:10px;
             padding: 3px 5px;
 
             display: flex;
             flex-wrap: wrap;
             font-size: 0.9rem;
+            overflow: auto;
             
         }
         
         .hist_content > div {
             display: block;
             margin: 1px 5px;
+            
         }
         
         
@@ -326,14 +329,16 @@
             justify-content: center;
             flex-wrap: wrap;
             font-size: 0.9rem;
+            overflow: auto;
             
         }
-		.hist_content_wide > div {
-			flex-basis: 40%;
-			flex-grow: 1;
+		.hist_content_wide > .tdy_diet_food_list {
+			width: 100%;
+			padding-left: 40px;
 			display: block;
             
-            text-align: center;
+            text-align: left;
+            
 		}
 		
 
@@ -665,8 +670,11 @@
 		
 		#popup_bottom button#view_hist_btn {
 			display: none;
-			
-            
+		   
+		}
+		#rnk_name {
+			font-size: 1.2rem;
+			font-weight: bold;
 		}
         
     </style>
@@ -697,8 +705,8 @@
 			            <div id="prf_head">
 			                <div id="prf_head_info">${dto.userName}님의 신체 정보</div>
 			                <div id="rnk">
-			                    <img id="rnk_img" src="/fitralpark/assets/images/rank/beginner.png">
-			                    <div id="rnk_name">beginner</div>
+			                    <img id="rnk_img" src="/fitralpark/assets/images/icon/${rank}.png">
+			                    <div id="rnk_name">${rank}</div>
 			                </div>
 			            </div>
 			            <div class="prf_box">
@@ -707,7 +715,7 @@
 			            </div>
 			            <div class="prf_box">
 			                <div>성별</div>
-			                <div>${dto.gender}</div>
+			                <div>${dto.gender eq "m" ? "남성" : "여성"}</div>
 			            </div>
 			            <div class="prf_box">
 			                <div>체중(kg)</div>
@@ -725,7 +733,9 @@
 	                        <ul>
 								<c:if test="${dto.tdyExcsList.size() gt 0}">
 									<c:forEach begin="0" end="${dto.tdyExcsList.size() - 1}" var="i">
-										<li class=""><a href="#!" onclick="pos_list_btn(${dto.tdyExcsList[i].processivity},'today_exercise', ${i})">${i+1}</a></li>
+										
+										<li class=""><a href="#!" onclick="pos_list_btn(0, 'today_exercise', ${i})">${i+1}</a></li>
+										<%-- <li class=""><a href="#!" onclick="pos_list_btn(${dto.tdyExcsList[i].processivity},'today_exercise', ${i})">${i+1}</a></li> --%>
 										<!-- <li class=""><a href="#!" onclick="pos_list_btn(1)">2</a></li>
 										<li class=""><a href="#!" onclick="pos_list_btn(2)">3</a></li>
 										<li class=""><a href="#!" onclick="pos_list_btn(3)">4</a></li>
@@ -741,28 +751,28 @@
 					        	<div class="dash_content_part" style="display: none;">
 						        	<div id="tdy_excs_nm" class="card_mid_subj">${item.exerciseName}</div>
 							        <div class="mid_part">
-							            <div class="prgres_chart">
+							            <%-- <div class="prgres_chart">
 							                <span class="chart_center">${item.processivity}%</span>
-							            </div>
+							            </div> --%>
 							            <div class="hist_content">
 							            	<c:if test="${not empty item.ining}">
 								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.ining}
+								                    <i class="fa-solid fa-arrow-right"></i> ${item.ining}회
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.set}">
 								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.set}
+								                    <i class="fa-solid fa-arrow-right"></i> ${item.set}세트
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.load}">
 								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.load}
+								                    <i class="fa-solid fa-arrow-right"></i> ${item.load}kg
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.times}">
 							                	<div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.times}
+								                    <i class="fa-solid fa-arrow-right"></i> ${item.times}min
 								                </div>
 							                </c:if>
 							            </div>
@@ -770,14 +780,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn">운동 등록/수정</button>
+					            <button id="" class="card_btn" onclick="location.href='#!';">운동 등록/수정</button>
 					            <button id="" class="card_btn">운동 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyExcsList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 운동이 없습니다.<br>운동을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">운동 등록/수정</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">운동 등록</button>
 				        	</div>
 				        </c:if>
 			        </div>
@@ -799,9 +809,9 @@
 							        <div id="tdy_diet_nm"  class="card_mid_subj">${item.mealClassify}</div>
 							        <div class="mid_part">
 							            <div class="hist_content_wide">
-							            	<c:forEach var="foodname" items="${item.food}">
-								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${foodname}
+							            	<c:forEach var="food" items="${item.foodList}">
+								                <div class="tdy_diet_food_list">
+								                    <i class="fa-solid fa-arrow-right"></i> ${food.foodName} ${food.intake }g
 								                </div>
 							                </c:forEach>
 							            </div>
@@ -809,14 +819,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn">식단 등록/수정</button>
+					            <button id="" class="card_btn"  onclick="location.href='#!';">식단 등록/수정</button>
 					            <button id="" class="card_btn">식사 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyDietList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 식단이 없습니다.<br>식단을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">식단 등록/수정</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">식단 등록</button>
 				        	</div>
 				        </c:if>
 				        
@@ -827,7 +837,7 @@
 	                        <ul>
 	                        	<c:if test="${dto.crtExcsList.size() gt 0}">
 									<c:forEach begin="0" end="${dto.crtExcsList.size() - 1}" var="i">
-										<li class=""><a href="#!" onclick="pos_list_btn(${dto.crtExcsList[i].processivity},'current_exercise', ${i})">${i+1}</a></li>
+										<li class=""><a href="#!" onclick="pos_list_btn(${ not empty dto.crtExcsList[i].processivity ? dto.crtExcsList[i].processivity : 0},'current_exercise', ${i})">${i+1}</a></li>
 									</c:forEach>
 								</c:if>
 	                        </ul>
@@ -838,7 +848,7 @@
 							        <div id="crt_excs_date" class="card_mid_subj">${item.regdate}</div>
 							        <div class="mid_part">
 							            <div class="prgres_chart">
-							                <span class="chart_center">${item.processivity}%</span>
+							                <span class="chart_center">${ not empty item.processivity ? item.processivity : 0 }%</span>
 							            </div>
 							            <div class="hist_content">
 							                <div>
@@ -850,18 +860,21 @@
 							                <div>
 							                    <i class="fa-solid fa-arrow-right"></i><span>미완료: </span><span>${item.incompletePlanCnt}회</span>
 							                </div>
+							                <div>
+							                    <i class="fa-solid fa-arrow-right"></i><span>계획외 운동: </span><span>${item.unplanCnt}회</span>
+							                </div>
 							            </div>
 							        </div>
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+					            <button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.crtExcsList.size() le 0}">
 				        	<div class="mid_part_empty">최근 등록된<br>운동기록이 없습니다.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 				        	</div>
 				        </c:if>
 				        
@@ -872,7 +885,7 @@
 	                        <ul>
 	                        	<c:if test="${dto.crtdietList.size() gt 0}">
 									<c:forEach begin="0" end="${dto.crtdietList.size() - 1}" var="i">
-										<li class=""><a href="#!" onclick="pos_list_btn(${dto.crtdietList[i].processivity}, 'current_diet', ${i})">${i+1}</a></li>
+										<li class=""><a href="#!" onclick="pos_list_btn(${not empty dto.crtdietList[i].processivity ? dto.crtdietList[i].processivity : 0}, 'current_diet', ${i})">${i+1}</a></li>
 									</c:forEach>
 								</c:if>
 	                        </ul>
@@ -883,7 +896,7 @@
 							        <div id="crt_diet_date" class="card_mid_subj">${item.regdate}</div>
 							        <div class="mid_part">
 							            <div class="prgres_chart">
-							                <span class="chart_center">${item.processivity}%</span>
+							                <span class="chart_center">${not empty item.processivity ? item.processivity : 0}%</span>
 							            </div>
 							            <div class="hist_content">
 							                <div>
@@ -895,181 +908,185 @@
 							                <div>
 							                    <i class="fa-solid fa-arrow-right"></i><span>미완료: </span><span>${item.incompletePlanCnt}회</span>
 							                </div>
+							                <div>
+							                    <i class="fa-solid fa-arrow-right"></i><span>계획외 식사: </span><span>${item.unplanCnt}회</span>
+							                </div>
 							            </div>
 							        </div>
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+					            <button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.crtdietList.size() le 0}">
 				        	<div class="mid_part_empty">최근 등록된<br>식사기록이 없습니다.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 				        	</div>
 				        </c:if>
 			        </div>
-			        <div id="intake_diagram">
-			            <div class="dash_subject_wide">하루 영양소 섭취량</div>
-			            <div id="ntrt_calorie">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	열량 (<span class="intake_ntrt">${dto.tdyintake.ntrt_calorie}</span> / <span class="required_ntrt">2700</span>) <span>kcal</span>
+			        <c:if test="${dto.tdyintake eq null}">
+				        <div id="intake_diagram">
+				            <div class="dash_subject_wide">하루 영양소 섭취량</div>
+				            <div id="ntrt_calorie">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	열량 (<span class="intake_ntrt">${dto.tdyintake.ntrt_calorie}</span> / <span class="required_ntrt">2700</span>) <span>kcal</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
 					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-				            </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-
-			            </div>
-			            <div id="ntrt_chocdf">
-			            	<div class="dash_chart_top">
-				            	<div class="dash_ntrt_chart_subject">
-				            		탄수화물 (<span class="intake_ntrt">${dto.tdyintake.ntrt_chocdf}</span> / <span class="required_ntrt">324</span>) <span>g</span>
-				            	</div>
-				            	<div class="dash_ntrt_chart_percent">90%</div>
-				            </div>
-			            	<div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_prot">
-			            	<div class="dash_chart_top">
-				            	<div class="dash_ntrt_chart_subject">
-				            		단백질 (<span class="intake_ntrt">${dto.tdyintake.ntrt_prot}</span> / <span class="required_ntrt">55</span>) <span>g</span>
-				            	</div>
-				            	<div class="dash_ntrt_chart_percent">0%</div>
-				            </div>
-			            	<div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_fatce">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	지방 (<span class="intake_ntrt">${dto.tdyintake.ntrt_fatce}</span> / <span class="required_ntrt">54</span>) <span>g</span>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
 					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
+	
+				            </div>
+				            <div id="ntrt_chocdf">
+				            	<div class="dash_chart_top">
+					            	<div class="dash_ntrt_chart_subject">
+					            		탄수화물 (<span class="intake_ntrt">${dto.tdyintake.ntrt_chocdf}</span> / <span class="required_ntrt">324</span>) <span>g</span>
+					            	</div>
+					            	<div class="dash_ntrt_chart_percent">90%</div>
+					            </div>
+				            	<div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_prot">
+				            	<div class="dash_chart_top">
+					            	<div class="dash_ntrt_chart_subject">
+					            		단백질 (<span class="intake_ntrt">${dto.tdyintake.ntrt_prot}</span> / <span class="required_ntrt">55</span>) <span>g</span>
+					            	</div>
+					            	<div class="dash_ntrt_chart_percent">0%</div>
+					            </div>
+				            	<div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_fatce">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	지방 (<span class="intake_ntrt">${dto.tdyintake.ntrt_fatce}</span> / <span class="required_ntrt">54</span>) <span>g</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_sugar">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	당류 (<span class="intake_ntrt">${dto.tdyintake.ntrt_sugar}</span> / <span class="required_ntrt">100</span>) <span>g</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
 					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_sugar">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	당류 (<span class="intake_ntrt">${dto.tdyintake.ntrt_sugar}</span> / <span class="required_ntrt">100</span>) <span>g</span>
+					        <div id="ntrt_fibtg">
+					        	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	식이섬유 (<span class="intake_ntrt">${dto.tdyintake.ntrt_fibtg}</span> / <span class="required_ntrt">25</span>) <span>g</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
 					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
 				            </div>
+				            <div id="ntrt_ca">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	칼슘 (<span class="intake_ntrt">${dto.tdyintake.ntrt_ca}</span> / <span class="required_ntrt">700</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+					        </div>
+					        <div id="ntrt_nat">
+					        	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	나트륨 (<span class="intake_ntrt">${dto.tdyintake.ntrt_nat}</span> / <span class="required_ntrt">2000</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_vitaRae">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민A (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitaRae}</span> / <span class="required_ntrt">700</span>) <span>μg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+					        </div>
+					        <div id="ntrt_thia">
+					        	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민B1 (<span class="intake_ntrt">${dto.tdyintake.ntrt_thia}</span> / <span class="required_ntrt">1.2</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_ribf">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민B2 (<span class="intake_ntrt">${dto.tdyintake.ntrt_ribf}</span> / <span class="required_ntrt">1.4</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_nia">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민B3 (<span class="intake_ntrt">${dto.tdyintake.ntrt_nia}</span> / <span class="required_ntrt">15</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						       	</div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_vitc">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민C (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitc}</span> / <span class="required_ntrt">100</span>) <span>mg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				            <div id="ntrt_vitd">
+				            	<div class="dash_chart_top">
+						            <div class="dash_ntrt_chart_subject">
+						            	비타민D (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitd}</span> / <span class="required_ntrt">10</span>) <span>μg</span>
+						            </div>
+						            <div class="dash_ntrt_chart_percent">80%</div>
+						        </div>
+					            <div class="dash_progress_bar">
+					            	<div class="dash_progress"></div>
+					            </div>
+				            </div>
+				             
 				        </div>
-				        <div id="ntrt_fibtg">
-				        	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	식이섬유 (<span class="intake_ntrt">${dto.tdyintake.ntrt_fibtg}</span> / <span class="required_ntrt">25</span>) <span>g</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_ca">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	칼슘 (<span class="intake_ntrt">${dto.tdyintake.ntrt_ca}</span> / <span class="required_ntrt">700</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-				        </div>
-				        <div id="ntrt_nat">
-				        	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	나트륨 (<span class="intake_ntrt">${dto.tdyintake.ntrt_nat}</span> / <span class="required_ntrt">2000</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_vitaRae">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민A (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitaRae}</span> / <span class="required_ntrt">700</span>) <span>μg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-				        </div>
-				        <div id="ntrt_thia">
-				        	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민B1 (<span class="intake_ntrt">${dto.tdyintake.ntrt_thia}</span> / <span class="required_ntrt">1.2</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_ribf">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민B2 (<span class="intake_ntrt">${dto.tdyintake.ntrt_ribf}</span> / <span class="required_ntrt">1.4</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_nia">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민B3 (<span class="intake_ntrt">${dto.tdyintake.ntrt_nia}</span> / <span class="required_ntrt">15</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					       	</div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_vitc">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민C (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitc}</span> / <span class="required_ntrt">100</span>) <span>mg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			            <div id="ntrt_vitd">
-			            	<div class="dash_chart_top">
-					            <div class="dash_ntrt_chart_subject">
-					            	비타민D (<span class="intake_ntrt">${dto.tdyintake.ntrt_vitd}</span> / <span class="required_ntrt">10</span>) <span>μg</span>
-					            </div>
-					            <div class="dash_ntrt_chart_percent">80%</div>
-					        </div>
-				            <div class="dash_progress_bar">
-				            	<div class="dash_progress"></div>
-				            </div>
-			            </div>
-			             
-			        </div>
-			        
+			        </c:if>
 			    </main>
 
     			
@@ -1169,13 +1186,32 @@
 		const max = 100;
 		const classname = '.prgres_chart';
 		$(window).ready(function() {
+			//test
+			console.log(${dto.crtExcsList[0].processivity});
+			
+			
 			/* 퍼센티지: 첫번째 인자 */
 		    //draw(70, '.prgres_chart', '#ccc');
 			//초기 페이지
-			$('#today_exercise .dash_dot_wrap ul li a').eq(0).trigger("click");
-			$('#today_diet .dash_dot_wrap ul li a').eq(0).trigger("click");
-			$('#current_exercise .dash_dot_wrap ul li a').eq(0).trigger("click");
-			$('#current_diet .dash_dot_wrap ul li a').eq(0).trigger("click");
+			if (${dto.tdyExcsList.size() gt 0}) {
+				$('#today_exercise .dash_dot_wrap ul li a').eq(0).trigger("click");
+				$('#today_exercise .dash_dot_wrap ul li').eq(0).addClass("active");
+			}
+			if (${dto.tdyDietList.size() gt 0}) {
+				$('#today_diet .dash_dot_wrap ul li a').eq(0).trigger("click");
+				$('#today_diet .dash_dot_wrap ul li').eq(0).addClass("active");
+			}
+			
+			if (${dto.crtExcsList.size() gt 0}) {
+				$('#current_exercise .dash_dot_wrap ul li a').eq(0).trigger("click");
+				$('#current_exercise .dash_dot_wrap ul li').eq(0).addClass("active");
+			}
+			
+			if (${dto.crtdietList.size() gt 0}) {
+				$('#current_diet .dash_dot_wrap ul li a').eq(0).trigger("click");
+				$('#current_diet .dash_dot_wrap ul li').eq(0).addClass("active");
+			}
+			
 			
 			/* 
 			$('#today_exercise .dash_dot_wrap ul li').eq(0).addClass("active");
@@ -1188,28 +1224,37 @@
 			$('#current_diet .dash_content_part').eq(0).css('display', 'block'); 
 			*/
 			
+			
+			
 		});
 		
 		/* 퍼센티지: 첫번째 인자 */
 		function draw(max, menu, colorname){
 			var i=1;
 			var func1 = setInterval(function() {
-			    if(i<max){
-			        color1(i,menu,colorname);
+			    if(i < max){
+			        color1(i, menu, colorname);
 			        i++;
 			    } else{
 			        clearInterval(func1);
 			    }
-			},10);
+			}, 10);
 		}
 		function color1(i, menu, colorname){
 		    $('#' + menu + ' .prgres_chart').css({
-		            "background":"conic-gradient("+colorname+" 0% "+i+"%, #ffffff "+i+"% 100%)"
+		            "background": "conic-gradient(" + colorname + " 0% " + i + "%, #ffffff " + i + "% 100%)"
 		    });
 		}
        
        function pos_list_btn(processivity, menu, i) {
-   			if(menu == 'today_exercise' || menu == 'current_exercise' || menu == 'current_diet' ) {
+    	   console.log('processivity: ',processivity);
+    	   console.log('menu: ',menu);
+    	   console.log('i: ',i);
+			if(processivity == null) {
+				processivity = 0;
+			}
+
+   			if(menu == 'current_exercise' || menu == 'current_diet' ) {
    				draw(processivity, menu, '#ccc');
    			}
     	   

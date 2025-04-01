@@ -1,5 +1,8 @@
 package fitralpark.user.dto;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +16,5 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DashTodayDietDTO {
 	String mealClassify;
-	String[] food;
+	ArrayList<DashFoodDTO> foodList;
 } 

@@ -11,10 +11,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class DashTodayExerciseDTO {
-	String exerciseName;
-	String ining;
-	String set;
-	String load;
-	String times;
+public class DashFoodDTO {
+	String foodName;
+	String intake;
 }
