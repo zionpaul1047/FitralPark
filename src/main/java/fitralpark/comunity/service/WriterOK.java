@@ -34,7 +34,7 @@ public class WriterOK extends HttpServlet {
 		dto.setCreator_id(session.getAttribute("auth").toString());
 		
 		CommunityDAO dao = new CommunityDAO();
-		int result = dao.write(dto);
+		int result = dao.Bulletin_add(dto);
 		dao.close();
 		
 		if (result == 1) {

@@ -8,7 +8,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
@@ -26,7 +25,7 @@ public class BulletinController extends HttpServlet {
         // 페이지 파라미터 처리
         String pageStr = req.getParameter("page");
         int page = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
-        int pageSize = 10; // 한 페이지당 표시할 게시글 수
+        int pageSize = 15; // 한 페이지당 표시할 게시글 수
         
         // 전체 게시글 수 조회
         int totalPosts = dao.getTotalBulletinPosts();
@@ -40,7 +39,7 @@ public class BulletinController extends HttpServlet {
         String searchWord = req.getParameter("word");
         
         // 현재 페이지의 게시글 목록 조회
-        ArrayList<CommunityDTO> list = dao.Bulletin_list(page, searchWord);
+        ArrayList<CommunityDTO> list = dao.Bulletin_list(page, searchWord, pageSize);
         
         // request에 데이터 설정
         req.setAttribute("bulletin_list", list);
@@ -49,7 +48,12 @@ public class BulletinController extends HttpServlet {
         req.setAttribute("startPage", startPage);
         req.setAttribute("endPage", endPage);
 
+        // DAO 연결 해제
+        dao.close();
+
 		req.getRequestDispatcher("/WEB-INF/views/community/bulletinList.jsp").forward(req, resp);
+
+		
 	}
 
 }

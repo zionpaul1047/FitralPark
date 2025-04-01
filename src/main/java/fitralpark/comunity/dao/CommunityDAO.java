@@ -10,8 +10,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import com.test.java.memo.model.MemoDTO;
-
 import fitralpark.comunity.dto.CommunityDTO;
 
 //(DB 접근 DAO 클래스 자리)
@@ -106,10 +104,9 @@ public class CommunityDAO {
 	}
 	
 	
-	public ArrayList<CommunityDTO> Bulletin_list(Integer page, String word) {
+	public ArrayList<CommunityDTO> Bulletin_list(Integer page, String word, int pageSize) {
 		try {
 			ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
-			int pageSize = 10;
 			
 			String sql = "SELECT * FROM ("
 					+ "    SELECT a.*, ROWNUM as rnum FROM ("
@@ -243,29 +240,6 @@ public class CommunityDAO {
 		return null;
 	}
 	
-	public int write(CommunityDTO dto) {
-		
-			
-		try {
-			
-			String sql = "insert into bulletin_post (seq, bulletin_post_subject, bulletin_post_content, private_check, bulletin_post_recommend, bulletin_post_decommend, post_record_cnt, regdate, creator_id, bulletin_post_header_no) values (seqMemo.nextVal, ?, ?, default, default, default, default, default, sysdate, ?, ?)";
-			
-			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, dto.getPost_subject());
-			pstat.setString(2, dto.getPost_content());
-			pstat.setString(3, dto.getCreator_id());
-			pstat.setString(4, dto.getHeader_no());
-			
-			return pstat.executeUpdate();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return 0;
-		
-	}
-	
 	public void close() {
 		
 		try {
@@ -281,6 +255,7 @@ public class CommunityDAO {
 
 	public int getTotalBulletinPosts() {
 		try {
+			//게시판 게시글 갯수 카운트
 			String sql = "SELECT COUNT(*) as total FROM bulletin_post";
 			rs = stat.executeQuery(sql);
 			if (rs.next()) {

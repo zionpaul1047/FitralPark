@@ -252,10 +252,10 @@ body h1 {
 					<div id="board_etc_box">
 						<div class="search_area">
 							<select id="search_category">
-								<option value="1">운동</option>
-								<option value="2">식단</option>
-								<option value="3">헬스장</option>
-								<option value="4">후기</option>								
+								<option value="1"></option>
+								<option value="2"></option>
+								<option value="3"></option>
+								<option value="4"></option>								
 							</select>
 							<select id="search_sel">
 								<option value="제목">제목</option>
