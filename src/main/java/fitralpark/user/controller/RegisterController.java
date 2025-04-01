@@ -31,18 +31,8 @@ public class RegisterController extends HttpServlet {
 		} else {
 			tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
 		}
-
-		String email = req.getParameter("email_prefix");
-		String domain = req.getParameter("email_domain");
-		String customDomain = req.getParameter("email_domain_custom");
-
-		if ("etc".equals(domain) && customDomain != null && !customDomain.isEmpty()) {
-			domain = customDomain;
-		}
-
-		if (email != null && domain != null && !domain.isEmpty()) {
-			email = email + "@" + domain;
-		}
+		// hidden input에서 바로 받기
+		String email = req.getParameter("email");
 
 		String address = req.getParameter("zipcode") + " " + req.getParameter("address") + " "
 				+ req.getParameter("address_detail");
@@ -80,16 +70,14 @@ public class RegisterController extends HttpServlet {
 		String contextPath = req.getContextPath(); // /fitralpark
 
 		if (result > 0) {
-		    resp.getWriter().write("<script>"
-		        + "alert('회원가입이 완료되었습니다.');"
-		        + "window.opener.location.href='" + contextPath + "/index.do';"
-		        + "document.getElementById('signup').style.display = 'none';"
-		        + "document.getElementById('login').style.display = 'block';"
-		        + "</script>");
+			resp.getWriter()
+					.write("<script>" + "alert('회원가입이 완료되었습니다.');" + "window.opener.location.href='" + contextPath
+							+ "/index.do';" + "document.getElementById('signup').style.display = 'none';"
+							+ "document.getElementById('login').style.display = 'block';" + "</script>");
 		} else {
-		    resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
+			resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
 		}
 
-
+		System.out.println("[DEBUG] 전달받은 이메일: " + email);
 	}
 }

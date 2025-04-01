@@ -211,6 +211,7 @@
 							</div>
 						
 							<small id="emailMessage" class="form-text mt-1"></small>
+							<input type="hidden" name="email" id="full_email" />
 						</div>
 
 						
