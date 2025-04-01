@@ -23,7 +23,14 @@ public class DashBoardController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		System.out.println("페이지 실행");
+		
+		
+		//세션값 임시
 		String id = "hong";
+		String rank = "";
+		
+		
+		
 		//DashBoardController.java
 		UserDAO dao = new UserDAO();
 		

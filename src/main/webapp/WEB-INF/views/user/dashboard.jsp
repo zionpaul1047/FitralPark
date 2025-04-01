@@ -712,7 +712,7 @@
 			            </div>
 			            <div class="prf_box">
 			                <div>성별</div>
-			                <div>${dto.gender}</div>
+			                <div>${dto.gender eq "m" ? "남성" : "여성"}</div>
 			            </div>
 			            <div class="prf_box">
 			                <div>체중(kg)</div>

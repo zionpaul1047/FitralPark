@@ -126,7 +126,10 @@ CREATE TABLE diet_food_list(
     food_creation_type NUMBER NOT NULL CHECK (food_creation_type IN (0, 1)),
     intake NUMBER(6, 2) NOT NULL,
     
-    CONSTRAINT PK_diet_food_list PRIMARY KEY(diet_food_list_no)
+    CONSTRAINT PK_diet_food_list PRIMARY KEY(diet_food_list_no),
+    CONSTRAINT FK_diet_food_list_custom_food_no FOREIGN KEY(custom_food_no) REFERENCES custom_food(custom_food_no),
+    CONSTRAINT FK_diet_food_list_food_no FOREIGN KEY(food_no) REFERENCES food(food_no),
+    CONSTRAINT FK_diet_food_list_diet_no FOREIGN KEY(diet_no) REFERENCES diet(diet_no)
 );
 
 -- 식단
