@@ -14,4 +14,7 @@ import lombok.ToString;
 public class DashFoodDTO {
 	String foodName;
 	String intake;
+	String foodCreationType;
+	String foodNo;
+
 }

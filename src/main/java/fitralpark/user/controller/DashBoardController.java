@@ -85,6 +85,7 @@ public class DashBoardController extends HttpServlet {
 		req.setAttribute("dto", dto);
 		req.setAttribute("rank", rank);
 		req.setAttribute("mentor_check", mentor_check);
+		req.setAttribute("id", id);
 		
 
 		req.getRequestDispatcher("/WEB-INF/views/user/dashboard.jsp").forward(req, resp);

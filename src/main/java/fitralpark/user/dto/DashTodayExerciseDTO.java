@@ -17,4 +17,6 @@ public class DashTodayExerciseDTO {
 	String set;
 	String load;
 	String times;
+	String excsCrtType;
+	String excsNo;
 }

@@ -5,6 +5,7 @@ import fitralpark.user.dto.DashCurrentDietDTO;
 import fitralpark.user.dto.DashCurrentExcsDTO;
 import fitralpark.user.dto.DashDTO;
 import fitralpark.user.dto.DashFoodDTO;
+import fitralpark.user.dto.DashPhysicalHistDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.UserDTO;
@@ -180,6 +181,8 @@ public class UserDAO {
 					     , ex.reps_per_set as ining
 					     , ex.exercise_time as times
 					     , ex.weight as load
+                         , ex.exercise_creation_type as exercise_creation_type
+                         , ex.exercise_no as exercise_no
 					  from exercise_plan ep
 					 inner join exercise_plan_routine epr
 					   on ep.exercise_plan_no = epr.exercise_plan_no
@@ -192,6 +195,8 @@ public class UserDAO {
 					                     , reps_per_set as reps_per_set
 					                     , exercise_time as exercise_time
 					                     , weight as weight
+                                         , 0 as exercise_creation_type
+                                         , e.exercise_no as exercise_no
 					                  from routine_exercise re
 					                  inner join exercise e
 					                    on re.exercise_no = e.exercise_no
@@ -203,13 +208,15 @@ public class UserDAO {
 					                     , reps_per_set
 					                     , exercise_time
 					                     , weight
+                                         , 1 as exercise_creation_type
+                                         , ce.custom_exercise_no as exercise_no
 					                  from routine_exercise re
 					                  inner join custom_exercise ce
 					                    on re.custom_exercise_no = ce.custom_exercise_no
 					                   and re.exercise_creation_type = 1
 					             ) ex
 					  on r.routine_no = ex.routine_no
-					 where to_char(ep.regdate, 'yyyymmdd') = to_char(sysdate - 1, 'yyyymmdd')
+					 where to_char(ep.regdate, 'yyyymmdd') = to_char(sysdate - 2, 'yyyymmdd')
 					   and ep.creator_id = ?
 					""";
 			pstat = conn.prepareStatement(sql);
@@ -224,6 +231,8 @@ public class UserDAO {
 				item.setSet(rs.getString("sets"));
 				item.setLoad(rs.getString("load"));
 				item.setTimes(rs.getString("times"));
+				item.setExcsCrtType(rs.getString("exercise_creation_type"));
+				item.setExcsNo(rs.getString("exercise_no"));
 				
 				tdyExcsList.add(item);
 				
@@ -240,6 +249,9 @@ public class UserDAO {
 					     , d.meal_classify as meal_classify
 					     , f.food_name as food_name
 					     , f.intake as intake
+                         , f.food_creation_type
+                         , f. food_no
+                         , d.diet_no
 					  from diet_plan dp
 					 inner join diet d
 					   on dp.diet_no = d.diet_no
@@ -247,6 +259,8 @@ public class UserDAO {
 					                select dfl0.diet_no as diet_no
 					                      , food_name as food_name
 					                      , dfl0.intake as intake
+                                          , 0 as food_creation_type
+                                          , f.food_no as food_no
 					                  from diet_food_list dfl0
 					                 inner join food f
 					                    on dfl0.food_no = f.food_no
@@ -255,13 +269,15 @@ public class UserDAO {
 					                select dfl1.diet_no
 					                      , custom_food_name
 					                      , dfl1.intake as intake
+                                          , 0 as food_creation_type
+                                          , cf.custom_food_no as food_no
 					                  from diet_food_list dfl1
 					                 inner join custom_food cf
 					                    on dfl1.custom_food_no = cf.custom_food_no
 					                   and dfl1.food_creation_type = 1
 					             ) f
 					    on d.diet_no = f.diet_no
-					 where to_char(dp.regdate, 'yyyymmdd') = to_char(sysdate - 1, 'yyyymmdd')
+					 where to_char(dp.regdate, 'yyyymmdd') = to_char(sysdate - 2, 'yyyymmdd')
 					   and dp.creator_id = ?
 					 order by plandate, meal_classify
 					""";
@@ -277,19 +293,23 @@ public class UserDAO {
 			
 			while(rs.next()) {
 				String meal_classify = rs.getString("meal_classify");
+				String diet_no = rs.getString("diet_no");
 				String food_name = rs.getString("food_name");
 				String intake = rs.getString("intake");
+				String foodCreationType = rs.getString("food_creation_type");
+				String foodNo = rs.getString("food_no");
 				
 				if (currentDTO == null || !currentDTO.getMealClassify().equals(meal_classify)) {
 					currentDTO = new DashTodayDietDTO();
 					currentDTO.setMealClassify(meal_classify);
+					currentDTO.setDietNo(diet_no);
 					currentDTO.setFoodList(new ArrayList<DashFoodDTO>());
 					
 					tdyDietList.add(currentDTO);
 					
 				} 
 				
-				currentDTO.getFoodList().add(new DashFoodDTO(food_name, intake));
+				currentDTO.getFoodList().add(new DashFoodDTO(food_name, intake, foodCreationType, foodNo));
 				
 			}
 			dto.setTdyDietList(tdyDietList);
@@ -482,6 +502,69 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	//신체기록 조회
+	public ArrayList<DashPhysicalHistDTO> getPhysicalHist(String id, String month) {
+		
+		try {
+			String sql = """
+					select to_char(regdate, 'yyyy.mm.dd.(dy)') as regdate
+				     , height
+				     , weight
+				  from member_physical
+				 where regdate between to_date(?, 'yyyymm') and add_months(to_date(?, 'yyyymm'), 1) - (interval '1' second)
+				   and member_id = ?
+				 order by regdate asc
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, month);
+			pstat.setString(2, month);
+			pstat.setString(3, id);
+			
+			rs = pstat.executeQuery();
+			
+			ArrayList<DashPhysicalHistDTO> list = new ArrayList<DashPhysicalHistDTO>(); 
+			
+			
+			while(rs.next()) {
+				DashPhysicalHistDTO item = new DashPhysicalHistDTO();
+				item.setRegdate(rs.getString("regdate"));
+				item.setHeight(rs.getString("height"));
+				item.setWeight(rs.getString("weight"));
+				
+				list.add(item);
+			}
+			
+			return list;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+	public int putPhysicalHist(String id, String height, String weight) {
+		try {
+			String sql = """
+					insert into member_physical(MEMBER_PHYSICAL_NO, REGDATE, HEIGHT, WEIGHT, MEMBER_ID)
+						values(SEQMEMBERPHYSICAL.nextVal, sysdate, ?, ?, ?)
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, height);
+			pstat.setString(2, weight);
+			pstat.setString(3, id);
+			
+			return pstat.executeUpdate();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+		
 	}
 
 }
