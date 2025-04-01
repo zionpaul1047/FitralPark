@@ -103,12 +103,14 @@
             background-size: contain;
             cursor: pointer;
         }
-        .search-button {
-            background-image: url('search.png');
-        }
-        .delete-button {
-             background-image: url('clear.png');
-        }
+        
+.search-button {
+    background-image: url('<%= request.getContextPath() %>/assets/images/icon/search.png');
+}
+
+.delete-button {
+    background-image: url('<%= request.getContextPath() %>/assets/images/icon/clear.png');
+}
         
         /* 버튼 스타일 */
         .buttons-row {
