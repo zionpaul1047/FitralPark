@@ -109,10 +109,12 @@
 								<span class="mx-2">-</span>
 								<input type="text" name="jumin2_first" id="jumin2_first" class="form-control text-center"
 									maxlength="1" pattern="[1-4]" required style="width: 40px;" />
+									
 								<input type="password" name="jumin2_rest" id="jumin2_rest" class="form-control text-center input-small"
 									maxlength="6" pattern="\d{6}" required placeholder="******" />
 							</div>
 							<small class="form-text text-muted mt-1">숫자만 입력. 예: 990101-1****** 형식</small>
+							<small id="jumin2Message" class="form-text text-danger mt-1"></small>
 						</div>
 
 						<%-- 닉네임 --%>
@@ -168,25 +170,50 @@
 						<%-- 이메일 --%>
 						<div class="form-group">
 							<label for="email_prefix">이메일<span class="text-danger"> *</span></label>
-							<div class="d-flex align-items-center">
-								<input type="text" id="email_prefix" name="email_prefix" class="form-control mr-1" placeholder="아이디" style="width: 30%;" required>
-								<span class="mx-1">@</span>
-								<select id="email_domain" name="email_domain" class="form-control mr-1" style="width: 30%;" onchange="handleDomainChange()" required>
-									<option value="">선택</option>
-									<option value="gmail.com">gmail.com</option>
-									<option value="naver.com">naver.com</option>
-									<option value="daum.net">daum.net</option>
-									<option value="hanmail.net">hanmail.net</option>
-									<option value="nate.com">nate.com</option>
-									<option value="kakao.com">kakao.com</option>
-									<option value="etc">직접입력</option>
-								</select>
-								<button type="button" class="btn btn-outline-secondary" onclick="checkEmail()" style="white-space: nowrap;">이메일 인증</button>
+						
+							<div class="row">
+								<!-- 왼쪽: 이메일 입력 -->
+								<div class="col-md-7">
+									<div class="d-flex align-items-center">
+										<input type="text" id="email_prefix" class="form-control mr-1" placeholder="아이디" required style="width: 55%;">
+										<span class="mx-1">@</span>
+										<select id="email_domain" class="form-control mr-1" required style="width: 55%;">
+											<option value="">선택</option>
+											<option value="gmail.com">gmail.com</option>
+											<option value="naver.com">naver.com</option>
+											<option value="daum.net">daum.net</option>
+											<option value="hanmail.net">hanmail.net</option>
+											<option value="nate.com">nate.com</option>
+											<option value="kakao.com">kakao.com</option>
+											<option value="etc">직접입력</option>
+										</select>
+									</div>
+									<input type="text" id="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none;">
+								</div>
+						
+								<!-- 오른쪽: 인증 버튼 + 인증번호 입력 -->
+								<div class="col-md-5">
+									<div class="d-flex flex-column align-items-start">
+										<button type="button" id="emailAuthBtn" class="btn btn-outline-secondary mb-1" style="width: 120px;">
+											인증번호 발송
+										</button>
+										<small id="authTimer" class="form-text text-muted mt-1"></small>
+										<!-- 인증번호 입력 + 확인 버튼 -->
+										<div id="authCodeWrap" style="display: none; width: 100%;">
+											<div class="d-flex align-items-center">
+												<input type="text" id="authCode" maxlength="6" class="form-control mt-1 mr-2" placeholder="●●●●●●" style="max-width: 120px;">
+												<button type="button" id="authCodeCheckBtn" class="btn btn-outline-secondary mt-1">확인</button>
+											</div>
+											<div id="authCodeMessage" class="small mt-1" style="color: red;"></div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<input type="text" id="email_domain_custom" name="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none; width: 50%;" />
-							<small id="emailMessage" class="form-text"></small>
+						
+							<small id="emailMessage" class="form-text mt-1"></small>
 						</div>
 
+						
 						<%-- 주소입력 --%>
 						<div class="form-group">
 							<label for="address">주소</label>
