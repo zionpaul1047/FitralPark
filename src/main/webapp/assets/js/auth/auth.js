@@ -1,5 +1,3 @@
-// contextPath 선언 필요: <script>const contextPath = "${pageContext.request.contextPath}";</script>
-
 let isIdChecked = false;
 let lastCheckedId = "";
 
@@ -90,7 +88,7 @@ window.addEventListener("DOMContentLoaded", function() {
 			const currentId = idInput.value.trim();
 			if (currentId !== lastCheckedId) {
 				isIdChecked = false;
-				idMessage.innerText = "아이디 중복확인을 다시 해주세요.";
+				idMessage.innerText = "아이디 중복확인을 해주세요.";
 				idMessage.style.color = "orange";
 			} else if (isIdChecked) {
 				idMessage.innerText = "사용 가능한 아이디입니다.";
@@ -159,14 +157,27 @@ window.addEventListener("DOMContentLoaded", function() {
 			});
 		}
 	});
+
 	const jumin1 = document.getElementById("jumin1");
 	const jumin2_first = document.getElementById("jumin2_first");
+	const jumin2Msg = document.getElementById("jumin2Message");
+
 	jumin1?.addEventListener("input", function() {
 		if (this.value.length === 6) jumin2_first?.focus();
 	});
+
 	jumin2_first?.addEventListener("input", function() {
-		if (this.value.length === 1) document.getElementById("jumin2_rest")?.focus();
+		if (this.value.length === 1) {
+			if (!["1", "2", "3", "4"].includes(this.value)) {
+				jumin2Msg.innerText = "주민등록번호 형식이 맞지 않습니다.";
+				jumin2Msg.style.color = "red";
+			} else {
+				jumin2Msg.innerText = "";
+				document.getElementById("jumin2_rest")?.focus();
+			}
+		}
 	});
+
 
 	// 닉네임 유효성 검사
 	document.getElementById("nickname")?.addEventListener("input", function() {
@@ -185,28 +196,161 @@ window.addEventListener("DOMContentLoaded", function() {
 		}
 	});
 
-	// 이메일 인증 검사 (단순 포맷 확인)
-	document.getElementById("emailCheckBtn")?.addEventListener("click", function() {
+
+	// 이메일 인증 기능
+	window.isEmailVerified = false;
+	const emailAuthBtn = document.getElementById("emailAuthBtn");
+	const authCodeInput = document.getElementById("authCode");
+	const authCodeWrap = document.getElementById("authCodeWrap");
+	const authCodeMsg = document.getElementById("authCodeMessage");
+	const bulletView = document.getElementById("authCodeBullets");
+	const authTimer = document.getElementById("authTimer");
+	const authCodeCheckBtn = document.getElementById("authCodeCheckBtn");
+
+	let resendCooldown = 10;  // 재요청 제한 시간 10초
+	let authValidTime = 300;  // 인증번호 유효 시간 5분
+
+	let resendInterval = null;
+	let authTimerInterval = null;
+
+	// 인증번호 확인 함수
+	function validateAuthCode() {
+		const inputCode = authCodeInput.value.trim();
+
+		// 서버에 POST 요청
+		fetch(`${contextPath}/checkAuthCode.do`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: `code=${encodeURIComponent(inputCode)}`
+		})
+			.then(res => res.json())
+			.then(data => {
+				if (data.match) {
+					authCodeMsg.innerText = "인증에 성공했습니다.";
+					authCodeMsg.style.color = "green";
+					window.isEmailVerified = true;
+
+					// UI 잠금 처리
+					document.getElementById("email_prefix").readOnly = true;
+					document.getElementById("email_domain").disabled = true;
+					document.getElementById("email_domain_custom").readOnly = true;
+					emailAuthBtn.innerText = "인증완료";
+					emailAuthBtn.disabled = true;
+					authCodeCheckBtn.disabled = true;
+					clearInterval(authTimerInterval);
+					authTimer.innerText = "";
+				} else {
+					authCodeMsg.innerText = "인증번호가 일치하지 않거나 만료되었습니다.";
+					authCodeMsg.style.color = "red";
+				}
+			})
+			.catch(err => {
+				console.error("인증번호 검증 오류:", err);
+				authCodeMsg.innerText = "서버 오류가 발생했습니다.";
+				authCodeMsg.style.color = "red";
+			});
+	}
+
+
+	// 인증 버튼 클릭 (서버로 인증요청하여 처리)
+	emailAuthBtn?.addEventListener("click", () => {
 		const prefix = document.getElementById("email_prefix").value.trim();
-		const domain = document.getElementById("email_domain").value;
+		const domainSel = document.getElementById("email_domain").value;
 		const custom = document.getElementById("email_domain_custom").value.trim();
-		const fullDomain = domain === "etc" ? custom : domain;
-		const email = `${prefix}@${fullDomain}`;
-		const emailMsg = document.getElementById("emailMessage");
+		const domain = domainSel === "etc" ? custom : domainSel;
+		const email = `${prefix}@${domain}`;
+		const emailMessage = document.getElementById("emailMessage");
 		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-		if (!prefix || !fullDomain) {
-			emailMsg.innerText = "이메일을 모두 입력해주세요.";
-			emailMsg.style.color = "red";
-		} else if (!regex.test(email)) {
-			emailMsg.innerText = "올바른 이메일 형식이 아닙니다.";
-			emailMsg.style.color = "red";
-		} else {
-			emailMsg.innerText = "이메일 형식이 올바릅니다. 인증 메일을 전송했습니다.";
-			emailMsg.style.color = "green";
-			// TODO: 이메일 인증번호 요청 추가
+		if (!prefix || !domain) {
+			emailMessage.innerText = "이메일을 모두 입력해주세요.";
+			emailMessage.style.color = "red";
+			return;
+		}
+		if (!regex.test(email)) {
+			emailMessage.innerText = "올바른 이메일 형식이 아닙니다.";
+			emailMessage.style.color = "red";
+			return;
+		}
+
+		// 서버에 인증 메일 요청
+		fetch(`${contextPath}/sendAuthEmail.do?email=${encodeURIComponent(email)}`)
+			.then(res => res.json())
+			.then(data => {
+				if (data.success) {
+					authCodeWrap.style.display = "block";
+					authCodeInput.value = "";
+					authCodeMsg.innerText = "";
+					authCodeInput.focus();
+					emailMessage.innerText = "인증번호가 이메일로 전송되었습니다.";
+					emailMessage.style.color = "green";
+
+					// 타이머 설정
+					let timeLeft = authValidTime;
+					clearInterval(authTimerInterval);
+					authTimerInterval = setInterval(() => {
+						const min = Math.floor(timeLeft / 60);
+						const sec = timeLeft % 60;
+						authTimer.innerText = `남은 시간: ${min}분 ${sec < 10 ? '0' + sec : sec}초`;
+						timeLeft--;
+						if (timeLeft < 0) {
+							clearInterval(authTimerInterval);
+							authTimer.innerText = "인증 시간이 만료되었습니다.";
+						}
+					}, 1000);
+
+					// 재요청 버튼 타이머
+					emailAuthBtn.disabled = true;
+					let cooldown = resendCooldown;
+					emailAuthBtn.innerText = `${cooldown--}초 후 재요청`;
+					clearInterval(resendInterval);
+					resendInterval = setInterval(() => {
+						emailAuthBtn.innerText = `${cooldown--}초 후 재요청`;
+						if (cooldown < 0) {
+							clearInterval(resendInterval);
+							emailAuthBtn.disabled = false;
+							emailAuthBtn.innerText = "인증번호 재발송";
+						}
+					}, 1000);
+				} else {
+					emailMessage.innerText = "이메일 전송에 실패했습니다.";
+					emailMessage.style.color = "red";
+				}
+			})
+			.catch(err => {
+				console.error("인증 요청 실패:", err);
+				emailMessage.innerText = "서버 오류가 발생했습니다.";
+				emailMessage.style.color = "red";
+			});
+	});
+
+
+	// 인증번호 Enter 지원
+	authCodeInput?.addEventListener("keyup", (e) => {
+		if (e.key === "Enter") validateAuthCode();
+	});
+
+	// "확인" 버튼 클릭
+	authCodeCheckBtn?.addEventListener("click", validateAuthCode);
+
+
+	// 회원가입 버튼 제출 시 이메일 인증 여부 체크
+	window.addEventListener("DOMContentLoaded", function() {
+		const signupForm = document.querySelector("form[action$='/register.do']");
+		if (signupForm) {
+			signupForm.addEventListener("submit", function(e) {
+				if (!isEmailVerified) {
+					e.preventDefault();
+					document.getElementById("authCodeMessage").innerText = "이메일 인증을 먼저 완료해주세요.";
+					document.getElementById("authCode").focus();
+				}
+			});
 		}
 	});
+
+
 
 	// 연락처 처리
 	["phone2", "phone3"].forEach(id => {

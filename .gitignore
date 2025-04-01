@@ -214,3 +214,6 @@ $RECYCLE.BIN/
 .classpath
 .classpath
 .classpath
+
+# .gitignore
+config.properties
