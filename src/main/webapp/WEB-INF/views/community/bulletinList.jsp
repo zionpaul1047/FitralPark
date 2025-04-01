@@ -123,9 +123,7 @@ body h1 {
 }
 
 .pagination .active {
-    background-color: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
+    color: #333;
 }
 
 /* 검색 및 글쓰기 영역 */
@@ -224,17 +222,24 @@ body h1 {
 						
 						<!-- 페이지네이션 -->
 						<div class="pagination">
-							<a href="#" class="active">1</a>
-							<a href="#">2</a>
-							<a href="#">3</a>
-							<a href="#">4</a>
-							<a href="#">5</a>
-							<a href="#">6</a>
-							<a href="#">7</a>
-							<a href="#">8</a>
-							<a href="#">9</a>
-							<a href="#">10</a>
-							<a href="#">다음</a>
+							<c:if test="${page > 1}">
+								<a href="bulletinList.do?page=${page-1}">이전</a>
+							</c:if>
+							
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<c:choose>
+									<c:when test="${page == i}">
+										<span class="active">${i}</span>
+									</c:when>
+									<c:otherwise>
+										<a href="bulletinList.do?page=${i}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<c:if test="${page < totalPages}">
+								<a href="bulletinList.do?page=${page+1}">다음</a>
+							</c:if>
 						</div>
 						
 					</div>

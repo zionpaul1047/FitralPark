@@ -10,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.test.java.memo.model.MemoDTO;
 
 import fitralpark.comunity.dto.CommunityDTO;
 
@@ -105,34 +106,57 @@ public class CommunityDAO {
 	}
 	
 	
-public ArrayList<CommunityDTO> Bulletin_list() {
-		
+	public ArrayList<CommunityDTO> Bulletin_list(Integer page, String word) {
 		try {
-			
 			ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
+			int pageSize = 10;
 			
-			String sql = "SELECT b.bulletin_post_no, b.bulletin_post_subject, "
-					+ "m.member_nickname, h.bulletin_post_header_name as post_header_name, "
-					+ "b.creator_id, TO_CHAR(b.regdate, 'yyyy-mm-dd') as regdate, "
-					+ "b.bulletin_post_recommend, b.post_record_cnt "
-					+ "FROM bulletin_post b "
-					+ "LEFT JOIN member m ON b.creator_id = m.member_id "
-					+ "LEFT JOIN bulletin_post_header h ON b.bulletin_post_header_no = h.bulletin_post_header_no "
-					+ "ORDER BY b.bulletin_post_no DESC";
+			String sql = "SELECT * FROM ("
+					+ "    SELECT a.*, ROWNUM as rnum FROM ("
+					+ "        SELECT b.bulletin_post_no, b.bulletin_post_subject, "
+					+ "        m.member_nickname, h.bulletin_post_header_name as post_header_name, "
+					+ "        b.creator_id, TO_CHAR(b.regdate, 'yyyy-mm-dd') as regdate, "
+					+ "        b.bulletin_post_recommend, b.post_record_cnt "
+					+ "        FROM bulletin_post b "
+					+ "        LEFT JOIN member m ON b.creator_id = m.member_id "
+					+ "        LEFT JOIN bulletin_post_header h ON b.bulletin_post_header_no = h.bulletin_post_header_no "
+					+ "        WHERE 1=1";
 			
-			rs = stat.executeQuery(sql);
+			// 검색어가 있는 경우 WHERE 조건 추가
+			if (word != null && !word.trim().isEmpty()) {
+				sql += " AND (b.bulletin_post_subject LIKE '%' || ? || '%' OR m.member_nickname LIKE '%' || ? || '%')";
+			}
+			
+			sql += "        ORDER BY b.bulletin_post_no DESC"
+					+ "    ) a WHERE ROWNUM <= ?"
+					+ ") WHERE rnum > ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			// 검색어가 있는 경우 파라미터 설정
+			if (word != null && !word.trim().isEmpty()) {
+				pstat.setString(1, word);
+				pstat.setString(2, word);
+				pstat.setInt(3, page * pageSize);
+				pstat.setInt(4, (page - 1) * pageSize);
+			} else {
+				pstat.setInt(1, page * pageSize);
+				pstat.setInt(2, (page - 1) * pageSize);
+			}
+			
+			rs = pstat.executeQuery();
 			
 			while (rs.next()) {
 				CommunityDTO dto = new CommunityDTO();
 				
-                dto.setPost_no(rs.getString("bulletin_post_no"));
-                dto.setPost_subject(rs.getString("bulletin_post_subject"));
-                dto.setNickname(rs.getString("member_nickname"));
-                dto.setPost_header_name(rs.getString("post_header_name"));
-                dto.setCreator_id(rs.getString("creator_id"));
-                dto.setRegdate(rs.getString("regdate"));
-                dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
-                dto.setPost_record_cnt(rs.getString("post_record_cnt"));
+				dto.setPost_no(rs.getString("bulletin_post_no"));
+				dto.setPost_subject(rs.getString("bulletin_post_subject"));
+				dto.setNickname(rs.getString("member_nickname"));
+				dto.setPost_header_name(rs.getString("post_header_name"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setRegdate(rs.getString("regdate"));
+				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
+				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
 				
 				list.add(dto);
 			}
@@ -219,6 +243,29 @@ public ArrayList<CommunityDTO> Bulletin_list() {
 		return null;
 	}
 	
+	public int write(CommunityDTO dto) {
+		
+			
+		try {
+			
+			String sql = "insert into bulletin_post (seq, bulletin_post_subject, bulletin_post_content, private_check, bulletin_post_recommend, bulletin_post_decommend, post_record_cnt, regdate, creator_id, bulletin_post_header_no) values (seqMemo.nextVal, ?, ?, default, default, default, default, default, sysdate, ?, ?)";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_subject());
+			pstat.setString(2, dto.getPost_content());
+			pstat.setString(3, dto.getCreator_id());
+			pstat.setString(4, dto.getHeader_no());
+			
+			return pstat.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+		
+	}
+	
 	public void close() {
 		
 		try {
@@ -231,5 +278,18 @@ public ArrayList<CommunityDTO> Bulletin_list() {
 		}
 		
 	}
-	
+
+	public int getTotalBulletinPosts() {
+		try {
+			String sql = "SELECT COUNT(*) as total FROM bulletin_post";
+			rs = stat.executeQuery(sql);
+			if (rs.next()) {
+				return rs.getInt("total");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }
