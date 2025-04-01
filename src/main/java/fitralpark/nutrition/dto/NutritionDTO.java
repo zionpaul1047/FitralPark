@@ -45,12 +45,6 @@ public class NutritionDTO {
 	private String chole;
 	
 	
-//	■■■■■■■■■■ API 에서 받아온데이터 이름등록 "food" ■■■■■■■■■■
-	private String f_food_no; //pk
-	private String f_food_name; 
-	private String f_food_cd; //fk(api_food_cd)
-	
-	
 //	■■■■■■■■■■ 음식 즐겨찾기 "food_bookmark" ■■■■■■■■■■
 	private String fb_food_bookmark_no; //pk
 	private String fb_food_no;
