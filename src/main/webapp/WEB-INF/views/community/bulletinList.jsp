@@ -214,9 +214,9 @@ body h1 {
 								<th>추천수</th>
 								<th>조회수</th>
 							</tr>
-							<c:forEach items="${bulletin_list}" var="dto">
+							<c:forEach items="${bulletin_list}" var="dto" varStatus="status">
 							<tr>
-								<td>${dto.post_no}</td>
+								<td>${(page - 1) * pageSize + status.index + 1}</td>
 								<td><a href="">[${dto.header_name}] ${dto.post_subject}</a></td>
 								<td><a href="">${dto.nickname}(${dto.creator_id})</a></td>
 								<td>${dto.regdate}</td>
@@ -229,7 +229,7 @@ body h1 {
 						<!-- 페이지네이션 -->
 						<div class="pagination">
 							<c:if test="${page > 1}">
-								<a href="bulletinList.do?page=${page-1}">이전</a>
+								<a href="bulletinList.do?page=${page-1}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">이전</a>
 							</c:if>
 							
 							<c:forEach begin="${startPage}" end="${endPage}" var="i">
@@ -238,13 +238,13 @@ body h1 {
 										<span class="active">${i}</span>
 									</c:when>
 									<c:otherwise>
-										<a href="bulletinList.do?page=${i}">${i}</a>
+										<a href="bulletinList.do?page=${i}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">${i}</a>
 									</c:otherwise>
 								</c:choose>
 							</c:forEach>
 							
 							<c:if test="${page < totalPages}">
-								<a href="bulletinList.do?page=${page+1}">다음</a>
+								<a href="bulletinList.do?page=${page+1}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">다음</a>
 							</c:if>
 						</div>
 						
@@ -257,19 +257,19 @@ body h1 {
 					<form action="/fitralpark/bulletinList.do" method="get">
 					<div id="board_etc_box">
 						<div class="search_area">
-							<select id="search_category">
-							    <option value="">전체</option>
-							    <c:forEach items="${headerList}" var="headerDto">
-							        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
-							    </c:forEach>
+							<select id="search_category" name="search_category">
+								<option value="">전체</option>
+								<c:forEach items="${headerList}" var="headerDto">
+									<option value="${headerDto.header_no}" ${searchCategory == headerDto.header_no ? 'selected' : ''}>${headerDto.header_name}</option>
+								</c:forEach>
 							</select>
-							<select id="search_sel">
-								<option value="post_subject">제목</option>
-								<option value="post_subject&post_content">제목&내용</option>
-								<option value="creator_id">작성자</option>
-								<option value="regdate">날짜</option>
+							<select id="search_sel" name="search_sel">
+								<option value="post_subject" ${searchSel == 'post_subject' ? 'selected' : ''}>제목</option>
+								<option value="post_subject&post_content" ${searchSel == 'post_subject&post_content' ? 'selected' : ''}>제목&내용</option>
+								<option value="creator_id" ${searchSel == 'creator_id' ? 'selected' : ''}>작성자</option>
+								<option value="regdate" ${searchSel == 'regdate' ? 'selected' : ''}>날짜</option>
 							</select>
-							<input type="text" name="searchWord" class="search_txt" placeholder="  검색">
+							<input type="text" name="searchWord" class="search_txt" placeholder="  검색" value="${searchWord}">
 							<input type="submit" class="search_btn" id="btn_search" value="검색">
 						</div>
 						<button type="button" id="btnadd_post" onclick="location.href='bulletinWrite.do'">글쓰기</button>

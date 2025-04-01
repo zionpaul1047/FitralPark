@@ -105,34 +105,82 @@ public class CommunityDAO {
 	}
 	
 	
-	public ArrayList<CommunityDTO> Bulletin_list(int page, String word, int pageSize) {
+	public ArrayList<CommunityDTO> Bulletin_list(int page, String word, int pageSize, String searchSel) {
 		ArrayList<CommunityDTO> list = new ArrayList<>();
-		String sql = "SELECT bp.*, m.member_nickname as nickname, " +
+		String sql = "SELECT * FROM (" +
+					"SELECT a.*, ROWNUM rnum FROM (" +
+					"SELECT bp.*, m.member_nickname as nickname, " +
 					"bph.bulletin_post_header_name as post_header_name " +
 					"FROM bulletin_post bp " +
 					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
 					"LEFT JOIN bulletin_post_header bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
-					"WHERE 1=1 " +
-					// 검색어가 있는 경우
-					(word != null && !word.trim().isEmpty() ? 
-						"AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) " : "") +
-					"ORDER BY bp.bulletin_post_no DESC " +
-					"OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+					"WHERE 1=1 ";
 
 		try {
+			// 검색어가 있는 경우
+			if (word != null && !word.trim().isEmpty()) {
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							sql += "AND bp.bulletin_post_subject LIKE ? ";
+							break;
+						case "post_subject&post_content":
+							sql += "AND (bp.bulletin_post_subject LIKE ? OR bp.bulletin_post_content LIKE ?) ";
+							break;
+						case "creator_id":
+							sql += "AND m.member_id LIKE ? OR m.member_nickname LIKE ?";
+							break;
+						case "regdate":
+							sql += "AND TO_CHAR(bp.regdate, 'YYYY-MM-DD') LIKE ? ";
+							break;
+						default:
+							sql += "AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) ";
+					}
+				} else {
+					sql += "AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) ";
+				}
+			}
+
+			sql += "ORDER BY bp.bulletin_post_no DESC" +
+				   ") a WHERE ROWNUM <= ?" +
+				   ") WHERE rnum > ?";
+
 			pstat = conn.prepareStatement(sql);
 			int paramIndex = 1;
 
 			// 검색어가 있는 경우
 			if (word != null && !word.trim().isEmpty()) {
-				pstat.setString(paramIndex++, "%" + word + "%");
-				pstat.setString(paramIndex++, "%" + word + "%");
-				pstat.setString(paramIndex++, "%" + word + "%");
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							pstat.setString(paramIndex++, "%" + word + "%");
+							break;
+						case "post_subject&post_content":
+							pstat.setString(paramIndex++, "%" + word + "%");
+							pstat.setString(paramIndex++, "%" + word + "%");
+							break;
+						case "creator_id":
+							pstat.setString(paramIndex++, "%" + word + "%");
+							pstat.setString(paramIndex++, "%" + word + "%");
+							break;
+						case "regdate":
+							pstat.setString(paramIndex++, "%" + word + "%");
+							break;
+						default:
+							pstat.setString(paramIndex++, "%" + word + "%");
+							pstat.setString(paramIndex++, "%" + word + "%");
+							pstat.setString(paramIndex++, "%" + word + "%");
+					}
+				} else {
+					pstat.setString(paramIndex++, "%" + word + "%");
+					pstat.setString(paramIndex++, "%" + word + "%");
+					pstat.setString(paramIndex++, "%" + word + "%");
+				}
 			}
 
 			// 페이지네이션 파라미터
-			pstat.setInt(paramIndex++, (page - 1) * pageSize);
-			pstat.setInt(paramIndex, pageSize);
+			pstat.setInt(paramIndex++, page * pageSize);  // ROWNUM <= ?
+			pstat.setInt(paramIndex, (page - 1) * pageSize);  // rnum > ?
 
 			rs = pstat.executeQuery();
 			while (rs.next()) {
@@ -145,6 +193,7 @@ public class CommunityDAO {
 				dto.setRegdate(rs.getString("regdate"));
 				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
 				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
+
 				list.add(dto);
 			}
 		} catch (Exception e) {
@@ -277,22 +326,68 @@ public class CommunityDAO {
 	    return null;
 	}
 
-	public int getTotalPosts(String searchWord) {
+	public int getTotalPosts(String searchWord, String searchSel) {
 		int total = 0;
 		String sql = "SELECT COUNT(*) as total FROM bulletin_post bp " +
 					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
-					"LEFT JOIN bulletin_post_heade r bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
-					"WHERE 1=1 " +
-					(searchWord != null && !searchWord.trim().isEmpty() ? 
-						"AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) " : "");
+					"LEFT JOIN bulletin_post_header bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
+					"WHERE 1=1 ";
 
 		try {
+			// 검색어가 있는 경우
+			if (searchWord != null && !searchWord.trim().isEmpty()) {
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							sql += "AND bp.bulletin_post_subject LIKE ? ";
+							break;
+						case "post_subject&post_content":
+							sql += "AND (bp.bulletin_post_subject LIKE ? OR bp.bulletin_post_content LIKE ?) ";
+							break;
+						case "creator_id":
+							sql += "AND m.member_id LIKE ? OR m.member_nickname LIKE ?";
+							break;
+						case "regdate":
+							sql += "AND TO_CHAR(bp.regdate, 'YYYY-MM-DD') LIKE ? ";
+							break;
+						default:
+							sql += "AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) ";
+					}
+				} else {
+					sql += "AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) ";
+				}
+			}
+
 			pstat = conn.prepareStatement(sql);
 			if (searchWord != null && !searchWord.trim().isEmpty()) {
-				pstat.setString(1, "%" + searchWord + "%");
-				pstat.setString(2, "%" + searchWord + "%");
-				pstat.setString(3, "%" + searchWord + "%");
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							pstat.setString(1, "%" + searchWord + "%");
+							break;
+						case "post_subject&post_content":
+							pstat.setString(1, "%" + searchWord + "%");
+							pstat.setString(2, "%" + searchWord + "%");
+							break;
+						case "creator_id":
+							pstat.setString(1, "%" + searchWord + "%");
+							pstat.setString(2, "%" + searchWord + "%");
+							break;
+						case "regdate":
+							pstat.setString(1, "%" + searchWord + "%");
+							break;
+						default:
+							pstat.setString(1, "%" + searchWord + "%");
+							pstat.setString(2, "%" + searchWord + "%");
+							pstat.setString(3, "%" + searchWord + "%");
+					}
+				} else {
+					pstat.setString(1, "%" + searchWord + "%");
+					pstat.setString(2, "%" + searchWord + "%");
+					pstat.setString(3, "%" + searchWord + "%");
+				}
 			}
+			
 			rs = pstat.executeQuery();
 			if (rs.next()) {
 				total = rs.getInt("total");
@@ -304,3 +399,9 @@ public class CommunityDAO {
 	}
 
 }
+
+
+
+
+
+

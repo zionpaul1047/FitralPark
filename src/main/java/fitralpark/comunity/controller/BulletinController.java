@@ -32,10 +32,10 @@ public class BulletinController extends HttpServlet {
 		
 		// DAO에서 게시글 목록 조회
 		CommunityDAO dao = new CommunityDAO();
-		ArrayList<CommunityDTO> list = dao.Bulletin_list(page, searchWord, pageSize);
+		ArrayList<CommunityDTO> list = dao.Bulletin_list(page, searchWord, pageSize, searchSel);
 		
 		// 전체 게시글 수 조회 (검색 조건 포함)
-		int totalPosts = dao.getTotalPosts(searchWord);
+		int totalPosts = dao.getTotalPosts(searchWord, searchSel);
 		int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
 		
 		// 시작 페이지와 끝 페이지 계산
