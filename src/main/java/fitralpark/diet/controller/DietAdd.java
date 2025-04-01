@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/dietRecommend.do")
-public class DietRecommendationController extends HttpServlet {
+@WebServlet("/diet/dietAdd.do")
+public class DietAdd extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        //DietRecommendationController.java
+        //DietAdd.java
         
 
-        req.getRequestDispatcher("/WEB-INF/views/diet/dietRecommend.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/diet/dietAdd.jsp").forward(req, resp);
     }
 
 }
