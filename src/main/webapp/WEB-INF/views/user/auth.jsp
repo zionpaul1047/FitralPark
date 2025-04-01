@@ -62,6 +62,8 @@
 				</div>
 				<form method="POST" action="${pageContext.request.contextPath}/register.do" class="form">
 					<div class="form-scroll-box">
+					    <!-- 이메일 hidden input (JS에서 값을 채워줌) -->
+    					<input type="hidden" id="email_hidden" name="email" />
 
 						<%-- 아이디 --%>
 						<div class="form-group">
@@ -209,7 +211,6 @@
 									</div>
 								</div>
 							</div>
-						
 							<small id="emailMessage" class="form-text mt-1"></small>
 						</div>
 
