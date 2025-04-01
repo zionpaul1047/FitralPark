@@ -93,10 +93,16 @@ body h1 {
 #boardtable th:nth-child(6) { width: 80px; }  /* 추천수, 조회수 */
 
 /* 게시글 호버 효과 */
-#boardtable tr:hover {
+#boardtable td a {
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+#boardtable td a:hover {
     background-color: #f5f5f5;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    color: #666666;
 }
 
 /* 페이지네이션 스타일 */
@@ -211,8 +217,8 @@ body h1 {
 							<c:forEach items="${bulletin_list}" var="dto">
 							<tr>
 								<td>${dto.post_no}</td>
-								<td><a href="">[${dto.post_header_name}] ${dto.post_subject}</a></td>
-								<td>${dto.nickname}(${dto.creator_id})</td>
+								<td><a href="">[${dto.header_name}] ${dto.post_subject}</a></td>
+								<td><a href="">${dto.nickname}(${dto.creator_id})</a></td>
 								<td>${dto.regdate}</td>
 								<td>${dto.post_recommend}</td>
 								<td>${dto.post_record_cnt}</td>
@@ -248,25 +254,27 @@ body h1 {
 						
 					</div>					
 
-
+					<form action="/fitralpark/bulletinList.do" method="get">
 					<div id="board_etc_box">
 						<div class="search_area">
 							<select id="search_category">
-								<option value="1"></option>
-								<option value="2"></option>
-								<option value="3"></option>
-								<option value="4"></option>								
+							    <option value="">전체</option>
+							    <c:forEach items="${headerList}" var="headerDto">
+							        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
+							    </c:forEach>
 							</select>
 							<select id="search_sel">
-								<option value="제목">제목</option>
-								<option value="작성자">작성자</option>
-								<option value="날짜">날짜</option>
+								<option value="post_subject">제목</option>
+								<option value="post_subject&post_content">제목&내용</option>
+								<option value="creator_id">작성자</option>
+								<option value="regdate">날짜</option>
 							</select>
-							<input type="search" class="search_txt" placeholder="  검색">
-							<button type="submit" class="search_btn" id="btn_search">검색</button>
+							<input type="text" name="searchWord" class="search_txt" placeholder="  검색">
+							<input type="submit" class="search_btn" id="btn_search" value="검색">
 						</div>
 						<button type="button" id="btnadd_post" onclick="location.href='bulletinWrite.do'">글쓰기</button>
 					</div>
+					</form>
 				</div>
 	
 	
@@ -285,6 +293,18 @@ body h1 {
 
 
 </body>
+
+<script>
+
+	function search() {
+    const category = document.getElementById('search_category').value;
+    const sel = document.getElementById('search_sel').value;
+    const word = document.getElementById('searchWord').value;
+    location.href = '/fitralpark/bulletinList.do?search_category=' + category + '&search_sel=' + sel + '&searchWord=' + word;
+}
+
+</script>
+
 
 
 </html>

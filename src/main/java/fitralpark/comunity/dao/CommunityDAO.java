@@ -10,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+
 import fitralpark.comunity.dto.CommunityDTO;
 
 //(DB 접근 DAO 클래스 자리)
@@ -104,67 +105,52 @@ public class CommunityDAO {
 	}
 	
 	
-	public ArrayList<CommunityDTO> Bulletin_list(Integer page, String word, int pageSize) {
+	public ArrayList<CommunityDTO> Bulletin_list(int page, String word, int pageSize) {
+		ArrayList<CommunityDTO> list = new ArrayList<>();
+		String sql = "SELECT bp.*, m.member_nickname as nickname, " +
+					"bph.bulletin_post_header_name as post_header_name " +
+					"FROM bulletin_post bp " +
+					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
+					"LEFT JOIN bulletin_post_header bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
+					"WHERE 1=1 " +
+					// 검색어가 있는 경우
+					(word != null && !word.trim().isEmpty() ? 
+						"AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) " : "") +
+					"ORDER BY bp.bulletin_post_no DESC " +
+					"OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
 		try {
-			ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
-			
-			String sql = "SELECT * FROM ("
-					+ "    SELECT a.*, ROWNUM as rnum FROM ("
-					+ "        SELECT b.bulletin_post_no, b.bulletin_post_subject, "
-					+ "        m.member_nickname, h.bulletin_post_header_name as post_header_name, "
-					+ "        b.creator_id, TO_CHAR(b.regdate, 'yyyy-mm-dd') as regdate, "
-					+ "        b.bulletin_post_recommend, b.post_record_cnt "
-					+ "        FROM bulletin_post b "
-					+ "        LEFT JOIN member m ON b.creator_id = m.member_id "
-					+ "        LEFT JOIN bulletin_post_header h ON b.bulletin_post_header_no = h.bulletin_post_header_no "
-					+ "        WHERE 1=1";
-			
-			// 검색어가 있는 경우 WHERE 조건 추가
-			if (word != null && !word.trim().isEmpty()) {
-				sql += " AND (b.bulletin_post_subject LIKE '%' || ? || '%' OR m.member_nickname LIKE '%' || ? || '%')";
-			}
-			
-			sql += "        ORDER BY b.bulletin_post_no DESC"
-					+ "    ) a WHERE ROWNUM <= ?"
-					+ ") WHERE rnum > ?";
-			
 			pstat = conn.prepareStatement(sql);
-			
-			// 검색어가 있는 경우 파라미터 설정
+			int paramIndex = 1;
+
+			// 검색어가 있는 경우
 			if (word != null && !word.trim().isEmpty()) {
-				pstat.setString(1, word);
-				pstat.setString(2, word);
-				pstat.setInt(3, page * pageSize);
-				pstat.setInt(4, (page - 1) * pageSize);
-			} else {
-				pstat.setInt(1, page * pageSize);
-				pstat.setInt(2, (page - 1) * pageSize);
+				pstat.setString(paramIndex++, "%" + word + "%");
+				pstat.setString(paramIndex++, "%" + word + "%");
+				pstat.setString(paramIndex++, "%" + word + "%");
 			}
-			
+
+			// 페이지네이션 파라미터
+			pstat.setInt(paramIndex++, (page - 1) * pageSize);
+			pstat.setInt(paramIndex, pageSize);
+
 			rs = pstat.executeQuery();
-			
 			while (rs.next()) {
 				CommunityDTO dto = new CommunityDTO();
-				
 				dto.setPost_no(rs.getString("bulletin_post_no"));
 				dto.setPost_subject(rs.getString("bulletin_post_subject"));
-				dto.setNickname(rs.getString("member_nickname"));
-				dto.setPost_header_name(rs.getString("post_header_name"));
+				dto.setNickname(rs.getString("nickname"));
+				dto.setHeader_name(rs.getString("post_header_name"));
 				dto.setCreator_id(rs.getString("creator_id"));
 				dto.setRegdate(rs.getString("regdate"));
 				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
 				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
-				
 				list.add(dto);
 			}
-			
-			return list;
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return null;
+		return list;
 	}
 	
 	public ArrayList<CommunityDTO> Announcement_list() {
@@ -216,6 +202,7 @@ public class CommunityDAO {
 					+ "        qna_post_recommend,"
 					+ "        post_record_cnt from qna_post order by qna_post_no desc";
 			
+			
 			rs = stat.executeQuery(sql);
 			
 			while (rs.next()) {
@@ -229,6 +216,7 @@ public class CommunityDAO {
 				dto.setPost_record_cnt("post_record_cnt");
 				
 				list.add(dto);
+				
 			}
 			
 			return list;
@@ -240,6 +228,20 @@ public class CommunityDAO {
 		return null;
 	}
 	
+	public int getTotalBulletinPosts() {
+		try {
+			//게시판 게시글 갯수 카운트
+			String sql = "SELECT COUNT(*) as total FROM bulletin_post";
+			rs = stat.executeQuery(sql);
+			if (rs.next()) {
+				return rs.getInt("total");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 	public void close() {
 		
 		try {
@@ -253,18 +255,52 @@ public class CommunityDAO {
 		
 	}
 
-	public int getTotalBulletinPosts() {
+	// 게시판 헤더 이름 조회
+	public ArrayList<CommunityDTO> getHeaderList() {
+	    try {
+	        String sql = "SELECT bulletin_post_header_no as header_no, bulletin_post_header_name as header_name FROM bulletin_post_header";
+	        rs = stat.executeQuery(sql);
+	        
+	        ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
+	        while (rs.next()) {
+	            CommunityDTO dto = new CommunityDTO();
+	            dto.setHeader_no(rs.getString("header_no"));
+	            dto.setHeader_name(rs.getString("header_name"));
+	            list.add(dto);
+	        }
+	        
+	        return list;
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+
+	public int getTotalPosts(String searchWord) {
+		int total = 0;
+		String sql = "SELECT COUNT(*) as total FROM bulletin_post bp " +
+					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
+					"LEFT JOIN bulletin_post_heade r bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
+					"WHERE 1=1 " +
+					(searchWord != null && !searchWord.trim().isEmpty() ? 
+						"AND (bp.bulletin_post_subject LIKE ? OR m.member_id LIKE ? OR bph.bulletin_post_header_name LIKE ?) " : "");
+
 		try {
-			//게시판 게시글 갯수 카운트
-			String sql = "SELECT COUNT(*) as total FROM bulletin_post";
-			rs = stat.executeQuery(sql);
+			pstat = conn.prepareStatement(sql);
+			if (searchWord != null && !searchWord.trim().isEmpty()) {
+				pstat.setString(1, "%" + searchWord + "%");
+				pstat.setString(2, "%" + searchWord + "%");
+				pstat.setString(3, "%" + searchWord + "%");
+			}
+			rs = pstat.executeQuery();
 			if (rs.next()) {
-				return rs.getInt("total");
+				total = rs.getInt("total");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0;
+		return total;
 	}
 
 }

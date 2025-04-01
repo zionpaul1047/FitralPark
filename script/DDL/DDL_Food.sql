@@ -202,7 +202,7 @@ CREATE TABLE diet_feedback(
 );
 
 
-
+ALTER TABLE diet ADD public_check NUMBER default 0 NOT NULL;
 
 
 

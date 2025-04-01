@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CommunityDTO {
-	
+	// 게시판 정보
 	private String post_no;
 	private String post_subject;
 	private String post_content;
@@ -20,10 +20,11 @@ public class CommunityDTO {
 	private String post_record_cnt;
 	private String regdate;
 	private String creator_id;
-	private String header_no;
-	private String comment_no;
-	private String header_name;
-	
 	private String nickname;
-	private String post_header_name;
+
+	private String header_no;
+	private String header_name;
+
+	private String comment_no;
+	private String comment_content;
 }
