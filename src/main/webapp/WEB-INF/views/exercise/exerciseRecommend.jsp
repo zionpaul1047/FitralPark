@@ -737,7 +737,7 @@
 		});
 		
 		$(".routine-row").on("click", function () {
-		    const routineNo = $(this).data("routine-no");
+		    const routineNo = $(this).data("routine-no").toString();
 		    console.log("루틴 번호:", routineNo);
 
 		    $.ajax({
@@ -745,22 +745,16 @@
 		        method: "GET",
 		        data: { routineNo: routineNo },
 		        success: function (res) {
-		            console.log("🚀 받아온 데이터:", res);
-		            console.log("▶ 타입 확인:", typeof res);
-
 		            const tbody = $(`#exercise-tbody-${routineNo}`);
-		            console.log("📌 tbody 찾음?", tbody.length); // 반드시 1이어야 함
-
+		            console.log("🎯 tbody length:", tbody.length);
 		            tbody.empty();
 
 		            if (!Array.isArray(res)) {
-		                alert("❗ JSON 배열이 아님. 응답 확인 필요!");
+		                alert("JSON 형식 오류");
 		                return;
 		            }
 
-		            res.forEach((exercise, i) => {
-		                console.log(`🎯 운동 ${i}`, exercise);
-
+		            res.forEach(exercise => {
 		                const row = `
 		                    <tr>
 		                        <td>${exercise.exerciseName}</td>
@@ -775,15 +769,17 @@
 		                tbody.append(row);
 		            });
 
+		            // 열기
 		            const target = $(`.exercise-detail[data-parent="${routineNo}"]`);
+		            console.log("열 대상:", target.length);
+
 		            $(".exercise-detail").not(target).slideUp();
-		            target.slideDown();
+		            target.slideDown(); // 또는 target.show();
 		        },
 		        error: function () {
-		            alert("🚨 운동 목록을 불러오는 데 실패했습니다.");
+		            alert("불러오기 실패");
 		        }
 		    });
-
 		});
 
 		
