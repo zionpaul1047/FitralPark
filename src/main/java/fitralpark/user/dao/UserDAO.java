@@ -5,6 +5,7 @@ import fitralpark.user.dto.UserDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class UserDAO {
 
@@ -86,4 +87,23 @@ public class UserDAO {
 
 		return 0;
 	}
+
+	// 아이디 중복 확인
+	public boolean isDuplicateId(String id) {
+		String sql = "SELECT COUNT(*) FROM member WHERE member_id = ?";
+		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				int count = rs.getInt(1);
+				return count > 0;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

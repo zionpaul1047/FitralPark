@@ -1,3 +1,8 @@
+// contextPath 선언 필요: <script>const contextPath = "${pageContext.request.contextPath}";</script>
+
+let isIdChecked = false;
+let lastCheckedId = "";
+
 function moveToRegister() {
 	document.getElementById("login").style.display = "none";
 	document.getElementById("signup").style.display = "block";
@@ -11,92 +16,120 @@ function moveToLogin() {
 function redirectToRegister(e) {
 	e.preventDefault();
 	const name = document.getElementById("name")?.value || '';
-	const email = document.getElementById("signup_email")?.value || '';
-	window.opener.location.href = '/fitralpark/register.do?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
+	const prefix = document.getElementById("email_prefix")?.value || '';
+	const domainSelect = document.getElementById("email_domain")?.value || '';
+	const domainCustom = document.getElementById("email_domain_custom")?.value || '';
+	const domain = domainSelect === 'etc' ? domainCustom : domainSelect;
+	const email = domain ? `${prefix}@${domain}` : '';
+	window.opener.location.href = contextPath + '/register.do?name=' + encodeURIComponent(name) + '&email=' + encodeURIComponent(email);
 	window.close();
 }
 
-// 아이디 중복검사 알림
 function checkDuplicateId() {
 	const id = document.getElementById("signup_id").value.trim();
 	const message = document.getElementById("idCheckMessage");
-
 	const idRegex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{4,16}$/;
 
 	if (!idRegex.test(id)) {
 		message.innerText = "아이디는 영문 소문자와 숫자를 모두 포함한 4~16자여야 합니다.";
 		message.style.color = "red";
+		isIdChecked = false;
 		return;
 	}
 
-	// 중복 체크 로직 (예시)
-	const isDuplicate = false;
-
-	if (isDuplicate) {
-		message.innerText = "이미 사용 중인 아이디입니다.";
-		message.style.color = "red";
-	} else {
-		message.innerText = "사용 가능한 아이디입니다.";
-		message.style.color = "green";
-	}
+	// 서버에 AJAX로 중복 확인 요청
+	fetch(`${contextPath}/checkId.do?id=${encodeURIComponent(id)}`)
+		.then(res => res.json())
+		.then(data => {
+			if (data.exists) {
+				message.innerText = "이미 사용 중인 아이디입니다.";
+				message.style.color = "red";
+				isIdChecked = false;
+			} else {
+				message.innerText = "사용 가능한 아이디입니다.";
+				message.style.color = "green";
+				isIdChecked = true;
+				lastCheckedId = id;
+			}
+		})
+		.catch(err => {
+			console.error("아이디 중복 확인 오류:", err);
+			message.innerText = "서버 오류가 발생했습니다.";
+			message.style.color = "red";
+			isIdChecked = false;
+		});
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+
+window.addEventListener("DOMContentLoaded", function() {
 	const pwInput = document.getElementById("signup_password");
 	const pwConfirm = document.getElementById("cpass");
 	const pwMessage = document.getElementById("pwValidationMessage");
 	const pwMatchMessage = document.getElementById("pwMatchMessage");
 
-	function validatePasswordFormat(password) {
-		const lengthValid = password.length >= 8 && password.length <= 16;
-		const patterns = [
-			/[A-Z]/,  // 대문자
-			/[a-z]/,  // 소문자
-			/[0-9]/,  // 숫자
-			/[!@#$%^&*(),.?":{}|<>]/  // 특수문자
-		];
-		const matched = patterns.filter(p => p.test(password)).length;
-		return lengthValid && matched >= 2;
+	const signupForm = document.querySelector("form[action$='/register.do']");
+	if (signupForm) {
+		signupForm.addEventListener("submit", function(e) {
+			if (!isIdChecked) {
+				e.preventDefault();
+				const msg = document.getElementById("idCheckMessage");
+				msg.innerText = "아이디 중복확인을 먼저 해주세요.";
+				msg.style.color = "red";
+				document.getElementById("signup_id").focus();
+				setTimeout(() => {
+					document.querySelector("button[onclick='checkDuplicateId()']")?.focus();
+				}, 300);
+			}
+		});
 	}
 
-	pwInput.addEventListener("input", () => {
-		if (validatePasswordFormat(pwInput.value)) {
-			pwMessage.innerText = "사용 가능한 비밀번호입니다.";
-			pwMessage.style.color = "green";
-		} else {
-			pwMessage.innerText = "8~16자, 영문 대소문자/숫자/특수문자 중 2종 이상 조합 필요";
-			pwMessage.style.color = "red";
-		}
-
-		// 비밀번호 확인과 일치 여부도 동시에 확인
-		if (pwConfirm.value !== "") {
-			if (pwInput.value === pwConfirm.value) {
-				pwMatchMessage.innerText = "비밀번호가 일치합니다.";
-				pwMatchMessage.style.color = "green";
-			} else {
-				pwMatchMessage.innerText = "비밀번호가 일치하지 않습니다.";
-				pwMatchMessage.style.color = "red";
+	const idInput = document.getElementById("signup_id");
+	const idMessage = document.getElementById("idCheckMessage");
+	if (idInput && idMessage) {
+		idInput.addEventListener("input", () => {
+			const currentId = idInput.value.trim();
+			if (currentId !== lastCheckedId) {
+				isIdChecked = false;
+				idMessage.innerText = "아이디 중복확인을 다시 해주세요.";
+				idMessage.style.color = "orange";
+			} else if (isIdChecked) {
+				idMessage.innerText = "사용 가능한 아이디입니다.";
+				idMessage.style.color = "green";
 			}
+		});
+	}
+
+	if (pwInput && pwConfirm) {
+		function validatePasswordFormat(password) {
+			const lengthValid = password.length >= 8 && password.length <= 16;
+			const patterns = [/[A-Z]/, /[a-z]/, /[0-9]/, /[!@#$%^&*(),.?":{}|<>]/];
+			const matched = patterns.filter(p => p.test(password)).length;
+			return lengthValid && matched >= 2;
 		}
-	});
 
-	pwConfirm.addEventListener("input", () => {
-		if (pwInput.value === pwConfirm.value) {
-			pwMatchMessage.innerText = "비밀번호가 일치합니다.";
-			pwMatchMessage.style.color = "green";
-		} else {
-			pwMatchMessage.innerText = "비밀번호가 일치하지 않습니다.";
-			pwMatchMessage.style.color = "red";
-		}
-	});
-});
+		pwInput.addEventListener("input", () => {
+			if (validatePasswordFormat(pwInput.value)) {
+				pwMessage.innerText = "사용 가능한 비밀번호입니다.";
+				pwMessage.style.color = "green";
+			} else {
+				pwMessage.innerText = "8~16자, 영문 대소문자/숫자/특수문자 중 2종 이상 조합 필요";
+				pwMessage.style.color = "red";
+			}
+			if (pwConfirm.value !== "") {
+				pwMatchMessage.innerText = pwInput.value === pwConfirm.value ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.";
+				pwMatchMessage.style.color = pwInput.value === pwConfirm.value ? "green" : "red";
+			}
+		});
 
+		pwConfirm.addEventListener("input", () => {
+			pwMatchMessage.innerText = pwInput.value === pwConfirm.value ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.";
+			pwMatchMessage.style.color = pwInput.value === pwConfirm.value ? "green" : "red";
+		});
+	}
 
-// 👁️ 비밀번호 보기 토글
-document.addEventListener("DOMContentLoaded", function() {
+	// 👁️ 비밀번호 보기 토글
 	const eyeLogin = document.getElementById("eye_icon_login");
 	const pwLogin = document.getElementById("login_password");
-
 	const eyeSignup = document.getElementById("eye_icon_signup");
 	const pwSignup = document.getElementById("signup_password");
 
@@ -108,7 +141,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			this.classList.toggle("fa-eye-slash");
 		});
 	}
-
 	if (eyeSignup && pwSignup) {
 		eyeSignup.addEventListener("click", function() {
 			const isVisible = pwSignup.type === "text";
@@ -117,148 +149,86 @@ document.addEventListener("DOMContentLoaded", function() {
 			this.classList.toggle("fa-eye-slash");
 		});
 	}
-});
 
-//주민등록번호
-document.addEventListener("DOMContentLoaded", function() {
+	// 주민등록번호 처리
+	["jumin1", "jumin2_first", "jumin2_rest"].forEach(id => {
+		const input = document.getElementById(id);
+		if (input) {
+			input.addEventListener("input", function() {
+				this.value = this.value.replace(/[^0-9]/g, '');
+			});
+		}
+	});
 	const jumin1 = document.getElementById("jumin1");
 	const jumin2_first = document.getElementById("jumin2_first");
-	const jumin2_rest = document.getElementById("jumin2_rest");
-
-	// 숫자만 입력되도록 처리
-	[jumin1, jumin2_first, jumin2_rest].forEach(input => {
-		input.addEventListener("input", function() {
-			this.value = this.value.replace(/[^0-9]/g, '');
-		});
+	jumin1?.addEventListener("input", function() {
+		if (this.value.length === 6) jumin2_first?.focus();
+	});
+	jumin2_first?.addEventListener("input", function() {
+		if (this.value.length === 1) document.getElementById("jumin2_rest")?.focus();
 	});
 
-	// 자동 포커스 이동
-	jumin1.addEventListener("input", function() {
-		if (this.value.length === 6) {
-			jumin2_first.focus();
-		}
-	});
-
-	jumin2_first.addEventListener("input", function() {
-		if (this.value.length === 1) {
-			jumin2_rest.focus();
-		}
-	});
-});
-
-// 닉네임 유효성 검사
-document.addEventListener("DOMContentLoaded", function() {
-	const nicknameInput = document.getElementById("nickname");
-	nicknameInput.addEventListener("input", function() {
-		// 한글, 영문, 숫자만 허용
+	// 닉네임 유효성 검사
+	document.getElementById("nickname")?.addEventListener("input", function() {
 		this.value = this.value.replace(/[^가-힣a-zA-Z0-9]/g, '');
 	});
-});
 
-//이메일
-function handleDomainChange() {
-	const domainSelect = document.getElementById("email_domain");
-	const customDomain = document.getElementById("email_domain_custom");
-
-	if (domainSelect.value === "etc") {
-		customDomain.style.display = "block";
-		customDomain.value = "";
-		customDomain.focus();
-	} else {
-		customDomain.style.display = "none";
-	}
-}
-
-function checkEmail() {
-	const prefix = document.getElementById("email_prefix").value.trim();
-	const domainSelect = document.getElementById("email_domain").value;
-	const customDomain = document.getElementById("email_domain_custom").value.trim();
-	const emailMessage = document.getElementById("emailMessage");
-
-	const domain = domainSelect === "etc" ? customDomain : domainSelect;
-	const fullEmail = `${prefix}@${domain}`;
-	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-	if (!prefix || !domain) {
-		emailMessage.innerText = "이메일을 모두 입력해주세요.";
-		emailMessage.style.color = "red";
-		return;
-	}
-
-	if (!emailRegex.test(fullEmail)) {
-		emailMessage.innerText = "올바른 이메일 형식이 아닙니다.";
-		emailMessage.style.color = "red";
-		return;
-	}
-
-	// 인증 성공 메시지
-	emailMessage.innerText = "이메일 형식이 올바릅니다. 인증 메일을 전송했습니다.";
-	emailMessage.style.color = "green";
-
-	// 나중에 AJAX 요청으로 인증코드 전송 추가 가능
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-	const phoneInputs = [document.getElementById("phone2"), document.getElementById("phone3")];
-
-	phoneInputs.forEach(input => {
-		input.addEventListener("input", function() {
-			this.value = this.value.replace(/[^0-9]/g, '');
-		});
-	});
-});
-
-// 연락처
-document.addEventListener("DOMContentLoaded", function() {
-	const phone1 = document.getElementById("phone1");
-	const phone2 = document.getElementById("phone2");
-	const phone3 = document.getElementById("phone3");
-	const customPhoneWrap = document.getElementById("custom_phone_wrap");
-	const customPhone = document.getElementById("custom_phone");
-
-	// 드롭박스 값 변경 시 처리
-	phone1.addEventListener("change", function() {
-		if (this.value === "custom") {
-			phone2.disabled = true;
-			phone3.disabled = true;
-			phone2.value = "";
-			phone3.value = "";
-			customPhoneWrap.style.display = "block";
-			customPhone.focus();
+	// 이메일 도메인 처리
+	document.getElementById("email_domain")?.addEventListener("change", function() {
+		const customDomain = document.getElementById("email_domain_custom");
+		if (this.value === "etc") {
+			customDomain.style.display = "block";
+			customDomain.value = "";
+			customDomain.focus();
 		} else {
-			phone2.disabled = false;
-			phone3.disabled = false;
-			customPhoneWrap.style.display = "none";
-			customPhone.value = "";
+			customDomain.style.display = "none";
 		}
 	});
 
-	// 숫자만 입력되도록 (phone2, phone3)
-	[phone2, phone3].forEach(input => {
-		input.addEventListener("input", function() {
+	// 이메일 인증 검사 (단순 포맷 확인)
+	document.getElementById("emailCheckBtn")?.addEventListener("click", function() {
+		const prefix = document.getElementById("email_prefix").value.trim();
+		const domain = document.getElementById("email_domain").value;
+		const custom = document.getElementById("email_domain_custom").value.trim();
+		const fullDomain = domain === "etc" ? custom : domain;
+		const email = `${prefix}@${fullDomain}`;
+		const emailMsg = document.getElementById("emailMessage");
+		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+		if (!prefix || !fullDomain) {
+			emailMsg.innerText = "이메일을 모두 입력해주세요.";
+			emailMsg.style.color = "red";
+		} else if (!regex.test(email)) {
+			emailMsg.innerText = "올바른 이메일 형식이 아닙니다.";
+			emailMsg.style.color = "red";
+		} else {
+			emailMsg.innerText = "이메일 형식이 올바릅니다. 인증 메일을 전송했습니다.";
+			emailMsg.style.color = "green";
+			// TODO: 이메일 인증번호 요청 추가
+		}
+	});
+
+	// 연락처 처리
+	["phone2", "phone3"].forEach(id => {
+		document.getElementById(id)?.addEventListener("input", function() {
 			this.value = this.value.replace(/[^0-9]/g, '');
 		});
 	});
 
-	// phone2 입력 시 자동 포커스 이동
-	phone2.addEventListener("input", function() {
-		if (this.value.length === 4) {
-			phone3.focus();
-		}
+	document.getElementById("phone2")?.addEventListener("input", function() {
+		if (this.value.length === 4) document.getElementById("phone3")?.focus();
 	});
 
-	// customPhone에서 하이픈(-) 자동 제거
-	customPhone.addEventListener("input", function() {
-		// 숫자와 +만 허용
+	document.getElementById("phone1")?.addEventListener("change", function() {
+		const isCustom = this.value === "custom";
+		document.getElementById("phone2").disabled = isCustom;
+		document.getElementById("phone3").disabled = isCustom;
+		document.getElementById("custom_phone_wrap").style.display = isCustom ? "block" : "none";
+		if (isCustom) document.getElementById("custom_phone").focus();
+	});
+	document.getElementById("custom_phone")?.addEventListener("input", function() {
 		let val = this.value.replace(/[^0-9+]/g, '');
-
-		// +는 맨 앞에만 허용
-		if (val.indexOf('+') > 0) {
-			val = val.replace(/\+/g, ''); // +가 맨 앞이 아닌 경우 제거
-		}
-
+		if (val.indexOf('+') > 0) val = val.replace(/\+/g, '');
 		this.value = val;
 	});
 });
-
-
