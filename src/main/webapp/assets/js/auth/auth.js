@@ -263,6 +263,9 @@ window.addEventListener("DOMContentLoaded", function() {
 		const email = `${prefix}@${domain}`;
 		const emailMessage = document.getElementById("emailMessage");
 		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		
+		const hiddenInput = document.getElementById("email_hidden");
+		if (hiddenInput) hiddenInput.value = email;
 
 		if (!prefix || !domain) {
 			emailMessage.innerText = "이메일을 모두 입력해주세요.";
@@ -341,20 +344,14 @@ window.addEventListener("DOMContentLoaded", function() {
 		const signupForm = document.querySelector("form[action$='/register.do']");
 		if (signupForm) {
 			signupForm.addEventListener("submit", function(e) {
-				// 아이디 중복 확인 체크
 				if (!isIdChecked) {
 					e.preventDefault();
-					const msg = document.getElementById("idCheckMessage");
-					msg.innerText = "아이디 중복확인을 먼저 해주세요.";
-					msg.style.color = "red";
+					document.getElementById("idCheckMessage").innerText = "아이디 중복확인을 먼저 해주세요.";
+					document.getElementById("idCheckMessage").style.color = "red";
 					document.getElementById("signup_id").focus();
-					setTimeout(() => {
-						document.querySelector("button[onclick='checkDuplicateId()']")?.focus();
-					}, 300);
 					return;
 				}
 
-				// 이메일 인증 여부 체크
 				if (!window.isEmailVerified) {
 					e.preventDefault();
 					document.getElementById("authCodeMessage").innerText = "이메일 인증을 먼저 완료해주세요.";
@@ -362,18 +359,16 @@ window.addEventListener("DOMContentLoaded", function() {
 					return;
 				}
 
-				// 이메일 조합 후 hidden input에 세팅
+				// 이메일 hidden 필드 세팅
 				const prefix = document.getElementById("email_prefix").value.trim();
 				const domainSel = document.getElementById("email_domain").value;
 				const custom = document.getElementById("email_domain_custom").value.trim();
 				const domain = domainSel === "etc" ? custom : domainSel;
-				const fullEmail = `${prefix}@${domain}`;
-
-				const hiddenEmailInput = document.getElementById("full_email");
-				if (hiddenEmailInput) {
-					hiddenEmailInput.value = fullEmail;
-				}
+				const email = `${prefix}@${domain}`;
+				const hiddenInput = document.getElementById("email_hidden");
+				if (hiddenInput) hiddenInput.value = email;
 			});
+
 
 		}
 	});
