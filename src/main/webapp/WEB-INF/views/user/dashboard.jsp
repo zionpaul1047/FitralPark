@@ -670,8 +670,11 @@
 		
 		#popup_bottom button#view_hist_btn {
 			display: none;
-			
-            
+		   
+		}
+		#rnk_name {
+			font-size: 1.2rem;
+			font-weight: bold;
 		}
         
     </style>
@@ -702,8 +705,8 @@
 			            <div id="prf_head">
 			                <div id="prf_head_info">${dto.userName}님의 신체 정보</div>
 			                <div id="rnk">
-			                    <img id="rnk_img" src="/fitralpark/assets/images/rank/beginner.png">
-			                    <div id="rnk_name">beginner</div>
+			                    <img id="rnk_img" src="/fitralpark/assets/images/icon/${rank}.png">
+			                    <div id="rnk_name">${rank}</div>
 			                </div>
 			            </div>
 			            <div class="prf_box">
@@ -777,14 +780,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn">운동 등록/수정</button>
+					            <button id="" class="card_btn" onclick="location.href='#!';">운동 등록/수정</button>
 					            <button id="" class="card_btn">운동 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyExcsList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 운동이 없습니다.<br>운동을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">운동 등록/수정</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">운동 등록</button>
 				        	</div>
 				        </c:if>
 			        </div>
@@ -816,14 +819,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn">식단 등록/수정</button>
+					            <button id="" class="card_btn"  onclick="location.href='#!';">식단 등록/수정</button>
 					            <button id="" class="card_btn">식사 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyDietList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 식단이 없습니다.<br>식단을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">식단 등록/수정</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">식단 등록</button>
 				        	</div>
 				        </c:if>
 				        
@@ -865,13 +868,13 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+					            <button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.crtExcsList.size() le 0}">
 				        	<div class="mid_part_empty">최근 등록된<br>운동기록이 없습니다.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 				        	</div>
 				        </c:if>
 				        
@@ -913,13 +916,13 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+					            <button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.crtdietList.size() le 0}">
 				        	<div class="mid_part_empty">최근 등록된<br>식사기록이 없습니다.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide">더 많은 기록 보러가기</button>
+				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">더 많은 기록 보러가기</button>
 				        	</div>
 				        </c:if>
 			        </div>

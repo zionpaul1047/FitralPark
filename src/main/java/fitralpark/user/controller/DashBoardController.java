@@ -27,7 +27,8 @@ public class DashBoardController extends HttpServlet {
 		
 		//세션값 임시
 		String id = "hong";
-		String rank = "";
+		String rank = "junior";
+		String mentor_check = "0";
 		
 		
 		
@@ -82,7 +83,8 @@ public class DashBoardController extends HttpServlet {
 //		System.out.println(dto.getCrtdietList());
 //		
 		req.setAttribute("dto", dto);
-		
+		req.setAttribute("rank", rank);
+		req.setAttribute("mentor_check", mentor_check);
 		
 
 		req.getRequestDispatcher("/WEB-INF/views/user/dashboard.jsp").forward(req, resp);
