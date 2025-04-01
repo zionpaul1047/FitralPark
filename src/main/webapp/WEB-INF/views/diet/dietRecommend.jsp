@@ -9,6 +9,7 @@
 <meta charset="UTF-8">
 <title>식단 라이브러리</title>
     <style>
+    
 * {
     margin: 0;
     padding: 0;
@@ -59,10 +60,6 @@ body {
   flex-direction: column;
 }
 
-footer {
-  margin-top: auto;
-}
-
 
 body {
     background-color: rgb(218, 243, 211);
@@ -86,8 +83,8 @@ h1 {
 
 .content-box {
     position:relative;
-    right: 150px;
-    bottom:10px;
+    right: 155px;
+    bottom:15px;
     background-color: #fff;
     border-radius: 5px;
     padding: 20px;
@@ -498,202 +495,78 @@ h3 {
                 <h3>식단 리스트</h3>
                 
                 <div class="diet-list">
-                    <table class="diet-table">
-                        <thead>
-                            <tr>
-                                <th class="checkbox-col"></th>
-                                <th>식단명</th>
-                                <th>식단 카테고리</th>
-                                <th>작성일</th>
-                                <th>총열량(kcal)</th>
-                                <th>식사시간대</th>
-                                <th>작성자(닉네임)</th>
-                                <th>즐겨찾기</th>
-                                <th>조회수</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-row-id="1">
-                                <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
-                                <td>단백질이 풍부한 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>김제트</td>
-                                <td><button class="star-btn" data-id="1">★</button></td>
-                                <td>150</td>
-                            </tr>
-                            <tr class="detail-row" id="detail-1">
-                                <td colspan="9">
-                                    <div class="food-details">
-                                        <table class="food-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>음식명</th>
-                                                    <th>열량(kcal)</th>
-                                                    <th>단백질(g)</th>
-                                                    <th>탄수화물(g)</th>
-                                                    <th>지방(g)</th>
-                                                    <th>나트륨(mg)</th>
-                                                    <th>나트륨(mg)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>삶은계란</td>
-                                                    <td>155.4</td>
-                                                    <td>100</td>
-                                                    <td>0</td>
-                                                    <td>3.7</td>
-                                                    <td>1</td>
-                                                    <td>39</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>치킨샐러드</td>
-                                                    <td>24</td>
-                                                    <td>100</td>
-                                                    <td>0</td>
-                                                    <td>0.7</td>
-                                                    <td>0</td>
-                                                    <td>46</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <div class="detail-buttons">
-                                            <button class="confirm-btn">추천 21</button>
-                                            <button class="cancel-btn">비추천 2</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <!-- 추가 식단 항목들 -->
-                            <tr data-row-id="2">
-                                <td><input type="checkbox" class="row-checkbox" data-id="2"></td>
-                                <td>다양한 종류로 만든 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>박블랙</td>
-                                <td><button class="star-btn" data-id="2">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr class="detail-row" id="detail-2">
-                                <td colspan="9">
-                                    <div class="food-details">
-                                        <table class="food-table">
-                                            <thead>
-                                                <tr>
-                                                    <th>음식명</th>
-                                                    <th>열량(kcal)</th>
-                                                    <th>단백질(g)</th>
-                                                    <th>탄수화물(g)</th>
-                                                    <th>지방(g)</th>
-                                                    <th>나트륨(mg)</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>삶은계란</td>
-                                                    <td>155.4</td>
-                                                    <td>100</td>
-                                                    <td>0</td>
-                                                    <td>3.7</td>
-                                                    <td>39</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </td>
-                            </tr>
-                            
-                            <tr data-row-id="3">
-                                <td><input type="checkbox" class="row-checkbox" data-id="3"></td>
-                                <td>단백질이 풍부한 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>김제트</td>
-                                <td><button class="star-btn" data-id="3">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="4">
-                                <td><input type="checkbox" class="row-checkbox" data-id="4"></td>
-                                <td>다양한 종류로 만든 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>박블랙</td>
-                                <td><button class="star-btn" data-id="4">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="5">
-                                <td><input type="checkbox" class="row-checkbox" data-id="5"></td>
-                                <td>단백질이 풍부한 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>김제트</td>
-                                <td><button class="star-btn" data-id="5">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="6">
-                                <td><input type="checkbox" class="row-checkbox" data-id="6"></td>
-                                <td>다양한 종류로 만든 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>박블랙</td>
-                                <td><button class="star-btn" data-id="6">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="7">
-                                <td><input type="checkbox" class="row-checkbox" data-id="7"></td>
-                                <td>단백질이 풍부한 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>김제트</td>
-                                <td><button class="star-btn" data-id="7">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="8">
-                                <td><input type="checkbox" class="row-checkbox" data-id="8"></td>
-                                <td>다양한 종류로 만든 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>박블랙</td>
-                                <td><button class="star-btn" data-id="8">★</button></td>
-                                <td>10</td>
-                            </tr>
-                            <tr data-row-id="9">
-                                <td><input type="checkbox" class="row-checkbox" data-id="9"></td>
-                                <td>단백질이 풍부한 아침식사</td>
-                                <td>근육 증가</td>
-                                <td>2023.03.20.</td>
-                                <td>500</td>
-                                <td>아침</td>
-                                <td>김제트</td>
-                                <td><button class="star-btn" data-id="9">★</button></td>
-                                <td>10</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="food-section">
-  <label>
-    <input type="checkbox" id="showFoodDetails"> 음식 상세정보 보기
-  </label>
-  
+<table class="diet-table">
+  <thead>
+    <tr>
+      <th>선택</th>
+      <th>식단명</th>
+      <th>카테고리</th>
+      <th>작성일</th>
+      <th>열량</th>
+      <th>식사시간대</th>
+      <th>작성자</th>
+      <th>즐겨찾기</th>
+      <th>조회수</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- 식단 목록 -->
+    <tr data-row-id="1">
+      <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
+      <td>단백질이 풍부한 아침식사</td>
+      <td>근육 증가</td>
+      <td>2023.03.20.</td>
+      <td>500</td>
+      <td>아침</td>
+      <td>김제트</td>
+      <td><button class="star-btn" data-id="1">★</button></td>
+      <td>150</td>
+    </tr>
+
+    <!-- 상세정보 행 -->
+    <tr class="detail-row" id="detail-1">
+      <td colspan="9">
+        <div class="food-details">
+          <table class="food-table">
+            <thead>
+              <tr>
+                <th>음식명</th>
+                <th>열량(kcal)</th>
+                <th>단백질(g)</th>
+                <th>탄수화물(g)</th>
+                <th>지방(g)</th>
+                <th>나트륨(mg)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>삶은계란</td>
+                <td>155.4</td>
+                <td>100</td>
+                <td>0</td>
+                <td>3.7</td>
+                <td>39</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 추천/비추천 버튼 -->
+          <div class="detail-buttons">
+            <button class="confirm-btn">추천 21</button>
+            <button class="cancel-btn">비추천 2</button>
+          </div>
+
+        </div>
+      </td>
+    </tr>
+
+    <!-- 추가 식단 항목들 -->
+    <!-- 동일한 구조 반복 -->
+  </tbody>
+</table>
+</div>
+
+<div class="food-section">  
   <div class="food-details" id="foodDetailsContainer" style="display: none;">
     <table class="food-table">
       <thead>
@@ -730,9 +603,6 @@ h3 {
         </main>
     </div>
         
-        <div class="grid_bottom">
-                <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-        </div>
         
     </div>
 
@@ -747,14 +617,164 @@ h3 {
                 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
         </div>
         
-    </div>
-
-
     
-
-
-
 </body>
-
-
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	  // 기본 설정
+	  let currentPage = 1; // 현재 페이지
+	  const itemsPerPage = 10; // 페이지당 항목 수
+
+	  // 샘플 데이터 (실제 데이터는 서버에서 가져와야 함)
+	  const dietData = [
+	    { id: 1, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	    { id: 2, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	       { id: 3, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	        { id: 4, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	        { id: 5, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	        { id: 6, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	           { id: 7, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	            { id: 8, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	            { id: 9, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	            { id: 10, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	               { id: 11, name: "단백질이 풍부한 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "김제트", favorite: true, views: 150 },
+	                { id:12, name: "다양한 종류로 만든 아침식사", category: "근육 증가", date: "2023.03.20.", calories: 500, mealTime: "아침", author: "박블랙", favorite: false, views: 10 },
+	    // 더 많은 데이터 추가 가능
+	  ];
+
+	  // 식단 목록 렌더링
+	  function renderDietList() {
+	    const startIndex = (currentPage - 1) * itemsPerPage;
+	    const endIndex = Math.min(startIndex + itemsPerPage, dietData.length);
+	    const currentPageData = dietData.slice(startIndex, endIndex);
+
+	    const tbody = document.querySelector('.diet-table tbody');
+	    tbody.innerHTML = ''; // 기존 내용 초기화
+
+	    currentPageData.forEach((diet) => {
+	      const row = document.createElement('tr');
+	      row.innerHTML = `
+	        <td><input type="checkbox" class="row-checkbox" data-id="${diet.id}"></td>
+	        <td>${diet.name}</td>
+	        <td>${diet.category}</td>
+	        <td>${diet.date}</td>
+	        <td>${diet.calories}</td>
+	        <td>${diet.mealTime}</td>
+	        <td>${diet.author}</td>
+	        <td><button class="star-btn" data-id="${diet.id}">${diet.favorite ? '★' : '☆'}</button></td>
+	        <td>${diet.views}</td>
+	      `;
+	      tbody.appendChild(row);
+	    });
+	  }
+
+	  // 페이지네이션 렌더링
+	  function renderPagination() {
+	    const totalPages = Math.ceil(dietData.length / itemsPerPage);
+	    const paginationContainer = document.getElementById('pagination');
+	    paginationContainer.innerHTML = ''; // 기존 내용 초기화
+
+	    // 이전 버튼
+	    if (currentPage > 1) {
+	      const prevButton = document.createElement('button');
+	      prevButton.textContent = '<';
+	      prevButton.classList.add('page-btn');
+	      prevButton.addEventListener('click', () => {
+	        currentPage--;
+	        renderDietList();
+	        renderPagination();
+	      });
+	      paginationContainer.appendChild(prevButton);
+	    }
+
+	    // 페이지 번호 버튼
+	    for (let i = 1; i <= totalPages; i++) {
+	      const pageButton = document.createElement('button');
+	      pageButton.textContent = i;
+	      pageButton.classList.add('page-btn');
+	      if (i === currentPage) {
+	        pageButton.classList.add('active');
+	      }
+	      pageButton.addEventListener('click', () => {
+	        currentPage = i;
+	        renderDietList();
+	        renderPagination();
+	      });
+	      paginationContainer.appendChild(pageButton);
+	    }
+
+	    // 다음 버튼
+	    if (currentPage < totalPages) {
+	      const nextButton = document.createElement('button');
+	      nextButton.textContent = '>';
+	      nextButton.classList.add('page-btn');
+	      nextButton.addEventListener('click', () => {
+	        currentPage++;
+	        renderDietList();
+	        renderPagination();
+	      });
+	      paginationContainer.appendChild(nextButton);
+	    }
+	  }
+
+	  // 초기화 함수
+	  function init() {
+	    renderDietList();
+	    renderPagination();
+	  }
+
+	  init(); // 초기화 실행
+	});
+
+document.addEventListener('DOMContentLoaded', function () {
+	  // 체크박스 선택 시 상세정보 표시/숨김
+	  document.querySelectorAll('.row-checkbox').forEach(checkbox => {
+	    checkbox.addEventListener('change', function () {
+	      const rowId = this.getAttribute('data-id');
+	      const detailRow = document.getElementById(`detail-${rowId}`);
+
+	      if (this.checked) {
+	        // 다른 체크박스 해제
+	        document.querySelectorAll('.row-checkbox').forEach(cb => {
+	          if (cb !== this) cb.checked = false;
+	        });
+
+	        // 상세정보 표시
+	        if (detailRow) {
+	          detailRow.style.display = 'table-row';
+	        }
+	      } else {
+	        // 상세정보 숨김
+	        if (detailRow) {
+	          detailRow.style.display = 'none';
+	        }
+	      }
+	    });
+	  });
+
+	  // 별표 버튼 클릭 시 즐겨찾기 상태 토글 (상세정보와 관련 없음)
+	  document.querySelectorAll('.star-btn').forEach(button => {
+	    button.addEventListener('click', function (e) {
+	      e.stopPropagation(); // 상위 이벤트 방지
+	      const currentText = this.textContent;
+	      this.textContent = currentText === '★' ? '☆' : '★';
+
+	      // 즐겨찾기 상태 변경 후 체크박스 상태는 변경하지 않음
+	      const rowId = this.getAttribute('data-id');
+	      const checkbox = document.querySelector(`.row-checkbox[data-id="${rowId}"]`);
+	      if (checkbox && checkbox.checked) {
+	        checkbox.checked = false;
+	        checkbox.dispatchEvent(new Event('change'));
+	      }
+	    });
+	  });
+
+	  // 초기화: 모든 상세정보 숨기기
+	  document.querySelectorAll('.detail-row').forEach(row => {
+	    row.style.display = 'none';
+	  });
+	});
+
+</script>
