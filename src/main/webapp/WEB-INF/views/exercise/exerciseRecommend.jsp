@@ -122,54 +122,6 @@
             width: 100%;
         }
 
-        /* 각 컬럼별 최대 너비 설정 */
-        .exercise-table th:nth-child(1),
-        .exercise-table td:nth-child(1) {
-            max-width: 40px; /* 체크박스 열 */
-        }
-
-        .exercise-table th:nth-child(2),
-        .exercise-table td:nth-child(2) {
-            max-width: 150px; /* 운동 이름 */
-        }
-
-        .exercise-table th:nth-child(3),
-        .exercise-table td:nth-child(3) {
-            max-width: 120px; /* 운동 카테고리 */
-        }
-
-        .exercise-table th:nth-child(4),
-        .exercise-table td:nth-child(4) {
-            max-width: 180px; /* 운동 효과 카테고리 */
-        }
-
-        .exercise-table th:nth-child(5),
-        .exercise-table td:nth-child(5),
-        .exercise-table th:nth-child(6),
-        .exercise-table td:nth-child(6) {
-            max-width: 100px; /* 칼로리, 시간 */
-        }
-
-        .exercise-table th:nth-child(7),
-        .exercise-table td:nth-child(7) {
-            max-width: 100px; /* 작성일 */
-        }
-
-        .exercise-table th:nth-child(8),
-        .exercise-table td:nth-child(8) {
-            max-width: 100px; /* 작성자 */
-        }
-
-        .exercise-table th:nth-child(9),
-        .exercise-table td:nth-child(9) {
-            max-width: 80px; /* 즐겨찾기 */
-        }
-
-        .exercise-table th:nth-child(10),
-        .exercise-table td:nth-child(10) {
-            max-width: 80px; /* 조회수 */
-        }
-
         .spacing-1 { margin-bottom: 10px; }
         .spacing-2 { margin-bottom: 20px; }
         .spacing-3 { margin-bottom: 30px; }
@@ -313,23 +265,24 @@
             margin-bottom: 10px;
         }
 
+        /* 첫 번째 선언 */
         .exercise-table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: var(--spacing-unit);
-        }
-
-        .exercise-table th, 
-        .exercise-table td {
-            composes: table-cell;
-            font-size: 14px;
-            height: 50px;
-            line-height: 1.5;
+            border: 1px solid #e0e0e0;
         }
 
         .exercise-table th {
-            background-color: var(--secondary-color);
-            font-weight: bold;
+            background-color: #f5f5f5;
+            font-weight: 600;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 2px solid #e0e0e0;
+            padding: 15px 10px;
+        }
+
+        .exercise-table th:last-child {
+            border-right: none;
         }
 
         .star {
@@ -345,10 +298,11 @@
 
         /* 운동 세부 정보 테이블 스타일 */
         .exercise-detail {
-            margin-bottom: var(--spacing-unit);
-            padding: 15px;
-            border: 1px solid var(--border-color);
-            background-color: #f9f9f9;
+            margin: 10px 0;  /* 상하 여백 조정 */
+            padding: 20px 30px;  /* 좌우 패딩 증가 */
+            border: 1px solid #ddd;  /* 테두리 색상 밝게 */
+            background-color: #f8f8f8;  /* 배경색 밝게 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);  /* 미묘한 그림자 추가 */
         }
 
         .exercise-detail h3 {
@@ -532,18 +486,58 @@
                 margin: 2px;
             }
             
-            .sub-table {
-		        width: 100%;
-		        border-collapse: collapse;
-		        background-color: #f9f9f9;
-		    }
 		    
 		    .sub-table th, .sub-table td {
-		        border: 1px solid #ccc;
-		        padding: 6px;
-		        text-align: center;
-		        font-size: 14px;
+		        padding: 6px;  /* 모바일에서는 패딩만 조정 */
 		    }
+        }
+
+        /* 서브 테이블 스타일 */
+        .sub-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border: 1px solid #e0e0e0;
+        }
+
+        .sub-table th, 
+        .sub-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .sub-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .sub-table tr:hover {
+            background-color: #fafafa;
+        }
+
+        /* 운동 리스트 테이블 스타일 수정 */
+        .routine-row {
+            border-bottom: 1px solid #e0e0e0;
+            background-color: #ffffff;
+        }
+
+        .routine-row:hover {
+            background-color: #f8f8f8;
+            cursor: pointer;
+        }
+
+        .routine-row td {
+            padding: 15px 10px;
+            border-right: 1px solid #e0e0e0;
+            vertical-align: middle;
+            height: 50px;
+        }
+
+        .routine-row td:last-child {
+            border-right: none;
         }
 	</style>
 </head>
@@ -659,39 +653,35 @@
 							<td>⭐</td>
 							<td>${dto.views}</td>
 						</tr>
-						<tr class="exercise-detail" data-parent="${routine.routineNo}"
-							style="display: none;">
-							<td colspan="10">
-								<table class="sub-table">
-									<thead>
-										<tr>
-											<th>운동 이름</th>
-											<th>운동 카테고리</th>
-											<th>운동 부위</th>
-											<th>소모 열량(kcal)</th>
-											<th>시간(분)</th>
-											<th>세트(회)</th>
-											<th>세트 당 회수(회)</th>
-											<th>중량(kg)</th>
-										</tr>
-									</thead>
-									<tbody>
-										<%-- <c:forEach var="exercise" items="${routine.exerciseList}"> --%>
-											<tr>
-												<td>${exercise.name}</td>
-												<td>${exercise.category}</td>
-												<td>${exercise.part}</td>
-												<td>${exercise.calories}</td>
-												<td>${exercise.time}</td>
-												<td>${exercise.sets}</td>
-												<td>${exercise.reps}</td>
-												<td>${exercise.weight}</td>
-											</tr>
-										<%-- </c:forEach> --%>
-									</tbody>
-								</table>
-							</td>
-						</tr>
+						
+						
+						<tr class="exercise-detail" data-parent="${dto.routineNo}">
+					    <td colspan="10">
+					    	<!-- ✅ 디버깅용 루틴 번호 출력 -->
+            				<div>루틴 번호: ${dto.routineNo}</div>
+					    
+					    	<!-- ✅ 디버깅용 id 확인 -->
+            				<div>tbody id: exercise-tbody-${dto.routineNo}</div>
+					    
+					        <table class="sub-table">
+					            <thead>
+					                <tr>
+					                    <th>운동 이름</th>
+					                    <th>운동 카테고리</th>
+					                    <th>운동 부위</th>
+					                    <th>소모 열량(kcal)</th>
+					                    <th>시간(분)</th>
+					                    <th>세트(회)</th>
+					                    <th>세트 당 회수(회)</th>
+					                    <th>중량(kg)</th>
+					                </tr>
+					            </thead>
+					            <tbody id="exercise-tbody-${dto.routineNo}">
+					                <!-- JS로 동적 렌더링 -->
+					            </tbody>
+					        </table>
+					    </td>
+					</tr>
 					</c:forEach>
 				</tbody>
 			</table>
@@ -739,12 +729,106 @@
 		    $('.routine-row').click(function() {
 				const routineNo = $(this).data('routine-no');
                 // 다른 펼쳐진 행은 닫기
-				$('.exercise-detail').not('[data-parent="' + routineNo+ '"]').slideUp();
+				$('.exercise-detail').not('[data-parent="' + routineNo + '"]').slideUp();
                 // 해당 루틴의 상세 영역만 toggle
 				const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
 				target.slideToggle();
 			});
 		});
+		
+		$(".routine-row").on("click", function () {
+		    const routineNo = $(this).data("routine-no");
+		    console.log("루틴 번호:", routineNo);
+
+		    $.ajax({
+		        url: "${pageContext.request.contextPath}/getExerciseList.do",
+		        method: "GET",
+		        data: { routineNo: routineNo },
+		        success: function (res) {
+		            console.log("🚀 받아온 데이터:", res);
+		            console.log("▶ 타입 확인:", typeof res);
+
+		            const tbody = $(`#exercise-tbody-${routineNo}`);
+		            console.log("📌 tbody 찾음?", tbody.length); // 반드시 1이어야 함
+
+		            tbody.empty();
+
+		            if (!Array.isArray(res)) {
+		                alert("❗ JSON 배열이 아님. 응답 확인 필요!");
+		                return;
+		            }
+
+		            res.forEach((exercise, i) => {
+		                console.log(`🎯 운동 ${i}`, exercise);
+
+		                const row = `
+		                    <tr>
+		                        <td>${exercise.exerciseName}</td>
+		                        <td>${exercise.exerciseCategoryNames}</td>
+		                        <td>${exercise.exercisePartNames}</td>
+		                        <td>${exercise.caloriesPerUnit}</td>
+		                        <td>${exercise.exerciseTime}</td>
+		                        <td>${exercise.sets}</td>
+		                        <td>${exercise.repsPerSet}</td>
+		                        <td>${exercise.weight}</td>
+		                    </tr>`;
+		                tbody.append(row);
+		            });
+
+		            const target = $(`.exercise-detail[data-parent="${routineNo}"]`);
+		            $(".exercise-detail").not(target).slideUp();
+		            target.slideDown();
+		        },
+		        error: function () {
+		            alert("🚨 운동 목록을 불러오는 데 실패했습니다.");
+		        }
+		    });
+
+		});
+
+		
+		
+		/* $(".routine-row").on("click", function () {
+		    const routineNo = $(this).data("routine-no");
+		    console.log("루틴 번호:", routineNo);
+
+		    $.ajax({
+		        url: "${pageContext.request.contextPath}/getExerciseList.do",
+		        method: "GET",
+		        data: { routineNo: routineNo },
+		        success: function (res) {
+		        	const tbodyId = `#exercise-tbody-${routineNo}`;
+		            const tbody = $(tbodyId);
+		        	
+		            console.log("찾은 tbody:", tbodyId, "개수:", tbody.length);
+		            if (tbody.length === 0) {
+		                alert("❗ tbody가 HTML에 없습니다. id가 잘못됐거나 routineNo가 안 넘어옴.");
+		                return;
+		            }
+		            tbody.empty();
+		        	
+		            res.forEach(exercise => {
+		                const row = `
+		                    <tr>
+		                        <td>${exercise.exerciseName}</td>
+		                        <td>${exercise.exerciseCategoryNames}</td>
+		                        <td>${exercise.exercisePartNames}</td>
+		                        <td>${exercise.caloriesPerUnit}</td>
+		                        <td>${exercise.exerciseTime}</td>
+		                        <td>${exercise.sets}</td>
+		                        <td>${exercise.repsPerSet}</td>
+		                        <td>${exercise.weight}</td>
+		                    </tr>`;
+		                tbody.append(row);
+		            });
+		            
+
+		        },
+		        error: function () {
+		            alert("운동 목록을 불러오는 데 실패했습니다.");
+		        }
+		    });
+		}); */
         
 	</script>
 </body>

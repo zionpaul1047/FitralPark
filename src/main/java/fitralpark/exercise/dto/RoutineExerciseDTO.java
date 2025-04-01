@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RoutineDetailsDTO {
+public class RoutineExerciseDTO {
 	private String exerciseName;
     private String exerciseCategoryNames;
     private String exercisePartNames;

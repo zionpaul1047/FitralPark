@@ -22,10 +22,10 @@ public class ExerciseRecommendationController extends HttpServlet {
 		//ExerciseRecommendationController.java
 		RoutineDAO dao = new RoutineDAO();
 		
-		ArrayList<RoutineDTO> routineList = dao.routineList();
+		ArrayList<RoutineDTO> list = dao.routineList();
 		dao.close();
 
-		req.setAttribute("list", routineList);
+		req.setAttribute("list", list);
 		req.getRequestDispatcher("/WEB-INF/views/exercise/exerciseRecommend.jsp").forward(req, resp);
 	}
 }

@@ -10,8 +10,13 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/class/code/server/FitralPark/src/main/webapp/WEB-INF/lib/jstl-1.2.jar"/>
 	<classpathentry kind="lib" path="C:/class/code/server/FitralPark/src/main/webapp/WEB-INF/lib/ojdbc11.jar"/>
-	<classpathentry kind="lib" path="C:/class/dev/apache-tomcat-9.0.98/lib/el-api.jar"/>
-	<classpathentry kind="lib" path="C:/class/dev/apache-tomcat-9.0.98/lib/jsp-api.jar"/>
-	<classpathentry kind="lib" path="C:/class/dev/apache-tomcat-9.0.98/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="src/main/webapp/WEB-INF/lib/javax.mail-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/class/dev/apache-tomcat-9.0.102/lib/el-api.jar"/>
+	<classpathentry kind="lib" path="C:/class/dev/apache-tomcat-9.0.102/lib/javax.servlet-api-4.0.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v9.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
