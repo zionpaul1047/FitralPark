@@ -132,10 +132,11 @@ h3 {
 
 .search-btn {
     position: absolute;
-    right: 5px;
+    right: 2px;
     background: none;
     border: none;
     cursor: pointer;
+    font-size: 18px;
 }
 
 .search-icon {
