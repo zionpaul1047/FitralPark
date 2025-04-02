@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
 <style>
 body {
 	background-color: rgb(218, 243, 211);
@@ -217,7 +218,8 @@ body h1 {
 							<c:forEach items="${bulletin_list}" var="dto" varStatus="status">
 							<tr>
 								<td>${(page - 1) * pageSize + status.index + 1}</td>
-								<td><a href="">[${dto.header_name}] ${dto.post_subject}</a></td>
+								<td><a href="bulletinPost.do?post_no=${dto.post_no}
+								">[${dto.header_name}] ${dto.post_subject}</a></td>
 								<td><a href="">${dto.nickname}(${dto.creator_id})</a></td>
 								<td>${dto.regdate}</td>
 								<td>${dto.post_recommend}</td>

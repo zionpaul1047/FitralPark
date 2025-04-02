@@ -172,8 +172,8 @@
 				<main>
 				
 				<div id="mainbox">
-				<h1>자유 게시판 글쓰기</h1>
-				<form class="write-form" action="/community/bulletinWrite" method="post">
+				<h1>자유 게시글 수정하기</h1>
+				<form class="write-form" action="/community/bulletinpostEdit" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
 						<select id="search_category">

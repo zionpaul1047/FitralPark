@@ -15,7 +15,7 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
 @WebServlet("/writeok.do")
-public class WriterOK extends HttpServlet {
+public class BulletinWriterOK extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

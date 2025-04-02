@@ -1,24 +1,51 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/community/bulletinpost.do")
+import fitralpark.comunity.dao.CommunityDAO;
+import fitralpark.comunity.dto.CommunityDTO;
+
+@WebServlet("/bulletinPost.do")
 public class BulletinPost extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		//BulletinPost
+
+//		HttpSession session = req.getSession();
+//		String auth = (String) session.getAttribute("auth");
+//		
+//		if (auth != null) {
+//			req.setAttribute("auth", auth);
+//		} else {
+//			resp.sendRedirect(req.getContextPath() + "/login.do");
+//			return;
+//		}
+
 		
+		String post_no = req.getParameter("post_no");
 		
+		CommunityDAO dao = new CommunityDAO();
+		CommunityDTO dto = dao.getPost(post_no);
 		
-		req.getRequestDispatcher("/WEB-INF/views/community/bulletinpost.jsp").forward(req, resp);
+		// 댓글 목록 조회
+		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
+
+		req.setAttribute("Comment_list", list);
+		req.setAttribute("post", dto);
+		
+		dao.close();
+		
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinPost.jsp").forward(req, resp);
 	}
 
 }

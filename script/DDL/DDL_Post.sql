@@ -47,6 +47,46 @@ CREATE TABLE announcement_post_header(
     constraint PK_announcement_post_header_no primary key(announcement_post_header_no)
 );
 
+-- Q&A 댓글
+CREATE TABLE qna_comment(
+    qna_comment_no NUMBER NOT NULL,
+    qna_comment_content VARCHAR2(300) NOT NULL,
+    regdate DATE NOT NULL,
+    creator_id VARCHAR2(50) NOT NULL,
+    qna_post_no NUMBER NOT NULL,
+
+    CONSTRAINT PK_qna_comment_no PRIMARY KEY (qna_comment_no),
+    CONSTRAINT FK_qna_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_qna_comment_qna_post_no FOREIGN KEY (qna_post_no) REFERENCES qna_post(qna_post_no)
+);
+
+-- 자유게시판 댓글
+CREATE TABLE bulletin_comment(
+    bulletin_comment_no NUMBER NOT NULL,
+    bulletin_comment_content VARCHAR2(300) NOT NULL,
+    regdate DATE NOT NULL,
+    creator_id VARCHAR2(50) NOT NULL,
+    bulletin_post_no NUMBER NOT NULL,
+
+    CONSTRAINT PK_bulletin_comment_no PRIMARY KEY (bulletin_comment_no),
+    CONSTRAINT FK_bulletin_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_bulletin_comment_bulletin_post_no FOREIGN KEY (bulletin_post_no) REFERENCES bulletin_post(bulletin_post_no)
+);
+
+-- 공지사항 댓글
+CREATE TABLE announcement_comment(
+    announcement_comment_no NUMBER NOT NULL,
+    announcement_comment_content VARCHAR2(300) NOT NULL,
+    regdate DATE NOT NULL,
+    creator_id VARCHAR2(50) NOT NULL,
+    announcement_post_no NUMBER NOT NULL,
+
+    CONSTRAINT PK_announcement_comment_no PRIMARY KEY (announcement_comment_no),
+    CONSTRAINT FK_announcement_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
+    CONSTRAINT FK_announcement_comment_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no)
+
+);
+
 -- Q&A 게시글
 CREATE TABLE qna_post(
     qna_post_no NUMBER NOT NULL,
@@ -102,45 +142,40 @@ CREATE TABLE announcement_post(
     CONSTRAINT FK_announcement_post_header_no FOREIGN KEY (announcement_post_header_no) REFERENCES announcement_post_header(announcement_post_header_no)
 );
 
-
--- Q&A 댓글
-CREATE TABLE qna_comment(
-    qna_comment_no NUMBER NOT NULL,
-    qna_comment_content VARCHAR2(300) NOT NULL,
+CREATE TABLE bulletin_vote_record (
+    bulletin_vote_record_no NUMBER,
+    member_id VARCHAR2(50) NOT NULL,
+    vote_check NUMBER NOT NULL check ( vote_check IN (0, 1) ),
     regdate DATE NOT NULL,
-    creator_id VARCHAR2(50) NOT NULL,
-    qna_post_no NUMBER NOT NULL,
-
-    CONSTRAINT PK_qna_comment_no PRIMARY KEY (qna_comment_no),
-    CONSTRAINT FK_qna_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
-    CONSTRAINT FK_qna_comment_qna_post_no FOREIGN KEY (qna_post_no) REFERENCES qna_post(qna_post_no)
-);
-
--- 자유게시판 댓글
-CREATE TABLE bulletin_comment(
-    bulletin_comment_no NUMBER NOT NULL,
-    bulletin_comment_content VARCHAR2(300) NOT NULL,
-    regdate DATE NOT NULL,
-    creator_id VARCHAR2(50) NOT NULL,
     bulletin_post_no NUMBER NOT NULL,
 
-    CONSTRAINT PK_bulletin_comment_no PRIMARY KEY (bulletin_comment_no),
-    CONSTRAINT FK_bulletin_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
-    CONSTRAINT FK_bulletin_comment_bulletin_post_no FOREIGN KEY (bulletin_post_no) REFERENCES bulletin_post(bulletin_post_no)
+    CONSTRAINT PK_bulletin_vote_record_no PRIMARY KEY (bulletin_vote_record_no),
+    CONSTRAINT FK_vote_record_bulletin_post_no FOREIGN KEY (bulletin_post_no) REFERENCES bulletin_post(bulletin_post_no),
+    CONSTRAINT FK_vote_record_member_id FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
--- 공지사항 댓글
-CREATE TABLE announcement_comment(
-    announcement_comment_no NUMBER NOT NULL,
-    announcement_comment_content VARCHAR2(300) NOT NULL,
+CREATE TABLE announcement_vote_record (
+    announcement_vote_record_no NUMBER,
+    member_id VARCHAR2(50) NOT NULL,
+    vote_check NUMBER NOT NULL check ( vote_check IN (0, 1) ),
     regdate DATE NOT NULL,
-    creator_id VARCHAR2(50) NOT NULL,
     announcement_post_no NUMBER NOT NULL,
 
-    CONSTRAINT PK_announcement_comment_no PRIMARY KEY (announcement_comment_no),
-    CONSTRAINT FK_announcement_comment_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id),
-    CONSTRAINT FK_announcement_comment_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no)
+    CONSTRAINT PK_announcement_vote_record_no PRIMARY KEY (announcement_vote_record_no),
+    CONSTRAINT FK_vote_record_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no),
+    CONSTRAINT FK_vote_record_announcement_member_id FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
 
+CREATE TABLE qna_vote_record (
+    qna_vote_record_no NUMBER,
+    member_id VARCHAR2(50) NOT NULL,
+    vote_check NUMBER NOT NULL check ( vote_check IN (0, 1) ),
+    regdate DATE NOT NULL,
+    qna_post_no NUMBER NOT NULL,
+
+    CONSTRAINT PK_qna_vote_record_no PRIMARY KEY (qna_vote_record_no),
+    CONSTRAINT FK_vote_record_qna_post_no FOREIGN KEY (qna_post_no) REFERENCES qna_post(qna_post_no),
+    CONSTRAINT FK_vote_record_qna_member_id FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
 
@@ -176,3 +211,4 @@ commit;
 --    CONSTRAINT FK_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no),
 --    CONSTRAINT FK_announcement_post_header_no FOREIGN KEY (announcement_post_header_no) REFERENCES announcement_post_header(announcement_post_header_no)
 --);
+

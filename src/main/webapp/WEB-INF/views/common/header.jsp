@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" href="assets/css/font.css">
 <link rel="stylesheet" href="assets/css/common.css">
-<script src="assets/js/jquery-1.12.4.min(1).js"></script>
 <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 

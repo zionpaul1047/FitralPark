@@ -36,7 +36,9 @@ public class BulletinWrite extends HttpServlet {
 		// 헤더 불러오기
 		req.setAttribute("headerList", headerList);
 		
-		
+		// DAO 연결 해제
+		dao.close();
+
 		req.getRequestDispatcher("/WEB-INF/views/community/bulletinWrite.jsp").forward(req, resp);
 	}
 
