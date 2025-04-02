@@ -90,8 +90,11 @@ CREATE TABLE exercise_record (
     weight NUMBER(5,1) DEFAULT 0,
     exercise_time NUMBER DEFAULT 0,
     creator_id VARCHAR2(50),
-    exercise_no NUMBER NOT NULL,
+    exercise_no NUMBER NULL,
+    custom_exercise_no NUMBER NULL,
+    exercise_creation_type NUMBER NOT NULL,
     CONSTRAINT fk_record_exercise FOREIGN KEY (exercise_no) REFERENCES exercise(exercise_no),
+    CONSTRAINT fk_record_custom_exercise FOREIGN KEY (custom_exercise_no) REFERENCES custom_exercise(custom_exercise_no),
     CONSTRAINT fk_record_member FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );
 
@@ -117,9 +120,9 @@ CREATE TABLE routine (
 CREATE TABLE routine_exercise (
     routine_exercise_no NUMBER PRIMARY KEY,
     routine_no NUMBER NOT NULL,
-    exercise_no NUMBER NOT NULL,
-    custom_exercise_no NUMBER NOT NULL,
-    exercise_creation_type VARCHAR2(50),
+    exercise_no NUMBER NULL,
+    custom_exercise_no NUMBER NULL,
+    exercise_creation_type NUMBER,
     sets NUMBER DEFAULT 0,
     reps_per_set NUMBER DEFAULT 0,
     exercise_time NUMBER DEFAULT 0,
@@ -128,6 +131,7 @@ CREATE TABLE routine_exercise (
     CONSTRAINT fk_routine_exercise_exercise FOREIGN KEY (exercise_no) REFERENCES exercise(exercise_no),
     CONSTRAINT fk_routine_exercise_custom_exercise FOREIGN KEY (custom_exercise_no) REFERENCES custom_exercise(custom_exercise_no)
 );
+
 
 CREATE TABLE exercise_plan (
     exercise_plan_no NUMBER PRIMARY KEY,
@@ -160,9 +164,16 @@ commit;
 
 
 
-
-
-
+-- 운동계획 시퀀스
+create sequence seqExercisePlan;
+--운동 + 루틴 시퀀스
+create sequence seqRoutineExercise;
+--운동 기록 시퀀스
+create sequence seqExerciseRecord;
+--회원 신체 정보 시퀀스
+create sequence seqMemberPhysical;
+--운동계획 + 루틴 시퀀스
+create sequence seqExercisePlanRoutineNo;
 
 
 

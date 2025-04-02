@@ -1,0 +1,225 @@
+@charset "UTF-8";
+
+		body {
+        	background-color: rgb(218, 243, 211);
+        
+        }  
+        .grid{
+            display: grid;
+		    grid-template-rows: 125px auto 1fr;
+		    grid-template-columns: 1fr;
+		    min-height: 100%;
+        }
+        .grid_top{
+        	/* border: 1px solid black; */
+            grid-row: 1;
+        }
+        .grid_center{
+        	/* border: 1px solid black; */
+            grid-row: 2;
+		    display: grid;
+		    grid-template-columns: calc(50% - 424px) auto;
+        }
+        .grid_center_L{
+        /* border: 1px solid black; */
+        }
+        .grid_center_R{
+        /* border: 1px solid black; */
+        }
+        .grid_bottom{
+        /* border: 1px solid black; */
+            grid-row: 3;
+        }
+        
+        
+        
+        
+        /* ■■■■■■■■■■ 컨텐츠 CSS ■■■■■■■■■■ */
+        
+        .content_bg {
+			/* margin-left: 228px;
+		    margin-top: 276px; */
+		    margin-bottom: 30px;
+		    /* border: 1px solid black; */
+		    width: 1065px;
+		    border-radius: 20px;
+		    background: var(--white);
+		    box-sizing: border-box;
+		}
+
+		.content_box{
+		   	/* border: 1px solid black; */
+			padding: 30px;
+			word-wrap: break-word;
+		}
+        
+        
+        .sf_body {
+	        /* border: 1px solid black;  */   
+	        width: 1000px;
+	        margin: auto;
+	        display: flex;
+	        flex-direction: column;/* 세로 방향 정렬 추가 */
+	        justify-content: center;/* 세로 축 중앙 정렬 */
+	        align-items: center; /* 가로 축 중앙 정렬 */
+	    }
+	
+	    .sf_food_search_bar{
+	        width: 850px;
+	        height: 80px;
+	        display: flex;
+	        justify-content: center;
+	        align-items: center;
+	    }
+	
+	    .sf_food_search_input {
+	        border: 1px solid gray;
+    		border-radius: 5px;
+    		padding: 10px;
+	        /* text-align: center; */
+	        width: 790px;
+	        height: 40px;
+	        /* margin: 20px; */
+	    }
+	
+	    .sf_food_search_button{
+
+	        height: 46px;
+	        width: 50px;
+	    }
+	
+	    .sf_filter_section {
+	        /* border: 1px solid black;  */
+	        width: 850px;
+	        margin-bottom: 20px;
+	    }
+	
+	    .sf_filter_form label {
+	        
+	        display: inline-block;
+	        margin-right: 10px;
+	    }
+	
+	    .sf_submenu_1{
+	        display: flex;
+	        width: 850px;
+	    }
+	    
+	    .sf_submenu_1 a div {
+		  	background-color: lightgray; /* 기본 배경색 */
+		  	border-right: 2px solid var(--white);
+		  	width: 80px;
+		  	height: 40px;
+		  	text-align: center; /* 가로 중앙 정렬 */
+		  	line-height: 40px; /* 세로 중앙 정렬 */
+		}
+		
+		.sf_submenu_1 a {
+		  display: block; /* 링크를 블록 요소로 만들어 div 전체를 클릭 가능하게 설정 */
+		  text-decoration: none; /* 링크의 기본 밑줄 제거 */
+		}
+		
+		.sf_submenu_1 a:hover div {
+		  background-color: oldlace; /* 마우스 오버 시 배경색 변경 */
+		  font-weight: bold; /* 마우스 오버 시 글씨 굵게 */
+		}
+		
+		.sf_submenu_1 a.active div {
+		  background-color: oldlace; /* 클릭된 메뉴 배경색 */
+		  font-weight: bold; /* 클릭된 메뉴 글씨 굵게 */
+		}
+		
+	    .sf_submenu_1:nth-last-child(2){
+	    	border-right:none;
+	    }
+	
+	    .sf_submenu_1_1{
+	
+	    }
+	
+	    .sf_submenu_1_2{
+	
+	    }
+	
+	    .sf_submenu_1_3{
+	
+	    }
+	    
+	    .sf_submenu_1_4{
+	
+	    }
+	
+	    .sf_list_search_bar {
+	    	
+	        margin-left: auto;
+	        margin-bottom: 10px;
+	        display: flex;
+	        justify-content: flex-end;
+	    }
+	
+	    .sf_list_search_input {
+	   		border: 1px solid gray;
+    		border-radius: 5px;
+	        padding: 5px;
+	    }
+	
+	    .sf_list_search_button {
+	        width: 40px;
+	    }
+	
+	    /* 검색 결과 스타일 */
+	    .sf_result_section {
+	        /* border: 1px solid black;  */
+	        background-color: oldlace;
+	        width: 850px;
+	    }
+	    
+	    .sf_result_section_1 {
+	        margin-bottom: 10px;
+	        border-bottom: solid var(--white);
+	        /* border: 1px solid red;  */
+	    }
+	    
+	    .sf_result_item_1 {
+	        display: flex;
+	    }
+	
+	    .sf_result_img_1 {
+	        border: 1px solid black;
+	        display: flex;
+	        margin-left: 10px;
+	        margin-top: 10px;
+	        height: 100px;
+	        width: 100px;
+	    }
+	
+	    .sf_result_info_1 {
+	        /* border: 1px solid blue; */
+	        width: 720px;
+	        margin: 10px;
+	    }
+	
+	    .sf_result_info_food_name_1{
+	        font-weight: bold;
+	    }
+	
+	    .sf_result_info_food_detail_1{
+	    	margin-top:10px;
+	        font-size: 12px;
+	    }
+	    
+	
+	    .sf_result_section_1_2{
+	        display: flex;
+	        justify-content: flex-end;
+	        margin-bottom: 10px;
+	    }
+	        
+	    .sf_result_favorite_button_1{
+	        font-size: 14px;
+		    border: 1px solid gray;
+		    background-color: lightgray;
+		    margin-right: 12px;
+		    padding: 4px;
+		    border-radius: 5px;
+	    }
