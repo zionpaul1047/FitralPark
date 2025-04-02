@@ -1,78 +1,65 @@
-<%@page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
+<!-- 공통 CSS/JS -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
-<script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min(1).js"></script>
+<!-- contextPath 전역 변수 -->
+<script>
+	const contextPath = '${pageContext.request.contextPath}';
+</script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
 
 
-<header id="header" class="">
+<header id="header">
 	<div class="wrapper">
-		<!-- logo -->
+		<!-- 로고 -->
 		<h1 class="h_logo">
-			<a href="${pageContext.request.contextPath}/index.do"> <img alt="핏트럴파크"
-				src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png">
+			<a href="${pageContext.request.contextPath}/index.do">
+				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="핏트럴파크">
 			</a>
 		</h1>
-		<!-- //logo -->
-		<!-- nav -->
+		<!-- 메인 메뉴 -->
+		<!-- 메인 메뉴 -->
 		<nav class="nav">
 			<ul class="main_menu">
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">식단 관리</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
-						<li><a href="">식단 계획캘린더</a></li>
-						<li><a href="">식단 라이브러리</a></li>
-						<li><a href="">식단 분석</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">운동 관리</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
-						<li><a href="">운동 계획캘린더</a></li>
-						<li><a href="">운동 라이브러리</a></li>
-						<li><a href="">피트럴맵</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">식품 영양정보</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
+				<li class="menu_col">
+					<a href="#">식단 관리</a>
+					<ul class="sub_menu">
+						<li><a href="#">식단 계획캘린더</a></li>
+						<li><a href="#">식단 라이브러리</a></li>
+						<li><a href="#">식단 분석</a></li>
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">운동 관리</a>
+					<ul class="sub_menu">
+						<li><a href="#">운동 계획캘린더</a></li>
+						<li><a href="#">운동 라이브러리</a></li>
+						<li><a href="#">피트럴맵</a></li>
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">영양정보 관리</a>
+					<ul class="sub_menu">
 						<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
 						<li><a href="">영양 성분비교</a></li>
 						<li><a href="">비타민 정보</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">커뮤니티</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">커뮤니티</a>
+					<ul class="sub_menu">
 						<li><a href="">공지사항</a></li>
 						<li><a href="">자유게시판</a></li>
 						<li><a href="">Q&A게시판</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- <li class="menu_col">
-						<a href="">마이페이지</a>
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">대시보드</a></li>
-                            <li><a href="">나의활동</a></li>
-                            <li><a href="">회원정보</a></li>
-                        </ul>
-                    </li> -->
-
+					</ul>
+				</li>
 			</ul>
-			<!-- //main_menu -->
 		</nav>
-		<!-- //nav -->
-
+		
 		<nav class="nav2">
 			<!-- 로그인상태 -->
 			<c:if test="${not empty sessionScope.loginUser}">
@@ -125,7 +112,7 @@
 				<ul class="login_btn">
 					<li class="icon_menu">
 						<form action="${pageContext.request.contextPath}/logout.do" method="post">
-							<button type="submit" id="authButton" class="btn-logout">로그아웃</button>
+							<button type="submit" class="btn-logout">로그아웃</button>
 						</form>
 					</li>
 				</ul>
