@@ -65,15 +65,15 @@ public class RegisterController extends HttpServlet {
 		int result = dao.insertMember(dto);
 
 		// 4. 결과 처리
-		resp.setContentType("text/html; charset=UTF-8");
-
 		String contextPath = req.getContextPath(); // /fitralpark
+		resp.setContentType("text/html;charset=UTF-8");
 
 		if (result > 0) {
-			resp.getWriter()
-					.write("<script>" + "alert('회원가입이 완료되었습니다.');" + "window.opener.location.href='" + contextPath
-							+ "/index.do';" + "document.getElementById('signup').style.display = 'none';"
-							+ "document.getElementById('login').style.display = 'block';" + "</script>");
+			resp.getWriter().write("<script>"
+				    + "alert('회원가입이 완료되었습니다.');"
+				    + "window.opener.location.href='" + contextPath + "/index.do';"
+				    + "window.location.href='" + contextPath + "/auth.jsp?show=login';"
+				    + "</script>");
 		} else {
 			resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
 		}

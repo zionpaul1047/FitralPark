@@ -258,6 +258,15 @@
 			}).open();
 		}
 	</script>
+	<script>
+		window.addEventListener('DOMContentLoaded', function () {
+			const params = new URLSearchParams(window.location.search);
+			if (params.get("show") === "login") {
+				document.getElementById("signup").style.display = "none";
+		    	document.getElementById("login").style.display = "block";
+			}
+		});
+	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
 
