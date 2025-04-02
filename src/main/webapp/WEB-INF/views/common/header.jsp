@@ -61,72 +61,37 @@
 		</nav>
 		
 		<nav class="nav2">
-			<!-- 로그인상태 -->
-			<c:if test="${not empty sessionScope.loginUser}">
-				<!-- 환영 메시지 -->
-				<div class="welcome_msg">${loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
-				<!-- 상단 우측 아이콘 메뉴 그룹 -->
-				<ul class="icon_menu_grup">
-					<!-- 알림 아이콘 -->
-					<li class="icon_menu">
-						<div class="alarm-container">
-							<button id="alarmButton">
-								<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/bellon.png" alt="알람"
-									style="width: 24px; height: 24px;">
-							</button>
-							<!-- 알림 드롭다운 영역 -->
-							<div id="alarmDropdown" class="dropdown-content">
-								<!-- 알람 설정 토글 -->
-								<div class="alarm-toggle">
-									<span>알람 설정</span>
-									<label class="switch">
-										<input type="checkbox" id="alarmToggle" checked>
-										<span class="slider round"></span>
-									</label>
-								</div>
-								<!-- 알람 리스트 -->
-								<div class="alarm-list">
-									<!-- 동적으로 알람 리스트가 표시/추가 될 영역 -->
-								</div>
-							</div>
-						</div>
-					</li>
-		
-					<!-- 대시보드 아이콘 -->
-					<li class="icon_menu">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드"
-								style="width: 24px; height: 24px;">
-						</a>
-					</li>
-		
-					<!-- 마이페이지 아이콘 -->
-					<li class="icon_menu">
-						<a href="#">
-							<img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지"
-								style="width: 24px; height: 24px;">
-						</a>
-					</li>
-				</ul>
-				<!-- 로그아웃 버튼 -->
-				<ul class="login_btn">
-					<li class="icon_menu">
-						<form action="${pageContext.request.contextPath}/logout.do" method="post">
-							<button type="submit" class="btn-logout">로그아웃</button>
-						</form>
-					</li>
-				</ul>
-			</c:if>
-			
-			<!-- 로그아웃 상태 -->
-			<c:if test="${empty sessionScope.loginUser}">
-				<!-- 로그인 버튼 -->
-				<ul class="login_btn">
-					<li class="icon_menu">
-						<button id="authButton" class="btn-login">로그인</button>
-					</li>
-				</ul>
-			</c:if>
+			<c:choose>
+				<c:when test="${empty sessionScope.loginUser}">
+					<!-- 비로그인 상태 -->
+					<ul class="login_btn">
+						<li class="icon_menu">
+							<button id="authButton" class="btn-login">로그인</button>
+						</li>
+					</ul>
+				</c:when>
+				<c:otherwise>
+					<!-- 로그인 상태 -->
+					<div class="welcome_msg">${sessionScope.loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
+					<ul class="icon_menu_grup">
+						<!-- 알림, 대시보드, 마이페이지 아이콘 유지 -->
+						<li class="icon_menu">
+							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
+						</li>
+						<li class="icon_menu">
+							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
+						</li>
+					</ul>
+					<ul class="login_btn">
+						<li class="icon_menu">
+							<form action="${pageContext.request.contextPath}/logout.do" method="post">
+								<button type="submit" class="btn-logout">로그아웃</button>
+							</form>
+						</li>
+					</ul>
+				</c:otherwise>
+			</c:choose>
+
 		</nav>
 
 
@@ -201,4 +166,3 @@
 		</ul>
 	</div>
 </div>
-<!-- //full-menu -->
