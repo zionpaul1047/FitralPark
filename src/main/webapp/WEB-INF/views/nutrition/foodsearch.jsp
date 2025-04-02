@@ -37,17 +37,9 @@
 					<div class="content_box">
 		    			<div class="sf_body">
 					        <div class="sf_food_search_bar">
-<<<<<<< HEAD
                             <input type="text" id="sf_food_search_input" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
                             <button type="button" id="sf_food_search_button" class="sf_food_search_button">🔍</button>
                         </div>
-=======
-							    <form action="searchFood" method="GET">
-							        <input type="text" name="query" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
-							        <button type="submit" class="sf_food_search_button">🔍</button>
-							    </form>
-							</div>
->>>>>>> 0e60b5ec92866662563f0fcb3271f5ff198ede2c
 
 					
 					        <section class="sf_filter_section">
@@ -122,25 +114,17 @@
 							        </div>
 							    </c:forEach>
 							    
-<<<<<<< HEAD
 							    
-=======
-							    <!-- 검색 결과가 없는 경우 -->
->>>>>>> 0e60b5ec92866662563f0fcb3271f5ff198ede2c
 							    <c:if test="${empty results}">
 							        <div class="no_results_message">
 							            <p>검색 결과가 없습니다. 다른 키워드로 검색해 주세요.</p>
 							        </div>
 							    </c:if>
 							</section>
-<<<<<<< HEAD
 								 -->
 								 
 								 
 								 
-=======
-
->>>>>>> 0e60b5ec92866662563f0fcb3271f5ff198ede2c
 					    </div>
 					</div>
 				</div>
