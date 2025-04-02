@@ -20,17 +20,14 @@ public class BulletinPost extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		//BulletinPost
-
-//		HttpSession session = req.getSession();
-//		String auth = (String) session.getAttribute("auth");
-//		
-//		if (auth != null) {
-//			req.setAttribute("auth", auth);
-//		} else {
-//			resp.sendRedirect(req.getContextPath() + "/login.do");
-//			return;
-//		}
-
+		HttpSession session = req.getSession();
+		
+		if (null != session.getAttribute("loginUser")) {
+					
+		} else {
+			resp.sendRedirect(req.getContextPath() + "/login.do");
+			return;
+		}
 		
 		String post_no = req.getParameter("post_no");
 		

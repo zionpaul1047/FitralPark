@@ -21,19 +21,19 @@ public class BulletinWrite extends HttpServlet {
 
 		CommunityDAO dao = new CommunityDAO();
 		HttpSession session = req.getSession();
-		String auth = (String) session.getAttribute("auth");
+
 		
-		if (auth != null) {
-			req.setAttribute("auth", auth);
+		if (null != session.getAttribute("loginUser")) {
+			
 		} else {
 			resp.sendRedirect(req.getContextPath() + "/login.do");
 			return;
 		}
 		
-		// 헤더 조회하기
+		// 말머리 조회하기
 		ArrayList<CommunityDTO> headerList = dao.getHeaderList();
 		
-		// 헤더 불러오기
+		// 말머리 불러오기
 		req.setAttribute("headerList", headerList);
 		
 		// DAO 연결 해제

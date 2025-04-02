@@ -23,7 +23,7 @@ public class BulletinPostOK extends HttpServlet {
         String postNoStr = req.getParameter("post_no");
         String type = req.getParameter("type");
         HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("auth"); // 세션에서 userId 가져오기
+        String userId = (String) session.getAttribute("loginUser"); // 세션에서 userId 가져오기
 
         StringBuilder jsonBuilder = new StringBuilder(); // JSON 문자열을 직접 생성하기 위한 StringBuilder
 

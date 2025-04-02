@@ -16,9 +16,9 @@ public class QnaAnswer extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		HttpSession session = req.getSession();
-		String auth = (String) session.getAttribute("auth");
-		if (auth != null) {
-			req.setAttribute("auth", auth);
+		String loginUser = (String) session.getAttribute("loginUser");
+		if (loginUser != null) {
+			req.setAttribute("loginUser", loginUser);
 		} else {
 			resp.sendRedirect(req.getContextPath() + "/login.do");
 			return;
