@@ -3,6 +3,7 @@ package fitralpark.exercise.dto;
 
 
 public class RoutineDTO {
+	
 	private String routineNo;
     private String routineName;
     private String routineCategoryName;

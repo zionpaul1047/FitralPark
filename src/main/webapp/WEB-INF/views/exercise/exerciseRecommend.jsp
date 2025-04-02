@@ -641,10 +641,14 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${list}" var="dto">
-					루틴번호: ${dto.routineNo} <br>
 						<tr class="routine-row" data-routine-no="${dto.routineNo}">
 							<td><input type="checkbox" /></td>
-							<td>${dto.routineName}</td>
+							<td>
+                                <a href="javascript:void(0);" 
+					            onclick="openExercisePopup('${dto.routineNo}')">
+					            ${dto.routineName}
+					    		</a>
+					    	</td>
 							<td>${dto.routineCategoryName}</td>
 							<td>${dto.exerciseCategories}</td>
 							<td>${dto.exerciseParts}</td>
@@ -654,16 +658,8 @@
 							<td>⭐</td>
 							<td>${dto.views}</td>
 						</tr>
-						
-						
-						<tr class="exercise-detail" data-parent="${dto.routineNo}">
+						<tr class="exercise-detail" data-parent="${dto.routineNo}" style="display: none;">
 					    <td colspan="10">
-					    	<!-- ✅ 디버깅용 루틴 번호 출력 -->
-            				<div>루틴 번호: ${dto.routineNo}</div>
-					    
-					    	<!-- ✅ 디버깅용 id 확인 -->
-            				<div>tbody id: exercise-tbody-${dto.routineNo}</div>
-					    
 					        <table class="sub-table">
 					            <thead>
 					                <tr>
@@ -701,7 +697,6 @@
 		
 	</div>
 
-
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script>
 	
@@ -723,105 +718,16 @@
                 item.style.fontWeight = 'bold'; // 클릭된 항목 글씨 굵게 설정
 	        });
 	    });
-	
-
-		
-		$(".routine-row").on("click", function () {
-		    const routineNo = $(this).data("routine-no");
-		    console.log("루틴 번호:", routineNo);
-
-		    $.ajax({
-		        url: "${pageContext.request.contextPath}/getExerciseList.do",
-		        method: "GET",
-		        data: { routineNo },
-		        success: function (res) {
-		            const tbody = $(`#exercise-tbody-${routineNo}`);
-		            console.log("routineNo:", routineNo);
-		            
-		            if (tbody.length === 0) {
-		                alert(`⚠ tbody #exercise-tbody-${routineNo} 가 없습니다.`);
-		                return; // 바로 중단!
-		            }
-		            tbody.empty();
-		            
-
-		            if (!Array.isArray(res)) {
-		                alert("JSON 형식 오류");
-		                return;
-		            }
-
-		            res.forEach(exercise => {
-		                const row = `
-		                    <tr>
-		                        <td>${exercise.exerciseName}</td>
-		                        <td>${exercise.exerciseCategoryNames}</td>
-		                        <td>${exercise.exercisePartNames}</td>
-		                        <td>${exercise.caloriesPerUnit}</td>
-		                        <td>${exercise.exerciseTime}</td>
-		                        <td>${exercise.sets}</td>
-		                        <td>${exercise.repsPerSet}</td>
-		                        <td>${exercise.weight}</td>
-		                    </tr>`;
-		                tbody.append(row);
-		            });
-
-		            // 열기
-		            const target = $(`.exercise-detail[data-parent="${routineNo}"]`);
-		            console.log("열 대상:", target.length);
-
-		            $(".exercise-detail").not(target).slideUp();
-		            target.slideDown(); // 또는 target.show();
-		        },
-		        error: function () {
-		            alert("불러오기 실패");
-		        }
-		    });
-		});
-
-		
-		
-		/* $(".routine-row").on("click", function () {
-		    const routineNo = $(this).data("routine-no");
-		    console.log("루틴 번호:", routineNo);
-
-		    $.ajax({
-		        url: "${pageContext.request.contextPath}/getExerciseList.do",
-		        method: "GET",
-		        data: { routineNo: routineNo },
-		        success: function (res) {
-		        	const tbodyId = `#exercise-tbody-${routineNo}`;
-		            const tbody = $(tbodyId);
-		        	
-		            console.log("찾은 tbody:", tbodyId, "개수:", tbody.length);
-		            if (tbody.length === 0) {
-		                alert("❗ tbody가 HTML에 없습니다. id가 잘못됐거나 routineNo가 안 넘어옴.");
-		                return;
-		            }
-		            tbody.empty();
-		        	
-		            res.forEach(exercise => {
-		                const row = `
-		                    <tr>
-		                        <td>${exercise.exerciseName}</td>
-		                        <td>${exercise.exerciseCategoryNames}</td>
-		                        <td>${exercise.exercisePartNames}</td>
-		                        <td>${exercise.caloriesPerUnit}</td>
-		                        <td>${exercise.exerciseTime}</td>
-		                        <td>${exercise.sets}</td>
-		                        <td>${exercise.repsPerSet}</td>
-		                        <td>${exercise.weight}</td>
-		                    </tr>`;
-		                tbody.append(row);
-		            });
-		            
-
-		        },
-		        error: function () {
-		            alert("운동 목록을 불러오는 데 실패했습니다.");
-		        }
-		    });
-		}); */
-        
+	    
+	    function openExercisePopup(routineNo) {
+	        window.open(
+	            '${pageContext.request.contextPath}/getExerciseList.do?routineNo=' + routineNo,
+	            'exercisePopup',
+	            'width=900,height=600,resizable=yes,scrollbars=yes'
+	        );
+	    }
+	    
 	</script>
+	
 </body>
 </html>

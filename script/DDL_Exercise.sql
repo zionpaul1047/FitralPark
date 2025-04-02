@@ -113,6 +113,9 @@ CREATE TABLE routine (
     public_check NUMBER DEFAULT 0 NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
     routine_category_no NUMBER NOT NULL,
+    views NUMBER Default 1,
+    recommend NUMBER Default 0,
+    disrecommend NUMBER Default 0,
     CONSTRAINT fk_routine_category FOREIGN KEY (routine_category_no) REFERENCES routine_category(routine_category_no),
     CONSTRAINT fk_routine_member FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );
