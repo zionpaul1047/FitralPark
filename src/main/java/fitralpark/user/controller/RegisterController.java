@@ -72,12 +72,12 @@ public class RegisterController extends HttpServlet {
 			resp.getWriter().write("<script>"
 				    + "alert('회원가입이 완료되었습니다.');"
 				    + "window.opener.location.href='" + contextPath + "/index.do';"
-				    + "window.location.href='" + contextPath + "/auth.jsp?show=login';"
+				    + "window.location.href='" + contextPath + "/login.do?show=login';"
 				    + "</script>");
 		} else {
 			resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
 		}
 
-		System.out.println("[DEBUG] 전달받은 이메일: " + email);
+		System.out.println("[DEBUG_RegisterController.java] 전달받은 이메일: " + email);
 	}
 }

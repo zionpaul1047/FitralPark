@@ -1,267 +1,134 @@
-<%@page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
-<link rel="stylesheet" href="/assets/css/font.css">
-<link rel="stylesheet" href="/assets/css/common.css">
-<script src="/assets/js/jquery-migrate-1.4.1.min.js"></script>
-<style>
-.login_btn {
-	position: relative;
-	left: 15px;
-}
-
-.icon_menu_grup {
-	position: relative;
-	left: 15px;
-}
-
-button::before {
-	content: '' !important;
-}
-
-.nav2 {
-	display: flex;
-}
-
-#header .menu_col, .icon_menu, .depth01 {
-	font-family: 'Paperlogy-8ExtraBold'
-}
-
-/* Global CSS */
+<!-- 공통 CSS/JS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
+<!-- contextPath 전역 변수 -->
+<script>
+	const contextPath = '${pageContext.request.contextPath}';
+</script>
+<script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
 
 
-fieldset {
-	border: none;
-	display: flex;
-	flex-direction: column;
-	gap: 0.5rem;
-}
-
-*, *::before, *::after {
-	box-sizing: border-box;
-}
-
-button::before {
-	content: '' !important;
-}
-
-/* 기본 스타일 */
-body {
-	font-family: Arial, sans-serif;
-}
-
-.nav2 {
-	display: flex;
-	justify-content: flex-end;
-	padding: 10px;
-}
-
-.icon_menu {
-	margin-right: 10px;
-}
-
-.alarm-container {
-	position: relative;
-	display: inline-block;
-}
-
-.dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 200px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
-}
-
-.alarm-toggle {
-	padding: 12px 16px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 60px;
-	height: 34px;
-}
-
-.switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-}
-
-.slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	transition: .4s;
-}
-
-.slider:before {
-	position: absolute;
-	content: "";
-	height: 26px;
-	width: 26px;
-	left: 4px;
-	bottom: 4px;
-	background-color: white;
-	transition: .4s;
-}
-
-input:checked+.slider {
-	background-color: #2196F3;
-}
-
-input:checked+.slider:before {
-	transform: translateX(26px);
-}
-
-.slider.round {
-	border-radius: 34px;
-}
-
-.slider.round:before {
-	border-radius: 50%;
-}
-.sub_menu {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease;
-  position: absolute;
-  z-index: 10;
-}
-
-.menu_col:hover .sub_menu {
-  opacity: 1;
-  visibility: visible;
-}
-
-#alarmButton {
-	border: 0;
-}
-</style>
-
-<header id="header" class="">
+<header id="header">
 	<div class="wrapper">
-		<!-- logo -->
+		<!-- 로고 -->
 		<h1 class="h_logo">
-			<a href="${pageContext.request.contextPath}/index.do"> <img alt="핏트럴파크"
-				src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png">
+			<a href="${pageContext.request.contextPath}/index.do">
+				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="핏트럴파크">
 			</a>
 		</h1>
-		<!-- //logo -->
-		<!-- nav -->
+		<!-- 메인 메뉴 -->
+		<!-- 메인 메뉴 -->
 		<nav class="nav">
 			<ul class="main_menu">
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">식단 관리</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
-						<li><a href="">식단 계획캘린더</a></li>
-						<li><a href="">식단 라이브러리</a></li>
-						<li><a href="">식단 분석</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">운동 관리</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
-						<li><a href="">운동 계획캘린더</a></li>
-						<li><a href="">운동 라이브러리</a></li>
-						<li><a href="">피트럴맵</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">식품 영양정보</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
+				<li class="menu_col">
+					<a href="#">식단 관리</a>
+					<ul class="sub_menu">
+						<li><a href="#">식단 계획캘린더</a></li>
+						<li><a href="#">식단 라이브러리</a></li>
+						<li><a href="#">식단 분석</a></li>
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">운동 관리</a>
+					<ul class="sub_menu">
+						<li><a href="#">운동 계획캘린더</a></li>
+						<li><a href="#">운동 라이브러리</a></li>
+						<li><a href="#">피트럴맵</a></li>
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">영양정보 관리</a>
+					<ul class="sub_menu">
 						<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
 						<li><a href="">영양 성분비교</a></li>
 						<li><a href="">비타민 정보</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- menu_col -->
-				<li class="menu_col"><a href="">커뮤니티</a> <!-- sub_menu -->
-					<ul class="sub_menu" style="display: none;">
+					</ul>
+				</li>
+				<li class="menu_col">
+					<a href="#">커뮤니티</a>
+					<ul class="sub_menu">
 						<li><a href="">공지사항</a></li>
 						<li><a href="">자유게시판</a></li>
 						<li><a href="">Q&A게시판</a></li>
-					</ul> <!--  //sub_menu --></li>
-				<!-- //menu_col -->
-
-				<!-- <li class="menu_col">
-						<a href="">마이페이지</a>
-                        <ul class="sub_menu" style="display: none;">
-                            <li><a href="">대시보드</a></li>
-                            <li><a href="">나의활동</a></li>
-                            <li><a href="">회원정보</a></li>
-                        </ul>
-                    </li> -->
-
+					</ul>
+				</li>
 			</ul>
-			<!-- //main_menu -->
 		</nav>
-		<!-- //nav -->
-
-
-
+		
 		<nav class="nav2">
-			<!-- ■■■■■■■■■■로그인 후 보이는 코드■■■■■■■■■■ -->
-			<!-- 우측아이콘버튼 -->
-			<div class="welcome_msg">홍길동 님 반갑습니다. 어서오세요.</div>
-			<ul class="icon_menu_grup">
-				<li class="icon_menu">
-					<!-- 알림 아이콘 버튼 -->
-					<div class="alarm-container">
-						<button id="alarmButton">
-							<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/bellon.png" alt="알람"
-								style="width: 24px; height: 24px;">
-						</button>
-						<div id="alarmDropdown" class="dropdown-content">
-							<div class="alarm-toggle">
-								<span>알람 설정</span> <label class="switch"> <input
-									type="checkbox" id="alarmToggle" checked> <span
-									class="slider round"></span>
-								</label>
-							</div>
-							<div class="alarm-list">
-								<!-- 알람 내용이 여기에 동적으로 추가됩니다 -->
+			<!-- 로그인상태 -->
+			<c:if test="${not empty sessionScope.loginUser}">
+				<!-- 환영 메시지 -->
+				<div class="welcome_msg">${loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
+				<!-- 상단 우측 아이콘 메뉴 그룹 -->
+				<ul class="icon_menu_grup">
+					<!-- 알림 아이콘 -->
+					<li class="icon_menu">
+						<div class="alarm-container">
+							<button id="alarmButton">
+								<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/bellon.png" alt="알람"
+									style="width: 24px; height: 24px;">
+							</button>
+							<!-- 알림 드롭다운 영역 -->
+							<div id="alarmDropdown" class="dropdown-content">
+								<!-- 알람 설정 토글 -->
+								<div class="alarm-toggle">
+									<span>알람 설정</span>
+									<label class="switch">
+										<input type="checkbox" id="alarmToggle" checked>
+										<span class="slider round"></span>
+									</label>
+								</div>
+								<!-- 알람 리스트 -->
+								<div class="alarm-list">
+									<!-- 동적으로 알람 리스트가 표시/추가 될 영역 -->
+								</div>
 							</div>
 						</div>
-					</div>
-				</li>
-				<li class="icon_menu"><a href="#"> <img
-						src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드"
-						style="width: 24px; height: 24px;">
-				</a></li>
-				<li class="icon_menu"><a href="#"> <img
-						src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지"
-						style="width: 24px; height: 24px;">
-				</a></li>
-			</ul>
-			<!-- //우측아이콘버튼 -->
-			<!-- ■■■■■■■■■■//로그인 후 보이는 코드■■■■■■■■■■ -->
-
-			<!-- 로그인/로그아웃 버튼 -->
-			<ul class="login_btn">
-				<li class="icon_menu">
-					<button id="authButton">로그인</button>
-				</li>
-			</ul>
-			<!-- //로그인/로그아웃 버튼 -->
-
+					</li>
+		
+					<!-- 대시보드 아이콘 -->
+					<li class="icon_menu">
+						<a href="#">
+							<img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드"
+								style="width: 24px; height: 24px;">
+						</a>
+					</li>
+		
+					<!-- 마이페이지 아이콘 -->
+					<li class="icon_menu">
+						<a href="#">
+							<img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지"
+								style="width: 24px; height: 24px;">
+						</a>
+					</li>
+				</ul>
+				<!-- 로그아웃 버튼 -->
+				<ul class="login_btn">
+					<li class="icon_menu">
+						<form action="${pageContext.request.contextPath}/logout.do" method="post">
+							<button type="submit" class="btn-logout">로그아웃</button>
+						</form>
+					</li>
+				</ul>
+			</c:if>
+			
+			<!-- 로그아웃 상태 -->
+			<c:if test="${empty sessionScope.loginUser}">
+				<!-- 로그인 버튼 -->
+				<ul class="login_btn">
+					<li class="icon_menu">
+						<button id="authButton" class="btn-login">로그인</button>
+					</li>
+				</ul>
+			</c:if>
 		</nav>
+
 
 
 
@@ -335,147 +202,3 @@ input:checked+.slider:before {
 	</div>
 </div>
 <!-- //full-menu -->
-
-
-<script>
-    
-    
-    var header = $('#header'),
-        MainMenu = $('nav .main_menu .menu_col'),
-        SubMenu = $('nav .sub_menu'),
-        fullOpenBtn = $('.btn_open'),
-        fullNav = $('#full-menu');
-        
-    
-        SubMenu.hide();
-    
-        MainMenu.hover(function(){
-
-            header.addClass('hover');
-
-            var targetMenu = $(this).index();
-
-            SubMenu.hide(); // 기존 서브메뉴 모두 숨김
-            SubMenu.eq(targetMenu).show(); // 해당 메뉴만 바로 표시
-
-        }, function(){
-            
-            header.removeClass('hover');
-
-            SubMenu.hide(); // 모든 서브메뉴 즉시 숨김
-
-        });
-
-        // 기존과 동일하게 서브메뉴에 hover 시 상위 메뉴 활성화
-        SubMenu.hover(function(){
-            $(this).siblings('a').addClass('active');
-        }, function(){
-            MainMenu.children('a').removeClass('active');
-        });
-    
-    
-        $('#full-menu').hide();
-    
-    
-        //풀메뉴 열림 닫힘
-    
-        fullOpenBtn.click(function(){		
-            //클래스 붙이기
-            $(this).toggleClass('active');
-            header.addClass('active');
-            //만약 해당 클래스가 붙어있다면 풀메뉴를 연다
-            if($(this).hasClass('active') == true){
-                $('#full-menu').fadeIn();
-                $('#header nav').fadeOut();
-                //아닐시엔 닫는다
-            } else{
-                $('#full-menu').fadeOut();
-                $('#header nav').fadeIn();
-                header.removeClass('active');
-                }
-        });
-    
-    
-    
-        //스크롤시 헤더 변경
-         $(window).scroll(function () {
-        
-            
-            var wScroll = $(this).scrollTop();
-    
-            //console.log(wScroll);
-            if (wScroll > 30) {
-                $('#header').addClass('on');
-            } else {
-                $('#header').removeClass('on');
-            }
-    
-      });
-    
-    
-    
-    if($(window).width() < 640){ //모바일화면 사이즈
-                    
-         $('#full-menu .depth02').hide(); //pc에서 보여지던 하위메뉴숨김
-    
-            $('#full-menu .depth01 > li > a').on('click', function(){ //대메뉴 클릭 시
-                $('#full-menu .depth02').stop().slideUp(); //열려있는 하위메뉴 닫기
-                $(this).siblings('.depth02').stop().slideToggle(); //클릭한 메뉴의 하위메뉴 토글
-            });
-    
-    }
-    
-    const alarmButton = document.getElementById('alarmButton');
-    const alarmIcon = document.getElementById('alarmIcon');
-    const alarmDropdown = document.getElementById('alarmDropdown');
-    const alarmToggle = document.getElementById('alarmToggle');
-    const alarmList = document.querySelector('.alarm-list');
-
-    alarmButton.addEventListener('click', () => {
-      alarmDropdown.style.display = alarmDropdown.style.display === 'block' ? 'none' : 'block';
-    });
-
-    alarmToggle.addEventListener('change', () => {
-      if (alarmToggle.checked) {
-        alarmIcon.src = '${pageContext.request.contextPath}/assets/images/icon/bellon.png';
-        // 알람 활성화 로직
-      } else {
-        alarmIcon.src = '${pageContext.request.contextPath}/assets/images/icon/belloff.png';
-        // 알람 비활성화 로직
-      }
-    });
-
-    // 알람 내용 추가 예시
-    function addAlarmItem(content) {
-      const alarmItem = document.createElement('div');
-      alarmItem.textContent = content;
-      alarmList.appendChild(alarmItem);
-    }
-
-    // 예시 알람 추가
-    addAlarmItem('새로운 메시지가 도착했습니다.');
-    addAlarmItem('시스템 업데이트가 필요합니다.');
-
-    // 클릭 이벤트 외부 영역 처리
-    window.addEventListener('click', (event) => {
-      if (!alarmButton.contains(event.target) && !alarmDropdown.contains(event.target)) {
-        alarmDropdown.style.display = 'none';
-      }
-    });
-    
-    <!-- 로그인 팝업 열기 -->
-    document.addEventListener("DOMContentLoaded", function () {
-        const authButton = document.getElementById("authButton");
-
-        authButton.addEventListener("click", function () {
-        	window.open(
-        			  "${pageContext.request.contextPath}/login.do",
-        			  "LoginPopup",
-        			  "width=800,height=850,resizable=no,scrollbars=no,toolbar=no,location=no,directories=no,status=no,menubar=no"
-        	);
-        });
-      });
-
-
-    </script>
-
