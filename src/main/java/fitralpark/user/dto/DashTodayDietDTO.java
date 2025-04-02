@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashTodayDietDTO {
-	String mealClassify;
-	String dietNo;
-	ArrayList<DashFoodDTO> foodList;
+	private String mealClassify;
+	private String dietNo;
+	private ArrayList<DashFoodDTO> foodList;
 } 

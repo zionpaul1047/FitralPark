@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import fitralpark.user.dao.UserDAO;
+import fitralpark.user.dto.DashPhysicalHistDTO;
 
 @WebServlet("/dashphysicalregist.do")
 public class DashPhysicalRegist extends HttpServlet {
@@ -21,9 +22,14 @@ public class DashPhysicalRegist extends HttpServlet {
 		String height = req.getParameter("height");
 		String weight = req.getParameter("weight");
 		
+		DashPhysicalHistDTO histdto = new DashPhysicalHistDTO();
+		histdto.setId(id);
+		histdto.setHeight(height);
+		histdto.setWeight(weight);
+		
 		UserDAO dao = new UserDAO();
 		
-		int result = dao.putPhysicalHist(id, height, weight);
+		int result = dao.putPhysicalHist(histdto);
 		
 		dao.close();
 		

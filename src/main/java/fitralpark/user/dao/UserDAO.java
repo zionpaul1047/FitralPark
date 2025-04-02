@@ -1,6 +1,18 @@
 package fitralpark.user.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import fitralpark.common.utils.DBUtil;
+import fitralpark.diet.dto.IntakeRecordDTO;
+import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.user.dto.DashCurrentDietDTO;
 import fitralpark.user.dto.DashCurrentExcsDTO;
 import fitralpark.user.dto.DashDTO;
@@ -9,19 +21,6 @@ import fitralpark.user.dto.DashPhysicalHistDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.UserDTO;
-
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
 
 
 public class UserDAO {
@@ -135,8 +134,9 @@ public class UserDAO {
 		return 0;
 	}
 
-	public DashDTO getDashInfo(String id) {
+	public DashDTO getDashInfo(UserDTO userdto) {
 		try {
+			String id = userdto.getMemberId();
 			DashDTO dto = new DashDTO();
 			
 			//개인정보
@@ -505,7 +505,9 @@ public class UserDAO {
 	}
 
 	//신체기록 조회
-	public ArrayList<DashPhysicalHistDTO> getPhysicalHist(String id, String month) {
+	public ArrayList<DashPhysicalHistDTO> getPhysicalHist(DashPhysicalHistDTO inputDto) {
+		String id = inputDto.getId();
+		String month = inputDto.getMonth();
 		
 		try {
 			String sql = """
@@ -545,7 +547,12 @@ public class UserDAO {
 		return null;
 	}
 
-	public int putPhysicalHist(String id, String height, String weight) {
+	public int putPhysicalHist(DashPhysicalHistDTO inputDto) {
+		String id = inputDto.getId();
+		String height = inputDto.getHeight();
+		String weight = inputDto.getWeight();
+		
+		
 		try {
 			String sql = """
 					insert into member_physical(MEMBER_PHYSICAL_NO, REGDATE, HEIGHT, WEIGHT, MEMBER_ID)
@@ -565,6 +572,262 @@ public class UserDAO {
 		
 		return 0;
 		
+	}
+
+	//오늘의 운동 완료
+	public int tdyRecordExcs(ExerciseRecordDTO dto) {
+		
+		String id = dto.getCreatorId();
+		String exercise_creation_type = dto.getExerciseCreationType();
+		String exercise_no = dto.getExerciseNo();
+		String sets = dto.getSets();
+		String reps_per_set = dto.getRepsPerSet();
+		String weight = dto.getWeight();
+		String exercise_time = dto.getExerciseTime();
+		
+				
+		//반환 값: 성공: 1, 실패:0, 이미 데이터 있음: -1
+		try {
+			String sql;
+			//기존에 처리된 값이 있는지 확인
+			int validNumber = -1;  //초기값 -1
+			if(exercise_creation_type.equals("0")) {
+				sql = """
+						select count(*) as cnt
+						  from exercise_record
+						 where 1=1
+						   and creator_id = ?
+						   and RECORD_DATE between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+						   and sets = ?
+						   and reps_per_set = ?
+						   and weight = ?
+						   and exercise_time = ?
+						   and exercise_no = ?
+						   and exercise_creation_type = 0
+						""";
+				pstat = conn.prepareStatement(sql);
+				pstat.setString(1, id);
+				pstat.setString(2, sets);
+				pstat.setString(3, reps_per_set);
+				pstat.setString(4, weight);
+				pstat.setString(5, exercise_time);
+				pstat.setString(6, exercise_no);
+				
+				rs = pstat.executeQuery();
+				
+				if(rs.next()) {
+					validNumber = rs.getInt("cnt");
+				}
+				
+				
+			} else if (exercise_creation_type.equals("1")) {
+				sql = """
+						select count(*) as cnt
+						  from exercise_record
+						 where 1=1
+						   and creator_id = ?
+						   and RECORD_DATE between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+						   and sets = ?
+						   and reps_per_set = ?
+						   and weight = ?
+						   and exercise_time = ?
+						   and custom_exercise_no = ?
+						   and exercise_creation_type = 1
+						""";
+				pstat = conn.prepareStatement(sql);
+				pstat.setString(1, id);
+				pstat.setString(2, sets);
+				pstat.setString(3, reps_per_set);
+				pstat.setString(4, weight);
+				pstat.setString(5, exercise_time);
+				pstat.setString(6, exercise_no);
+			}
+			
+			if (validNumber >= 1) {
+				return -1;
+			}
+			
+			
+			//운동기록 데이터 입력
+			if(exercise_creation_type.equals("0")) {
+				sql = """
+						insert into exercise_record(EXERCISE_RECORD_NO, CREATOR_ID, RECORD_DATE, EXERCISE_NO, SETS, REPS_PER_SET, WEIGHT, EXERCISE_TIME, CUSTOM_EXERCISE_NO, EXERCISE_CREATION_TYPE)
+  values (seqExerciseRecord.nextVal, ?, sysdate, ?, ?, ?, ?, ?, null, 0)
+						""";
+				
+				pstat = conn.prepareStatement(sql);
+				pstat.setString(1, id);
+				pstat.setString(2, exercise_no);
+				pstat.setString(3, sets);
+				pstat.setString(4, reps_per_set);
+				pstat.setString(5, weight);
+				pstat.setString(6, exercise_time);
+				
+				
+				return pstat.executeUpdate();
+				
+				
+			} else if (exercise_creation_type.equals("1")) {
+				sql = """
+						insert into exercise_record(EXERCISE_RECORD_NO, CREATOR_ID, RECORD_DATE, EXERCISE_NO, SETS, REPS_PER_SET, WEIGHT, EXERCISE_TIME, CUSTOM_EXERCISE_NO, EXERCISE_CREATION_TYPE)
+  values (seqExerciseRecord.nextVal, ?, sysdate, null, ?, ?, ?, ?, ?, 1)
+						""";
+				
+				pstat = conn.prepareStatement(sql);
+				pstat.setString(1, id);
+				pstat.setString(2, sets);
+				pstat.setString(3, reps_per_set);
+				pstat.setString(4, weight);
+				pstat.setString(5, exercise_time);
+				pstat.setString(6, exercise_no);
+
+				
+				return pstat.executeUpdate();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	//오늘의 운동 완료
+	
+	public int tdyRecordIntake(ArrayList<IntakeRecordDTO> dtoList) {
+		//반환 값: 성공: 1, 실패:0, 이미 데이터 있음: -1
+		try {
+			String sql;
+			int validNumber = -1;  //초기값 -1
+			int successCnt = 0;
+			
+			//데이터 확인
+			for(IntakeRecordDTO dto : dtoList) {
+				String creator_id = dto.getCreatorId();
+				String diet_no = dto.getDietNo();
+				String meal_classify = dto.getMealClassify();
+				String food_creation_type = dto.getFoodCreationType();
+				String food_no = dto.getFoodNo();
+				String intake = dto.getIntake();
+				
+				if(food_creation_type.equals("0")) {
+					
+					sql = """
+							select count(*) as cnt 
+							  from intake_record
+							 where 1=1 
+							   and regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+							   and meal_classify = ?
+							   and creator_id = ?
+							   and food_no = ?
+							   and diet_no = ?
+							   and food_creation_type = 0
+							   and intake = ?
+							""";
+					pstat = conn.prepareStatement(sql);
+					pstat.setString(1, meal_classify);
+					pstat.setString(2, creator_id);
+					pstat.setString(3, food_no);
+					pstat.setString(4, diet_no);
+					pstat.setString(5, intake);
+					
+					rs = pstat.executeQuery();
+					
+					if(rs.next()) {
+						validNumber = rs.getInt("cnt");
+					}
+					
+					
+				} else if (food_creation_type.equals("1")) {
+					sql = """
+							select count(*) as cnt 
+							  from intake_record
+							 where 1=1 
+							   and regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+							   and meal_classify = ?
+							   and creator_id = ?
+							   and custom_food_no = ?
+							   and diet_no = ?
+							   and food_creation_type = 1
+							   and intake = ?
+							""";
+					pstat = conn.prepareStatement(sql);
+					pstat.setString(1, meal_classify);
+					pstat.setString(2, creator_id);
+					pstat.setString(3, food_no);
+					pstat.setString(4, diet_no);
+					pstat.setString(5, intake);
+					
+					rs = pstat.executeQuery();
+					
+					if(rs.next()) {
+						validNumber = rs.getInt("cnt");
+					}
+				}
+				
+				if (validNumber >= 1) {
+					System.out.println(validNumber);
+					return -1;
+				}
+			}
+			
+			
+			//데이터 입력
+			for(IntakeRecordDTO dto : dtoList) {
+				String creator_id = dto.getCreatorId();
+				String diet_no = dto.getDietNo();
+				String meal_classify = dto.getMealClassify();
+				String food_creation_type = dto.getFoodCreationType();
+				String food_no = dto.getFoodNo();
+				String intake = dto.getIntake();
+				
+				if(food_creation_type.equals("0")) {
+					
+					sql  = """
+							insert into intake_record(intake_record_no, regdate, intake_kcal, meal_classify, creator_id, food_no, custom_food_no, diet_no, food_creation_type, intake)
+		  values(seqIntakeRecord.nextVal, sysdate, (select (300/100) * irn.enerc as real_intake from food f inner join individual_diet_record_food_nutrient irn on f.food_cd = irn.food_cd where food_no = ?)
+		            , ?, ?, ?, null, ?, 0, ?)
+							""";
+					pstat = conn.prepareStatement(sql);
+					pstat.setString(1, food_no);
+					pstat.setString(2, meal_classify);
+					pstat.setString(3, creator_id);
+					pstat.setString(4, food_no);
+					pstat.setString(5, diet_no);
+					pstat.setString(6, intake);
+					
+					successCnt = successCnt + pstat.executeUpdate();
+					
+				} else if(food_creation_type.equals("1")) {
+					
+					sql  = """
+							insert into intake_record(intake_record_no, regdate, intake_kcal, meal_classify, creator_id, food_no, custom_food_no, diet_no, food_creation_type, intake)
+  values(seqIntakeRecord.nextVal, sysdate, (select (300/100) * kcal_per_unit as real_intake from custom_food c where c.custom_food_no = ?)
+            , ?, ?, null, ?, ?, 1, intake)
+							""";
+					pstat = conn.prepareStatement(sql);
+					pstat.setString(1, food_no);
+					pstat.setString(2, meal_classify);
+					pstat.setString(3, creator_id);
+					pstat.setString(4, food_no);
+					pstat.setString(5, diet_no);
+					pstat.setString(6, intake);
+					
+					successCnt = successCnt + pstat.executeUpdate();
+					
+					
+				}
+				
+				
+				
+			}
+			
+			return successCnt;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return 0;
 	}
 
 }

@@ -8,15 +8,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ExerciseRecordDTO {
-	String exerciseRecordNo;
-	String recordDate;
-	String sets;
-	String repsPerSet;
-	String weight;
-	String exerciseTime;
-	String creatorId;
-	String exerciseNo;
-	String customExerciseNo;
-	String exerciseCreationType;
+	private String exerciseRecordNo;
+	private String recordDate;
+	private String sets;
+	private String repsPerSet;
+	private String weight;
+	private String exerciseTime;
+	private String creatorId;
+	private String exerciseNo;
+	private String customExerciseNo;
+	private String exerciseCreationType;
 	
 }

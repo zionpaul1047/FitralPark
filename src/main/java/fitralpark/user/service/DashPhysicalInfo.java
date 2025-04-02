@@ -25,9 +25,13 @@ public class DashPhysicalInfo extends HttpServlet {
 		String id = req.getParameter("id");
 		String month = req.getParameter("month");
 		
+		DashPhysicalHistDTO histdto = new DashPhysicalHistDTO();
+		histdto.setId(id);
+		histdto.setMonth(month);
+		
 		UserDAO dao = new UserDAO();
 		
-		ArrayList<DashPhysicalHistDTO> histList = dao.getPhysicalHist(id, month);
+		ArrayList<DashPhysicalHistDTO> histList = dao.getPhysicalHist(histdto);
 		dao.close();
 		
 		JSONArray arr = new JSONArray();

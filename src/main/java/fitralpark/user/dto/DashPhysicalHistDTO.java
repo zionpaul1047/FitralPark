@@ -8,8 +8,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class DashPhysicalHistDTO {
-	String id;
-	String regdate;
-	String height;
-	String weight;
+	private String id;
+	private String month;
+	private String regdate;
+	private String height;
+	private String weight;
+	
 }

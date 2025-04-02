@@ -16,6 +16,7 @@ import fitralpark.user.dto.DashDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.DashTodayIntakeDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/dashboard.do")
 public class DashBoardController extends HttpServlet {
@@ -30,13 +31,14 @@ public class DashBoardController extends HttpServlet {
 		String rank = "junior";
 		String mentor_check = "0";
 		
-		
+		UserDTO userDto = new UserDTO();
+		userDto.setMemberId(id);
 		
 		//DashBoardController.java
 		UserDAO dao = new UserDAO();
 		
 		
-		DashDTO dto = dao.getDashInfo(id);
+		DashDTO dto = dao.getDashInfo(userDto);
 		
 		dao.close();
 		

@@ -679,7 +679,7 @@
     </style>
 </head>
 <body>
-	
+
 	<div class="grid">
 	
 		<div class="grid_top">
@@ -807,7 +807,7 @@
 							            <div class="hist_content_wide">
 							            	<c:forEach var="food" items="${item.foodList}">
 								                <div class="tdy_diet_food_list" data-crttype="${food.foodCreationType}" data-foodno="${food.foodNo}">
-								                    <i class="fa-solid fa-arrow-right"></i> ${food.foodName} ${food.intake }g
+								                    <i class="fa-solid fa-arrow-right"></i> ${food.foodName} <span>${food.intake}</span>g
 								                </div>
 							                </c:forEach>
 							            </div>
@@ -1239,31 +1239,7 @@
     		//main_cash_bn_idx = i;
     	}
        
- 		
-		function getTdyExcsList() {
-			$.ajax({
-				type: 'GET',
-				url: '/fitralpark/dash_today.do',
-				data: 'dong=' + $('#dong').val().trim(),
-				dataType: 'json',
-				success: function(result){
-					//console.log(result);
-					
-					$('#address1').html(''); //select의 내용물 초기화
-					
-					result.forEach(item => {
-						//item > <option>[123-456] 서울 강남구 역삼동 10</option>
-						$('#address1').append(`
-								<option>[\${item.zipcode}] \${item.sido} \${item.gugun} \${item.dong} \${item.bunji}</option>
-								`);
-					});
-				},
-				error: function(a,b,c){
-					console.log(a,b,c);
-				}
-			});
-		}
-		
+ 			
 		
 		function physical_info_regist() {
 			$('#popup_content > #physical_hist_div').css('display', 'none');
@@ -1359,14 +1335,13 @@
 		
 		function do_record(content_id) {
 			if(content_id == 'today_exercise') {
-				console.log($('#today_exercise .dash_content_part[display="block"] .ining span').get(0));
-				
+				//console.log($('#today_exercise .dash_content_part[display="block"] .ining span').get(0));
 				
 				$.ajax({
 					type: 'GET',
 					url: '/fitralpark/dashrecordexcs.do',
 					data: {
-						
+						id: '${id}',
 						sets: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
 						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
 						weight: $('#today_exercise .dash_content_part[style="display: block;"] .load span').text(),
@@ -1374,12 +1349,15 @@
 						exercise_no: $('#today_exercise .dash_content_part[style="display: block;"]').data('excsno'),
 						exercise_creation_type: $('#today_exercise .dash_content_part[style="display: block;"]').data('crttype')
 					},
+					contentType: 'application/json',
 					dataType: 'json',
 					success: function(result) {
-						if(result == 1) {
+						if(result.result == 1) {
 							alert('성공적으로 저장되었습니다.');
-						} else {
+						} else if(result.result == 0) {
 							alert('저장에 실패하였습니다.');
+						} else {
+							alert('이미 저장 되었습니다.');
 						}
 					},
 					error: function(a,b,c) {
@@ -1388,6 +1366,45 @@
 				});
 			} else if(content_id == 'today_diet') {
 				
+				
+				let diet = new Object();
+				let arrFood = [];
+				
+				$('#today_diet .dash_content_part[style="display: block;"] .tdy_diet_food_list').each((index, item) => {
+					arrFood.push({
+						food_creation_type: $(item).data('crttype'),
+						food_no: $(item).data('foodno'),
+						intake: $(item).find('span').text()
+					});
+				});
+				diet.id = '${id}';
+				diet.diet_no = $('#today_diet .dash_content_part[style="display: block;"]').data('dietno');
+				diet.meal_classify = $('#today_diet .dash_content_part[style="display: block;"] #tdy_diet_nm').text();
+				diet.arrFood = arrFood;
+				
+				console.log(diet);			
+				
+				$.ajax({
+					type: 'POST',
+					url: '/fitralpark/dashrecordintake.do',
+					data: JSON.stringify(diet),
+					contentType: 'application/json; charset=utf-8',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result.result);
+						
+						if(result.result >= 1) {
+							alert('성공적으로 저장되었습니다.');
+						} else if(result.result == 0) {
+							alert('저장에 실패하였습니다.');
+						} else {
+							alert('이미 저장 되었습니다.');
+						}
+					},
+					error: function(a,b,c) {
+						console.log(a,b,c);
+					}
+				});
 			}
 		}
 		

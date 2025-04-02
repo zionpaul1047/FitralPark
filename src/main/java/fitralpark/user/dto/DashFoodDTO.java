@@ -12,9 +12,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashFoodDTO {
-	String foodName;
-	String intake;
-	String foodCreationType;
-	String foodNo;
+	private String foodName;
+	private String intake;
+	private String foodCreationType;
+	private String foodNo;
 
 }
