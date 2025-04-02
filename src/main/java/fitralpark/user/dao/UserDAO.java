@@ -216,7 +216,7 @@ public class UserDAO {
 					                   and re.exercise_creation_type = 1
 					             ) ex
 					  on r.routine_no = ex.routine_no
-					 where to_char(ep.regdate, 'yyyymmdd') = to_char(sysdate - 2, 'yyyymmdd')
+					 where to_char(ep.regdate, 'yyyymmdd') = to_char(sysdate, 'yyyymmdd')
 					   and ep.creator_id = ?
 					""";
 			pstat = conn.prepareStatement(sql);
@@ -269,7 +269,7 @@ public class UserDAO {
 					                select dfl1.diet_no
 					                      , custom_food_name
 					                      , dfl1.intake as intake
-                                          , 0 as food_creation_type
+                                          , 1 as food_creation_type
                                           , cf.custom_food_no as food_no
 					                  from diet_food_list dfl1
 					                 inner join custom_food cf
@@ -277,7 +277,7 @@ public class UserDAO {
 					                   and dfl1.food_creation_type = 1
 					             ) f
 					    on d.diet_no = f.diet_no
-					 where to_char(dp.regdate, 'yyyymmdd') = to_char(sysdate - 2, 'yyyymmdd')
+					 where to_char(dp.regdate, 'yyyymmdd') = to_char(sysdate, 'yyyymmdd')
 					   and dp.creator_id = ?
 					 order by plandate, meal_classify
 					""";
@@ -801,7 +801,7 @@ public class UserDAO {
 					sql  = """
 							insert into intake_record(intake_record_no, regdate, intake_kcal, meal_classify, creator_id, food_no, custom_food_no, diet_no, food_creation_type, intake)
   values(seqIntakeRecord.nextVal, sysdate, (select (300/100) * kcal_per_unit as real_intake from custom_food c where c.custom_food_no = ?)
-            , ?, ?, null, ?, ?, 1, intake)
+            , ?, ?, null, ?, ?, 1, ?)
 							""";
 					pstat = conn.prepareStatement(sql);
 					pstat.setString(1, food_no);
