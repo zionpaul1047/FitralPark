@@ -829,5 +829,36 @@ public class UserDAO {
 		
 		return 0;
 	}
+	public UserDTO login(String id, String pw) {
+	    UserDTO dto = null;
+	    try {
+	        String sql = "SELECT * FROM member WHERE member_id = ? AND pw = ?";
+	        pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, id);
+	        pstat.setString(2, pw);
+	        rs = pstat.executeQuery();
+
+	        // 추후 암호화 도입 시 사용 예정
+	        // if (rs.next() && BCrypt.checkpw(pw, rs.getString("pw"))) {
+
+	        if (rs.next()) {
+	            dto = new UserDTO();
+	            dto.setMemberNo(rs.getInt("member_no"));
+	            dto.setMemberId(rs.getString("member_id"));
+	            dto.setPw(rs.getString("pw"));
+	            dto.setMemberName(rs.getString("member_name"));
+	            dto.setMemberNickname(rs.getString("member_nickname"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        try { if (rs != null) rs.close(); } catch (Exception e) {}
+	        try { if (pstat != null) pstat.close(); } catch (Exception e) {}
+	    }
+	    return dto;
+	}
+
+
 
 }

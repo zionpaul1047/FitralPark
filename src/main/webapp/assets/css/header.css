@@ -1,0 +1,347 @@
+/* -------------------- HEADER BASE -------------------- */
+#header {
+	width: 1280px;
+	height: 80px;
+	position: fixed;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 99;
+	background: #fff;
+	border-radius: 20px;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+#header .wrapper {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 40px;
+}
+
+#header .wrapper .nav {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#header .wrapper .nav2 {
+	margin-left: 0px;
+	margin-right: 10px;
+}
+
+/* -------------------- LOGO -------------------- */
+.h_logo {
+	width: 200px;
+}
+
+.h_logo img {
+	width: 100%;
+}
+
+/* -------------------- MAIN NAV -------------------- */
+.main_menu {
+	display: flex;
+}
+
+.menu_col {
+	position: relative;
+}
+
+.main_menu>.menu_col>a {
+	font-size: 1.15rem;
+	font-weight: 700;
+	color: #333333;
+	padding: 0 20px;
+	line-height: 80px;
+	display: inline-block;
+	transition: 0.2s ease;
+}
+
+.main_menu>.menu_col>a:hover {
+	color: #0076f9;
+}
+
+/* -------------------- SUB MENU -------------------- */
+.sub_menu {
+	position: absolute;
+	top: 80px;
+	left: 0;
+	background: #fff;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 8px;
+	display: none;
+	flex-direction: column;
+	min-width: 180px;
+	padding: 10px 20px;
+	z-index: 1000;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.25s ease;
+}
+
+.menu_col:hover>.sub_menu {
+	display: flex;
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
+.sub_menu li {
+	margin: 5px 0;
+	display: block;
+	padding: 6px 20px;
+}
+
+.sub_menu li a {
+	font-size: 0.95rem;
+	font-weight: 540;
+	color: #444444;
+	transition: color 0.2s ease;
+	display: flex;
+	align-items: center;
+	color: var(--gray01);
+}
+
+.sub_menu li a:hover {
+	color: #0076f9;
+	font-weight: 600;
+}
+
+/* -------------------- 로그인/로그아웃/알림 -------------------- */
+.nav2 {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
+.welcome_msg {
+	font-size: 0.9rem;
+	color: #333333;
+	margin-right: 15px;
+	position: absolute;
+	top: -21px;
+	right: 18px;
+	font-size: 12px;
+}
+
+.icon_menu_grup {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.icon_menu img {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+.login_btn .btn-login {
+	background: #28a745;
+	color: #fff;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+.login_btn .btn-login:hover {
+	background: #218838;
+}
+
+.login_btn .btn-logout {
+	background: #dc3545;
+	color: #fff;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 3px;
+	cursor: pointer;
+	transition: 0.2s ease;
+}
+
+.login_btn .btn-logout:hover {
+	background: #c82333;
+}
+
+/* -------------------- 알림 드롭다운 -------------------- */
+.alarm-container {
+	position: relative;
+}
+
+#alarmDropdown {
+	position: absolute;
+	right: 0;
+	top: 30px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	width: 220px;
+	display: none;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.3s ease;
+	padding: 10px;
+}
+
+#alarmDropdown.show {
+	display: block;
+	opacity: 1;
+	visibility: visible;
+}
+
+.alarm-toggle {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.alarm-list {
+	max-height: 150px;
+	overflow-y: auto;
+	font-size: 0.9rem;
+	color: #333;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 42px;
+	height: 22px;
+}
+
+.switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	border-radius: 34px;
+	transition: 0.4s;
+}
+
+.slider:before {
+	position: absolute;
+	content: "";
+	height: 16px;
+	width: 16px;
+	left: 4px;
+	bottom: 3px;
+	background-color: white;
+	border-radius: 50%;
+	transition: 0.4s;
+}
+
+input:checked+.slider {
+	background-color: #28a745;
+}
+
+input:checked+.slider:before {
+	transform: translateX(18px);
+}
+
+/* -------------------- HAMBURGER BUTTON -------------------- */
+.btn_open {
+	width: 30px;
+	height: 20px;
+	cursor: pointer;
+	position: relative;
+}
+
+.btn_open span {
+	position: absolute;
+	width: 100%;
+	height: 3px;
+	background: #000;
+	transition: 0.3s;
+}
+
+.btn_open .top {
+	top: 0;
+}
+
+.btn_open .middle {
+	top: 8px;
+}
+
+.btn_open .bottom {
+	top: 16px;
+}
+
+.btn_open.active .top {
+	transform: rotate(45deg);
+	top: 10px;
+}
+
+.btn_open.active .middle {
+	transform: rotate(-45deg);
+}
+
+.btn_open.active .bottom {
+	transform: rotate(-45deg);
+	top: 8px;
+}
+/* -------------------- FULL MENU -------------------- */
+#full-menu {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(255, 255, 255, 0.98);
+	z-index: 98;
+	overflow-y: auto;
+	animation: fadeIn 0.3s ease;
+}
+
+#full-menu .depth01 {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	padding-top: 100px;
+}
+
+#full-menu .depth01>li {
+	width: 30%;
+	margin-bottom: 40px;
+}
+
+#full-menu .depth01>li>a {
+	font-size: 1.5rem;
+	color: #000;
+	font-weight: 600;
+	display: block;
+	margin-bottom: 10px;
+}
+
+#full-menu .depth02 li a {
+	display: block;
+	color: #444;
+	padding: 5px 0;
+}
+
+/* -------------------- ANIMATION -------------------- */
+@keyframes fadeIn {from { opacity:0;
+	
+}
+
+to {
+	opacity: 1;
+}
+}

@@ -30,7 +30,7 @@
 					<h1>로그인</h1>
 					<p class="mt-2">환영합니다! 로그인하여 서비스를 이용하세요.</p>
 				</div>
-				<form method="POST" action="/login.do" class="form">
+				<form method="POST" action="${pageContext.request.contextPath}/login.do">
 					<div class="form-group">
 						<label for="username">아이디</label>
 						<input type="text" name="username" class="form-control" id="username" required />
@@ -62,6 +62,8 @@
 				</div>
 				<form method="POST" action="${pageContext.request.contextPath}/register.do" class="form">
 					<div class="form-scroll-box">
+					    <!-- 이메일 hidden input (JS에서 값을 채워줌) -->
+    					<input type="hidden" id="email_hidden" name="email" />
 
 						<%-- 아이디 --%>
 						<div class="form-group">
@@ -209,7 +211,6 @@
 									</div>
 								</div>
 							</div>
-						
 							<small id="emailMessage" class="form-text mt-1"></small>
 						</div>
 
@@ -256,6 +257,15 @@
 				}
 			}).open();
 		}
+	</script>
+	<script>
+		window.addEventListener('DOMContentLoaded', function () {
+			const params = new URLSearchParams(window.location.search);
+			if (params.get("show") === "login") {
+				document.getElementById("signup").style.display = "none";
+		    	document.getElementById("login").style.display = "block";
+			}
+		});
 	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>

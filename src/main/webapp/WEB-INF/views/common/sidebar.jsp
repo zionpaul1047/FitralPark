@@ -2,7 +2,7 @@
 
  
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
-    <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min(1).js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 

@@ -264,6 +264,9 @@ window.addEventListener("DOMContentLoaded", function() {
 		const emailMessage = document.getElementById("emailMessage");
 		const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+		const hiddenInput = document.getElementById("email_hidden");
+		if (hiddenInput) hiddenInput.value = email;
+
 		if (!prefix || !domain) {
 			emailMessage.innerText = "이메일을 모두 입력해주세요.";
 			emailMessage.style.color = "red";
@@ -297,7 +300,7 @@ window.addEventListener("DOMContentLoaded", function() {
 						timeLeft--;
 						if (timeLeft < 0) {
 							clearInterval(authTimerInterval);
-							authTimer.innerText = "인증 시간이 만료되었습니다.";
+							authTimer.inneraText = "인증 시간이 만료되었습니다.";
 						}
 					}, 1000);
 
@@ -341,12 +344,32 @@ window.addEventListener("DOMContentLoaded", function() {
 		const signupForm = document.querySelector("form[action$='/register.do']");
 		if (signupForm) {
 			signupForm.addEventListener("submit", function(e) {
-				if (!isEmailVerified) {
+				if (!isIdChecked) {
+					e.preventDefault();
+					document.getElementById("idCheckMessage").innerText = "아이디 중복확인을 먼저 해주세요.";
+					document.getElementById("idCheckMessage").style.color = "red";
+					document.getElementById("signup_id").focus();
+					return;
+				}
+
+				if (!window.isEmailVerified) {
 					e.preventDefault();
 					document.getElementById("authCodeMessage").innerText = "이메일 인증을 먼저 완료해주세요.";
 					document.getElementById("authCode").focus();
+					return;
 				}
+
+				// 이메일 hidden 필드 세팅
+				const prefix = document.getElementById("email_prefix").value.trim();
+				const domainSel = document.getElementById("email_domain").value;
+				const custom = document.getElementById("email_domain_custom").value.trim();
+				const domain = domainSel === "etc" ? custom : domainSel;
+				const email = `${prefix}@${domain}`;
+				const hiddenInput = document.getElementById("email_hidden");
+				if (hiddenInput) hiddenInput.value = email;
 			});
+
+
 		}
 	});
 
