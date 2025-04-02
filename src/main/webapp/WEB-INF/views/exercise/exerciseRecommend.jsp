@@ -641,6 +641,7 @@
 				</thead>
 				<tbody>
 					<c:forEach items="${list}" var="dto">
+					루틴번호: ${dto.routineNo} <br>
 						<tr class="routine-row" data-routine-no="${dto.routineNo}">
 							<td><input type="checkbox" /></td>
 							<td>${dto.routineName}</td>
@@ -723,31 +724,26 @@
 	        });
 	    });
 	
-	
-	
-		$(document).ready(function () {
-		    $('.routine-row').click(function() {
-				const routineNo = $(this).data('routine-no');
-                // 다른 펼쳐진 행은 닫기
-				$('.exercise-detail').not('[data-parent="' + routineNo + '"]').slideUp();
-                // 해당 루틴의 상세 영역만 toggle
-				const target = $('.exercise-detail[data-parent="' + routineNo + '"]');
-				target.slideToggle();
-			});
-		});
+
 		
 		$(".routine-row").on("click", function () {
-		    const routineNo = $(this).data("routine-no").toString();
+		    const routineNo = $(this).data("routine-no");
 		    console.log("루틴 번호:", routineNo);
 
 		    $.ajax({
 		        url: "${pageContext.request.contextPath}/getExerciseList.do",
 		        method: "GET",
-		        data: { routineNo: routineNo },
+		        data: { routineNo },
 		        success: function (res) {
 		            const tbody = $(`#exercise-tbody-${routineNo}`);
-		            console.log("🎯 tbody length:", tbody.length);
+		            console.log("routineNo:", routineNo);
+		            
+		            if (tbody.length === 0) {
+		                alert(`⚠ tbody #exercise-tbody-${routineNo} 가 없습니다.`);
+		                return; // 바로 중단!
+		            }
 		            tbody.empty();
+		            
 
 		            if (!Array.isArray(res)) {
 		                alert("JSON 형식 오류");
