@@ -16,6 +16,7 @@
     body {
       font-family: 'Malgun Gothic', sans-serif;
       color: #333;
+      
     }
 
     .container {

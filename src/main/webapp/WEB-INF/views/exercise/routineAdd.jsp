@@ -257,14 +257,9 @@
 		            선택 항목 삭제</button>
 		        </div>
 	            <div>
-	                <button class="btn btn-primary" onclick="submitExercise()">✓ 등록하기</button>
-	                <button class="btn btn-primary">↪ 불러오기</button>
+	                <button class="btn btn-primary" onclick="openExercisePopup()">↪ 불러오기</button>
 	            </div>
 	        </div>
-	
-	        <button class="btn-add" onclick="addExerciseItem()">
-	            <span>+</span> 운동 추가하기
-	        </button>
 	        
 	        
 	        
@@ -302,115 +297,17 @@
             tbody.innerHTML = '';
         }
         
-        function addExerciseItem() {
-            const table = document.getElementById('routine-table').getElementsByTagName('tbody')[0];
-            const newRow = table.insertRow();
-            newRow.innerHTML = `
-                <td><input type="checkbox"></td>
-                <td><input type="text" name="exerciseName" placeholder="운동명 입력"></td>
-                <td>
-	                <select class="exercise-category">
-	                    <option value="">카테고리 선택</option>
-	                    <option value="1">근력</option>
-	                    <option value="2">유산소</option>
-	                    <option value="3">유연성</option>
-	                    <option value="4">균형</option>
-	                    <option value="5">복구</option>
-	                    <option value="6">저항</option>
-	                </select>
-	            </td>
-	            <td>
-	                <select class="exercise-part">
-	                    <option value="">부위 선택</option>
-	                    <option value="1">하체</option>
-	                    <option value="2">가슴</option>
-	                    <option value="3">등</option>
-	                    <option value="4">어깨</option>
-	                    <option value="5">팔</option>
-	                    <option value="6">복부</option>
-	                    <option value="7">근육</option>
-	                    <option value="8">기타</option>
-	                    <option value="9">유산소</option>
-	                </select>
-	            </td>
-                <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            `;
+        function openExercisePopup() {
+            window.open(
+                '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
+                'exercisePopup',
+                'width=800,height=600,scrollbars=yes'
+            );
         }
         
-        function submitExercise() {
-            const rows = document.querySelectorAll('#routine-table tbody tr');
-
-            rows.forEach(row => {
-                const nameInput = row.querySelector('input[name="exerciseName"]');
-                const categorySelect = row.querySelector('.exercise-category');
-                const partSelect = row.querySelector('.exercise-part');
-                const calorieInput = row.querySelector('input[name="caloriesPerUnit"]');
-
-                // input/select가 없으면 패스
-                if (!nameInput || !categorySelect || !partSelect || !calorieInput) return;
-
-                const name = nameInput.value;
-                const categoryText = categorySelect.options[categorySelect.selectedIndex].text;
-                const partText = partSelect.options[partSelect.selectedIndex].text;
-                const calorie = calorieInput.value;
-
-                nameInput.parentElement.innerHTML = name;
-                categorySelect.parentElement.innerHTML = categoryText;
-                partSelect.parentElement.innerHTML = partText;
-                calorieInput.parentElement.innerHTML = calorie;
-            });
-        }
         
-        function submitRoutineToDB() {
-            const routineName = document.getElementById("routine-name").value;
-            const routineCategory = document.getElementById("routine-category").value;
-            const visibility = document.querySelector("input[name='visibility']:checked").value;
-
-            const rows = document.querySelectorAll("#routine-table tbody tr");
-            const exercises = [];
-
-            rows.forEach(row => {
-                const name = row.cells[1].innerText;
-                const category = row.cells[2].innerText;
-                const part = row.cells[3].innerText;
-                const calories = row.cells[4].innerText;
-
-                if (name && category && part && calories) {
-                    exercises.push({
-                        exerciseName: name,
-                        exerciseCategory: category,
-                        exercisePart: part,
-                        caloriesPerUnit: calories
-                    });
-                }
-            });
-
-            const data = {
-                routineName: routineName,
-                routineCategory: routineCategory,
-                visibility: visibility,
-                exercises: exercises
-            };
-
-            // Ajax로 전송
-            fetch("/fitralpark/routineAdd.do", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            })
-            .then(res => res.json())
-            .then(result => {
-                if (result.status === "ok") {
-                    alert("루틴 등록 성공!");
-                    location.reload();
-                } else {
-                    alert("루틴 등록 실패");
-                }
-            });
-        }
+        
+        
     
     </script>
 </body>
