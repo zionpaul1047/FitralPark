@@ -8,6 +8,12 @@
 	<title>운동 목록 불러오기</title>
 	<style>
 	
+		hr {
+			border: 0;
+			height: 1px;
+			background: black;
+		}
+	
         .popup-container {
             max-width: 900px;
             margin: 0 auto;
@@ -64,10 +70,48 @@
             background-color: #f0f0f0;
         }
         
+        .btn {
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: all 0.2s;
+        }
+        .btn:hover {
+            background-color: #f0f0f0;
+        }
+        
         .btn btn-primary {
 		    background-color: #f8f8f8;
 		    font-weight: 500;
 		}
+
+        .btn btn-primary:hover {
+            background-color: #f0f0f0;
+		}
+		
+		.btn-add {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-add:hover {
+            background-color: #f0f0f0;
+        }
+        .btn-add span {
+            margin-right: 5px;
+            font-size: 18px;
+        }
 		
 		#exerciseAddBtn {
 			margin-top: 15px;
@@ -107,12 +151,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>✔</th>
-                    <th>운동명</th>
-                    <th>운동 카테고리</th>
-                    <th>운동 부위</th>
-                    <th>소모 열량(kcal)</th>
-                    <th>즐겨찾기</th>
+                    <th style="width: 5%">✔</th>
+                    <th style="width: 20%">운동명</th>
+                    <th style="width: 15%">운동 카테고리</th>
+                    <th style="width: 15%">운동 부위</th>
+                    <th style="width: 15%">소모 열량(kcal)</th>
+                    <th style="width: 15%">즐겨찾기</th>
                 </tr>
             </thead>
             <tbody id="exerciseTableBody">
@@ -128,8 +172,41 @@
                 </c:forEach>
             </tbody>
         </table>
+        <hr>
+        <h3>사용자 정의 운동 목록</h3>
+		<table id="exercise-table">
+		    <thead>
+		        <tr>
+		            <th style="width: 5%">✔</th>
+		            <th style="width: 20%">운동명</th>
+		            <th style="width: 15%">운동 카테고리</th>
+		            <th style="width: 15%">운동 부위</th>
+		            <th style="width: 15%">소모 열량(kcal)</th>
+		            <th style="width: 5%"></th>
+		            <th style="width: 5%"></th>
+		            <th style="width: 5%"></th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <c:forEach items="${customExerciseList}" var="ex">
+		            <tr>
+		                <td><input type="checkbox" name="customSelectExercise" value="${ex.customExerciseNo}"></td>
+		                <td>${ex.exerciseName}</td>
+		                <td>${ex.exerciseCategoryName}</td>
+		                <td>${ex.exercisePartName}</td>
+		                <td>${ex.caloriesPerUnit}</td>
+		                <td>
+		                    <button type="button" onclick="editCustomExercise('${ex.customExerciseNo}')">✏️</button>
+		                    <button type="button" onclick="deleteCustomExercise('${ex.customExerciseNo}')">❌</button>
+		                </td>
+		            </tr>
+		        </c:forEach>
+		    </tbody>
+		</table>
 
-        <button type="button" id="exerciseAddBtn" onclick="sendToParent()">선택 운동 추가하기</button>
+        <button class="btn-add" onclick="addExerciseItem()">
+	            <span>➕</span> 운동 추가하기
+	        </button>
         
 		<div class="action-buttons">
             <button type="button" class="btn btn-primary" onclick="sendToParent()">불러오기</button>
@@ -140,17 +217,58 @@
 	</div>
 
     <script>
-    function sendToParent() {
-        const checked = document.querySelectorAll('input[name="selectExercise"]:checked');
-        const selected = Array.from(checked).map(chk => chk.value);
-
-        if (window.opener && typeof window.opener.receiveExerciseList === 'function') {
-            window.opener.receiveExerciseList(selected);
-            window.close();
+    
+	    function sendToParent() {
+	        const checked = document.querySelectorAll('input[name="selectExercise"]:checked');
+	        const selected = Array.from(checked).map(chk => chk.value);
+	
+	        if (window.opener && typeof window.opener.receiveExerciseList === 'function') {
+	            window.opener.receiveExerciseList(selected);
+	            window.close();
+	        }
+	        
+	        
+	    }
+	    
+	    function addExerciseItem() {
+            const table = document.getElementById('exercise-table').getElementsByTagName('tbody')[0];
+            const newRow = table.insertRow();
+            newRow.innerHTML = `
+                <td><input type="checkbox"></td>
+                <td><input type="text" name="exerciseName" placeholder="운동명 입력"></td>
+                <td>
+	                <select class="exercise-category">
+	                    <option value="">카테고리 선택</option>
+	                    <option value="1">근력</option>
+	                    <option value="2">유산소</option>
+	                    <option value="3">유연성</option>
+	                    <option value="4">균형</option>
+	                    <option value="5">복구</option>
+	                    <option value="6">저항</option>
+	                </select>
+	            </td>
+	            <td>
+	                <select class="exercise-part">
+	                    <option value="">부위 선택</option>
+	                    <option value="1">하체</option>
+	                    <option value="2">가슴</option>
+	                    <option value="3">등</option>
+	                    <option value="4">어깨</option>
+	                    <option value="5">팔</option>
+	                    <option value="6">복부</option>
+	                    <option value="7">근육</option>
+	                    <option value="8">기타</option>
+	                    <option value="9">유산소</option>
+	                </select>
+	            </td>
+                <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            `;
         }
-        
-        
-    }
+
+    
     </script>
 </body>
 </html>

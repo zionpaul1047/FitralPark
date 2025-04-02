@@ -217,21 +217,6 @@ public class RoutineDAO {
 	    
 	    return null;
 	}
-
-	public void insertRoutineExercise(String routineNo, String name, String calories, String time) {
-		String sql = "INSERT INTO routine_exercise (routine_no, exercise_name, calories_per_unit, exercise_time) VALUES (?, ?, ?, ?)";
-	    try {
-	        PreparedStatement pstat = conn.prepareStatement(sql);
-	        pstat.setString(1, routineNo);
-	        pstat.setString(2, name);
-	        pstat.setString(3, calories);
-	        pstat.setString(4, time);
-	        return pstat.executeUpdate();
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return 0;
-	}
 	
 	
 }

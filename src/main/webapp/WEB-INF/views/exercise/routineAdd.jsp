@@ -136,26 +136,7 @@
         .btn-primary:hover {
             background-color: #e8e8e8;
         }
-        .btn-add {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-add:hover {
-            background-color: #f0f0f0;
-        }
-        .btn-add span {
-            margin-right: 5px;
-            font-size: 18px;
-        }
+        
         .action-buttons {
             display: flex;
             justify-content: space-between;
