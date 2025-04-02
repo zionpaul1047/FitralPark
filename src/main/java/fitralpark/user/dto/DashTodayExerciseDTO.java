@@ -13,7 +13,6 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DashTodayExerciseDTO {
 	String exerciseName;
-	String processivity;
 	String ining;
 	String set;
 	String load;

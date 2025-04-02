@@ -16,5 +16,6 @@ public class DashCurrentExcsDTO {
 	String totalPlanCnt;
 	String completePlanCnt;
 	String incompletePlanCnt;
+	String unplanCnt;
 	String processivity;
 }

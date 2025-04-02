@@ -1,6 +1,7 @@
 package fitralpark.user.dto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import lombok.ToString;
 @NoArgsConstructor
 public class DashDTO {
 	String userName;
+	String backgroundPic;
 	String height;
 	String gender;
 	String weight;

@@ -90,8 +90,11 @@ CREATE TABLE exercise_record (
     weight NUMBER(5,1) DEFAULT 0,
     exercise_time NUMBER DEFAULT 0,
     creator_id VARCHAR2(50),
-    exercise_no NUMBER NOT NULL,
+    exercise_no NUMBER NULL,
+    custom_exercise_no NUMBER NULL,
+    exercise_creation_type NUMBER NOT NULL,
     CONSTRAINT fk_record_exercise FOREIGN KEY (exercise_no) REFERENCES exercise(exercise_no),
+    CONSTRAINT fk_record_custom_exercise FOREIGN KEY (custom_exercise_no) REFERENCES custom_exercise(custom_exercise_no),
     CONSTRAINT fk_record_member FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );
 
