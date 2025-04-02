@@ -37,12 +37,18 @@
 					<div class="content_box">
 		    			<div class="sf_body">
 					        <div class="sf_food_search_bar">
+<<<<<<< HEAD
 							    <form action="searchFood" method="GET">
 							        <input type="text" name="query" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
 							        <button type="submit" class="sf_food_search_button">🔍</button>
 							    </form>
 							</div>
 
+=======
+					            <input type="text" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
+					            <button class="sf_food_search_button">🔍</button>
+					        </div>
+>>>>>>> 0e60b5ec92866662563f0fcb3271f5ff198ede2c
 					
 					        <section class="sf_filter_section">
 					            
@@ -81,6 +87,7 @@
 					        </div>
 					        
 					        <section class="sf_result_section">
+<<<<<<< HEAD
 							    <c:forEach var="item" items="${results}">
 							        <div class="sf_result_section_1">
 							            <div class="sf_reult_section_1_1">
@@ -116,6 +123,51 @@
 							    </c:if>
 							</section>
 
+=======
+					            <!-- 첫 번째 검색 결과 -->
+					            <div class="sf_result_section_1">
+					                <div class="sf_reult_section_1_1">
+					                    <div class="sf_result_item_1">
+					                        <img src="#" alt="사진 크롤링" class="sf_result_img_1" id="sf_result_img_1">
+					                        <div class="sf_result_info_1">
+					                            <div class="sf_result_info_food_name_1">미트볼 조림 100g</div>
+					                            <div class="sf_result_info_food_detail_1"><p>
+					                                칼로리(kcal): 221 | 단백질(g): 18.15 | 탄수화물(g): 12.95 | 지방(g): 10.73 | 당류(g): 10.52 | 나트륨(mg): 315<br>
+					                            <br>칼슘(mg): 24 | 철(mg): 0.91 | 인(mg): 191 | 칼륨(mg): 405 | 콜레스테롤(mg): 29.48 | 포화지방(g): 2.12<br>
+					                            <br>트랜스지방(g): 0.08 | 비타민A(μg RAE): 11 | 베타카로틴(μg): 21 | 티아민(mg): 0.927<br>
+					                            <br>리보플라빈(mg): 0.133 | 나이아신(mg): 9.987 | 비타민C(mg): 2.03 | 비타민D(μg): 0.01
+					                            </p></div>
+					                        </div>
+					                    </div>
+					                </div>
+					                <div class="sf_result_section_1_2">
+					                    <button class="sf_result_favorite_button_1">즐겨찾기 등록</button>
+					                </div>     
+					            </div>
+					
+					            <!-- 두 번째 검색 결과 -->
+					            <!-- 동일한 구조 -->
+					            <div class="sf_result_section_1">
+					                <div class="sf_reult_section_1_1">
+					                    <div class="sf_result_item_1">
+					                        <img src="#" alt="사진 크롤링" class="sf_result_img_1" id="sf_result_img_1">
+					                        <div class="sf_result_info_1">
+					                            <div class="sf_result_info_food_name_1">미트볼 조림 100g</div>
+					                            <div class="sf_result_info_food_detail_1"><p>
+					                                칼로리(kcal): 221 | 단백질(g): 18.15 | 탄수화물(g): 12.95 | 지방(g): 10.73 | 당류(g): 10.52 | 나트륨(mg): 315<br>
+					                            <br>칼슘(mg): 24 | 철(mg): 0.91 | 인(mg): 191 | 칼륨(mg): 405 | 콜레스테롤(mg): 29.48 | 포화지방(g): 2.12<br>
+					                            <br>트랜스지방(g): 0.08 | 비타민A(μg RAE): 11 | 베타카로틴(μg): 21 | 티아민(mg): 0.927<br>
+					                            <br>리보플라빈(mg): 0.133 | 나이아신(mg): 9.987 | 비타민C(mg): 2.03 | 비타민D(μg): 0.01
+					                            </p></div>
+					                        </div>
+					                    </div>
+					                </div>
+					                <div class="sf_result_section_1_2">
+					                    <button class="sf_result_favorite_button_1">즐겨찾기 등록</button>
+					                </div>     
+					            </div>
+					        </section>
+>>>>>>> 0e60b5ec92866662563f0fcb3271f5ff198ede2c
 					    </div>
 					</div>
 				</div>

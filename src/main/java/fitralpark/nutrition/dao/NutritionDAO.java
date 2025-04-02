@@ -31,10 +31,9 @@ public class NutritionDAO {
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, "%" + keyword + "%"); // 검색어를 LIKE 조건에 설정
+            pstmt.setString(1, "%" + "피자" + "%"); // 검색어를 LIKE 조건에 설정
             ResultSet rs = pstmt.executeQuery();
-            System.out.println("SQL 쿼리 실행: " + sql);
-            System.out.println("검색 파라미터: %" + keyword + "%");
+
             while (rs.next()) {
                 NutritionDTO dto = new NutritionDTO();
                 dto.setFood_name(rs.getString("food_name"));
