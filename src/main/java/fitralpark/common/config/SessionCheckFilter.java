@@ -54,7 +54,7 @@ public class SessionCheckFilter implements Filter {
             if (command.startsWith(path)) {
                 if (!isLoggedIn) {
                     httpReq.setAttribute("popupLoginRequired", true);
-                    RequestDispatcher dispatcher = httpReq.getRequestDispatcher("/popup/loginPopup.jsp");
+                    RequestDispatcher dispatcher = httpReq.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
                     dispatcher.forward(httpReq, httpRes);
                     return;
                 }
