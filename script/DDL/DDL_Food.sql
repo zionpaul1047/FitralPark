@@ -255,7 +255,7 @@ create sequence seqDiet;
 create sequence seqDietPlan;
 
 
-
+ALTER TABLE diet_food_list DROP COLUMN PUBLIC_CHECK;
 
 
 
