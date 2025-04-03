@@ -27,7 +27,8 @@ public class DashBoardController extends HttpServlet {
 		
 		
 		//세션값 임시
-		String id = "hong";
+		String id = (String)(req.getSession().getAttribute("loginUser"));
+		
 		String rank = "junior";
 		String mentor_check = "0";
 		
