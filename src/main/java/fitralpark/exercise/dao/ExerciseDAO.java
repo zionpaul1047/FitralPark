@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import fitralpark.exercise.dto.ExerciseDTO;
+import fitralpark.user.dto.UserDTO;
 
 //(DB 접근 DAO 클래스 자리)
 public class ExerciseDAO {

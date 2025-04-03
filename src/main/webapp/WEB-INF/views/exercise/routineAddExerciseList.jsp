@@ -42,7 +42,7 @@
         }
 
         table {
-            width: 100%;
+            width: 900px;
             border-collapse: collapse;
             margin-top: 15px;
             font-size: 14px;
@@ -146,6 +146,13 @@
             margin: 15px 0;
             align-items: center;
         }
+
+        .form-control {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
         
     </style>
 	</head>
@@ -155,8 +162,8 @@
 
     <h3>운동 검색</h3>
     <form method="get" action="/fitralpark/exercise/routineAddExerciseList.do">
-    <input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력">
-    <select name="category">
+    <input type="text" name="keyword" value="${param.keyword}" placeholder="검색어 입력" class="form-control">
+    <select name="category" class="form-control">
         <option value="">운동 카테고리</option>
         <option value="1" ${param.category == '1' ? 'selected' : ''}>근력</option>
         <option value="2" ${param.category == '2' ? 'selected' : ''}>유산소</option>
@@ -169,15 +176,15 @@
 </form>
     <h3>운동 목록</h3>
     <form id="exerciseForm">
-        <table>
+        <table id="exercise-table">
             <thead>
                 <tr>
-                    <th style="width: 5%">✅</th>
-                    <th style="width: 20%">운동명</th>
-                    <th style="width: 15%">운동 카테고리</th>
-                    <th style="width: 15%">운동 부위</th>
-                    <th style="width: 15%">소모 열량(kcal)</th>
-                    <th style="width: 15%">즐겨찾기</th>
+                    <th>✅</th>
+                    <th>운동명</th>
+                    <th>운동 카테고리</th>
+                    <th>운동 부위</th>
+                    <th>소모 열량(kcal)</th>
+                    <th>즐겨찾기</th>
                 </tr>
             </thead>
             <tbody id="exerciseTableBody">
@@ -195,32 +202,35 @@
         </table>
         <hr>
         <h3>사용자 정의 운동 목록</h3>
-		<table id="exercise-table">
+		<table id="customExercise-table">
 		    <thead>
 		        <tr>
-		            <th style="width: 5%">✅</th>
-		            <th style="width: 20%">운동명</th>
-		            <th style="width: 15%">운동 카테고리</th>
-		            <th style="width: 15%">운동 부위</th>
-		            <th style="width: 15%">소모 열량(kcal)</th>
-		            <th style="width: 15%"></th>
+		            <th>✅</th>
+		            <th>운동명</th>
+		            <th>운동 카테고리</th>
+		            <th>운동 부위</th>
+		            <th>소모 열량(kcal)</th>
+		            <th></th>
 		        </tr>
 		    </thead>
 		    <tbody>
 		        <c:forEach items="${customExerciseList}" var="customex">
 		            <tr>
-		                <td style="width: 5%"><input type="checkbox" name="customSelectExercise" value="${customex.customExerciseNo}"></td>
-		                <td style="width: 20%">${customex.customExerciseName}</td>
-		                <td style="width: 15%">${customex.customExerciseCategoryName}</td>
-		                <td style="width: 15%">${customex.customExercisePartName}</td>
-		                <td style="width: 15%">${customex.customCaloriesPerUnit}</td>
-		                <td style="width: 5%">
+		                <td><input type="checkbox" name="customSelectExercise" value="${customex.customExerciseNo}"></td>
+		                <td>${customex.customExerciseName}</td>
+		                <td>${customex.customExerciseCategoryName}</td>
+		                <td>${customex.customExercisePartName}</td>
+		                <td>${customex.customCaloriesPerUnit}</td>
+		                <td>
 		                	<button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-magnifying-glass"></i></button>
 		                	<button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-pen-to-square"></i></button>
 		                	<button type="button" class="rudBtn" onclick="deleteCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-x"></i></button>
 		                </td>
 		            </tr>
 		        </c:forEach>
+		        <form action="/fitralpark/exercise/addCustomExercise.do" method="post">
+		        	
+		        </form>
 		    </tbody>
 		</table>
 
@@ -268,14 +278,14 @@
 	    }
 	    
 	    function addExerciseItem() {
-	        const tbody = document.querySelector('#exercise-table tbody');
+	        const tbody = document.querySelector('#customExercise-table tbody');
 	        const newRow = document.createElement('tr');
 
 	        newRow.innerHTML = `
-	        	<td><input type="checkbox" name="customSelectExercise"></td>
-	            <td><input type="text" name="exerciseName" placeholder="운동명 입력" style="width: 100%"></td>
+	        	<td><input type="checkbox" name="customSelectExercise" class="form-control"></td>
+	            <td><input type="text" name="exerciseName" placeholder="운동명 입력" class="form-control"></td>
 	            <td>
-	                <select name="exerciseCategory" class="exercise-category" style="width: 100%">
+	                <select name="exerciseCategory" id="exercise-category" class="form-control">
 	                    <option value="">카테고리 선택</option>
 	                    <option value="1">근력</option>
 	                    <option value="2">유산소</option>
@@ -286,7 +296,7 @@
 	                </select>
 	            </td>
 	            <td>
-	                <select name="exercisePart" class="exercise-part" style="width: 100%">
+	                <select name="exercisePart" id="exercise-part" class="form-control">
 	                    <option value="">부위 선택</option>
 	                    <option value="1">하체</option>
 	                    <option value="2">가슴</option>
@@ -299,7 +309,7 @@
 	                    <option value="9">유산소</option>
 	                </select>
 	            </td>
-	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량" style="width: 100%"></td>
+	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량" class="form-control"></td>
 	            <td>
 	                <button type="button" class="rudBtn" onclick="this.closest('tr').remove()">
 	                    <i class="fa-solid fa-xmark"></i>
@@ -309,6 +319,45 @@
 	        
 	        tbody.appendChild(newRow);
 	    }
+	    
+	    <%-- function submitExercise(button) {
+	        const row = button.closest('tr');
+
+	        const exerciseName = row.querySelector('input[name="exerciseName"]').value;
+	        const category = row.querySelector('#exercise-category').value;
+	        const part = row.querySelector('#exercise-part').value;
+	        const calories = row.querySelector('input[name="caloriesPerUnit"]').value;
+
+	        // 1) 서블릿으로 AJAX POST 요청
+	        fetch('/fitralpark/exercise/addCustomExercise.do', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({
+	                exerciseName,
+	                category,
+	                part,
+	                calories
+	            })
+	        })
+	        .then(res => res.json())
+	        .then(data => {
+	            if (data.status === 'success') {
+	                // 2) 테이블 행을 텍스트로 바꾸기
+	                row.innerHTML = `
+	                    <td><input type="checkbox"></td>
+	                    <td>${exerciseName}</td>
+	                    <td>${getCategoryText(category)}</td>
+	                    <td>${getPartText(part)}</td>
+	                    <td>${calories}</td>
+	                    <td>⭐</td>
+	                `;
+	            } else {
+	                alert("등록 실패!");
+	            }
+	        });
+	    } */
 	    
 		// 이후 수정, 삭제 함수들도 여기에 추가 가능
 	    function editCustomExercise(id) {
@@ -321,7 +370,7 @@
 	            alert('삭제 요청: ID = ' + id);
 	        }
 	    }
-
+		--%>
         
 
     
