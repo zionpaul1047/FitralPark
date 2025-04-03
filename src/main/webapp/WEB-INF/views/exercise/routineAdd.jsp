@@ -282,7 +282,7 @@
             window.open(
                 '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
                 'exercisePopup',
-                'width=800,height=600,scrollbars=yes'
+                'width=1000,height=1000,scrollbars=yes'
             );
         }
         
