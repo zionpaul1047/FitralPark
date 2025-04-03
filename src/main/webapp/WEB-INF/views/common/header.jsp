@@ -108,6 +108,50 @@
 </header>
 <!-- //header -->
 
+
+<!-- 로그인 여부에 따라 회원전용페이지 접근 시 로그인 시키기 -->
+<div id="overlay" style="display:none; position:fixed; z-index:9999;
+  top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+</div>
+
+<c:if test="${not empty loginRequired or not empty sessionScope.loginRequired}">
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			const overlay = document.getElementById("overlay");
+			if (overlay) overlay.style.display = "block";
+
+			window.open(
+				contextPath + "/login.do",
+				"loginPopup",
+				"width=500,height=600,resizable=no,scrollbars=no"
+			);
+		});
+	</script>
+</c:if>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	// 수동 로그인 팝업 버튼
+	const authButton = document.getElementById("authButton");
+	if (authButton) {
+		authButton.addEventListener("click", function () {
+			const overlay = document.getElementById("overlay");
+			if (overlay) overlay.style.display = "block";
+
+			window.open(
+				contextPath + "/login.do",
+				"loginPopup",
+				"width=500,height=600,resizable=no,scrollbars=no"
+			);
+		});
+	}
+});
+</script>
+
+
+
+
 <!-- full-menu -->
 <div id="full-menu" style="display: none;">
 	<div class="wrapper">
