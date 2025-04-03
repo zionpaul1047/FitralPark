@@ -25,15 +25,19 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// 로그인 팝업
-	if (authButton) {
-		authButton.addEventListener("click", () => {
-			window.open(
-				contextPath + "/login.do",
-				"LoginPopup",
-				"width=800,height=850,resizable=no,scrollbars=no"
-			);
-		});
+	if (
+	  authButton &&
+	  window.opener == null &&               // 팝업이 아님
+	  window.name !== 'LoginPopup' &&       // 팝업 이름 아님
+	  window.location.pathname === contextPath + "/index.do" // 메인 페이지에서만
+	) {
+	  authButton.addEventListener("click", () => {
+	    window.open(
+	      contextPath + "/login.do",
+	      "LoginPopup",
+	      "width=800,height=850,resizable=no,scrollbars=no"
+	    );
+	  });
 	}
 
 	// 알림 토글 (드롭다운)

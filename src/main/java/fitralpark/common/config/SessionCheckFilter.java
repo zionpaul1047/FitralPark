@@ -38,7 +38,7 @@ public class SessionCheckFilter implements Filter {
         String contextPath = httpReq.getContextPath();
         String command = uri.substring(contextPath.length());
 
-        // [1] 필터 제외 경로 처리
+        // 필터 제외 경로 처리
         for (String path : excludePaths) {
             if (command.startsWith(path)) {
                 chain.doFilter(request, response);
@@ -46,10 +46,10 @@ public class SessionCheckFilter implements Filter {
             }
         }
 
-        // [2] 로그인 여부 확인
+        // 로그인 여부 확인
         boolean isLoggedIn = (session != null && session.getAttribute("loginUser") != null);
 
-        // [3] 보호 경로 접근 시 로그인 필요 여부 확인
+        // 보호 경로 접근 시 로그인 필요 여부 확인
         boolean isProtected = false;
         for (String path : protectedPaths) {
             if (command.startsWith(path)) {
@@ -70,7 +70,7 @@ public class SessionCheckFilter implements Filter {
             session.setAttribute("loginRequired", true);
         }
 
-        // [4] 로그인된 상태인데 이전 플래그가 남아있다면 제거
+        // 로그인된 상태인데 이전 플래그가 남아있다면 제거
         if (isLoggedIn && session.getAttribute("loginRequired") != null) {
             session.removeAttribute("loginRequired");
         }

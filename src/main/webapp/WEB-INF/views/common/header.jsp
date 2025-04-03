@@ -130,27 +130,6 @@
 </c:if>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-	// 수동 로그인 팝업 버튼
-	const authButton = document.getElementById("authButton");
-	if (authButton) {
-		authButton.addEventListener("click", function () {
-			const overlay = document.getElementById("overlay");
-			if (overlay) overlay.style.display = "block";
-
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
-			);
-		});
-	}
-});
-</script>
-
-
-
 
 <!-- full-menu -->
 <div id="full-menu" style="display: none;">

@@ -12,6 +12,7 @@ import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.UserDTO;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/login.do")
 public class LoginController extends HttpServlet {
@@ -50,18 +51,27 @@ public class LoginController extends HttpServlet {
 				session.removeAttribute("redirectAfterLogin");
 			}
 
-			response.getWriter()
-				.println("<script>"
-					+ "alert('로그인 성공!');"
-					+ "window.opener.location.href='" + request.getContextPath() + redirect + "';"
-					+ "window.opener.document.getElementById('overlay').style.display = 'none';"
-					+ "window.close();"
-					+ "</script>");
-		} else {
-			// 로그인 실패
-			response.getWriter()
-					.println("<script>" + "alert('아이디 또는 비밀번호가 일치하지 않습니다.');" + "history.back();" + "</script>");
-		}
-	}
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('로그인 성공!');");
+			out.println("if (window.opener) {");
+			out.println("  window.opener.location.href='" + request.getContextPath() + redirect + "';");
+			out.println("  var overlay = window.opener.document.getElementById('overlay');");
+			out.println("  if (overlay) overlay.style.display = 'none';");
+			out.println("  window.close();");
+			out.println("} else {");
+			out.println("  location.href='" + request.getContextPath() + redirect + "';");
+			out.println("}");
+			out.println("</script>");
 
+		} else {
+			// 로그인 실패 시에만 실행되어야 하는 코드
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.');");
+			out.println("history.back();");
+			out.println("</script>");
+		}
+
+	}
 }
