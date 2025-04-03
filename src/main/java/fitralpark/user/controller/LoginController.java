@@ -21,7 +21,11 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+<<<<<<< HEAD
         // 기본 로그인 페이지 (직접 접근 시 auth.jsp로 포워딩)
+=======
+        // auth.jsp로 포워딩
+>>>>>>> parent of 03981ec (11)
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
         dispatcher.forward(request, response);
     }
@@ -36,6 +40,7 @@ public class LoginController extends HttpServlet {
 
         // DB에서 로그인 정보 확인
         UserDAO dao = new UserDAO();
+<<<<<<< HEAD
         UserDTO loginUser = dao.login(username, password);  // UserDAO에 정의된 login 메서드 사용
 
         response.setContentType("text/html;charset=UTF-8");
@@ -60,3 +65,29 @@ public class LoginController extends HttpServlet {
         }
     }
 }
+=======
+        UserDTO loginUser = dao.login(username, password); // login() 메서드는 UserDAO에 작성 필요
+
+        response.setContentType("text/html;charset=UTF-8");
+
+        if (loginUser != null) {
+            // 로그인 성공 → 세션에 DTO 저장
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", loginUser);
+
+            response.getWriter().println("<script>"
+                + "alert('로그인 성공!');"
+                + "window.opener.location.href='" + request.getContextPath() + "/index.do';"
+                + "window.close();"
+                + "</script>");
+        } else {
+            // 로그인 실패
+            response.getWriter().println("<script>"
+                + "alert('아이디 또는 비밀번호가 일치하지 않습니다.');"
+                + "history.back();"
+                + "</script>");
+        }
+    }
+
+}
+>>>>>>> parent of 03981ec (11)
