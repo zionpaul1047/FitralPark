@@ -123,7 +123,7 @@
 			window.open(
 				contextPath + "/login.do",
 				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
+				"width=800,height=850,resizable=no,scrollbars=no"
 			);
 		});
 	</script>

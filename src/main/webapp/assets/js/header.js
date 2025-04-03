@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
 	const header = document.getElementById("header");
 	const fullMenu = document.getElementById("full-menu");
 	const fullOpenBtn = document.querySelector(".btn_open");
@@ -26,18 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	if (
-	  authButton &&
-	  window.opener == null &&               // 팝업이 아님
-	  window.name !== 'LoginPopup' &&       // 팝업 이름 아님
-	  window.location.pathname === contextPath + "/index.do" // 메인 페이지에서만
+		authButton &&
+		window.opener == null &&
+		window.name !== 'LoginPopup' &&
+		window.location.pathname === contextPath + "/index.do"
 	) {
-	  authButton.addEventListener("click", () => {
-	    window.open(
-	      contextPath + "/login.do",
-	      "LoginPopup",
-	      "width=800,height=850,resizable=no,scrollbars=no"
-	    );
-	  });
+		authButton.addEventListener("click", () => {
+			const overlay = document.getElementById("overlay");
+			if (overlay) overlay.style.display = "block";
+
+			window.open(
+				contextPath + "/login.do",
+				"LoginPopup",
+				"width=800,height=850,resizable=no,scrollbars=no"
+			);
+		});
 	}
 
 	// 알림 토글 (드롭다운)
