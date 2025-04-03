@@ -130,7 +130,6 @@
 </c:if>
 
 
-
 <!-- full-menu -->
 <div id="full-menu" style="display: none;">
 	<div class="wrapper">
