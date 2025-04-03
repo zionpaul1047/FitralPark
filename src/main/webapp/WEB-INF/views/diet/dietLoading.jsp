@@ -372,7 +372,7 @@ body {
 			<table class="meal-table">
 				<thead>
 					<tr>
-						<th></th>
+						<th>선택</th>
 						<th>식단명</th>
 						<th>작성일</th>
 						<th>총열량(kcal)</th>
@@ -393,6 +393,7 @@ body {
 							<td>${dto.meal_classify}</td>
 							<td>${dto.creator_id }</td>
 							<td>
+							${dto.diet_bookmark_no}
 								<button class="star-btn" data-id="${dto.diet_no}">
 									${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
 							</td>
@@ -405,36 +406,36 @@ body {
 				</tbody>
 			</table>
 
-            <c:if test="${isSearch}">
-			<div class="pagination">
-				<%-- 이전 버튼 --%>
-				<c:if test="${currentPage > 1}">
-					<a href="dietLoading.do?page=${currentPage - 1}"
-						class="pagination-link">&lt;</a>
-				</c:if>
+			<c:if test="${isSearch}">
+				<div class="pagination">
+					<%-- 이전 버튼 --%>
+					<c:if test="${currentPage > 1}">
+						<a href="dietLoading.do?page=${currentPage - 1}"
+							class="pagination-link">&lt;</a>
+					</c:if>
 
-				<%-- 페이지 번호 --%>
-				<c:forEach begin="1" end="${totalPages}" var="page">
-					<c:choose>
-						<c:when test="${page == currentPage}">
-							<span class="pagination-link active">${page}</span>
-						</c:when>
-						<c:otherwise>
-							<a href="dietLoading.do?page=${page}" class="pagination-link">${page}</a>
-						</c:otherwise>
-					</c:choose>
-				</c:forEach>
+					<%-- 페이지 번호 --%>
+					<c:forEach begin="1" end="${totalPages}" var="page">
+						<c:choose>
+							<c:when test="${page == currentPage}">
+								<span class="pagination-link active">${page}</span>
+							</c:when>
+							<c:otherwise>
+								<a href="dietLoading.do?page=${page}" class="pagination-link">${page}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 
-				<%-- 다음 버튼 --%>
-				<c:if test="${currentPage < totalPages}">
-					<a href="dietLoading.do?page=${currentPage + 1}"
-						class="pagination-link">&gt;</a>
-				</c:if>
-			</div>
-			<div class="action-buttons">
-				<button class="load-btn">불러오기</button>
-				<button class="cancel-btn">취소</button>
-			</div>
+					<%-- 다음 버튼 --%>
+					<c:if test="${currentPage < totalPages}">
+						<a href="dietLoading.do?page=${currentPage + 1}"
+							class="pagination-link">&gt;</a>
+					</c:if>
+				</div>
+				<div class="action-buttons">
+					<button class="load-btn">불러오기</button>
+					<button class="cancel-btn">취소</button>
+				</div>
 			</c:if>
 		</div>
 
@@ -458,53 +459,111 @@ body {
 			</div>
 		</div>
 	</div>
-	</div>
 
 	<script src="script.js"></script>
 	<script>
+	//즐겨찾기
+	// 즐겨찾기 버튼 클릭 이벤트 처리
+	/* document.querySelectorAll('.star-btn').forEach(button => {
+	    button.addEventListener('click', async function() {
+	        const dietNo = this.dataset.id;
+	        const isBookmarked = this.textContent.includes('★');
+	        
+	        try {
+	            const response = await fetch('/dietLoading.do', {
+	                method: 'POST',
+	                headers: { 'Content-Type': 'application/json' },
+	                body: JSON.stringify({
+	                    action: 'toggleBookmark',
+	                    dietNo: parseInt(dietNo),
+	                    isBookmarked: isBookmarked
+	                })
+	            });
+	            
+	            if (!response.ok) throw new Error('서버 오류');
+	            
+	            const data = await response.json();
+	            this.textContent = data.isBookmarked ? '★' : '☆';
+	            
+	        } catch (error) {
+	            console.error('즐겨찾기 오류:', error);
+	            alert('즐겨찾기 처리 중 오류가 발생했습니다.');
+	        }
+	    });
+	});
+ */
+	document.querySelectorAll('.star-btn').forEach(btn => {
+	    btn.addEventListener('click', async function(evt) {
+	        
+	        
+	        const dietNo = this.dataset.id;
+	        const isBookmarked = this.textContent.trim() === '★';
+	        
+	        try {
+	            const response = await fetch(`/fitralpark/dietFavorite.do?dietNo=\${dietNo}&memberId=hong`);
+	            if(response.ok) {
+	                this.textContent = isBookmarked ? '☆' : '★';
+	                this.dataset.bookmark = isBookmarked ? 0 : 1;
+	                location.reload();
+	            }
+	        } catch(error) {
+	            console.error('북마크 처리 실패:', error);
+	        }
+	        
+
+	        evt.stopPropagation();
+	        return false;
+	    });
+	});
+
+	
+	
+	//상세정보
 	document.addEventListener('DOMContentLoaded', function () {
 	    document.querySelectorAll('.view-btn').forEach(button => {
 	        button.addEventListener('click', async function () {
-	            const dietNo = this.dataset.id; // 식단 번호 가져오기
-	            
-	            //alert(dietNo);
-	            
-	            const popup = document.querySelector('#detailPopup');
-	            
+	        	
+	            const dietNo = this.dataset.id;
+
 	            try {
-	                const response = await fetch(`/fitralpark/dietLoading.do?dietNo=\${dietNo}`);
+	                const response = await fetch(`/fitralpark/dietView.do?dietNo=\${dietNo}`);
+	                if (!response.ok) throw new Error('서버 오류');
+	                
 	                const data = await response.json();
+	                
+	                console.log(data, data.map);
 
-	                // 팝업 제목 설정
-	                document.querySelector('#popup-title').textContent = data.dietName;
+	                const popupTitle = document.querySelector('#popup-title');
+	                const detailBody = document.querySelector('#detail-body');
 
-	                // 테이블 업데이트
-	                const tbody = document.querySelector('#detail-body');
-	                tbody.innerHTML = '';
+	                detailBody.innerHTML = '';
+	                
+	                popupTitle.textContent = `식단 번호: \${data.dietName}`;
+	                
 	                data.foods.forEach(food => {
-	                    const rowHtml =
-	                        `<tr>
-	                            <td>${food.food_name}</td>
-	                            <td>${food.enerc}</td>
-	                            <td>${food.food_size}</td>
-	                        </tr>`;
-	                    tbody.innerHTML += rowHtml;
+	                	detailBody.innerHTML += `
+                        <tr>
+                            <td>\${food.food_name}</td>
+                            <td>\${food.enerc} kcal</td>
+                            <td>\${food.food_size} g</td>
+                        </tr>
+                    `
 	                });
-
-	                // 팝업 표시
-	                popup.style.display = 'block';
+	                
+	                
+	                document.querySelector('#detailPopup').style.display = 'block';
 	            } catch (error) {
 	                console.error('상세 정보 로딩 실패:', error);
 	            }
 	        });
 	    });
 
-	    // 닫기 버튼 이벤트 처리
 	    document.querySelector('.close-btn').addEventListener('click', function () {
-	      document.querySelector('#detailPopup').style.display = 'none';
+	        document.querySelector('#detailPopup').style.display = 'none';
 	    });
 	});
-	
+
+
 	
 	//검색 기능
 	document.querySelector('.search-icon').addEventListener('click', function() {
@@ -563,6 +622,30 @@ function renderTable(data) {
 }
 
 
+//즐겨찾기 토글
+/* document.querySelectorAll('.star-btn').forEach(btn => {
+    btn.addEventListener('click', async function(evt) {
+    	
+    	
+        const dietNo = this.dataset.id;
+        const isBookmarked = this.textContent.trim() === '★';
+        
+        try {
+            const response = await fetch(`/fitralpark/dietFavorite.do?dietNo=${dietNo}`);
+            if(response.ok) {
+                this.textContent = isBookmarked ? '☆' : '★';
+                this.dataset.bookmark = isBookmarked ? 0 : 1;
+            }
+        } catch(error) {
+            console.error('북마크 처리 실패:', error);
+        }
+        
+
+        evt.stopPropagation();
+        return false;
+    });
+}); */
+
 
 /* 
 	document.addEventListener('DOMContentLoaded', function() {
@@ -580,23 +663,7 @@ function renderTable(data) {
 	        document.getElementById('detailPopup').style.display = 'none';
 	    });
 
-	    // 즐겨찾기 토글
-	    document.querySelectorAll('.star-btn').forEach(btn => {
-	        btn.addEventListener('click', async function() {
-	            const dietNo = this.dataset.id;
-	            const isBookmarked = this.textContent.trim() === '★';
-	            
-	            try {
-	                const response = await fetch(`/toggleBookmark?dietNo=${dietNo}&state=${!isBookmarked}`);
-	                if(response.ok) {
-	                    this.textContent = isBookmarked ? '☆' : '★';
-	                    this.dataset.bookmark = isBookmarked ? 0 : 1;
-	                }
-	            } catch(error) {
-	                console.error('북마크 처리 실패:', error);
-	            }
-	        });
-	    });
+	    
 
 	    // 검색 실행
 	    document.querySelector('.search-icon').addEventListener('click', executeSearch);

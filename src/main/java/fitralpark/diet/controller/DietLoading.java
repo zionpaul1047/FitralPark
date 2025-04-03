@@ -31,20 +31,29 @@ public class DietLoading extends HttpServlet {
         if (memberId == null)
             memberId = "guest";
 
-        // 여기까지
-        // AJAX 요청인지 확인 (상세정보 요청)
-        String dietNoParam = req.getParameter("dietNo");
-        if (dietNoParam != null) {
-            handleFoodDetailsRequest(req, resp, Integer.parseInt(dietNoParam));
-            return;
-        }
+        
+    
 
         // DAO 호출
         DietDAO dao = new DietDAO();
-
-        // 페이지네이션 처리
-        if (memberId == null)
-            memberId = "guest";
+        
+     // 요청 파라미터 추출
+//        ObjectMapper mapper = new ObjectMapper();
+//        Map<String, Object> requestData = mapper.readValue(req.getInputStream(), Map.class);
+//        
+//        // 북마크 토글 동작 수행
+//        if (requestData.containsKey("action") && "toggleBookmark".equals(requestData.get("action"))) {
+//            int dietNo = (int) requestData.get("dietNo");
+//            boolean isCurrentlyBookmarked = (boolean) requestData.get("isBookmarked");
+//            
+//            handleBookmarkToggle(resp, memberId, dietNo, isCurrentlyBookmarked);
+//            return;
+//        }
+        
+        // 지원하지 않는 액션
+//        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//        resp.getWriter().write("지원하지 않는 요청입니다.");
+    
 
         String pageParam = req.getParameter("page");
         int currentPage = 1;
@@ -93,34 +102,9 @@ public class DietLoading extends HttpServlet {
         req.getRequestDispatcher("/WEB-INF/views/diet/dietLoading.jsp").forward(req, resp);
 
     }
+    
+    
 
-    /**
-     * AJAX 요청으로 음식 상세정보를 반환하는 메서드
-     */
-    private void handleFoodDetailsRequest(HttpServletRequest req, HttpServletResponse resp, int dietNo)
-            throws IOException {
-
-        DietDAO dao = new DietDAO();
-
-        // 식단 이름 조회
-        String dietName = dao.getDietName(dietNo);
-
-        // 음식 상세 정보 조회
-        List<Map<String, Object>> foods = dao.getFoodDetails(dietNo);
-
-        System.out.println("foods: " + foods);
-
-        // JSON 응답 생성
-        resp.setContentType("application/json");
-        resp.setCharacterEncoding("UTF-8");
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("dietName", dietName);
-        result.put("foods", foods);
-
-        mapper.writeValue(resp.getWriter(), result);
-
-    }
+    
+    
 }

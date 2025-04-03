@@ -494,78 +494,75 @@ h3 {
             
             <div class="diet-list-section">
                 <h3>식단 리스트</h3>
-                
                 <div class="diet-list">
-<table class="diet-table">
-  <thead>
-    <tr>
-      <th>선택</th>
-      <th>식단명</th>
-      <th>카테고리</th>
-      <th>작성일</th>
-      <th>열량</th>
-      <th>식사시간대</th>
-      <th>작성자</th>
-      <th>즐겨찾기</th>
-      <th>조회수</th>
-    </tr>
-  </thead>
-  <tbody>
-    <!-- 식단 목록 -->
-    <tr data-row-id="1">
-      <td><input type="checkbox" class="row-checkbox" data-id="1"></td>
-      <td>단백질이 풍부한 아침식사</td>
-      <td>근육 증가</td>
-      <td>2023.03.20.</td>
-      <td>500</td>
-      <td>아침</td>
-      <td>김제트</td>
-      <td><button class="star-btn" data-id="1">★</button></td>
-      <td>150</td>
-    </tr>
+								<table class="diet-table">
+									<thead>
+										<tr>
+											<th>선택</th>
+											<th>식단명</th>
+											<th>카테고리</th>
+											<th>작성일</th>
+											<th>열량</th>
+											<th>식사시간대</th>
+											<th>작성자</th>
+											<th>즐겨찾기</th>
+											<th>조회수</th>
+										</tr>
+									</thead>
+									<tbody id="diet-data">
+										<c:forEach items="${list}" var="dto">
+										<tr>
+											<td><input type="checkbox" data-id="${dto.diet_no}"></td>
+											<td>${dto.diet_name}</td>
+											<td>${dto.diet_category_name}</td>
+											<td>${dto.regdate}</td>
+											<td>${dto.diet_total_kcal}</td>
+											<td>${dto.meal_classify}</td>
+											<td>${dto.creator_id}</td>
+											<td>
+                                <button class="star-btn" data-id="${dto.diet_no}">
+                                    ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
+                                            </td>
+											<td>${dto.views}</td>
+					                       </tr>
+                                     </c:forEach>
 
-    <!-- 상세정보 행 -->
-    <tr class="detail-row" id="detail-1">
-      <td colspan="9">
-        <div class="food-details">
-          <table class="food-table">
-            <thead>
-              <tr>
-                <th>음식명</th>
-                <th>열량(kcal)</th>
-                <th>단백질(g)</th>
-                <th>탄수화물(g)</th>
-                <th>지방(g)</th>
-                <th>나트륨(mg)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>삶은계란</td>
-                <td>155.4</td>
-                <td>100</td>
-                <td>0</td>
-                <td>3.7</td>
-                <td>39</td>
-              </tr>
-            </tbody>
-          </table>
+										<!-- 상세정보 -->
+										<div class="detail-food" id="detailFood" style="display: none;">
+												<div class="food-details">
+													<table class="food-table">
+														<thead>
+															<tr>
+																<th>음식명</th>
+																<th>열량(kcal)</th>
+																<th>단백질(g)</th>
+																<th>탄수화물(g)</th>
+																<th>지방(g)</th>
+																<th>나트륨(mg)</th>
+															</tr>
+														</thead>
+														<tbody id="food-body">
+															<tr>
+																<td>${dto.food_name}</td>
+																<td>155.4</td>
+																<td>100</td>
+																<td>0</td>
+																<td>3.7</td>
+																<td>39</td>
+															</tr>
+														</tbody>
+													</table>
 
-          <!-- 추천/비추천 버튼 -->
-          <div class="detail-buttons">
-            <button class="confirm-btn">추천 21</button>
-            <button class="cancel-btn">비추천 2</button>
-          </div>
+													<!-- 추천/비추천 버튼 -->
+													<div class="detail-buttons">
+														<button class="confirm-btn">추천 21</button>
+														<button class="cancel-btn">비추천 2</button>
+													</div>
 
-        </div>
-      </td>
-    </tr>
-
-    <!-- 추가 식단 항목들 -->
-    <!-- 동일한 구조 반복 -->
-  </tbody>
-</table>
-</div></div>
+												</div>
+									</tbody>
+								</table>
+							</div></div>
 
 <div class="food-section">  
   <div class="food-details" id="foodDetailsContainer" style="display: none;">
@@ -588,9 +585,33 @@ h3 {
       <button class="cancel-btn">비추천 2</button>
     </div>
   </div>
-                <div class="pagination" id="pagination">
-                    <!-- 페이지 버튼은 JavaScript로 동적 생성 -->
-                  </div>
+  
+  <c:if test="${isSearch}">
+            <div class="pagination">
+                <%-- 이전 버튼 --%>
+                <c:if test="${currentPage > 1}">
+                    <a href="dietLoading.do?page=${currentPage - 1}"
+                        class="pagination-link">&lt;</a>
+                </c:if>
+
+                <%-- 페이지 번호 --%>
+                <c:forEach begin="1" end="${totalPages}" var="page">
+                    <c:choose>
+                        <c:when test="${page == currentPage}">
+                            <span class="pagination-link active">${page}</span>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="dietLoading.do?page=${page}" class="pagination-link">${page}</a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <%-- 다음 버튼 --%>
+                <c:if test="${currentPage < totalPages}">
+                    <a href="dietLoading.do?page=${currentPage + 1}"
+                        class="pagination-link">&gt;</a>
+                </c:if>
+            </div>
                 
                 <div class="add-diet-section">
                     <button class="add-diet-btn">
@@ -603,13 +624,7 @@ h3 {
             </div>
         </main>
     </div>
-        
-        
-    </div>
-
-
-    
-                
+    </div>       
             </div>
             
         </div>
@@ -620,10 +635,8 @@ h3 {
         
     
 </body>
-</html>
-
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+/* document.addEventListener('DOMContentLoaded', function () {
 	  // 기본 설정
 	  let currentPage = 1; // 현재 페이지
 	  const itemsPerPage = 10; // 페이지당 항목 수
@@ -777,5 +790,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	    row.style.display = 'none';
 	  });
 	});
-
+ */
 </script>
+</html>
+

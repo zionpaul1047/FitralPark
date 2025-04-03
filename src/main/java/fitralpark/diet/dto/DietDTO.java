@@ -168,6 +168,8 @@ public class DietDTO {
         this.food_name = food_name;
         this.enerc = enerc;
         this.food_size = food_size;
+        
+        System.out.println(this.diet_bookmark_no);
     }
     
     

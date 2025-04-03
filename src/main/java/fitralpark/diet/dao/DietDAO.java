@@ -35,6 +35,7 @@ public class DietDAO {
                         d.meal_classify,
                         d.creator_id,
                         NVL(b.diet_bookmark_no, 0) AS diet_bookmark_no,
+                        b.diet_bookmark_no AS aaa,
                         COALESCE(f.food_name, cf.custom_food_name) AS food_name,
                         COALESCE(irdfn.enerc, cf.kcal_per_unit) AS enerc,
                         COALESCE(REGEXP_REPLACE(irdfn.food_size, '[^0-9]', ''), '100') AS food_size
@@ -62,12 +63,14 @@ public class DietDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
             // 파라미터 바인딩 (SQL Injection 방지)
-            pstmt.setString(1, memberId);  // member_id
+            pstmt.setString(1, "hong");  // member_id
             pstmt.setInt(2, end);          // ROWNUM <= end
             pstmt.setInt(3, begin);        // rnum >= begin
+            
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
+                    System.out.println("aaa: " + rs.getInt("aaa"));
                     DietDTO diet = new DietDTO(
                         rs.getInt("diet_no"),
                         rs.getString("diet_name"),
@@ -136,20 +139,24 @@ public class DietDAO {
     
     public List<Map<String, Object>> getFoodDetails(int dietNo) {
         String sql = """
-            SELECT 
-                COALESCE(f.food_name, cf.custom_food_name) AS food_name,
-                COALESCE(irdfn.enerc, cf.kcal_per_unit) AS enerc,
-                COALESCE(REGEXP_REPLACE(irdfn.food_size, '[^0-9]', ''), '100') AS food_size
-            FROM diet_food_list dl
-            LEFT JOIN food f 
-                ON dl.food_no = f.food_no 
-                AND dl.food_creation_type = 0
-            LEFT JOIN individual_diet_record_food_nutrient irdfn 
-                ON f.food_cd = irdfn.food_cd
-            LEFT JOIN custom_food cf 
-                ON dl.custom_food_no = cf.custom_food_no 
-                AND dl.food_creation_type = 1
-            WHERE dl.diet_no = ?
+                    SELECT
+                    COALESCE(f.food_name, cf.custom_food_name) AS food_name,
+                    COALESCE(irdfn.enerc, cf.kcal_per_unit) AS enerc,
+                    COALESCE(
+                        TO_NUMBER(REGEXP_REPLACE(irdfn.NUT_CON_STR_QUA, '[^0-9]', '')),
+                        cf.food_size,
+                        100
+                    ) AS food_size
+                FROM diet_food_list dl
+                LEFT JOIN food f
+                    ON dl.food_no = f.food_no
+                    AND dl.food_creation_type = 0
+                LEFT JOIN individual_diet_record_food_nutrient irdfn
+                    ON f.food_cd = irdfn.food_cd
+                LEFT JOIN custom_food cf
+                    ON dl.custom_food_no = cf.custom_food_no
+                    AND dl.food_creation_type = 1
+                WHERE dl.diet_no = ?
         """;
 
         List<Map<String, Object>> foods = new ArrayList<>();
@@ -164,7 +171,7 @@ public class DietDAO {
                     Map<String, Object> foodDetailMap = new HashMap<>();
                     foodDetailMap.put("food_name", rs.getString("food_name"));
                     foodDetailMap.put("enerc", rs.getInt("enerc"));
-                    foodDetailMap.put("food_size", rs.getString("food_size"));
+                    foodDetailMap.put("food_size", rs.getInt("food_size"));
 
                     foods.add(foodDetailMap);
                 }
@@ -253,6 +260,89 @@ public class DietDAO {
         }
         return diets;
     }
+    
+    public void editBookmark(String dietNo, String memberId) {
+        
+        try {
+        
+        Connection conn = dataSource.getConnection();
+        
+        String sql = "select count(*) as cnt from diet_bookmark where diet_no = ? and member_id = ?";
+        
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, dietNo);
+        pstmt.setString(2, memberId);
+        
+        ResultSet rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            if (rs.getInt("cnt") > 0) {
+                
+                //delete bookmark
+                deleteBookmark(dietNo, memberId);
+                
+            } else {
+                
+                //add bookmark
+                addBookmark(dietNo, memberId);
+                
+            }
+        }
+        
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+            
+        
+    }
+    
+    public void addBookmark(String dietNo, String memberId) {
+        String sql = "INSERT INTO diet_bookmark (DIET_BOOKMARK_NO, diet_no, member_id, regdate) VALUES (1, ?, ?, SYSDATE)";
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, dietNo);
+            pstmt.setString(2, memberId);
+            pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("즐겨찾기 추가 오류", e);
+        }
+    }
+
+    public void deleteBookmark(String dietNo, String memberId) {
+        String sql = "DELETE FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, dietNo);
+            pstmt.setString(2, memberId);
+            pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("즐겨찾기 삭제 오류", e);
+        }
+    }
+
+    public boolean isBookmarked(int dietNo, String memberId) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, dietNo);
+            pstmt.setString(2, memberId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        }
+        return false;
+    }
+
 
     
 }
