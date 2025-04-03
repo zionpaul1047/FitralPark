@@ -15,7 +15,7 @@ public class RoutineAdd extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		//RoutineAdd.java
-		
+			
 
 		req.getRequestDispatcher("/WEB-INF/views/exercise/routineAdd.jsp").forward(req, resp);
 	}

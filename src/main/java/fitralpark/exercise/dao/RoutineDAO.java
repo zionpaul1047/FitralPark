@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import fitralpark.common.utils.DBUtil;
+import fitralpark.exercise.dto.ExerciseDTO;
 import fitralpark.exercise.dto.RoutineDTO;
 import fitralpark.exercise.dto.RoutineExerciseDTO;
 
@@ -217,6 +218,6 @@ public class RoutineDAO {
 	    
 	    return null;
 	}
-	
+
 	
 }
