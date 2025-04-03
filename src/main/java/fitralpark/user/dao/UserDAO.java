@@ -20,6 +20,7 @@ import fitralpark.user.dto.DashFoodDTO;
 import fitralpark.user.dto.DashPhysicalHistDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
+import fitralpark.user.dto.DashTodayIntakeDTO;
 import fitralpark.user.dto.UserDTO;
 
 
@@ -476,7 +477,141 @@ public class UserDAO {
 			}
 			
 			dto.setCrtdietList(crtdietList);
-
+			
+			//하루 영양소 섭취량
+			DashTodayIntakeDTO tdyIntakeNtr = new DashTodayIntakeDTO();
+			
+			sql = """
+					select nvl(sum(enerc),0) as enerc
+					     , nvl(sum(water),0) as water
+					     , nvl(sum(prot),0) as prot
+					     , nvl(sum(fatce),0) as fatce
+					     , nvl(sum(ash),0) as ash
+					     , nvl(sum(chocdf),0) as chocdf
+					     , nvl(sum(sugar),0) as sugar
+					     , nvl(sum(fibtg),0) as fibtg
+					     , nvl(sum(ca),0) as ca
+					     , nvl(sum(fe),0) as fe
+					     , nvl(sum(p),0) as p
+					     , nvl(sum(k),0) as k
+					     , nvl(sum(nat),0) as nat
+					     , nvl(sum(vitaRae),0) as vitaRae
+					     , nvl(sum(retol),0) as retol
+					     , nvl(sum(cartb),0) as cartb
+					     , nvl(sum(thia),0) as thia
+					     , nvl(sum(ribf),0) as ribf
+					     , nvl(sum(nia),0) as nia
+					     , nvl(sum(vitc),0) as vitc
+					     , nvl(sum(vitd),0) as vitd
+					     , nvl(sum(fasat),0) as fasat
+					     , nvl(sum(fatrn),0) as fatrn
+					     , nvl(sum(chole),0) as chole
+					  from (
+					        select NUTRIENT_CD
+					             , nutrient_content
+					             , case when NUTRIENT_CD = 'enerc' then nutrient_content else 0 end as enerc
+					             , case when NUTRIENT_CD = 'water' then nutrient_content else 0 end as water
+					             , case when NUTRIENT_CD = 'prot' then nutrient_content else 0 end as prot
+					             , case when NUTRIENT_CD = 'fatce' then nutrient_content else 0 end as fatce
+					             , case when NUTRIENT_CD = 'ash' then nutrient_content else 0 end as ash
+					             , case when NUTRIENT_CD = 'chocdf' then nutrient_content else 0 end as chocdf
+					             , case when NUTRIENT_CD = 'sugar' then nutrient_content else 0 end as sugar
+					             , case when NUTRIENT_CD = 'fibtg' then nutrient_content else 0 end as fibtg
+					             , case when NUTRIENT_CD = 'ca' then nutrient_content else 0 end as ca
+					             , case when NUTRIENT_CD = 'fe' then nutrient_content else 0 end as fe
+					             , case when NUTRIENT_CD = 'p' then nutrient_content else 0 end as p
+					             , case when NUTRIENT_CD = 'k' then nutrient_content else 0 end as k
+					             , case when NUTRIENT_CD = 'nat' then nutrient_content else 0 end as nat
+					             , case when NUTRIENT_CD = 'vitaRae' then nutrient_content else 0 end as vitaRae
+					             , case when NUTRIENT_CD = 'retol' then nutrient_content else 0 end as retol
+					             , case when NUTRIENT_CD = 'cartb' then nutrient_content else 0 end as cartb
+					             , case when NUTRIENT_CD = 'thia' then nutrient_content else 0 end as thia
+					             , case when NUTRIENT_CD = 'ribf' then nutrient_content else 0 end as ribf
+					             , case when NUTRIENT_CD = 'nia' then nutrient_content else 0 end as nia
+					             , case when NUTRIENT_CD = 'vitc' then nutrient_content else 0 end as vitc
+					             , case when NUTRIENT_CD = 'vitd' then nutrient_content else 0 end as vitd
+					             , case when NUTRIENT_CD = 'fasat' then nutrient_content else 0 end as fasat
+					             , case when NUTRIENT_CD = 'fatrn' then nutrient_content else 0 end as fatrn
+					             , case when NUTRIENT_CD = 'chole' then nutrient_content else 0 end as chole
+					          from (
+					                select NUTRIENT_CD as nutrient_cd
+					                     , sum(nutrient_content) as nutrient_content
+					                  from (
+					                        select ir.food_no as food_no
+					                             , f.nutrient_cd
+					                             , f.nutrient_content
+					                          from intake_record ir
+					                         inner join (
+					                                         select * 
+					                                          from (
+					                                                    select f.food_no, enerc, water, prot, fatce, ash, chocdf, sugar, fibtg, ca, fe, p, k, nat, vitaRae, retol, cartb, thia, ribf, nia, vitc, vitd, fasat, fatrn, chole
+					                                                      from food f
+					                                                     inner join individual_diet_record_food_nutrient_new ifn
+					                                                        on f.food_cd = ifn.food_cd
+					                                                )
+					                                        unpivot (nutrient_content for nutrient_cd in (enerc, water, prot, fatce, ash, chocdf, sugar, fibtg, ca, fe, p, k, nat, vitaRae, retol, cartb, thia, ribf, nia, vitc, vitd, fasat, fatrn, chole))
+					                                     ) f
+					                            on ir.food_no = f.food_no
+					                         where ir.creator_id = ?
+					                           and ir.regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+					                        union all
+					                        select ir.custom_food_no as food_no
+					                             , cf.nutrient_cd
+					                             , cf.nutrient_content
+					                          from intake_record ir
+					                         inner join (
+					                                     select cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, cfn.NUTRIENT_CD, sum(cfn.NUTRIENT_CONTENT) as NUTRIENT_CONTENT
+					                                              from custom_food cf
+					                                             inner join custom_food_nutrient cfn
+					                                                on cf.custom_food_no = cfn.custom_food_no
+					                                             group by cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, cfn.NUTRIENT_CD
+					                                     union all
+					                                     select cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, 'enerc',kcal_per_unit
+					                                              from custom_food cf
+					                                     ) cf
+					                           on ir.CUSTOM_FOOD_NO = cf.CUSTOM_FOOD_NO
+					                         where ir.creator_id = ?
+					                           and ir.regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+					                        )
+					                 group by NUTRIENT_CD
+					                )
+					        ) x
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, id);
+			pstat.setString(2, id);
+			
+			rs = pstat.executeQuery();
+			
+			if(rs.next()) {
+				tdyIntakeNtr.setNtrt_calorie(rs.getString("enerc"));
+				tdyIntakeNtr.setNtrt_water(rs.getString("water"));
+				tdyIntakeNtr.setNtrt_prot(rs.getString("prot"));
+				tdyIntakeNtr.setNtrt_fatce(rs.getString("fatce"));
+				tdyIntakeNtr.setNtrt_ash(rs.getString("ash"));
+				tdyIntakeNtr.setNtrt_chocdf(rs.getString("chocdf"));
+				tdyIntakeNtr.setNtrt_sugar(rs.getString("sugar"));
+				tdyIntakeNtr.setNtrt_fibtg(rs.getString("fibtg"));
+				tdyIntakeNtr.setNtrt_ca(rs.getString("ca"));
+				tdyIntakeNtr.setNtrt_fe(rs.getString("fe"));
+				tdyIntakeNtr.setNtrt_p(rs.getString("p"));
+				tdyIntakeNtr.setNtrt_k(rs.getString("k"));
+				tdyIntakeNtr.setNtrt_nat(rs.getString("nat"));
+				tdyIntakeNtr.setNtrt_vitaRae(rs.getString("vitaRae"));
+				tdyIntakeNtr.setNtrt_retol(rs.getString("retol"));
+				tdyIntakeNtr.setNtrt_cartb(rs.getString("cartb"));
+				tdyIntakeNtr.setNtrt_thia(rs.getString("thia"));
+				tdyIntakeNtr.setNtrt_ribf(rs.getString("ribf"));
+				tdyIntakeNtr.setNtrt_nia(rs.getString("nia"));
+				tdyIntakeNtr.setNtrt_vitc(rs.getString("vitc"));
+				tdyIntakeNtr.setNtrt_vitd(rs.getString("vitd"));
+				tdyIntakeNtr.setNtrt_fasat(rs.getString("fasat"));
+				tdyIntakeNtr.setNtrt_fatrn(rs.getString("fatrn"));
+				tdyIntakeNtr.setNtrt_chole(rs.getString("chole"));
+				
+			}
+			
+			dto.setTdyintake(tdyIntakeNtr);
 			
 			
 			return dto;

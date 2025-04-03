@@ -922,7 +922,7 @@
 				        	</div>
 				        </c:if>
 			        </div>
-			        <c:if test="${dto.tdyintake eq null}">
+			        <c:if test="${dto.tdyintake ne null}">
 				        <div id="intake_diagram">
 				            <div class="dash_subject_wide">하루 영양소 섭취량</div>
 				            <div id="ntrt_calorie">

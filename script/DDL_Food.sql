@@ -13,14 +13,14 @@ DROP TABLE food;
 DROP TABLE individual_diet_record_food_nutrient;
 
 
--- 개인 식단기록 영양 성분
+-- 개인 식단기록 영양 성분(2025.04.03 이전 기준)
 CREATE TABLE individual_diet_record_food_nutrient(
     food_cd VARCHAR2(50),
-    food_name VARCHAR2(50),
+    food_name VARCHAR2(200),
     foodLv4_name VARCHAR2(50),
     foodLv5_cd VARCHAR2(50),
     foodLv6_cd VARCHAR2(50),
-    nut_con_str_qua NUMBER,
+    nut_con_str_qua VARCHAR2(50),
     enerc NUMBER(6, 2),
     water NUMBER(6, 2),
     protein NUMBER(6, 2),
@@ -50,6 +50,45 @@ CREATE TABLE individual_diet_record_food_nutrient(
 
     CONSTRAINT PK_individual_diet_record_food_nutrient PRIMARY KEY(food_cd)
 );
+-- 개인 식단기록 영양 성분(2025.04.03 이후 컬럼명 변경 버전)
+CREATE TABLE individual_diet_record_food_nutrient_new (
+	food_cd          VARCHAR2(50)  NOT NULL, -- 식품코드
+	food_name        VARCHAR2(200)  NULL,     -- 식품명
+	foodLv4Nm        VARCHAR2(50) NULL,     -- 대표식품명
+	foodLv5Cd        VARCHAR2(50)  NULL,     -- 식품중분류코드
+	foodLv6Cd        VARCHAR2(50)  NULL,     -- 식품소분류코드
+	nut_con_srtr_qua VARCHAR2(50)  NULL,     -- 영양성분함량기준량
+	enerc            NUMBER(6,2)   NULL,     -- 에너지(칼로리)
+	water            NUMBER(6,2)   NULL,     -- 수분
+	prot             NUMBER(6,2)   NULL,     -- 단백질
+	fatce            NUMBER(6,2)   NULL,     -- 지방
+	ash              NUMBER(6,2)   NULL,     -- 회분
+	chocdf           NUMBER(6,2)   NULL,     -- 탄수화물
+	sugar            NUMBER(6,2)   NULL,     -- 당류
+	fibtg            NUMBER(6,2)   NULL,     -- 식이섬유
+	ca               NUMBER(6,2)   NULL,     -- 칼슘
+	fe               NUMBER(6,2)   NULL,     -- 철
+	p                NUMBER(6,2)   NULL,     -- 인
+	k                NUMBER(6,2)   NULL,     -- 칼륨
+	nat              NUMBER(6,2)   NULL,     -- 나트륨
+	vitaRae          NUMBER(6,2)   NULL,     -- 비타민 A
+	retol            NUMBER(6,2)   NULL,     -- 레티놀
+	cartb            NUMBER(6,2)   NULL,     -- 베타카로틴
+	thia             NUMBER(6,2)   NULL,     -- 비타민B1(티아민)
+	ribf             NUMBER(6,2)   NULL,     -- 비타민B2(리보플라빈)
+	nia              NUMBER(6,2)   NULL,     -- 비타민B3(니아신)
+	vitc             NUMBER(6,2)   NULL,     -- 비타민C
+	vitd             NUMBER(6,2)   NULL,     -- 비타민D
+	fasat            NUMBER(6,2)   NULL,     -- 포화지방산
+	fatrn            NUMBER(6,2)   NULL,     -- 트랜스지방산
+	chole            NUMBER(6,2)   NULL,      -- 콜레스테롤
+	rest_name        VARCHAR2(50)  NULL,     -- 업체명
+	food_size        VARCHAR2(50)  NULL,     -- 식품중량
+    CONSTRAINT PK_individual_diet_record_food_nutrient_new	PRIMARY KEY (food_cd)
+);
+
+
+
 
 -- 음식
 CREATE TABLE food(
