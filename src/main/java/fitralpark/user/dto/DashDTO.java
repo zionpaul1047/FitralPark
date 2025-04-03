@@ -16,17 +16,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashDTO {
-	String userName;
-	String backgroundPic;
-	String height;
-	String gender;
-	String weight;
-	String age;
+	private String userName;
+	private String backgroundPic;
+	private String height;
+	private String gender;
+	private String weight;
+	private String age;
 	
-	ArrayList<DashTodayExerciseDTO> tdyExcsList;
-	ArrayList<DashTodayDietDTO> tdyDietList;
-	ArrayList<DashCurrentExcsDTO> crtExcsList;
-	ArrayList<DashCurrentDietDTO> crtdietList;
-	DashTodayIntakeDTO tdyintake;
+	private ArrayList<DashTodayExerciseDTO> tdyExcsList;
+	private ArrayList<DashTodayDietDTO> tdyDietList;
+	private ArrayList<DashCurrentExcsDTO> crtExcsList;
+	private ArrayList<DashCurrentDietDTO> crtdietList;
+	private DashTodayIntakeDTO tdyintake;
 	
 }

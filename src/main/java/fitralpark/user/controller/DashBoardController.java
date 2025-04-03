@@ -16,6 +16,7 @@ import fitralpark.user.dto.DashDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.DashTodayIntakeDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/dashboard.do")
 public class DashBoardController extends HttpServlet {
@@ -26,17 +27,19 @@ public class DashBoardController extends HttpServlet {
 		
 		
 		//세션값 임시
-		String id = "hong";
+		String id = (String)(req.getSession().getAttribute("loginUser"));
+		
 		String rank = "junior";
 		String mentor_check = "0";
 		
-		
+		UserDTO userDto = new UserDTO();
+		userDto.setMemberId(id);
 		
 		//DashBoardController.java
 		UserDAO dao = new UserDAO();
 		
 		
-		DashDTO dto = dao.getDashInfo(id);
+		DashDTO dto = dao.getDashInfo(userDto);
 		
 		dao.close();
 		
@@ -85,6 +88,7 @@ public class DashBoardController extends HttpServlet {
 		req.setAttribute("dto", dto);
 		req.setAttribute("rank", rank);
 		req.setAttribute("mentor_check", mentor_check);
+		req.setAttribute("id", id);
 		
 
 		req.getRequestDispatcher("/WEB-INF/views/user/dashboard.jsp").forward(req, resp);

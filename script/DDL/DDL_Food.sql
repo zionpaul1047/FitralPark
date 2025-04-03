@@ -101,6 +101,7 @@ CREATE TABLE custom_food_nutrient(
     custom_food_nutrient_no NUMBER NOT NULL,
     custom_food_no NUMBER NOT NULL,
     nutrient_cd VARCHAR2(50) NOT NULL,
+    nutrient_content NUMBER(6,2) NOT NULL,
     
     CONSTRAINT PK_custom_food_nutrient PRIMARY KEY(custom_food_nutrient_no),
     CONSTRAINT FK_custom_food_nutrient_custom_food_no FOREIGN KEY(custom_food_no) REFERENCES custom_food(custom_food_no),
