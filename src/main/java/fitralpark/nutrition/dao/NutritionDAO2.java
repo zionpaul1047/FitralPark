@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class NutritionDAO2 {
+public class NutritionDAO {
 
 
     public static void main(String[] args) {

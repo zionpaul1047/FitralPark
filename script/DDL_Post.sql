@@ -1,7 +1,10 @@
 DROP TABLE announcement_comment;
 DROP TABLE bulletin_comment;
 DROP TABLE qna_comment;
+DROP TABLE announcement_post_header_group;
+DROP TABLE bulletin_post_header_group;
 DROP TABLE qna_post_header;
+DROP TABLE qna_post_header_group;
 DROP TABLE announcement_post;
 DROP TABLE bulletin_post;
 DROP TABLE qna_post;
@@ -94,6 +97,32 @@ CREATE TABLE announcement_post(
     CONSTRAINT FK_announcement_post_creator_id FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );
 
+-- Q&A 게시글 + 말머리
+CREATE TABLE qna_post_header_group(
+    qna_post_no NUMBER NOT NULL,
+    qna_post_header_no NUMBER NOT NULL,
+
+    CONSTRAINT FK_qna_post_no FOREIGN KEY (qna_post_no) REFERENCES qna_post(qna_post_no),
+    CONSTRAINT FK_qna_post_header_no FOREIGN KEY (qna_post_header_no) REFERENCES qna_post_header(qna_post_header_no)
+);
+
+-- 자유 게시판 + 말머리
+CREATE TABLE bulletin_post_header_group(
+    bulletin_post_no NUMBER NOT NULL,
+    bulletin_post_header_no NUMBER NOT NULL,
+
+    CONSTRAINT FK_bulletin_post_no FOREIGN KEY (bulletin_post_no) REFERENCES bulletin_post(bulletin_post_no),
+    CONSTRAINT FK_bulletin_post_header_no FOREIGN KEY (bulletin_post_header_no) REFERENCES bulletin_post_header(bulletin_post_header_no)
+);
+
+-- 공지사항 게시글 + 말머리
+CREATE TABLE announcement_post_header_group(
+    announcement_post_no NUMBER NOT NULL,
+    announcement_post_header_no NUMBER NOT NULL,
+
+    CONSTRAINT FK_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no),
+    CONSTRAINT FK_announcement_post_header_no FOREIGN KEY (announcement_post_header_no) REFERENCES announcement_post_header(announcement_post_header_no)
+);
 
 -- Q&A 댓글
 CREATE TABLE qna_comment(
@@ -137,34 +166,3 @@ CREATE TABLE announcement_comment(
 
 
 commit;
-
-
-
-
-
--- Q&A 게시글 + 말머리
---CREATE TABLE qna_post_header_group(
---    qna_post_no NUMBER NOT NULL,
---    qna_post_header_no NUMBER NOT NULL,
---
---    CONSTRAINT FK_qna_post_no FOREIGN KEY (qna_post_no) REFERENCES qna_post(qna_post_no),
---    CONSTRAINT FK_qna_post_header_no FOREIGN KEY (qna_post_header_no) REFERENCES qna_post_header(qna_post_header_no)
---);
-
--- 자유 게시판 + 말머리
---CREATE TABLE bulletin_post_header_group(
---    bulletin_post_no NUMBER NOT NULL,
---    bulletin_post_header_no NUMBER NOT NULL,
---
---    CONSTRAINT FK_bulletin_post_no FOREIGN KEY (bulletin_post_no) REFERENCES bulletin_post(bulletin_post_no),
---    CONSTRAINT FK_bulletin_post_header_no FOREIGN KEY (bulletin_post_header_no) REFERENCES bulletin_post_header(bulletin_post_header_no)
---);
-
--- 공지사항 게시글 + 말머리
---CREATE TABLE announcement_post_header_group(
---    announcement_post_no NUMBER NOT NULL,
---    announcement_post_header_no NUMBER NOT NULL,
---
---    CONSTRAINT FK_announcement_post_no FOREIGN KEY (announcement_post_no) REFERENCES announcement_post(announcement_post_no),
---    CONSTRAINT FK_announcement_post_header_no FOREIGN KEY (announcement_post_header_no) REFERENCES announcement_post_header(announcement_post_header_no)
---);
