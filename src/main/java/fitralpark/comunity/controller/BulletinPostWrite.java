@@ -14,7 +14,7 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
-@WebServlet("/bulletinWrite.do")
+@WebServlet("/bulletinPostWrite.do")
 public class BulletinWrite extends HttpServlet {
 
 	@Override
@@ -47,7 +47,7 @@ public class BulletinWrite extends HttpServlet {
 		// DAO 연결 해제
 		dao.close();
 
-		req.getRequestDispatcher("/WEB-INF/views/community/bulletinWrite.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinPostWrite.jsp").forward(req, resp);
 	}
 
 }

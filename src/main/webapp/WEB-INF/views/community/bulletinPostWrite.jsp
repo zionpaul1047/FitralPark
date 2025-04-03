@@ -176,7 +176,7 @@
 				<form class="write-form" action="/fitralpark/bulletinWriteOK.do" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
-						<select id="search_category">
+						<select id="search_category" name="header_no">
 						    <option value="">전체</option>
 						    <c:forEach items="${headerList}" var="headerDto">
 						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
@@ -185,11 +185,11 @@
 					</div>
 					<div class="form-group">
 						<label for="title">제목</label>
-						<input type="text" name="title" id="title" required>
+						<input type="text" name="post_subject" id="title" required>
 					</div>
 					<div class="form-group">
 						<label for="content">내용</label>
-						<textarea name="content" id="content" required></textarea>
+						<textarea name="post_content" id="content" required></textarea>
 					</div>
 					<div class="button-group">
 						<button type="submit">작성하기</button>
