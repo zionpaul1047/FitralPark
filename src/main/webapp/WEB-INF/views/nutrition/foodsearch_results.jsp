@@ -7,7 +7,7 @@
             <div class="sf_result_section_1">
                 <div class="sf_reult_section_1_1">
                     <div class="sf_result_item_1">
-                        <img src="${pageContext.request.contextPath}/assets/images/nutrition/default-food.png" alt="음식 이미지" class="sf_result_img_1" id="sf_result_img_1">
+                        <img src="" alt="음식 이미지" class="sf_result_img_1" id="sf_result_img_1">
                         <div class="sf_result_info_1">
                             <div class="sf_result_info_food_name_1">
                                 ${item.food_name} ${item.nut_con_str_qua} &nbsp;&nbsp;&nbsp;
