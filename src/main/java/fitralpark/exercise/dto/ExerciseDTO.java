@@ -19,4 +19,8 @@ public class ExerciseDTO {
     private String customExerciseCategoryName;
     private String customExercisePartName;
     private String customCaloriesPerUnit;
+    
+    private String customExerciseCategoryNo;
+    private String customExercisePartNo;
+    
 }

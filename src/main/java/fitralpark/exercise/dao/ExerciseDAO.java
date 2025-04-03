@@ -120,12 +120,14 @@ public class ExerciseDAO {
 	    if (category != null && !category.isEmpty()) {
 	        sql.append("AND ec.exercise_category_no = ? ");
 	    }
+	    
+	    sql.append("ORDER BY ce.custom_exercise_no DESC");
 
 	    try {
 	        PreparedStatement pstat = conn.prepareStatement(sql.toString());
 
 	        int idx = 1;
-	        pstat.setString(idx++, memberId); // 항상 들어감
+	        pstat.setString(idx++, memberId);
 	        if (keyword != null && !keyword.isEmpty()) {
 	            pstat.setString(idx++, "%" + keyword + "%");
 	        }
@@ -152,50 +154,141 @@ public class ExerciseDAO {
 	    return list;
 	}
 
-	public int insertCustomExercise(String name, String categoryNo, String partNo, String cal, String creatorId) {
+	public String insertCustomExercise(String name, String kcal, String creatorId) {
+		String customExerciseNo = null;
 		
-		int result = 0;
+		try {
+			// 시퀀스 값을 먼저 가져옴
+			String seqSql = "SELECT seq_custom_exercise.NEXTVAL FROM DUAL";
+			PreparedStatement seqPstat = conn.prepareStatement(seqSql);
+			ResultSet seqRs = seqPstat.executeQuery();
+			
+			if (seqRs.next()) {
+				customExerciseNo = seqRs.getString(1);
+				
+				// 실제 INSERT 실행
+				String sql = "INSERT INTO custom_exercise (custom_exercise_no, custom_exercise_name, calories_per_unit, creator_id, weight_unit_no) VALUES (?, ?, ?, ?, 1)";
+				PreparedStatement pstat = conn.prepareStatement(sql);
+				pstat.setString(1, customExerciseNo);
+				pstat.setString(2, name);
+				pstat.setString(3, kcal);
+				pstat.setString(4, creatorId);
+				
+				int result = pstat.executeUpdate();
+				if (result <= 0) {
+					customExerciseNo = null;
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			customExerciseNo = null;
+		}
+		
+		return customExerciseNo;
+	}
 
-	    try {
-	        conn.setAutoCommit(false);
+	public void insertCustomExercisePartLink(String customExerciseNo, String partNo) {
+		
+		String sql = "INSERT INTO custom_exercise_part_link (custom_exercise_part_link_no, custom_exercise_no, exercise_part_no) " +
+                "VALUES (seq_custom_exercise_part_link.NEXTVAL, ?, ?)";
+		
+	   try {
+	       PreparedStatement pstat = conn.prepareStatement(sql);
+	       pstat.setString(1, customExerciseNo);
+	       pstat.setString(2, partNo);
+	       pstat.executeUpdate();
+	       
+	   } catch (Exception e) {
+	       e.printStackTrace();
+	   }
+		
+	}
 
-	        // 1. custom_exercise INSERT
-	        String sql = "INSERT INTO custom_exercise (custom_exercise_no, custom_exercise_name, calories_per_unit, creator_id, weight_unit_no) VALUES (seq_custom_exercise.NEXTVAL, ?, ?, ?, 1)";
-	        PreparedStatement pstat = conn.prepareStatement(sql, new String[] {"custom_exercise_no"});
-	        pstat.setString(1, name);
-	        pstat.setString(2, cal);
-	        pstat.setString(3, creatorId);
-	        pstat.executeUpdate();
-
-	        ResultSet generatedKeys = pstat.getGeneratedKeys();
-	        String newExerciseNo = "";
-	        if (generatedKeys.next()) {
-	            newExerciseNo = generatedKeys.getString(1);
-	        }
-
-	        // 2. category group INSERT
-	        String sql2 = "INSERT INTO custom_exercise_category_group (custom_exercise_category_no, exercise_category_no, custom_exercise_no) VALUES (seq_custom_category_group.NEXTVAL, ?, ?)";
-	        pstat = conn.prepareStatement(sql2);
-	        pstat.setString(1, categoryNo);
-	        pstat.setString(2, newExerciseNo);
-	        pstat.executeUpdate();
-
-	        // 3. part link INSERT
-	        String sql3 = "INSERT INTO custom_exercise_part_link (custom_exercise_part_link_no, exercise_part_no, custom_exercise_no) VALUES (seq_custom_part_link.NEXTVAL, ?, ?)";
-	        pstat = conn.prepareStatement(sql3);
-	        pstat.setString(1, partNo);
-	        pstat.setString(2, newExerciseNo);
-	        pstat.executeUpdate();
-
-	        conn.commit();
-	        result = 1;
-
-	    } catch (Exception e) {
-	        try { conn.rollback(); } catch (Exception ex) {}
-	        e.printStackTrace();
-	    }
-
-	    return result;
+	public void insertCustomExerciseCategoryGroup(String customExerciseNo, String categoryNo) {
+		
+		String sql = "INSERT INTO custom_exercise_category_group (custom_exercise_category_no, custom_exercise_no, exercise_category_no) " +
+                "VALUES (seq_custom_exercise_category_group.NEXTVAL, ?, ?)";
+		
+	   try {
+	       PreparedStatement pstat = conn.prepareStatement(sql);
+	       pstat.setString(1, customExerciseNo);
+	       pstat.setString(2, categoryNo);
+	       pstat.executeUpdate();
+	       
+	   } catch (Exception e) {
+	       e.printStackTrace();
+	   }
+		
+	}
+	
+	public ExerciseDTO getCustomExercise(String customExerciseNo) {
+		ExerciseDTO dto = null;
+		String sql = "SELECT ce.custom_exercise_no, ce.custom_exercise_name, " +
+				"ce.calories_per_unit, ceg.exercise_category_no, cepl.exercise_part_no " +
+				"FROM custom_exercise ce " +
+				"LEFT JOIN custom_exercise_category_group ceg ON ce.custom_exercise_no = ceg.custom_exercise_no " +
+				"LEFT JOIN custom_exercise_part_link cepl ON ce.custom_exercise_no = cepl.custom_exercise_no " +
+				"WHERE ce.custom_exercise_no = ?";
+		
+		try {
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			pstat.setString(1, customExerciseNo);
+			ResultSet rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				dto = new ExerciseDTO();
+				dto.setCustomExerciseNo(rs.getString("custom_exercise_no"));
+				dto.setCustomExerciseName(rs.getString("custom_exercise_name"));
+				dto.setCustomCaloriesPerUnit(rs.getString("calories_per_unit"));
+				dto.setCustomExerciseCategoryNo(rs.getString("exercise_category_no"));
+				dto.setCustomExercisePartNo(rs.getString("exercise_part_no"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
+	public void updateCustomExercise(String customExerciseNo, String exerciseName, String caloriesPerUnit) {
+		String sql = "UPDATE custom_exercise SET custom_exercise_name = ?, calories_per_unit = ? WHERE custom_exercise_no = ?";
+		
+		try {
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			pstat.setString(1, exerciseName);
+			pstat.setString(2, caloriesPerUnit);
+			pstat.setString(3, customExerciseNo);
+			pstat.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateCustomExerciseCategory(String customExerciseNo, String categoryNo) {
+		String sql = "UPDATE custom_exercise_category_group SET exercise_category_no = ? WHERE custom_exercise_no = ?";
+		
+		try {
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			pstat.setString(1, categoryNo);
+			pstat.setString(2, customExerciseNo);
+			pstat.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateCustomExercisePart(String customExerciseNo, String partNo) {
+		String sql = "UPDATE custom_exercise_part_link SET exercise_part_no = ? WHERE custom_exercise_no = ?";
+		
+		try {
+			PreparedStatement pstat = conn.prepareStatement(sql);
+			pstat.setString(1, partNo);
+			pstat.setString(2, customExerciseNo);
+			pstat.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

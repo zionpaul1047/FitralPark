@@ -115,11 +115,7 @@
         }
 		
 		#exerciseAddBtn {
-			margin-top: 15px;
-            width: 100%;
-            background-color: #fff;
-            font-weight: 500;
-            transition: all 0.2s;
+			align-items: center;
 		}
 		
 		.action-buttons {
@@ -129,11 +125,11 @@
 		}
 
         .rudBtn {
-            width: 32px;
-            height: 34px;
+            width: 20px;
+            height: 18px;
             border: 0;
             background: none;
-            padding: 0;
+            padding: 0px;
         }
         
         .rudBtn:hover {
@@ -148,11 +144,43 @@
         }
 
         .form-control {
-            padding: 8px;
+            padding: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            text-align: center;
         }
-
+        
+        #exercise-table th:nth-child(1) { width: 5%; }  /* 체크박스 열 */
+		#exercise-table th:nth-child(2) { width: 21.5%; } /* 루틴명 */
+		#exercise-table th:nth-child(3) { width: 21.5%; } /* 루틴 카테고리 */
+		#exercise-table th:nth-child(4) { width: 21.5%; } /* 작성일 */
+		#exercise-table th:nth-child(5) { width: 21.5%; } /* 작성자 */
+		#exercise-table th:nth-child(6) { width: 9%; } /* 즐겨찾기 */
+		
+		#customExercise-table th:nth-child(1) { width: 5%; }  /* 체크박스 열 */
+		#customExercise-table th:nth-child(2) { width: 21.25%; } /* 루틴명 */
+		#customExercise-table th:nth-child(3) { width: 21.25%; } /* 루틴 카테고리 */
+		#customExercise-table th:nth-child(4) { width: 21.25%; } /* 작성일 */
+		#customExercise-table th:nth-child(5) { width: 21.25%; } /* 작성자 */
+		#customExercise-table th:nth-child(6) { width: 10%; } /* 즐겨찾기 */
+		
+		.action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .action-buttons button {
+            width: 48%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .action-buttons button:hover {
+            background-color: #f0f0f0;
+        }
         
     </style>
 	</head>
@@ -175,7 +203,6 @@
     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i> 검색</button>
 </form>
     <h3>운동 목록</h3>
-    <form id="exerciseForm">
         <table id="exercise-table">
             <thead>
                 <tr>
@@ -222,39 +249,106 @@
 		                <td>${customex.customExercisePartName}</td>
 		                <td>${customex.customCaloriesPerUnit}</td>
 		                <td>
-		                	<button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-magnifying-glass"></i></button>
-		                	<button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-pen-to-square"></i></button>
-		                	<button type="button" class="rudBtn" onclick="deleteCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-x"></i></button>
+		                    <button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}', '${customex.customExerciseName}', '${customex.customExerciseCategoryNo}', '${customex.customExercisePartNo}', '${customex.customCaloriesPerUnit}')"><i class="fa-solid fa-pen-to-square"></i></button>
+		                    <button type="button" class="rudBtn" onclick="deleteCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-x"></i></button>
 		                </td>
 		            </tr>
 		        </c:forEach>
-		        <form action="/fitralpark/exercise/addCustomExercise.do" method="post">
-		        	
-		        </form>
 		    </tbody>
 		</table>
+
+		<!-- 수정 폼 -->
+		<div id="editForm" style="display: none;">
+			<h3>사용자 정의 운동 수정</h3>
+			<form method="post" action="/fitralpark/exercise/updateCustomExercise.do">
+				<input type="hidden" name="customExerciseNo" id="editCustomExerciseNo">
+				<table id="custom-exercise-edit-table">
+					<thead>
+						<tr>
+							<th>운동명</th>
+							<th>운동 카테고리</th>
+							<th>운동 부위</th>
+							<th>소모 열량(kcal)</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" id="editExerciseName" name="exerciseName" class="form-control" required></td>
+							<td>
+								<select id="editExerciseCategory" name="exerciseCategory" class="form-control" required>
+									<option value="">카테고리 선택</option>
+									<option value="1">근력</option>
+									<option value="2">유산소</option>
+									<option value="3">유연성</option>
+									<option value="4">균형</option>
+									<option value="5">복구</option>
+									<option value="6">저항</option>
+								</select>
+							</td>
+							<td>
+								<select id="editExercisePart" name="exercisePart" class="form-control" required>
+									<option value="">부위 선택</option>
+									<option value="1">하체</option>
+									<option value="2">가슴</option>
+									<option value="3">등</option>
+									<option value="4">어깨</option>
+									<option value="5">팔</option>
+									<option value="6">복부</option>
+									<option value="7">근육</option>
+									<option value="8">기타</option>
+									<option value="9">유산소</option>
+								</select>
+							</td>
+							<td><input type="text" id="editCaloriesPerUnit" name="caloriesPerUnit" class="form-control" required></td>
+							<td>
+								<button type="button" class="rudBtn" onclick="hideEditForm()"><i class="fa-solid fa-xmark"></i></button>
+								<button type="submit" class="rudBtn"><i class="fa-solid fa-check"></i></button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+
+		<!-- 운동 추가하기 폼 -->
+		<div id="addForm">
+			<h3>사용자 정의 운동 추가</h3>
+			<form method="post" action="/fitralpark/exercise/addCustomExercise.do" id="bulkExerciseForm">
+				<table id="custom-exercise-add-table">
+					<thead>
+						<tr>
+							<th>운동명</th>
+							<th>운동 카테고리</th>
+							<th>운동 부위</th>
+							<th>소모 열량(kcal)</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					<!-- 여기에 JS로 행이 추가됨 -->
+					</tbody>
+				</table>
+				<div class="action-buttons">
+					<button type="button" onclick="addExerciseItem()">
+						<span><i class="fa-solid fa-dumbbell"></i></span> 운동 추가하기
+					</button>
+					<button type="submit" id="exerciseAddBtn">
+						<span><i class="fa-solid fa-plus"></i></span> 등록하기
+					</button>
+				</div>
+			</form>
+		</div>
 
         <div class="buttons-row">
 	        	<div>
 		            <button class="btn" onclick="resetForm()">초기화</button>
-		            <button class="btn" onclick="deleteSelectedItems()">
-		            선택 항목 삭제</button>
 		        </div>
-	            <div>
-	                <button class="btn btn-primary" onclick="">등록하기</button>
-	            </div>
+		        <div>
+		        	<button type="button" class="btn btn-primary" onclick="sendToParent()">불러오기</button>
+            		<button type="button" class="btn" onclick="window.close()">취소</button>
+		        </div>
 	        </div>
-
-        <button type="button" class="btn-add" onclick="addExerciseItem()">
-    		<span><i class="fa-solid fa-plus"></i></span> 운동 추가하기
-		</button>
-        
-		<div class="action-buttons">
-            <button type="button" class="btn btn-primary" onclick="sendToParent()">불러오기</button>
-            <button type="button" class="btn" onclick="window.close()">취소</button>
-        </div>
-
-    </form>
 	</div>
 
     <script>
@@ -278,14 +372,44 @@
 	    }
 	    
 	    function addExerciseItem() {
-	        const tbody = document.querySelector('#customExercise-table tbody');
+	        const editForm = document.getElementById('editForm');
+	        const addForm = document.getElementById('addForm');
+	        
+	        // 수정 폼 숨기기
+	        editForm.style.display = 'none';
+	        
+	        // 운동 추가하기 폼 표시
+	        addForm.style.display = 'block';
+	        
+	        // h3 태그 표시
+	        const addFormH3 = addForm.querySelector('h3');
+	        if (addFormH3) {
+	            addFormH3.style.display = 'block';
+	        }
+	        
+	        // 테이블 헤더가 없으면 추가
+	        const addTable = document.querySelector('#custom-exercise-add-table');
+	        if (!addTable.querySelector('thead')) {
+	            const thead = document.createElement('thead');
+	            thead.innerHTML = `
+	                <tr>
+	                    <th>운동명</th>
+	                    <th>운동 카테고리</th>
+	                    <th>운동 부위</th>
+	                    <th>소모 열량(kcal)</th>
+	                    <th></th>
+	                </tr>
+	            `;
+	            addTable.insertBefore(thead, addTable.firstChild);
+	        }
+	        
+	        const tbody = document.querySelector('#custom-exercise-add-table tbody');
 	        const newRow = document.createElement('tr');
 
 	        newRow.innerHTML = `
-	        	<td><input type="checkbox" name="customSelectExercise" class="form-control"></td>
-	            <td><input type="text" name="exerciseName" placeholder="운동명 입력" class="form-control"></td>
+	            <td><input type="text" name="exerciseName" placeholder="운동명 입력" class="form-control" required></td>
 	            <td>
-	                <select name="exerciseCategory" id="exercise-category" class="form-control">
+	                <select name="exerciseCategory" class="form-control" required>
 	                    <option value="">카테고리 선택</option>
 	                    <option value="1">근력</option>
 	                    <option value="2">유산소</option>
@@ -296,7 +420,7 @@
 	                </select>
 	            </td>
 	            <td>
-	                <select name="exercisePart" id="exercise-part" class="form-control">
+	                <select name="exercisePart" class="form-control" required>
 	                    <option value="">부위 선택</option>
 	                    <option value="1">하체</option>
 	                    <option value="2">가슴</option>
@@ -309,9 +433,9 @@
 	                    <option value="9">유산소</option>
 	                </select>
 	            </td>
-	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량" class="form-control"></td>
+	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량" class="form-control" required></td>
 	            <td>
-	                <button type="button" class="rudBtn" onclick="this.closest('tr').remove()">
+	                <button type="button" class="rudBtn" onclick="removeExerciseItem(this)">
 	                    <i class="fa-solid fa-xmark"></i>
 	                </button>
 	            </td>
@@ -320,59 +444,99 @@
 	        tbody.appendChild(newRow);
 	    }
 	    
-	    <%-- function submitExercise(button) {
+	    function removeExerciseItem(button) {
 	        const row = button.closest('tr');
-
-	        const exerciseName = row.querySelector('input[name="exerciseName"]').value;
-	        const category = row.querySelector('#exercise-category').value;
-	        const part = row.querySelector('#exercise-part').value;
-	        const calories = row.querySelector('input[name="caloriesPerUnit"]').value;
-
-	        // 1) 서블릿으로 AJAX POST 요청
-	        fetch('/fitralpark/exercise/addCustomExercise.do', {
-	            method: 'POST',
-	            headers: {
-	                'Content-Type': 'application/json'
-	            },
-	            body: JSON.stringify({
-	                exerciseName,
-	                category,
-	                part,
-	                calories
-	            })
-	        })
-	        .then(res => res.json())
-	        .then(data => {
-	            if (data.status === 'success') {
-	                // 2) 테이블 행을 텍스트로 바꾸기
-	                row.innerHTML = `
-	                    <td><input type="checkbox"></td>
-	                    <td>${exerciseName}</td>
-	                    <td>${getCategoryText(category)}</td>
-	                    <td>${getPartText(part)}</td>
-	                    <td>${calories}</td>
-	                    <td>⭐</td>
-	                `;
-	            } else {
-	                alert("등록 실패!");
+	        const tbody = row.parentElement;
+	        tbody.removeChild(row);
+	        
+	        // 마지막 행이 제거되었을 때 테이블 헤더와 h3 태그도 제거
+	        if (tbody.children.length === 0) {
+	            const addTable = document.querySelector('#custom-exercise-add-table');
+	            const thead = addTable.querySelector('thead');
+	            if (thead) {
+	                thead.remove();
 	            }
-	        });
-	    } */
-	    
-		// 이후 수정, 삭제 함수들도 여기에 추가 가능
-	    function editCustomExercise(id) {
-	        alert('수정 기능 준비 중입니다. (ID: ' + id + ')');
-	    }
-	    
-	    function deleteCustomExercise(id) {
-	        if (confirm('정말 삭제하시겠습니까?')) {
-	            // 실제 삭제 요청 필요 시 AJAX 또는 form submit 구현
-	            alert('삭제 요청: ID = ' + id);
+	            
+	            // h3 태그 숨기기
+	            const addForm = document.getElementById('addForm');
+	            const addFormH3 = addForm.querySelector('h3');
+	            if (addFormH3) {
+	                addFormH3.style.display = 'none';
+	            }
 	        }
 	    }
-		--%>
-        
+	    
+	    function submitCustomExercise() {
+	        const form = document.getElementById("bulkExerciseForm");
+	        const rows = form.querySelectorAll("#custom-exercise-add-table tbody tr");
 
+	        if (rows.length === 0) {
+	            alert("추가할 운동을 입력해주세요.");
+	            return;
+	        }
+
+	        let isValid = true;
+	        rows.forEach(row => {
+	            const inputs = row.querySelectorAll('input, select');
+	            inputs.forEach(input => {
+	                if (!input.value) {
+	                    isValid = false;
+	                    alert("모든 필드를 입력해주세요.");
+	                    return;
+	                }
+	            });
+	        });
+
+	        if (isValid) {
+	            form.submit();
+	        }
+	    }
+	    
+	    function editCustomExercise(customExerciseNo, exerciseName, categoryNo, partNo, caloriesPerUnit) {
+	        document.getElementById('editCustomExerciseNo').value = customExerciseNo;
+	        document.getElementById('editExerciseName').value = exerciseName;
+	        document.getElementById('editExerciseCategory').value = categoryNo;
+	        document.getElementById('editExercisePart').value = partNo;
+	        document.getElementById('editCaloriesPerUnit').value = caloriesPerUnit;
+	        
+	        document.getElementById('editForm').style.display = 'block';
+	        document.getElementById('addForm').style.display = 'none';
+	        document.getElementById('editForm').scrollIntoView({ behavior: 'smooth' });
+	    }
+	    
+	    function hideEditForm() {
+	        const editForm = document.getElementById('editForm');
+	        const addForm = document.getElementById('addForm');
+	        
+	        // 수정 폼 제거
+	        editForm.style.display = 'none';
+	        
+	        // 운동 추가하기 폼 표시
+	        addForm.style.display = 'block';
+	        
+	        // 테이블 초기화
+	        const addTableBody = document.querySelector('#custom-exercise-add-table tbody');
+	        addTableBody.innerHTML = '';
+	        
+	        // 테이블 헤더 제거
+	        const addTable = document.querySelector('#custom-exercise-add-table');
+	        const thead = addTable.querySelector('thead');
+	        if (thead) {
+	            thead.remove();
+	        }
+	        
+	        // h3 태그 숨기기
+	        const addFormH3 = addForm.querySelector('h3');
+	        if (addFormH3) {
+	            addFormH3.style.display = 'none';
+	        }
+	    }
+	    
+	    function deleteCustomExercise(customExerciseNo) {
+	        if(confirm('정말 삭제하시겠습니까?')) {
+	            // 삭제 로직 구현
+	        }
+	    }
     
     </script>
 </body>
