@@ -12,18 +12,18 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashTodayIntakeDTO {
-	String ntrt_calorie;
-	String ntrt_chocdf;
-	String ntrt_prot;
-	String ntrt_fatce;
-	String ntrt_sugar;
-	String ntrt_fibtg;
-	String ntrt_ca;
-	String ntrt_nat;
-	String ntrt_vitaRae;
-	String ntrt_thia;
-	String ntrt_ribf;
-	String ntrt_nia;
-	String ntrt_vitc;
-	String ntrt_vitd;
+	private String ntrt_calorie;
+	private String ntrt_chocdf;
+	private String ntrt_prot;
+	private String ntrt_fatce;
+	private String ntrt_sugar;
+	private String ntrt_fibtg;
+	private String ntrt_ca;
+	private String ntrt_nat;
+	private String ntrt_vitaRae;
+	private String ntrt_thia;
+	private String ntrt_ribf;
+	private String ntrt_nia;
+	private String ntrt_vitc;
+	private String ntrt_vitd;
 }

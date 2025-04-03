@@ -12,9 +12,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashTodayExerciseDTO {
-	String exerciseName;
-	String ining;
-	String set;
-	String load;
-	String times;
+	private String exerciseName;
+	private String ining;
+	private String set;
+	private String load;
+	private String times;
+	private String excsCrtType;
+	private String excsNo;
 }
