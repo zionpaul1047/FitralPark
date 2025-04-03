@@ -8,63 +8,62 @@
 <title>식단 불러오기</title>
 <style>
 .detail-popup {
-  position: absolute;
-  background: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  z-index: 1000;
-  width: 400px;
-  padding: 15px;
+	position: absolute;
+	background: white;
+	border: 1px solid #ddd;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+	width: 400px;
+	padding: 15px;
 }
 
 .detail-table {
-  width: 100%;
-  border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 .detail-table th, .detail-table td {
-  border: 1px solid #eee;
-  padding: 8px;
-  text-align: center;
+	border: 1px solid #eee;
+	padding: 8px;
+	text-align: center;
 }
 
 .close-btn {
-  float: right;
+	float: right;
 }
 
 .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 4px; /* 버튼 간격 */
-    margin-top: 15px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 4px; /* 버튼 간격 */
+	margin-top: 15px;
 }
 
 .pagination-link {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 30px; /* 버튼 너비 축소 */
-    height: 30px; /* 버튼 높이 축소 */
-    border-radius: 4px; /* 둥근 모서리 */
-    border: 1px solid #ddd;
-    color: #333;
-    font-size: 14px; /* 폰트 크기 축소 */
-    text-decoration: none;
-    background-color: #fff; /* 기본 배경색 */
-    transition: all 0.3s ease; /* 부드러운 전환 효과 */
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	width: 30px; /* 버튼 너비 축소 */
+	height: 30px; /* 버튼 높이 축소 */
+	border-radius: 4px; /* 둥근 모서리 */
+	border: 1px solid #ddd;
+	color: #333;
+	font-size: 14px; /* 폰트 크기 축소 */
+	text-decoration: none;
+	background-color: #fff; /* 기본 배경색 */
+	transition: all 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 .pagination-link:hover {
-    background-color: #f0f0f0; /* Hover 시 배경색 */
+	background-color: #f0f0f0; /* Hover 시 배경색 */
 }
 
 .pagination-link.active {
-    background-color: #007bff; /* 현재 페이지 배경색 (파란색) */
-    color: white; /* 현재 페이지 텍스트 색상 */
-    border-color: #007bff;
+	background-color: #007bff; /* 현재 페이지 배경색 (파란색) */
+	color: white; /* 현재 페이지 텍스트 색상 */
+	border-color: #007bff;
 }
-
 
 * {
 	box-sizing: border-box;
@@ -332,23 +331,19 @@ body {
 	<div class="container">
 		<h1 class="title">■ 식단 불러오기</h1>
 
+
 		<div class="content-box">
-			<div class="search-section">
-				<h2>식단 검색</h2>
-
-				<div class="search-row">
-					<div class="calorie-range">
-						<span>열량</span> <input type="number" placeholder="최소값"
-							class="calorie-min" min="0" step="10"> <span>~</span> <input
-							type="number" placeholder="최대값" class="calorie-max" min="0"
-							step="10">
-					</div>
-
-
-					<div class="time-select-container">
-						<span>시간대</span>
-						<div class="custom-select">
-							<select class="time-select">
+			<form method="GET" action="/fitralpark/dietLoading.do">
+				<div class="search-section">
+					<div class="search-row">
+						<div class="calorie-range">
+							<span>열량</span> <input type="number" placeholder="최소값"
+								class="calorie-min" min="0" step="10" name="calorieMin">
+							<span>~</span> <input type="number" placeholder="최대값"
+								class="calorie-max" min="0" step="10" name="calorieMax">
+						</div>
+						<div class="time-select-container">
+							<span>시간대</span> <select class="time-select" name="mealClassify">
 								<option value="">식사 시간대</option>
 								<option value="아침">아침</option>
 								<option value="점심">점심</option>
@@ -356,107 +351,113 @@ body {
 								<option value="간식">간식</option>
 							</select>
 						</div>
+						<input type="text" placeholder="검색어를 입력하세요" class="search-input"
+							name="searchTerm">
+						<button class="search-icon">🔍</button>
 					</div>
-
-					<input type="text" placeholder="검색어를 입력하세요" class="search-input">
-					<button class="search-icon">🔍</button>
-				</div>
-
-				<div class="filter-options">
-					<label class="checkbox-container"> <input type="checkbox"
-						class="favorite-filter"> <span>즐겨찾기</span>
-					</label> <label class="checkbox-container"> <input type="checkbox"
-						class="my-meal-filter"> <span>나의 식단</span>
-					</label>
+					<div class="filter-options">
+						<label><input type="checkbox" class="favorite-filter"
+							name="favoriteFilter"> 즐겨찾기</label> <label><input
+							type="checkbox" class="my-meal-filter" name="myMealFilter">
+							나의 식단</label>
+					</div>
 				</div>
 				<br>
+			</form>
+		</div>
 
-			</div>
+		<div class="meal-list-section">
+			<h2>조회된 식단</h2>
 
-			<div class="meal-list-section">
-				<h2>조회된 식단</h2>
-
-				<table class="meal-table">
-					<thead>
+			<table class="meal-table">
+				<thead>
+					<tr>
+						<th></th>
+						<th>식단명</th>
+						<th>작성일</th>
+						<th>총열량(kcal)</th>
+						<th>식사시간대</th>
+						<th>작성자(닉네임)</th>
+						<th>즐겨찾기</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="meal-data">
+					<!-- 데이터는 JavaScript로 동적 생성 -->
+					<c:forEach items="${list}" var="dto">
 						<tr>
-							<th></th>
-							<th>식단명</th>
-							<th>작성일</th>
-							<th>총열량(kcal)</th>
-							<th>식사시간대</th>
-							<th>작성자(닉네임)</th>
-							<th>즐겨찾기</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody id="meal-data">
-						<!-- 데이터는 JavaScript로 동적 생성 -->
-						<c:forEach items="${list}" var="dto">
-						<tr>
-						    <td><input type="checkbox" data-id="${dto.diet_no}"></td>
-						    <td>${dto.diet_name}</td>
-						    <td>${dto.regdate}</td>
-						    <td>${dto.diet_total_kcal}</td>
-						    <td>${dto.meal_classify}</td>
-						    <td>${dto.creator_id }</td>
+							<td><input type="checkbox" data-id="${dto.diet_no}"></td>
+							<td>${dto.diet_name}</td>
+							<td>${dto.regdate}</td>
+							<td>${dto.diet_total_kcal}</td>
+							<td>${dto.meal_classify}</td>
+							<td>${dto.creator_id }</td>
 							<td>
 								<button class="star-btn" data-id="${dto.diet_no}">
-									${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button></td>
-							<td><button class="view-btn" data-id="${dto.diet_no}"><img src="assets/images/icon/search-file.png" alt="View" width="20" height="20"></button></td>
-      </tr>
-    </c:forEach>
-  </tbody>
-</table>
+									${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
+							</td>
+							<td><button class="view-btn" data-id="${dto.diet_no}">
+									<img src="assets/images/icon/search-file.png" alt="View"
+										width="20" height="20">
+								</button></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 
-<div class="pagination">
-    <%-- 이전 버튼 --%>
-    <c:if test="${currentPage > 1}">
-        <a href="dietLoading.do?page=${currentPage - 1}" class="pagination-link">&lt;</a>
-    </c:if>
+            <c:if test="${isSearch}">
+			<div class="pagination">
+				<%-- 이전 버튼 --%>
+				<c:if test="${currentPage > 1}">
+					<a href="dietLoading.do?page=${currentPage - 1}"
+						class="pagination-link">&lt;</a>
+				</c:if>
 
-    <%-- 페이지 번호 --%>
-    <c:forEach begin="1" end="${totalPages}" var="page">
-        <c:choose>
-            <c:when test="${page == currentPage}">
-                <span class="pagination-link active">${page}</span>
-            </c:when>
-            <c:otherwise>
-                <a href="dietLoading.do?page=${page}" class="pagination-link">${page}</a>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
+				<%-- 페이지 번호 --%>
+				<c:forEach begin="1" end="${totalPages}" var="page">
+					<c:choose>
+						<c:when test="${page == currentPage}">
+							<span class="pagination-link active">${page}</span>
+						</c:when>
+						<c:otherwise>
+							<a href="dietLoading.do?page=${page}" class="pagination-link">${page}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 
-    <%-- 다음 버튼 --%>
-    <c:if test="${currentPage < totalPages}">
-        <a href="dietLoading.do?page=${currentPage + 1}" class="pagination-link">&gt;</a>
-    </c:if>
-</div>
-				<div class="action-buttons">
-					<button class="load-btn">불러오기</button>
-					<button class="cancel-btn">취소</button>
-				</div>
+				<%-- 다음 버튼 --%>
+				<c:if test="${currentPage < totalPages}">
+					<a href="dietLoading.do?page=${currentPage + 1}"
+						class="pagination-link">&gt;</a>
+				</c:if>
 			</div>
-
-<!-- 상세정보 드롭다운 -->
-<div class="detail-popup" id="detailPopup" style="display: none;">
-  <div class="popup-content">
-    <h3 id="popup-title">식단 이름</h3>
-    <table class="detail-table">
-      <thead>
-        <tr>
-          <th>음식명</th>
-          <th>열량(kcal)</th>
-          <th>용량(g)</th>
-        </tr>
-      </thead>
-      <tbody id="detail-body">
-        <!-- 음식 상세정보는 JavaScript로 동적 생성 -->
-      </tbody>
-    </table>
-    <button class="close-btn">닫기</button>
-  </div>
-</div>
+			<div class="action-buttons">
+				<button class="load-btn">불러오기</button>
+				<button class="cancel-btn">취소</button>
+			</div>
+			</c:if>
 		</div>
+
+		<!-- 상세정보 드롭다운 -->
+		<div class="detail-popup" id="detailPopup" style="display: none;">
+			<div class="popup-content">
+				<h3 id="popup-title">식단 이름</h3>
+				<table class="detail-table">
+					<thead>
+						<tr>
+							<th>음식명</th>
+							<th>열량(kcal)</th>
+							<th>용량(g)</th>
+						</tr>
+					</thead>
+					<tbody id="detail-body">
+						<!-- 음식 상세정보는 JavaScript로 동적 생성 -->
+					</tbody>
+				</table>
+				<button class="close-btn">닫기</button>
+			</div>
+		</div>
+	</div>
 	</div>
 
 	<script src="script.js"></script>
@@ -503,6 +504,65 @@ body {
 	      document.querySelector('#detailPopup').style.display = 'none';
 	    });
 	});
+	
+	
+	//검색 기능
+	document.querySelector('.search-icon').addEventListener('click', function() {
+	    const calorieMin = document.querySelector('.calorie-min').value || 0;
+	    const calorieMax = document.querySelector('.calorie-max').value || 99999;
+	    const mealClassify = document.querySelector('.time-select').value;
+	    const searchTerm = document.querySelector('.search-input').value;
+	    const favoriteFilter = document.querySelector('.favorite-filter').checked ? 1 : 0;
+	    const myMealFilter = document.querySelector('.my-meal-filter').checked ? 1 : 0;
+
+	    fetch(`/dietLoading.do?calorieMin=${calorieMin}&calorieMax=${calorieMax}&mealClassify=${mealClassify}&searchTerm=${searchTerm}&favoriteFilter=${favoriteFilter}&myMealFilter=${myMealFilter}`)
+	        .then(response => response.json())
+	        .then(data => {
+	            const tbody = document.querySelector('#meal-data');
+	            tbody.innerHTML = data.map(dto => `
+	                <tr>
+	                    <td>${dto.diet_name}</td>
+	                    <td>${dto.regdate}</td>
+	                    <td>${dto.diet_total_kcal}</td>
+	                    <td>${dto.meal_classify}</td>
+	                    <td>${dto.creator_id}</td>
+	                    <td>${dto.diet_bookmark_no > 0 ? '★' : '☆'}</td>
+	                </tr>
+	            `).join('');
+	        });
+	});
+	
+	
+	//검색기능
+	
+	document.querySelector('.search-icon').addEventListener('click', function() {
+    const calorieMin = document.querySelector('.calorie-min').value || 0;
+    const calorieMax = document.querySelector('.calorie-max').value || 99999;
+    const mealClassify = document.querySelector('.time-select').value;
+    const searchTerm = document.querySelector('.search-input').value;
+    const favoriteFilter = document.querySelector('.favorite-filter').checked ? 1 : 0;
+    const myMealFilter = document.querySelector('.my-meal-filter').checked ? 1 : 0;
+
+    fetch(`/dietLoading.do?calorieMin=${calorieMin}&calorieMax=${calorieMax}&mealClassify=${mealClassify}&searchTerm=${searchTerm}&favoriteFilter=${favoriteFilter}&myMealFilter=${myMealFilter}`)
+        .then(response => response.json())
+        .then(data => renderTable(data));
+});
+
+function renderTable(data) {
+    const tbody = document.querySelector('#meal-data');
+    tbody.innerHTML = data.map(dto => `
+        <tr>
+            <td>${dto.diet_name}</td>
+            <td>${dto.regdate}</td>
+            <td>${dto.diet_total_kcal}</td>
+            <td>${dto.meal_classify}</td>
+            <td>${dto.creator_id}</td>
+            <td>${dto.diet_bookmark_no > 0 ? '★' : '☆'}</td>
+        </tr>
+    `).join('');
+}
+
+
 
 /* 
 	document.addEventListener('DOMContentLoaded', function() {

@@ -565,7 +565,7 @@ h3 {
     <!-- 동일한 구조 반복 -->
   </tbody>
 </table>
-</div>
+</div></div>
 
 <div class="food-section">  
   <div class="food-details" id="foodDetailsContainer" style="display: none;">

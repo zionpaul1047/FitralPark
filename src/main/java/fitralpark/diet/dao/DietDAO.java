@@ -46,12 +46,12 @@ public class DietDAO {
                         ON d.diet_no = dl.diet_no
                     LEFT JOIN food f 
                         ON dl.food_no = f.food_no 
-                        AND dl.food_creation_type = 1
+                        AND dl.food_creation_type = 0
                     LEFT JOIN individual_diet_record_food_nutrient irdfn 
                         ON f.food_cd = irdfn.food_cd
                     LEFT JOIN custom_food cf 
                         ON dl.custom_food_no = cf.custom_food_no 
-                        AND dl.food_creation_type = 2
+                        AND dl.food_creation_type = 1
                 ) a WHERE ROWNUM <= ?
             ) WHERE rnum >= ?
         """;
@@ -143,12 +143,12 @@ public class DietDAO {
             FROM diet_food_list dl
             LEFT JOIN food f 
                 ON dl.food_no = f.food_no 
-                AND dl.food_creation_type = 1
+                AND dl.food_creation_type = 0
             LEFT JOIN individual_diet_record_food_nutrient irdfn 
                 ON f.food_cd = irdfn.food_cd
             LEFT JOIN custom_food cf 
                 ON dl.custom_food_no = cf.custom_food_no 
-                AND dl.food_creation_type = 2
+                AND dl.food_creation_type = 1
             WHERE dl.diet_no = ?
         """;
 
@@ -176,6 +176,83 @@ public class DietDAO {
         return foods;
     }
 
+    public List<DietDTO> searchDiets(int calorieMin, int calorieMax, String mealClassify, String searchTerm,
+            boolean favoriteFilter, boolean myMealFilter, String memberId, int begin, int end) {
+//        String sql = """
+//                SELECT
+//                d.diet_no,
+//                d.diet_name,
+//                TO_CHAR(d.regdate, 'YYYY-MM-DD') AS regdate,
+//                d.diet_total_kcal,
+//                d.meal_classify,
+//                d.creator_id,
+//                NVL(b.diet_bookmark_no, 0) AS diet_bookmark_no
+//                FROM diet d
+//                LEFT JOIN diet_bookmark b
+//                ON d.diet_no = b.diet_no
+//                AND b.member_id = ?
+//                WHERE d.diet_total_kcal BETWEEN ? AND ?
+//                AND (d.meal_classify = ? OR ? IS NULL)
+//                AND (d.diet_name LIKE '%'||?||'%' OR ? IS NULL)
+//                AND (? = 0 OR NVL(b.diet_bookmark_no, 0) > 0)
+//                AND (? = 0 OR d.creator_id = ?)
+//                """;
+        
+        String sql = """
+                
+                SELECT 
+                    d.diet_no,
+                    d.diet_name,
+                    TO_CHAR(d.regdate, 'YYYY-MM-DD') AS regdate,
+                    d.diet_total_kcal,
+                    d.meal_classify,
+                    d.creator_id,
+                    NVL(b.diet_bookmark_no, 0) AS diet_bookmark_no
+                FROM diet d
+                LEFT JOIN diet_bookmark b 
+                    ON d.diet_no = b.diet_no 
+                    AND b.member_id = ?
+                WHERE d.diet_total_kcal BETWEEN ? AND ?
+                  AND (d.meal_classify = ?)
+                  AND (d.diet_name LIKE '%'|| ? ||'%')
+                
+                """;
+
+        List<DietDTO> diets = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, memberId);
+            pstmt.setInt(2, calorieMin);
+            pstmt.setInt(3, calorieMax);
+            pstmt.setString(4, mealClassify);
+            pstmt.setString(5, searchTerm);
+
+//            pstmt.setString(1, memberId);
+//            pstmt.setInt(2, calorieMin);
+//            pstmt.setInt(3, calorieMax);
+//            pstmt.setString(4, mealClassify);
+//            pstmt.setString(5, mealClassify);
+//            pstmt.setString(6, searchTerm);
+//            pstmt.setString(7, searchTerm);
+//            pstmt.setInt(8, favoriteFilter ? 1 : 0);
+//            pstmt.setInt(9, myMealFilter ? 1 : 0);
+//            pstmt.setString(10, memberId);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    DietDTO diet = new DietDTO(rs.getInt("diet_no"), rs.getString("diet_name"), rs.getString("regdate"),
+                            rs.getInt("diet_total_kcal"), rs.getString("meal_classify"), rs.getString("creator_id"),
+                            rs.getInt("diet_bookmark_no"));
+                    diets.add(diet);
+                }
+            }
+            
+        } catch (SQLException e) {
+            throw new RuntimeException("검색 오류", e);
+        }
+        return diets;
+    }
 
     
 }

@@ -23,9 +23,15 @@ public class DietLoading extends HttpServlet {
     private final int PAGE_SIZE = 10;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
-            throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        // 세션에서 사용자 ID 추출
+        HttpSession session = req.getSession();
+        String memberId = (String) session.getAttribute("memberId");
+        if (memberId == null)
+            memberId = "guest";
+
+        // 여기까지
         // AJAX 요청인지 확인 (상세정보 요청)
         String dietNoParam = req.getParameter("dietNo");
         if (dietNoParam != null) {
@@ -33,10 +39,12 @@ public class DietLoading extends HttpServlet {
             return;
         }
 
+        // DAO 호출
+        DietDAO dao = new DietDAO();
+
         // 페이지네이션 처리
-        HttpSession session = req.getSession();
-        String memberId = (String) session.getAttribute("memberId");
-        if (memberId == null) memberId = "guest";
+        if (memberId == null)
+            memberId = "guest";
 
         String pageParam = req.getParameter("page");
         int currentPage = 1;
@@ -49,8 +57,32 @@ public class DietLoading extends HttpServlet {
         int begin = (currentPage - 1) * PAGE_SIZE + 1;
         int end = currentPage * PAGE_SIZE;
 
-        DietDAO dao = new DietDAO();
-        List<DietDTO> list = dao.getDiets(begin, end, memberId);
+        List<DietDTO> list = null;
+
+        if (req.getParameter("searchTerm") != null && !req.getParameter("searchTerm").equals("")) {
+
+            // 검색O
+
+            // 파라미터 추출
+            int calorieMin = Integer.parseInt(req.getParameter("calorieMin"));
+            int calorieMax = Integer.parseInt(req.getParameter("calorieMax"));
+            String mealClassify = req.getParameter("mealClassify");
+            String searchTerm = req.getParameter("searchTerm");
+            boolean favoriteFilter = req.getParameter("favoriteFilter") != null ? true : false;
+            boolean myMealFilter = req.getParameter("myMealFilter") != null ? true : false;
+
+            list = dao.searchDiets(calorieMin, calorieMax, mealClassify, searchTerm, favoriteFilter, myMealFilter, memberId, begin, end);
+            
+            req.setAttribute("isSearch", false);
+
+        } else {
+
+            // 검색X
+            list = dao.getDiets(begin, end, memberId);
+            
+            req.setAttribute("isSearch", true);
+
+        }
 
         int totalCount = dao.getTotalCount(memberId);
         int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
@@ -59,6 +91,7 @@ public class DietLoading extends HttpServlet {
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("totalPages", totalPages);
         req.getRequestDispatcher("/WEB-INF/views/diet/dietLoading.jsp").forward(req, resp);
+
     }
 
     /**
@@ -74,7 +107,7 @@ public class DietLoading extends HttpServlet {
 
         // 음식 상세 정보 조회
         List<Map<String, Object>> foods = dao.getFoodDetails(dietNo);
-        
+
         System.out.println("foods: " + foods);
 
         // JSON 응답 생성
@@ -88,8 +121,6 @@ public class DietLoading extends HttpServlet {
         result.put("foods", foods);
 
         mapper.writeValue(resp.getWriter(), result);
+
     }
 }
-
-
-

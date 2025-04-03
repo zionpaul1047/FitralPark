@@ -169,6 +169,18 @@ public class DietDTO {
         this.enerc = enerc;
         this.food_size = food_size;
     }
+    
+    
+    public DietDTO(int diet_no, String diet_name, String regdate, int diet_total_kcal, String meal_classify,
+            String creator_id, int diet_bookmark_no) {
+        this.diet_no = diet_no;
+        this.diet_name = diet_name;
+        this.regdate = regdate;
+        this.diet_total_kcal = diet_total_kcal;
+        this.meal_classify = meal_classify;
+        this.creator_id = creator_id;
+        this.diet_bookmark_no = diet_bookmark_no;
+    }
 
 }
 
