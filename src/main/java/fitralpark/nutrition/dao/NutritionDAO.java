@@ -12,7 +12,7 @@ import fitralpark.nutrition.dto.NutritionDTO;
 public class NutritionDAO {
 
     // 데이터베이스 연결 정보
-    private static final String DB_URL = "jdbc:oracle:thin:@192.168.10.46:1521:xe"; // 오라클 DB URL
+    private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe"; // 오라클 DB URL
     private static final String DB_USER = "server"; // 오라클 사용자명
     private static final String DB_PASSWORD = "java1234"; // 오라클 비밀번호
 

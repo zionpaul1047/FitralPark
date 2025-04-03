@@ -73,8 +73,10 @@
 					        <div class="sf_submenu_1">
 					            <a href=""><div class="sf_submenu_1_1" id="menu1">통합검색</div></a>
 					            <a href=""><div class="sf_submenu_1_1" id="menu2">즐겨찾기</div></a>
+					            <!-- 
 					            <a href=""><div class="sf_submenu_1_1">메뉴3</div></a>
 					            <a href=""><div class="sf_submenu_1_1">메뉴4</div></a>
+					             -->
 					            <span class="sf_list_search_bar">
 					                <input type="text" placeholder="리스트 내 검색" class="sf_list_search_input">
 					                <button class="sf_list_search_button">🔍</button>
@@ -137,10 +139,11 @@
 		        // 섹션 전환 처리
 		        if (this.id === "menu1") {
 		        	$(".sf_result_section").show();
+		        	$(".sf_favorite_section").hide();
 		        	$(".loading").hide();
 		        	
 		        } else if (this.id === "menu2") {
-		        	$(".loading").show();
+		        	$(".sf_favorite_section").show();
 		        	$(".sf_result_section").hide();
 		        }
 		    });
