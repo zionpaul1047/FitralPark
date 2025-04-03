@@ -173,7 +173,7 @@
 				
 				<div id="mainbox">
 				<h1>자유 게시판 글쓰기</h1>
-				<form class="write-form" action="/community/bulletinWriteOK.do" method="post">
+				<form class="write-form" action="/fitralpark/bulletinWriteOK.do" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
 						<select id="search_category">
