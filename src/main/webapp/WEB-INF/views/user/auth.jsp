@@ -279,7 +279,7 @@
 	    <script>
 	    window.opener.location.href = "<%=request.getContextPath() + redirect%>"; // 부모창 리디렉션
 	        window.opener.document.getElementById("overlay").style.display = "none"; // 오버레이 제거
-	        window.close(); // 팝업 닫기
+	         // 팝업 닫기
 	    </script>
 	<%
 	    } else {
@@ -287,7 +287,7 @@
 	    <script>
 	        window.opener.location.reload(); // 그냥 새로고침
 	        window.opener.document.getElementById("overlay").style.display = "none";
-	        window.close();
+	        
 	    </script>
 	<%
 	    }

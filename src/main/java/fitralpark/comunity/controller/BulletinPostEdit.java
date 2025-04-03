@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostEdit.do")
 public class BulletinPostEdit extends HttpServlet {
@@ -21,10 +22,10 @@ public class BulletinPostEdit extends HttpServlet {
 
 		//BulletinPost
 		HttpSession session = req.getSession();
+		UserDTO dto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (null != session.getAttribute("loginUser")) {
-					
-		} else {
+		
+		if (dto == null) {
 			resp.sendRedirect(req.getContextPath() + "/login.do");
 			return;
 		}
@@ -32,7 +33,12 @@ public class BulletinPostEdit extends HttpServlet {
 		String post_no = req.getParameter("post_no");
 		
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO dto = dao.getPost(post_no);
+		CommunityDTO communitydto = dao.getPost(post_no);
+		
+		if (!dto.getMemberId().equals(communitydto.getCreator_id())) {
+		    resp.sendRedirect(req.getContextPath() + "/community/bulletinList.do");
+		    return;
+		}
 		
 		// 댓글 목록, 말머리 조회
 		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
@@ -40,8 +46,10 @@ public class BulletinPostEdit extends HttpServlet {
 		
 		// 불러오기
 		req.setAttribute("headerList", headerList);
-		req.setAttribute("Comment_list", list);
-		req.setAttribute("post", dto);
+		req.setAttribute("post", communitydto);
+		
+		//세션에 정보 저장
+		session.setAttribute("dto", communitydto);
 		
 		dao.close();
 		

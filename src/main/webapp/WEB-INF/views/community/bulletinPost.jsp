@@ -251,6 +251,7 @@
 					</tr>
 				</table>
 				
+				<!-- 추천, 비추천 -->
 				<div class="recommend_area">
 					<button type="button" id="btn_recommend" class="recommend_button" data-post_no="${post.post_no}"><i class="fa-regular fa-thumbs-up"></i>추천</button>
 					<span id="recommend_count" class="recommend_count">${post.post_recommend}</span>
@@ -267,7 +268,7 @@
 					</form>
 				</div>
 
-
+				<!-- 댓글 띄우기 -->
 				<div id="comment_area">
 				<c:forEach items="${Comment_list}" var="commentDto">
 					<div class="comment_item">
@@ -292,7 +293,7 @@
 					</div>
 					<div class="right_button">
 						<button type="button" onclick="location.href='bulletinPostEdit.do?post_no=${post.post_no}'">수정</button>
-						<button type="button" onclick="location.href='bulletinDelete.do?post_no=${post.post_no}'">삭제</button>
+						<button type="button" onclick="window.open('bulletinPostDel	.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
 					</div>
 				</div>
 				</div>

@@ -13,8 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
-@WebServlet("/writeOK.do")
+@WebServlet("/bulletinWriteOK.do")
 public class BulletinWriterOK extends HttpServlet {
 
 	@Override
@@ -25,19 +26,18 @@ public class BulletinWriterOK extends HttpServlet {
 
 		//AddOk.java	
 		HttpSession session = req.getSession();
-		
-//		req.setCharacterEncoding("UTF-8");
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
 		String post_subject = req.getParameter("post_subject");
 		String post_content = req.getParameter("post_content");
 		
-		CommunityDTO dto = new CommunityDTO();
-		dto.setPost_subject(post_subject);
-		dto.setPost_content(post_content);
-		dto.setCreator_id(session.getAttribute("auth").toString());
+		CommunityDTO communityDto = new CommunityDTO();
+		communityDto.setPost_subject(post_subject);
+		communityDto.setPost_content(post_content);
+		communityDto.setCreator_id(session.getAttribute("auth").toString());
 		
 		CommunityDAO dao = new CommunityDAO();
-		int result = dao.Bulletin_add(dto);
+		int result = dao.Bulletin_post_add(communityDto, userDto);
 		dao.close();
 		
 		if (result == 1) {

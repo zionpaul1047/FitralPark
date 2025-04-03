@@ -23,22 +23,10 @@ public class BulletinPostEditOK extends HttpServlet {
 		
 		
 		//BulletinPostEditOK
-		
-		// 세션 있는지 검사
-		HttpSession session = req.getSession();
-		
-		if (null != session.getAttribute("loginUser")) {
-					
-		} else {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
-		
 		String header_no = req.getParameter("header_no");
 		String post_subject = req.getParameter("post_subject");
 		String post_content = req.getParameter("post_content");
 		String post_no = req.getParameter("post_no");
-		
 		
 		CommunityDTO dto = new CommunityDTO();
 		dto.setHeader_no(header_no);

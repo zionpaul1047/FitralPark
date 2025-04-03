@@ -10,8 +10,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 //(DB 접근 DAO 클래스 자리)
 public class CommunityDAO {
@@ -38,18 +38,18 @@ public class CommunityDAO {
 		
 	}
 	
-	public int Bulletin_add(CommunityDTO dto) {
+	public int Bulletin_post_add(CommunityDTO communityDto, UserDTO userDto) {
 		
 		try {
 			
 			String sql = "insert into bulletin_post (bulletin_post_no, bulletin_post_subject, bulletin_post_content, private_check, bulletin_post_recommend, bulletin_post_decommend, post_record_cnt, regdate, creator_id, bulletin_post_header_no) values (seq_bulletin_post_no.nextVal, ?, ?, ?, default, default, default, sysdate, ?, ?)";
 			
 			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, dto.getPost_subject());
-			pstat.setString(2, dto.getPost_content());
-			pstat.setString(3, dto.getPrivate_check());
-			pstat.setString(4, dto.getCreator_id());
-			pstat.setString(5, dto.getHeader_no());
+			pstat.setString(1, communityDto.getPost_subject());
+			pstat.setString(2, communityDto.getPost_content());
+			pstat.setString(3, communityDto.getPrivate_check());
+			pstat.setString(4, userDto.getMemberId());
+			pstat.setString(5, communityDto.getHeader_no());
 			
 			return pstat.executeUpdate();
 			
@@ -124,7 +124,7 @@ public class CommunityDAO {
 			// 검색어가 있는 경우
 			if (word != null && !word.trim().isEmpty()) {
 				// 검색어가 있고 searchSel이 입력 돼 있는 경우
-				if (searchSel != null && !searchSel.isEmpty() && searchCategory == null && !searchCategory.isEmpty() ) {
+				if (searchSel != null && !searchSel.isEmpty() && searchCategory == null && searchCategory.isEmpty() ) {
 					switch (searchSel) {
 						case "post_subject": //범위: 제목
 							sql += "AND bp.bulletin_post_subject LIKE ? ";
@@ -468,94 +468,7 @@ public class CommunityDAO {
 	    return null;
 	}
 	
-	public void incrementRecommend(int postNo) {
-        try {
-            String sql = "UPDATE bulletin_post SET bulletin_post_recommend = bulletin_post_recommend + 1 WHERE bulletin_post_no = ?";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            pstat.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 비추천 수 증가
-    public void incrementDecommend(int postNo) {
-        try {
-            String sql = "UPDATE bulletin_post SET bulletin_post_decommend = bulletin_post_decommend + 1 WHERE bulletin_post_no = ?";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            pstat.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 추천 수 조회
-    public int getRecommendCount(int postNo) {
-        int count = 0;
-        try {
-            String sql = "SELECT bulletin_post_recommend FROM bulletin_post WHERE bulletin_post_no = ?";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            rs = pstat.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt("bulletin_post_recommend");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
-    // 비추천 수 조회
-    public int getDecommendCount(int postNo) {
-        int count = 0;
-        try {
-            String sql = "SELECT bulletin_post_decommend FROM bulletin_post WHERE bulletin_post_no = ?";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            rs = pstat.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt("bulletin_post_decommend");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
-    // 중복 추천/비추천 검사
-    public boolean checkAlreadyVoted(int postNo, String userId) {
-        try {
-            String sql = "SELECT COUNT(*) FROM vote_record WHERE bulletin_post_no = ? AND user_id = ?";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            pstat.setString(2, userId);
-            rs = pstat.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // 추천/비추천 기록 저장
-    public void insertVoteRecord(int postNo, String userId, String type) {
-        try {
-            String sql = "INSERT INTO vote_record (bulletin_post_no, user_id, vote_type) VALUES (?, ?, ?)";
-            pstat = conn.prepareStatement(sql);
-            pstat.setInt(1, postNo);
-            pstat.setString(2, userId);
-            pstat.setString(3, type);
-            
-            pstat.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	
 	
     public int Bulletin_edit(CommunityDTO dto) {
 		
@@ -576,12 +489,15 @@ public class CommunityDAO {
 
 			return pstat.executeUpdate();
 			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return 0;
 	}
+    
+    
     
     
 	public void close() {
@@ -598,6 +514,44 @@ public class CommunityDAO {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public CommunityDTO delPost(String post_no) {
+		
+		PreparedStatement pstat1 = null;
+	    PreparedStatement pstat2 = null;
+		
+		try {
+			
+            String sql1 = "Delete from bulletin_comment where bulletin_post_no = ?";
+            pstat1 = conn.prepareStatement(sql1);
+            pstat1.setString(1, post_no);
+            
+            pstat1.executeUpdate();
+            
+            String sql2 = "Delete from bulletin_post where bulletin_post_no = ?";
+            pstat2 = conn.prepareStatement(sql2);
+            pstat2.setString(1, post_no);
+            
+            pstat2.executeUpdate();
+              
+            conn.commit();
+            
+        } catch (Exception e) {
+        	
+            e.printStackTrace();
+            
+        } finally {
+            // 자원 정리
+            try {
+                if (pstat1 != null) pstat1.close();
+                if (pstat2 != null) pstat2.close();
+            } catch (Exception closeEx) {
+                closeEx.printStackTrace();
+            }
+        }
+		
+		return null;
 	}
 
 
