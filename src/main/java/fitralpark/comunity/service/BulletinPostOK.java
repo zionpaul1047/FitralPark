@@ -11,14 +11,13 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 
-@WebServlet("/bulletinpostok.do")
+@WebServlet("/bulletinPostOK.do")
 public class BulletinPostOK extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // PostOK
-        req.setCharacterEncoding("UTF-8");
-        resp.setContentType("application/json");
+
 
         String postNoStr = req.getParameter("post_no");
         String type = req.getParameter("type");

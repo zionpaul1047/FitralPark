@@ -120,6 +120,7 @@ public class CommunityDAO {
 					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
 					"LEFT JOIN bulletin_post_header bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
 					"WHERE 1=1 ";
+			
 			// 검색어가 있는 경우
 			if (word != null && !word.trim().isEmpty()) {
 				// 검색어가 있고 searchSel이 입력 돼 있는 경우
@@ -548,12 +549,40 @@ public class CommunityDAO {
             pstat.setInt(1, postNo);
             pstat.setString(2, userId);
             pstat.setString(3, type);
+            
             pstat.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 	
+    public int Bulletin_edit(CommunityDTO dto) {
+		
+		try {
+			
+			System.out.println(dto.getPost_subject());
+			System.out.println(dto.getPost_content());
+			System.out.println(dto.getHeader_no());
+			System.out.println(dto.getPost_no()); 
+			
+			String sql = "UPDATE bulletin_post SET bulletin_post_subject = ?, bulletin_post_content = ?, bulletin_post_header_no = ? where bulletin_post_no = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_subject());
+			pstat.setString(2, dto.getPost_content());
+			pstat.setString(3, dto.getHeader_no());
+			pstat.setString(4, dto.getPost_no());
+
+			return pstat.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+    
+    
 	public void close() {
 		
 		try {

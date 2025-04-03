@@ -279,7 +279,7 @@
 								${commentDto.regdate}
 							</div>
 						</div>
-						<div class="comment_content">
+						<div class="comment_content">s
 							${commentDto.comment_content}
 						</div>
 					</div>
@@ -291,7 +291,8 @@
 						<button type="button" onclick="location.href='bulletinList.do'">목록</button>
 					</div>
 					<div class="right_button">
-						<button type="button" onclick="location.href='bulletinpostEdit.do?post_no=${post.post_no}'">수정</button><button type="button" onclick="location.href='bulletinDelete.do?post_no=${post.post_no}'">삭제</button>
+						<button type="button" onclick="location.href='bulletinPostEdit.do?post_no=${post.post_no}'">수정</button>
+						<button type="button" onclick="location.href='bulletinDelete.do?post_no=${post.post_no}'">삭제</button>
 					</div>
 				</div>
 				</div>

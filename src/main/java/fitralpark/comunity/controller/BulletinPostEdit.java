@@ -13,14 +13,13 @@ import javax.servlet.http.HttpSession;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
-@WebServlet("/bulletinpostEdit.do")
+@WebServlet("/bulletinPostEdit.do")
 public class BulletinPostEdit extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//BulletinPostEdit
-		
+		//BulletinPost
 		HttpSession session = req.getSession();
 		
 		if (null != session.getAttribute("loginUser")) {
@@ -35,16 +34,18 @@ public class BulletinPostEdit extends HttpServlet {
 		CommunityDAO dao = new CommunityDAO();
 		CommunityDTO dto = dao.getPost(post_no);
 		
-		// 댓글 목록 조회
+		// 댓글 목록, 말머리 조회
 		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
-
+		ArrayList<CommunityDTO> headerList = dao.getHeaderList();
+		
+		// 불러오기
+		req.setAttribute("headerList", headerList);
 		req.setAttribute("Comment_list", list);
 		req.setAttribute("post", dto);
 		
 		dao.close();
 		
-
-		req.getRequestDispatcher("/WEB-INF/views/community/bulletinEdit.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinPostEdit.jsp").forward(req, resp);
 	}
 
 }
