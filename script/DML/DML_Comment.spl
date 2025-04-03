@@ -1,0 +1,86 @@
+-- 댓글 시퀀스 생성
+CREATE SEQUENCE seq_bulletin_comment_no START WITH 1 INCREMENT BY 1 NOCACHE;
+
+-- 댓글 더미 데이터 생성
+-- 게시글 1번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '정말 좋은 정보네요!', SYSDATE, 'user2', 1);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 이 운동 해봐야겠어요.', SYSDATE, 'user3', 1);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '감사합니다!', SYSDATE, 'mentor1', 1);
+
+-- 게시글 2번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '식단 공유 감사합니다.', SYSDATE, 'user1', 2);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 이 식단 따라 해봐야겠어요.', SYSDATE, 'user4', 2);
+
+-- 게시글 3번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '헬스장 정보 감사합니다.', SYSDATE, 'user2', 3);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 이 헬스장 가봤는데 좋았어요.', SYSDATE, 'user3', 3);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 추천합니다.', SYSDATE, 'mentor1', 3);
+
+-- 게시글 4번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '정말 대단하시네요!', SYSDATE, 'user1', 4);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 열심히 해야겠어요.', SYSDATE, 'user4', 4);
+
+-- 게시글 5번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '레시피 감사합니다.', SYSDATE, 'user2', 5);
+
+-- 게시글 6번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 정보 감사합니다.', SYSDATE, 'user3', 6);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 추천합니다.', SYSDATE, 'mentor1', 6);
+
+-- 게시글 7번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '루틴 공유 감사합니다.', SYSDATE, 'user1', 7);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 이 루틴 따라 해봐야겠어요.', SYSDATE, 'user4', 7);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 루틴이네요.', SYSDATE, 'user2', 7);
+
+-- 게시글 8번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '식단 준비 팁 감사합니다.', SYSDATE, 'user3', 8);
+
+-- 게시글 9번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '기구 사용법 감사합니다.', SYSDATE, 'mentor1', 9);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 이 기구 사용해봐야겠어요.', SYSDATE, 'user1', 9);
+
+-- 게시글 10번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '동기부여 감사합니다.', SYSDATE, 'user4', 10);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 열심히 해야겠어요.', SYSDATE, 'user2', 10);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 정보네요.', SYSDATE, 'user3', 10);
+
+-- 게시글 11번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '식단 기록 감사합니다.', SYSDATE, 'mentor1', 11);
+
+-- 게시글 12번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '수업 후기 감사합니다.', SYSDATE, 'user4', 12);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 들어봐야겠어요.', SYSDATE, 'user1', 12);
+
+-- 게시글 13번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '운동 효과 감사합니다.', SYSDATE, 'user2', 13);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 열심히 해야겠어요.', SYSDATE, 'user3', 13);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 정보네요.', SYSDATE, 'mentor1', 13);
+
+-- 게시글 14번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '영양소 계산 감사합니다.', SYSDATE, 'user4', 14);
+
+-- 게시글 15번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '시설 후기 감사합니다.', SYSDATE, 'user1', 15);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 가봐야겠어요.', SYSDATE, 'user2', 15);
+
+-- 게시글 16번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '기구 후기 감사합니다.', SYSDATE, 'user3', 16);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 사용해봐야겠어요.', SYSDATE, 'mentor1', 16);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 정보네요.', SYSDATE, 'user4', 16);
+
+-- 게시글 17번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '준비 방법 감사합니다.', SYSDATE, 'user1', 17);
+
+-- 게시글 18번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '환경 후기 감사합니다.', SYSDATE, 'user2', 18);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 가봐야겠어요.', SYSDATE, 'user3', 18);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '좋은 정보네요.', SYSDATE, 'mentor1', 18);
+
+-- 게시글 19번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '성공 후기 감사합니다.', SYSDATE, 'user4', 19);
+
+-- 게시글 20번에 대한 댓글
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '성공 후기 감사합니다.', SYSDATE, 'user1', 20);
+INSERT INTO bulletin_comment (bulletin_comment_no, bulletin_comment_content, regdate, creator_id, bulletin_post_no) VALUES (seq_bulletin_comment_no.NEXTVAL, '저도 열심히 해야겠어요.', SYSDATE, 'user2', 20);
+
+commit;

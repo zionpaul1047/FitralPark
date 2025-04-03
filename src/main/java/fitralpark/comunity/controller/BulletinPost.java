@@ -13,33 +13,36 @@ import javax.servlet.http.HttpSession;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
-@WebServlet("/bulletinWrite.do")
-public class BulletinWrite extends HttpServlet {
+@WebServlet("/bulletinPost.do")
+public class BulletinPost extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		CommunityDAO dao = new CommunityDAO();
+		//BulletinPost
 		HttpSession session = req.getSession();
-
 		
 		if (null != session.getAttribute("loginUser")) {
-			
+					
 		} else {
 			resp.sendRedirect(req.getContextPath() + "/login.do");
 			return;
 		}
 		
-		// 말머리 조회하기
-		ArrayList<CommunityDTO> headerList = dao.getHeaderList();
+		String post_no = req.getParameter("post_no");
 		
-		// 말머리 불러오기
-		req.setAttribute("headerList", headerList);
+		CommunityDAO dao = new CommunityDAO();
+		CommunityDTO dto = dao.getPost(post_no);
 		
-		// DAO 연결 해제
-		dao.close();
+		// 댓글 목록 조회
+		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
 
-		req.getRequestDispatcher("/WEB-INF/views/community/bulletinWrite.jsp").forward(req, resp);
+		req.setAttribute("Comment_list", list);
+		req.setAttribute("post", dto);
+		
+		dao.close();
+		
+		req.getRequestDispatcher("/WEB-INF/views/community/bulletinPost.jsp").forward(req, resp);
 	}
 
 }
