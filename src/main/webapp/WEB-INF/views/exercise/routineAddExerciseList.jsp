@@ -135,13 +135,16 @@
             background: none;
             padding: 0;
         }
-
+        
         .rudBtn:hover {
 
         }
         
-        .delBtn {
-        	margin: 10px auto;
+        .buttons-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            align-items: center;
         }
         
     </style>
@@ -228,13 +231,13 @@
 		            선택 항목 삭제</button>
 		        </div>
 	            <div>
-	                <button class="btn btn-primary" onclick="">↪ 등록하기</button>
+	                <button class="btn btn-primary" onclick="">등록하기</button>
 	            </div>
 	        </div>
 
-        <button class="btn-add" onclick="addExerciseItem()">
-	            <span><i class="fa-solid fa-plus"></i></span> 운동 추가하기
-	        </button>
+        <button type="button" class="btn-add" onclick="addExerciseItem()">
+    		<span><i class="fa-solid fa-plus"></i></span> 운동 추가하기
+		</button>
         
 		<div class="action-buttons">
             <button type="button" class="btn btn-primary" onclick="sendToParent()">불러오기</button>
@@ -269,10 +272,10 @@
 	        const newRow = document.createElement('tr');
 
 	        newRow.innerHTML = `
-	            <td><input type="checkbox"></td>
-	            <td><input type="text" name="exerciseName" placeholder="운동명 입력"></td>
+	        	<td><input type="checkbox" name="customSelectExercise"></td>
+	            <td><input type="text" name="exerciseName" placeholder="운동명 입력" style="width: 100%"></td>
 	            <td>
-	                <select class="exercise-category">
+	                <select name="exerciseCategory" class="exercise-category" style="width: 100%">
 	                    <option value="">카테고리 선택</option>
 	                    <option value="1">근력</option>
 	                    <option value="2">유산소</option>
@@ -283,7 +286,7 @@
 	                </select>
 	            </td>
 	            <td>
-	                <select class="exercise-part">
+	                <select name="exercisePart" class="exercise-part" style="width: 100%">
 	                    <option value="">부위 선택</option>
 	                    <option value="1">하체</option>
 	                    <option value="2">가슴</option>
@@ -296,9 +299,14 @@
 	                    <option value="9">유산소</option>
 	                </select>
 	            </td>
-	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량"></td>
-	            <td></td>
+	            <td><input type="text" name="caloriesPerUnit" placeholder="소모 열량" style="width: 100%"></td>
+	            <td>
+	                <button type="button" class="rudBtn" onclick="this.closest('tr').remove()">
+	                    <i class="fa-solid fa-xmark"></i>
+	                </button>
+	            </td>
 	        `;
+	        
 	        tbody.appendChild(newRow);
 	    }
 	    
