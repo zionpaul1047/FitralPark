@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -269,6 +270,31 @@
 	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
+	
+	<%
+	    // 세션에서 로그인 후 이동할 경로 가져오기
+	    String redirect = (String) session.getAttribute("redirectAfterLogin");
+	    if (redirect != null) {
+	        session.removeAttribute("redirectAfterLogin");
+	%>
+	    <script>
+	    window.opener.location.href = "<%=request.getContextPath() + redirect%>"; // 부모창 리디렉션
+	    window.opener.document.getElementById("overlay").style.display = "none"; // 오버레이 제거
+	    // 팝업 닫기
+	    window.close();
+	    </script>
+	<%
+	    } else {
+	%>
+	    <script>
+	        window.opener.location.reload(); // 그냥 새로고침
+	        window.opener.document.getElementById("overlay").style.display = "none";
+	    </script> -->
+	<%
+	    }
+	%>
+
+
 
 </body>
 </html>
