@@ -21,6 +21,7 @@
 		    grid-template-rows: 125px auto 1fr;
 		    grid-template-columns: 1fr;
 		    min-height: 100%;
+		    
         }
         .grid_top{
         	/* border: 1px solid black; */
@@ -37,6 +38,7 @@
         }
         .grid_center_R{
         /* border: 1px solid black; */
+        	width: 1000px;
         }
         .grid_bottom{
         /* border: 1px solid black; */

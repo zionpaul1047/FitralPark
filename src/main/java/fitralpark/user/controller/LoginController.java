@@ -6,7 +6,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import fitralpark.user.dao.UserDAO;
+import fitralpark.user.dto.UserDTO;
+
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("/login.do")
 public class LoginController extends HttpServlet {
@@ -15,7 +21,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // auth.jsp로 포워딩
+        // 기본 로그인 페이지 (직접 접근 시 auth.jsp로 포워딩)
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
         dispatcher.forward(request, response);
     }
@@ -28,12 +34,29 @@ public class LoginController extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // 간단한 로그인 예시 (실제 프로젝트에서는 DB와 연동 필요)
-        if ("admin".equals(username) && "1234".equals(password)) {
-            request.getSession().setAttribute("loginUser", username);
-            response.getWriter().println("<script>alert('로그인 성공!'); window.opener.location.href='/index.do'; window.close();</script>");
+        // DB에서 로그인 정보 확인
+        UserDAO dao = new UserDAO();
+        UserDTO loginUser = dao.login(username, password);  // UserDAO에 정의된 login 메서드 사용
+
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        if (loginUser != null) {
+            // 로그인 성공 → 세션에 사용자 정보 저장
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", loginUser);
+
+            // 팝업에서 로그인한 경우 → 부모창 새로고침 & 팝업 닫기
+            out.println("<script>");
+            out.println("alert('로그인 성공!');");
+            out.println("if (window.opener) { window.opener.location.reload(); window.close(); }");
+            out.println("</script>");
         } else {
-            response.getWriter().println("<script>alert('아이디 또는 비밀번호가 일치하지 않습니다.'); history.back();</script>");
+            // 로그인 실패
+            out.println("<script>");
+            out.println("alert('아이디 또는 비밀번호가 올바르지 않습니다.');");
+            out.println("history.back();");
+            out.println("</script>");
         }
     }
 }

@@ -1,18 +1,10 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
- 
-    <link rel="stylesheet" href="assets/css/common.css">
-    <script src="assets/js/jquery-1.12.4.min(1).js"></script>
-    <script src="assets/js/jquery-migrate-1.4.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 
-<style>
-#div .xi-home, .open {
-	font-family: 'Paperlogy-8ExtraBold'
-}
 
-
-</style>
 
 <!-- 우측 사이드 메뉴바 -->
    <div class="fix-menu">
@@ -55,7 +47,7 @@
             </li>
             <li class="setup">
                <a href="#">
-                            <img src="assets/images/icon/settings.png" alt="설정" style="width: 24px; height: 24px;">
+                            <img src="${pageContext.request.contextPath}/assets/images/icon/settings.png" alt="설정" style="width: 24px; height: 24px;">
                         </a>
             </li>
             <li class="button">
@@ -66,7 +58,7 @@
         </ul>
     
         <div id="scrollToTopBtn" class="top">
-            <i><img src="./assets/images/icon/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
+            <i><img src="${pageContext.request.contextPath}/assets/images/icon/main-arr.png" alt="홈페이지 상단으로 올라가기"></i>
         </div>
     
     </div>

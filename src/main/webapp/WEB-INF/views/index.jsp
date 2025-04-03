@@ -3,11 +3,11 @@
 
 
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
-	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {
         background-color: rgb(218, 243, 211);
@@ -73,7 +73,32 @@
 	</div>
 
 
-   
+    <script>
+	 	// 모든 메뉴 항목을 선택
+	    const menuItems = document.querySelectorAll('.sf_submenu_1 div');
+	
+	    // 클릭 이벤트 추가
+	    menuItems.forEach(item => {
+	      item.addEventListener('click', () => {
+	        // 모든 항목의 스타일 초기화
+	        menuItems.forEach(menu => {
+	          menu.classList.remove('active'); // active 클래스 제거
+	          menu.style.backgroundColor = 'lightgray'; // 기본 배경색 설정
+	          menu.style.fontWeight = 'normal'; // 기본 글씨 굵기 설정
+	        });
+	
+	        // 클릭된 항목에 스타일 적용
+	        item.classList.add('active'); // active 클래스 추가
+	        item.style.backgroundColor = 'oldlace'; // 클릭된 항목 배경색 설정
+	        item.style.fontWeight = 'bold'; // 클릭된 항목 글씨 굵게 설정
+	      });
+	    });
+
+    </script>
+    
+
+
+
 </body>
 
 

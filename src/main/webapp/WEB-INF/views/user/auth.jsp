@@ -7,6 +7,10 @@
 	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<script>
+		const contextPath = "${pageContext.request.contextPath}";
+	</script>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -26,7 +30,7 @@
 					<h1>로그인</h1>
 					<p class="mt-2">환영합니다! 로그인하여 서비스를 이용하세요.</p>
 				</div>
-				<form method="POST" action="/login.do" class="form">
+				<form method="POST" action="${pageContext.request.contextPath}/login.do">
 					<div class="form-group">
 						<label for="username">아이디</label>
 						<input type="text" name="username" class="form-control" id="username" required />
@@ -56,8 +60,10 @@
 					<h1>회원가입</h1>
 					<p class="mt-2">서비스 이용을 위해 정보를 입력해주세요.</p>
 				</div>
-				<form method="POST" action="/register.do" class="form">
+				<form method="POST" action="${pageContext.request.contextPath}/register.do" class="form">
 					<div class="form-scroll-box">
+					    <!-- 이메일 hidden input (JS에서 값을 채워줌) -->
+    					<input type="hidden" id="email_hidden" name="email" />
 
 						<%-- 아이디 --%>
 						<div class="form-group">
@@ -105,10 +111,12 @@
 								<span class="mx-2">-</span>
 								<input type="text" name="jumin2_first" id="jumin2_first" class="form-control text-center"
 									maxlength="1" pattern="[1-4]" required style="width: 40px;" />
+									
 								<input type="password" name="jumin2_rest" id="jumin2_rest" class="form-control text-center input-small"
 									maxlength="6" pattern="\d{6}" required placeholder="******" />
 							</div>
 							<small class="form-text text-muted mt-1">숫자만 입력. 예: 990101-1****** 형식</small>
+							<small id="jumin2Message" class="form-text text-danger mt-1"></small>
 						</div>
 
 						<%-- 닉네임 --%>
@@ -164,25 +172,49 @@
 						<%-- 이메일 --%>
 						<div class="form-group">
 							<label for="email_prefix">이메일<span class="text-danger"> *</span></label>
-							<div class="d-flex align-items-center">
-								<input type="text" id="email_prefix" class="form-control mr-1" placeholder="아이디" style="width: 30%;" required>
-								<span class="mx-1">@</span>
-								<select id="email_domain" class="form-control mr-1" style="width: 30%;" onchange="handleDomainChange()" required>
-									<option value="">선택</option>
-									<option value="gmail.com">gmail.com</option>
-									<option value="naver.com">naver.com</option>
-									<option value="daum.net">daum.net</option>
-									<option value="hanmail.net">hanmail.net</option>
-									<option value="nate.com">nate.com</option>
-									<option value="kakao.com">kakao.com</option>
-									<option value="etc">직접입력</option>
-								</select>
-								<button type="button" class="btn btn-outline-secondary" onclick="checkEmail()" style="white-space: nowrap;">이메일 인증</button>
+						
+							<div class="row">
+								<!-- 왼쪽: 이메일 입력 -->
+								<div class="col-md-7">
+									<div class="d-flex align-items-center">
+										<input type="text" id="email_prefix" class="form-control mr-1" placeholder="아이디" required style="width: 55%;">
+										<span class="mx-1">@</span>
+										<select id="email_domain" class="form-control mr-1" required style="width: 55%;">
+											<option value="">선택</option>
+											<option value="gmail.com">gmail.com</option>
+											<option value="naver.com">naver.com</option>
+											<option value="daum.net">daum.net</option>
+											<option value="hanmail.net">hanmail.net</option>
+											<option value="nate.com">nate.com</option>
+											<option value="kakao.com">kakao.com</option>
+											<option value="etc">직접입력</option>
+										</select>
+									</div>
+									<input type="text" id="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none;">
+								</div>
+						
+								<!-- 오른쪽: 인증 버튼 + 인증번호 입력 -->
+								<div class="col-md-5">
+									<div class="d-flex flex-column align-items-start">
+										<button type="button" id="emailAuthBtn" class="btn btn-outline-secondary mb-1" style="width: 120px;">
+											인증번호 발송
+										</button>
+										<small id="authTimer" class="form-text text-muted mt-1"></small>
+										<!-- 인증번호 입력 + 확인 버튼 -->
+										<div id="authCodeWrap" style="display: none; width: 100%;">
+											<div class="d-flex align-items-center">
+												<input type="text" id="authCode" maxlength="6" class="form-control mt-1 mr-2" placeholder="●●●●●●" style="max-width: 120px;">
+												<button type="button" id="authCodeCheckBtn" class="btn btn-outline-secondary mt-1">확인</button>
+											</div>
+											<div id="authCodeMessage" class="small mt-1" style="color: red;"></div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<input type="text" id="email_domain_custom" class="form-control mt-2" placeholder="직접 도메인 입력" style="display: none; width: 50%;" />
-							<small id="emailMessage" class="form-text"></small>
+							<small id="emailMessage" class="form-text mt-1"></small>
 						</div>
 
+						
 						<%-- 주소입력 --%>
 						<div class="form-group">
 							<label for="address">주소</label>
@@ -226,8 +258,42 @@
 			}).open();
 		}
 	</script>
+	<script>
+		window.addEventListener('DOMContentLoaded', function () {
+			const params = new URLSearchParams(window.location.search);
+			if (params.get("show") === "login") {
+				document.getElementById("signup").style.display = "none";
+		    	document.getElementById("login").style.display = "block";
+			}
+		});
+	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
+	
+	<%
+	    // 세션에서 로그인 후 이동할 경로 가져오기
+	    String redirect = (String) session.getAttribute("redirectAfterLogin");
+	    if (redirect != null) {
+	        session.removeAttribute("redirectAfterLogin");
+	%>
+	    <script>
+	    window.opener.location.href = "<%=request.getContextPath() + redirect%>"; // 부모창 리디렉션
+	        window.opener.document.getElementById("overlay").style.display = "none"; // 오버레이 제거
+	        window.close(); // 팝업 닫기
+	    </script>
+	<%
+	    } else {
+	%>
+	    <script>
+	        window.opener.location.reload(); // 그냥 새로고침
+	        window.opener.document.getElementById("overlay").style.display = "none";
+	        window.close();
+	    </script>
+	<%
+	    }
+	%>
+
+
 
 </body>
 </html>
