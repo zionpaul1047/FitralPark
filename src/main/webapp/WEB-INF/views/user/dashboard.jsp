@@ -595,9 +595,8 @@
 			justify-content: right;
 		}
 		
-		#popup_bottom #put_hist_btn {
-			
-			
+		#physical_hist_div {
+			overflow: auto;
 		}
 		
 		#physical_hist_input {
@@ -680,7 +679,7 @@
     </style>
 </head>
 <body>
-	
+
 	<div class="grid">
 	
 		<div class="grid_top">
@@ -748,31 +747,28 @@
                     	</div>
                     	<c:if test="${dto.tdyExcsList.size() gt 0}">
 					        <c:forEach var="item" items="${dto.tdyExcsList}">
-					        	<div class="dash_content_part" style="display: none;">
+					        	<div class="dash_content_part" style="display: none;" data-crttype="${item.excsCrtType}" data-excsno="${item.excsNo}">
 						        	<div id="tdy_excs_nm" class="card_mid_subj">${item.exerciseName}</div>
 							        <div class="mid_part">
-							            <%-- <div class="prgres_chart">
-							                <span class="chart_center">${item.processivity}%</span>
-							            </div> --%>
 							            <div class="hist_content">
 							            	<c:if test="${not empty item.ining}">
-								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.ining}회
+								                <div class="ining">
+								                    <i class="fa-solid fa-arrow-right"></i> <span>${item.ining}</span>회
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.set}">
-								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.set}세트
+								                <div class="sets">
+								                    <i class="fa-solid fa-arrow-right"></i> <span>${item.set}</span>세트
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.load}">
-								                <div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.load}kg
+								                <div class="load">
+								                    <i class="fa-solid fa-arrow-right"></i> <span>${item.load}</span>kg
 								                </div>
 							                </c:if>
 							                <c:if test="${not empty item.times}">
-							                	<div>
-								                    <i class="fa-solid fa-arrow-right"></i> ${item.times}min
+							                	<div class="times">
+								                    <i class="fa-solid fa-arrow-right"></i> <span>${item.times}</span>min
 								                </div>
 							                </c:if>
 							            </div>
@@ -780,14 +776,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn" onclick="location.href='#!';">운동 등록/수정</button>
-					            <button id="" class="card_btn">운동 완료</button>
+					            <button class="card_btn" onclick="location.href='#!';">운동 등록/수정</button>
+					            <button class="card_btn" onclick="do_record('today_exercise');">운동 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyExcsList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 운동이 없습니다.<br>운동을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">운동 등록</button>
+				        		<button class="card_btn_wide" onclick="location.href='#!';">운동 등록</button>
 				        	</div>
 				        </c:if>
 			        </div>
@@ -805,13 +801,13 @@
                     	</div>
                     	<c:if test="${dto.tdyDietList.size() gt 0}">
 	                    	<c:forEach var="item" items="${dto.tdyDietList}">
-	                    		<div class="dash_content_part" style="display: none;">
+	                    		<div class="dash_content_part" style="display: none;" data-dietno="${item.dietNo}">
 							        <div id="tdy_diet_nm"  class="card_mid_subj">${item.mealClassify}</div>
 							        <div class="mid_part">
 							            <div class="hist_content_wide">
 							            	<c:forEach var="food" items="${item.foodList}">
-								                <div class="tdy_diet_food_list">
-								                    <i class="fa-solid fa-arrow-right"></i> ${food.foodName} ${food.intake }g
+								                <div class="tdy_diet_food_list" data-crttype="${food.foodCreationType}" data-foodno="${food.foodNo}">
+								                    <i class="fa-solid fa-arrow-right"></i> ${food.foodName} <span>${food.intake}</span>g
 								                </div>
 							                </c:forEach>
 							            </div>
@@ -819,14 +815,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button id="" class="card_btn"  onclick="location.href='#!';">식단 등록/수정</button>
-					            <button id="" class="card_btn">식사 완료</button>
+					            <button class="card_btn"  onclick="location.href='#!';">식단 등록/수정</button>
+					            <button class="card_btn" onclick="do_record('today_diet');">식사 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyDietList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 식단이 없습니다.<br>식단을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button id="" class="card_btn_wide" onclick="location.href='#!';">식단 등록</button>
+				        		<button class="card_btn_wide" onclick="location.href='#!';">식단 등록</button>
 				        	</div>
 				        </c:if>
 				        
@@ -926,7 +922,7 @@
 				        	</div>
 				        </c:if>
 			        </div>
-			        <c:if test="${dto.tdyintake eq null}">
+			        <c:if test="${dto.tdyintake ne null}">
 				        <div id="intake_diagram">
 				            <div class="dash_subject_wide">하루 영양소 섭취량</div>
 				            <div id="ntrt_calorie">
@@ -1104,48 +1100,19 @@
 	<div id="popup_physical_hist" class="popup">
 		<div id="popup_head">
 			<h2>신체 기록</h2>
-			<div>원하시는 월을 선택해주세요: <input type="month"><button id="get_hist_btn" class="popup_in_btn">조회하기</button></div>
+			<div>원하시는 월을 선택해주세요: <input id="hist_month" type="month"><button id="get_hist_btn" class="popup_in_btn" required>조회하기</button></div>
 			<div>각 항목에 맞는 정보를 입력해주세요.</div>
 		</div>
 		<div id="popup_content">
 			<div id="physical_hist_div">
 				<table id="physical_hist_tbl">
-					<tr>
-						<th>날짜</th>
-						<th>키(cm)</th>
-						<th>몸무게(kg)</th>
-					</tr>
-					<tr>
-						<td>2025.01.31.(월)</td>
-						<td>182.1</td>
-						<td>80</td>
-					</tr>
-					<tr>
-						<td>2025.02.28.(월)</td>
-						<td>182.1</td>
-						<td>80</td>
-					</tr>
-					<tr>
-						<td>2025.03.01.(월)</td>
-						<td>182.1</td>
-						<td>80</td>
-					</tr>
-					<tr>
-						<td>2025.03.15.(월)</td>
-						<td>182.1</td>
-						<td>80</td>
-					</tr>
-					<tr>
-						<td>2025.03.25.(월)</td>
-						<td>182.1</td>
-						<td>80</td>
-					</tr>
+
 				</table>
 			</div>
 			<div id="physical_hist_input">
 				<div>
-					<div><span> 키: </span><input type="number" min="0" max="300"></div>
-					<div><span> 몸무게: </span><input type="number" min="0" max="200"></div>
+					<div><span> 키: </span><input type="number" id="input_height" min="0" max="300"></div>
+					<div><span> 몸무게: </span><input type="number" id="input_weight" min="0" max="200"></div>
 				</div>
 				<div><button id="hist_input_btn">저장하기</button></div>
 				
@@ -1159,6 +1126,27 @@
 	</div>
 
 	<script>
+		// 모든 메뉴 항목을 선택
+	    const menuItems = document.querySelectorAll('.sf_submenu_1 div');
+	
+	    // 클릭 이벤트 추가
+	    menuItems.forEach(item => {
+	      item.addEventListener('click', () => {
+	        // 모든 항목의 스타일 초기화
+	        menuItems.forEach(menu => {
+	          menu.classList.remove('active'); // active 클래스 제거
+	          menu.style.backgroundColor = 'lightgray'; // 기본 배경색 설정
+	          menu.style.fontWeight = 'normal'; // 기본 글씨 굵기 설정
+	        });
+	
+	        // 클릭된 항목에 스타일 적용
+	        item.classList.add('active'); // active 클래스 추가
+	        item.style.backgroundColor = 'oldlace'; // 클릭된 항목 배경색 설정
+	        item.style.fontWeight = 'bold'; // 클릭된 항목 글씨 굵게 설정
+	      });
+	    });
+		
+	
 		document.getElementById('open_popup_btn').addEventListener('click', function() {
 		    document.getElementById('popup_physical_hist').style.display = 'grid';
 		    document.getElementById("modalBackdrop").style.display = "block"; // 배경 활성화
@@ -1272,31 +1260,7 @@
     		//main_cash_bn_idx = i;
     	}
        
- 		
-		function getTdyExcsList() {
-			$.ajax({
-				type: 'GET',
-				url: '/fitralpark/dash_today.do',
-				data: 'dong=' + $('#dong').val().trim(),
-				dataType: 'json',
-				success: function(result){
-					//console.log(result);
-					
-					$('#address1').html(''); //select의 내용물 초기화
-					
-					result.forEach(item => {
-						//item > <option>[123-456] 서울 강남구 역삼동 10</option>
-						$('#address1').append(`
-								<option>[\${item.zipcode}] \${item.sido} \${item.gugun} \${item.dong} \${item.bunji}</option>
-								`);
-					});
-				},
-				error: function(a,b,c){
-					console.log(a,b,c);
-				}
-			});
-		}
-		
+ 			
 		
 		function physical_info_regist() {
 			$('#popup_content > #physical_hist_div').css('display', 'none');
@@ -1322,34 +1286,165 @@
     		$('#popup_head > div:nth-child(3)').css('display', 'none');
 		}
 		
+		$('#get_hist_btn').click(() => {
+			console.log($('#hist_month').val(),Object.prototype.toString.call($('#hist_month').val()));
+			
+			if($('#hist_month').val() == '') {
+				alert('값을 입력해주세요.');
+				return false;
+			}
+			
+		 	$.ajax({
+				type: 'GET',
+				url: '/fitralpark/dashphysicalinfo.do',
+				data: {
+					id: '${id}',
+					month: $('#hist_month').val().replace('-', '')
+				},
+				dataType: 'json',
+				success: function(result){
+					console.log(result);
+					
+					$('#physical_hist_div').html('');
+					
+					$('#physical_hist_div').append('<table id="physical_hist_tbl">');
+					$('#physical_hist_tbl').append(`<tr>
+							<th>날짜</th>
+							<th>키(cm)</th>
+							<th>몸무게(kg)</th>
+						</tr>
+						`);
+					result.forEach(item => {
+						$('#physical_hist_tbl').append(`
+								<tr>
+									<td>\${item.regdate}</td>
+									<td>\${item.height}</td>
+									<td>\${item.weight}</td>
+								</tr>
+								`);
+					});
+					
+				},
+				error: function(a,b,c){
+					console.log(a,b,c);
+				} 
+			});
+		});
+		
+		$('#hist_input_btn').click(function() {
+			$.ajax({
+				type: 'GET',
+				url: '/fitralpark/dashphysicalregist.do',
+				data: {
+					id: '${id}',
+					height: $('#input_height').val(),
+					weight: $('#input_weight').val()
+				},
+				dataType: 'json',
+				success: function(result) {
+					if(result == 1) {
+						alert('성공적으로 저장되었습니다.');
+					} else {
+						alert('저장에 실패하였습니다.');
+					}
+				},
+				error: function(a,b,c) {
+					console.log(a,b,c);
+				}
+			});
+		});
+		
+		function do_record(content_id) {
+			if(content_id == 'today_exercise') {
+				//console.log($('#today_exercise .dash_content_part[display="block"] .ining span').get(0));
+				
+				$.ajax({
+					type: 'GET',
+					url: '/fitralpark/dashrecordexcs.do',
+					data: {
+						id: '${id}',
+						sets: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
+						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
+						weight: $('#today_exercise .dash_content_part[style="display: block;"] .load span').text(),
+						exercise_time: $('#today_exercise .dash_content_part[style="display: block;"] .times span').text(),
+						exercise_no: $('#today_exercise .dash_content_part[style="display: block;"]').data('excsno'),
+						exercise_creation_type: $('#today_exercise .dash_content_part[style="display: block;"]').data('crttype')
+					},
+					contentType: 'application/json',
+					dataType: 'json',
+					success: function(result) {
+						if(result.result == 1) {
+							alert('성공적으로 저장되었습니다.');
+						} else if(result.result == 0) {
+							alert('저장에 실패하였습니다.');
+						} else {
+							alert('이미 저장 되었습니다.');
+						}
+					},
+					error: function(a,b,c) {
+						console.log(a,b,c);
+					}
+				});
+			} else if(content_id == 'today_diet') {
+				
+				
+				let diet = new Object();
+				let arrFood = [];
+				
+				$('#today_diet .dash_content_part[style="display: block;"] .tdy_diet_food_list').each((index, item) => {
+					arrFood.push({
+						food_creation_type: $(item).data('crttype'),
+						food_no: $(item).data('foodno'),
+						intake: $(item).find('span').text()
+					});
+				});
+				diet.id = '${id}';
+				diet.diet_no = $('#today_diet .dash_content_part[style="display: block;"]').data('dietno');
+				diet.meal_classify = $('#today_diet .dash_content_part[style="display: block;"] #tdy_diet_nm').text();
+				diet.arrFood = arrFood;
+				
+				console.log(diet);			
+				
+				$.ajax({
+					type: 'POST',
+					url: '/fitralpark/dashrecordintake.do',
+					data: JSON.stringify(diet),
+					contentType: 'application/json; charset=utf-8',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result.result);
+						
+						if(result.result >= 1) {
+							alert('성공적으로 저장되었습니다.');
+						} else if(result.result == 0) {
+							alert('저장에 실패하였습니다.');
+						} else {
+							alert('이미 저장 되었습니다.');
+						}
+					},
+					error: function(a,b,c) {
+						console.log(a,b,c);
+					}
+				});
+			}
+		}
+		
+		
 	       
         //그래프 영양소 비율 변수
 		let calorie_ratio = (Math.round(Number($('#ntrt_calorie > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_calorie > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-        
 		let chocdf_ratio = (Math.round(Number($('#ntrt_chocdf > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_chocdf > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let prot_ratio = (Math.floor(Number($('#ntrt_prot > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_prot > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let fatce_ratio = (Math.round(Number($('#ntrt_fatce > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_fatce > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let sugar_ratio = (Math.round(Number($('#ntrt_sugar > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_sugar > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-
 		let fibtg_ratio = (Math.round(Number($('#ntrt_fibtg > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_fibtg > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
- 		
 		let ca_ratio = (Math.round(Number($('#ntrt_ca > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_ca > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let nat_ratio = (Math.round(Number($('#ntrt_nat > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_nat > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let vitaRae_ratio = (Math.round(Number($('#ntrt_vitaRae > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_vitaRae > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let thia_ratio = (Math.round(Number($('#ntrt_thia > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_thia > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let ribf_ratio = (Math.round(Number($('#ntrt_ribf > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_ribf > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let nia_ratio = (Math.round(Number($('#ntrt_nia > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_nia > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let vitc_ratio = (Math.round(Number($('#ntrt_vitc > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_vitc > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
-		
 		let vitd_ratio = (Math.round(Number($('#ntrt_vitd > .dash_chart_top > .dash_ntrt_chart_subject > span.intake_ntrt').text()) / Number($('#ntrt_vitd > .dash_chart_top > .dash_ntrt_chart_subject > span.required_ntrt').text()) * 1000) / 1000 * 100).toFixed(1) ;
 		
 		$('#ntrt_calorie > .dash_chart_top > .dash_ntrt_chart_percent').text(calorie_ratio + '%');

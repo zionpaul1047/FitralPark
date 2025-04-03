@@ -16,33 +16,34 @@ import java.io.PrintWriter;
 
 @WebServlet("/login.do")
 public class LoginController extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// auth.jsp로 포워딩
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
-		dispatcher.forward(request, response);
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        // auth.jsp로 포워딩
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
+        dispatcher.forward(request, response);
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
 
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
 
-		// DB에서 로그인 정보 확인
-		UserDAO dao = new UserDAO();
-		UserDTO loginUser = dao.login(username, password); // login() 메서드는 UserDAO에 작성 필요
+        // DB에서 로그인 정보 확인
+        UserDAO dao = new UserDAO();
+        UserDTO loginUser = dao.login(username, password); // login() 메서드는 UserDAO에 작성 필요
 
-		response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
-		if (loginUser != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", loginUser);
+        if (loginUser != null) {
+            // 로그인 성공 → 세션에 DTO 저장
+            HttpSession session = request.getSession();
+            session.setAttribute("loginUser", loginUser);
 
 			String redirect = (String) session.getAttribute("redirectAfterLogin");
 			if (redirect == null || redirect.isEmpty()) {

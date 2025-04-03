@@ -12,10 +12,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DashCurrentExcsDTO {
-	String regdate;
-	String totalPlanCnt;
-	String completePlanCnt;
-	String incompletePlanCnt;
-	String unplanCnt;
-	String processivity;
+	private String regdate;
+	private String totalPlanCnt;
+	private String completePlanCnt;
+	private String incompletePlanCnt;
+	private String unplanCnt;
+	private String processivity;
 }
