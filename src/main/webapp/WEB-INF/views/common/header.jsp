@@ -2,9 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- 공통 CSS/JS -->
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 <!-- contextPath 전역 변수 -->
 <script>
 	const contextPath = '${pageContext.request.contextPath}';

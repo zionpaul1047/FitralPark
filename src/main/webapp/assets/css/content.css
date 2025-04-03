@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+	.content_bg {
+	/* margin-left: 228px;
+	    margin-top: 276px; */
+	    margin-bottom: 30px;
+	    /* border: 1px solid black; */
+	    width: 1065px;
+	    border-radius: 20px;
+	    background: var(--white);
+	    box-sizing: border-box;
+
+	}
+
+	.content_box{
+	   	/* border: 1px solid black; */
+		padding: 30px;
+		word-wrap: break-word;
+	}
