@@ -17,7 +17,9 @@ public class BulletinPostOK extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // PostOK
-
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
+    	
 
         String postNoStr = req.getParameter("post_no");
         String type = req.getParameter("type");

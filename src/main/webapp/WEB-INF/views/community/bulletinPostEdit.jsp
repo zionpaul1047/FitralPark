@@ -180,8 +180,8 @@
 					<div class="form-group">
 						<label for="category">말머리</label>
 						<select id="search_category" name="header_no">
-						    <option value="${post.header_no}">${post.header_name}</option>
-						    <option value="">전체</option>
+						    <option value="${post.header_no}" selected>${post.header_name}</option>
+   						    <option value="">선택</option>
 						    <c:forEach items="${headerList}" var="headerDto">
 						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
 						    </c:forEach>

@@ -14,11 +14,14 @@ import javax.servlet.http.HttpSession;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
-@WebServlet("/writeok.do")
+@WebServlet("/writeOK.do")
 public class BulletinWriterOK extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
 
 		//AddOk.java	
 		HttpSession session = req.getSession();

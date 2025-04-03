@@ -423,6 +423,7 @@ public class CommunityDAO {
 				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
 				dto.setPost_decommend(rs.getString("bulletin_post_decommend"));
 				dto.setHeader_name(rs.getString("header_name"));
+				dto.setHeader_no(rs.getString("bulletin_post_header_no"));
 			}
 
 		} catch (Exception e) {
