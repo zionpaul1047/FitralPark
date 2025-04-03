@@ -11,7 +11,7 @@ import javax.servlet.http.*;
  * - 미로그인 시 로그인 팝업 트리거용 속성 저장
  * - 로그인 성공 시 해당 속성 제거
  */
-//@WebFilter("/*")
+@WebFilter("/*")
 public class SessionCheckFilter implements Filter {
 
     // 로그인 필요 없는 경로 목록
