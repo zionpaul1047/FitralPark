@@ -125,7 +125,7 @@
 		.action-buttons {
 			display: flex;
 			justify-content: flex-end;
-			margin-top: 10px;
+			margin: 10px auto;
 		}
 
         .rudBtn {
@@ -138,6 +138,10 @@
 
         .rudBtn:hover {
 
+        }
+        
+        .delBtn {
+        	margin: 10px auto;
         }
         
     </style>
@@ -216,6 +220,17 @@
 		        </c:forEach>
 		    </tbody>
 		</table>
+
+        <div class="buttons-row">
+	        	<div>
+		            <button class="btn" onclick="resetForm()">초기화</button>
+		            <button class="btn" onclick="deleteSelectedItems()">
+		            선택 항목 삭제</button>
+		        </div>
+	            <div>
+	                <button class="btn btn-primary" onclick="">↪ 등록하기</button>
+	            </div>
+	        </div>
 
         <button class="btn-add" onclick="addExerciseItem()">
 	            <span><i class="fa-solid fa-plus"></i></span> 운동 추가하기
@@ -298,6 +313,8 @@
 	            alert('삭제 요청: ID = ' + id);
 	        }
 	    }
+
+        
 
     
     </script>
