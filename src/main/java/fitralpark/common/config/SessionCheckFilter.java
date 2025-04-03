@@ -18,7 +18,7 @@ public class SessionCheckFilter implements Filter {
     private static final String[] excludePaths = {
         "/login.do", "/logout.do", "/register.do", "/auth.jsp",
         "/checkId.do", "/sendAuthEmail.do", "/checkAuthCode.do",
-        "/favicon.ico", "/assets/"
+        "/favicon.ico", "/assets/", "/popup/loginPopup.jsp"  // ✅ 팝업 제외 추가
     };
 
     // 로그인 보호가 필요한 경로
@@ -47,39 +47,21 @@ public class SessionCheckFilter implements Filter {
         }
 
         // [2] 로그인 여부 확인
-        boolean isLoggedIn = (session != null && session.getAttribute("loginUser") != null);
+        boolean isLoggedIn = (session != null) && (session.getAttribute("loginUser") != null);
 
-        // [3] 보호 경로 접근 시 로그인 필요 여부 확인
-        boolean isProtected = false;
+        // [3] 보호 경로 접근 시 로그인 안 되어 있으면 팝업 트리거
         for (String path : protectedPaths) {
             if (command.startsWith(path)) {
-                isProtected = true;
-                break;
+                if (!isLoggedIn) {
+                    httpReq.setAttribute("popupLoginRequired", true);
+                    RequestDispatcher dispatcher = httpReq.getRequestDispatcher("/popup/loginPopup.jsp");
+                    dispatcher.forward(httpReq, httpRes);
+                    return;
+                }
             }
         }
 
-        if (isProtected && !isLoggedIn) {
-            // 세션이 없으면 새로 생성
-            session = httpReq.getSession(true);
-
-            // 로그인 후 복귀용 경로 저장
-            session.setAttribute("redirectAfterLogin", command);
-
-            // 팝업 트리거 플래그 설정
-            request.setAttribute("loginRequired", true);
-            session.setAttribute("loginRequired", true);
-        }
-
-        // [4] 로그인된 상태인데 이전 플래그가 남아있다면 제거
-        if (isLoggedIn && session.getAttribute("loginRequired") != null) {
-            session.removeAttribute("loginRequired");
-        }
-
+        // [4] 로그인된 경우 또는 보호 경로 아님 → 그대로 진행
         chain.doFilter(request, response);
     }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
-    @Override
-    public void destroy() {}
 }
