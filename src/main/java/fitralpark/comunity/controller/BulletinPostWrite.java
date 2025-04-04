@@ -27,11 +27,6 @@ public class BulletinPostWrite extends HttpServlet {
 		HttpSession session = req.getSession();
 		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (userDto == null) {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
-		
 		CommunityDAO dao = new CommunityDAO();
 		CommunityDTO communityDto = new CommunityDTO();
 		

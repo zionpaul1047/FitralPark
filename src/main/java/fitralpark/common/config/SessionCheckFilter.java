@@ -16,14 +16,14 @@ public class SessionCheckFilter implements Filter {
 
     // 로그인 필요 없는 경로 목록
     private static final String[] excludePaths = {
-        "/login.do", "/logout.do", "/register.do", "/auth.jsp",
+        "/index.do", "/login.do", "/logout.do", "/register.do", "/auth.jsp",
         "/checkId.do", "/sendAuthEmail.do", "/checkAuthCode.do",
-        "/favicon.ico", "/assets/", "/popup/loginPopup.jsp"  // ✅ 팝업 제외 추가
+        "/favicon.ico", "/assets/"
     };
 
     // 로그인 보호가 필요한 경로
     private static final String[] protectedPaths = {
-        "/dashboard.do", "/mypage.do", "/diet.do", "/recommendation.do"
+        "/dashboard.do", "/diet.do", "/recommendation.do"
     };
 
     @Override
@@ -38,7 +38,7 @@ public class SessionCheckFilter implements Filter {
         String contextPath = httpReq.getContextPath();
         String command = uri.substring(contextPath.length());
 
-        // [1] 필터 제외 경로 처리
+        // 필터 제외 경로 처리
         for (String path : excludePaths) {
             if (command.startsWith(path)) {
                 chain.doFilter(request, response);
@@ -46,22 +46,43 @@ public class SessionCheckFilter implements Filter {
             }
         }
 
-        // [2] 로그인 여부 확인
-        boolean isLoggedIn = (session != null) && (session.getAttribute("loginUser") != null);
+        // 로그인 여부 확인
+        boolean isLoggedIn = (session != null && session.getAttribute("loginUser") != null);
 
-        // [3] 보호 경로 접근 시 로그인 안 되어 있으면 팝업 트리거
+        // 보호 경로 접근 시 로그인 필요 여부 확인
+        boolean isProtected = false;
         for (String path : protectedPaths) {
             if (command.startsWith(path)) {
-                if (!isLoggedIn) {
-                    httpReq.setAttribute("popupLoginRequired", true);
-                    RequestDispatcher dispatcher = httpReq.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
-                    dispatcher.forward(httpReq, httpRes);
-                    return;
-                }
+                isProtected = true;
+                break;
             }
         }
 
-        // [4] 로그인된 경우 또는 보호 경로 아님 → 그대로 진행
+        if (isProtected && !isLoggedIn) {
+            session = httpReq.getSession(true);
+            session.setAttribute("redirectAfterLogin", command);
+            session.setAttribute("loginRequired", true);
+
+            // 일반 요청인지, AJAX인지 판별 필요시 여기에 조건 추가 가능
+            if ("XMLHttpRequest".equals(httpReq.getHeader("X-Requested-With"))) {
+                httpRes.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 필요");
+            } else {
+				//httpRes.sendRedirect(contextPath + "/login.do?show=login");
+            }
+
+            return; // 요청 차단
+        }
+
+        // 로그인된 상태인데 이전 플래그가 남아있다면 제거
+        if (isLoggedIn && session.getAttribute("loginRequired") != null) {
+            session.removeAttribute("loginRequired");
+        }
+
         chain.doFilter(request, response);
     }
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {}
+    @Override
+    public void destroy() {}
 }

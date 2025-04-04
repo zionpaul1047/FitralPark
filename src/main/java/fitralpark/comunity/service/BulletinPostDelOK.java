@@ -25,11 +25,6 @@ public class BulletinPostDelOK extends HttpServlet {
 		//BulletinPostDelOK
 		HttpSession session = req.getSession();
 		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
-	
-		if (userDto == null) {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
 
         String post_no = req.getParameter("post_no");  // 요청에서 post_no 가져오기
         String creator_id = req.getParameter("creator_id");

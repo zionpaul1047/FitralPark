@@ -23,21 +23,13 @@ public class BulletinPostDel extends HttpServlet {
 		
 		HttpSession session = req.getSession();
 		UserDTO dto = (UserDTO) session.getAttribute("loginUser");
-		
-		
-		if (dto == null) {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
+	
 		
 		String post_no = req.getParameter("post_no");
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO communitydto = dao.getPost(post_no);
+		CommunityDTO communitydto = dao.getPost(post_no, req.getSession());
 		
-		if (!dto.getMemberId().equals(communitydto.getCreator_id())) {
-		    resp.sendRedirect(req.getContextPath() + "/community/bulletinList.do");  // 권한 없으면 목록으로 이동
-		    return;
-		}
+
 		
 		req.setAttribute("post", communitydto);
 	

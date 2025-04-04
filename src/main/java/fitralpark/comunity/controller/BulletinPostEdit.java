@@ -25,15 +25,10 @@ public class BulletinPostEdit extends HttpServlet {
 		UserDTO dto = (UserDTO) session.getAttribute("loginUser");
 		
 		
-		if (dto == null) {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
-		
 		String post_no = req.getParameter("post_no");
 		
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO communitydto = dao.getPost(post_no);
+		CommunityDTO communitydto = dao.getPost(post_no, req.getSession());
 		
 		if (!dto.getMemberId().equals(communitydto.getCreator_id())) {
 		    resp.sendRedirect(req.getContextPath() + "/community/bulletinList.do");

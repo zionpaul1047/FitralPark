@@ -538,6 +538,8 @@ public class CommunityDAO {
 	    boolean success = false;
 	    
 		try {
+			conn.setAutoCommit(false);
+			
 			//댓글 삭제
             String sql1 = "DELETE FROM bulletin_comment WHERE bulletin_post_no = ?";
             pstat1 = conn.prepareStatement(sql1);
