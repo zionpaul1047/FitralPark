@@ -492,6 +492,8 @@ body {
 	    });
 	});
  */
+ 
+
 	document.querySelectorAll('.star-btn').forEach(btn => {
 	    btn.addEventListener('click', async function(evt) {
 	        
@@ -538,7 +540,7 @@ body {
 
 	                detailBody.innerHTML = '';
 	                
-	                popupTitle.textContent = `식단 번호: \${data.dietName}`;
+	                popupTitle.textContent = `\${data.dietName}`;
 	                
 	                data.foods.forEach(food => {
 	                	detailBody.innerHTML += `
@@ -782,7 +784,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   </script>
-
-
 </body>
 </html>

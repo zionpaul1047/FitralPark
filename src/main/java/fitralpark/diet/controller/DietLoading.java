@@ -30,31 +30,12 @@ public class DietLoading extends HttpServlet {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null)
             memberId = "guest";
-
-        
     
 
         // DAO 호출
         DietDAO dao = new DietDAO();
-        
-     // 요청 파라미터 추출
-//        ObjectMapper mapper = new ObjectMapper();
-//        Map<String, Object> requestData = mapper.readValue(req.getInputStream(), Map.class);
-//        
-//        // 북마크 토글 동작 수행
-//        if (requestData.containsKey("action") && "toggleBookmark".equals(requestData.get("action"))) {
-//            int dietNo = (int) requestData.get("dietNo");
-//            boolean isCurrentlyBookmarked = (boolean) requestData.get("isBookmarked");
-//            
-//            handleBookmarkToggle(resp, memberId, dietNo, isCurrentlyBookmarked);
-//            return;
-//        }
-        
-        // 지원하지 않는 액션
-//        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-//        resp.getWriter().write("지원하지 않는 요청입니다.");
-    
 
+    
         String pageParam = req.getParameter("page");
         int currentPage = 1;
         try {

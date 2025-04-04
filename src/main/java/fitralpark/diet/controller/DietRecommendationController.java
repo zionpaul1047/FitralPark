@@ -26,22 +26,13 @@ public class DietRecommendationController extends HttpServlet {
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null)
             memberId = "guest";
+        
+        memberId = "hong";
 
-        // 여기까지
-        // AJAX 요청인지 확인 (상세정보 요청)
-        String dietNoParam = req.getParameter("dietNo");
-        if (dietNoParam != null) {
-            handleFoodDetailsRequest(req, resp, Integer.parseInt(dietNoParam));
-            return;
-        }
 
         // DAO 호출
         DietDAO dao = new DietDAO();
-
-        // 페이지네이션 처리
-        if (memberId == null)
-            memberId = "guest";
-
+        
         String pageParam = req.getParameter("page");
         int currentPage = 1;
         try {
@@ -64,17 +55,18 @@ public class DietRecommendationController extends HttpServlet {
             int calorieMax = Integer.parseInt(req.getParameter("calorieMax"));
             String mealClassify = req.getParameter("mealClassify");
             String searchTerm = req.getParameter("searchTerm");
+            String dietCategory = req.getParameter("dietCategory");
             boolean favoriteFilter = req.getParameter("favoriteFilter") != null ? true : false;
             boolean myMealFilter = req.getParameter("myMealFilter") != null ? true : false;
 
-            list = dao.searchDiets(calorieMin, calorieMax, mealClassify, searchTerm, favoriteFilter, myMealFilter, memberId, begin, end);
+            list = dao.searchRecomDiets(calorieMin, calorieMax, mealClassify, searchTerm, dietCategory, favoriteFilter, myMealFilter, memberId, begin, end);
             
             req.setAttribute("isSearch", false);
 
         } else {
 
             // 검색X
-            list = dao.getDiets(begin, end, memberId);
+            list = dao.getRecommendDiets(begin, end, memberId);
             
             req.setAttribute("isSearch", true);
 
@@ -82,11 +74,13 @@ public class DietRecommendationController extends HttpServlet {
 
         int totalCount = dao.getTotalCount(memberId);
         int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
+        
 
         req.setAttribute("list", list);
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("totalPages", totalPages);
         req.getRequestDispatcher("/WEB-INF/views/diet/dietRecommend.jsp").forward(req, resp);
-    }
 
+    }
+    
 }

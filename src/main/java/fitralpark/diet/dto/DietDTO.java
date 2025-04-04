@@ -7,7 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
 //(데이터 전달 DTO 클래스 자리)
+
+
 @Getter
 @Setter
 @ToString
@@ -130,6 +133,7 @@ public class DietDTO {
 
     private String aaa;
     
+    private String diet_category;
     
  // 음식 상세 정보 리스트 (food_name, enerc, food_size)
     private List<FoodDetail> foodDetails = new ArrayList<>();
@@ -169,7 +173,6 @@ public class DietDTO {
         this.enerc = enerc;
         this.food_size = food_size;
         
-        System.out.println(this.diet_bookmark_no);
     }
     
     
@@ -183,6 +186,39 @@ public class DietDTO {
         this.creator_id = creator_id;
         this.diet_bookmark_no = diet_bookmark_no;
     }
+    
+    public DietDTO(int diet_no, String diet_name, String diet_category_name, String regdate, int diet_total_kcal,
+            String meal_classify, String creator_id, int diet_bookmark_no, int views) {
+        this.diet_no = diet_no;
+        this.diet_name = diet_name;
+        this.diet_category_name = diet_category_name;
+        this.regdate = regdate;
+        this.diet_total_kcal = diet_total_kcal;
+        this.meal_classify = meal_classify;
+        this.creator_id = creator_id;
+        this.diet_bookmark_no = diet_bookmark_no;
+        this.views = views;
+    }
+
+
+    public DietDTO() {
+        // 기본 생성자
+    }
+
+    public DietDTO(int diet_no, String diet_name, String regdate, int diet_total_kcal,
+            String mealClassify, String creatorId, String dietCategory,
+            int dietBookmarkNo) {
+ this.diet_no = diet_no;
+ this.diet_name = diet_name;
+ this.regdate = regdate;
+ this.diet_total_kcal = diet_total_kcal;
+ this.meal_classify = mealClassify;
+ this.creator_id = creatorId;
+ this.diet_category = dietCategory; // 초기화 추가
+ this.diet_bookmark_no = dietBookmarkNo;
+}
 
 }
+
+    
 

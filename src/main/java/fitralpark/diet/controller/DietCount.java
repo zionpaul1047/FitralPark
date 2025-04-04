@@ -1,8 +1,8 @@
 package fitralpark.diet.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,38 +10,40 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import fitralpark.diet.dao.DietDAO;
 
-@WebServlet("/dietFavorite.do")
-public class DietFavorite extends HttpServlet {
+@WebServlet("/getCount.do")
+public class DietCount extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //DietFavorite.java
         
-        String memberId = req.getParameter("memberId");
         String dietNo = req.getParameter("dietNo");
-        boolean isCurrentlyBookmarked;
         
-        System.out.println("memberId: " + memberId);
         System.out.println("dietNo: " + dietNo);
         
         DietDAO dao = new DietDAO();
-        Map<String, Object> result = new HashMap<>();
         
         try {
             
-            dao.editBookmark(dietNo, memberId);
+            HashMap<String,Integer> map = dao.getCount(dietNo);
             
             // 성공 응답 반환
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
             
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(resp.getWriter(), result);
+            PrintWriter writer = resp.getWriter();
+            
+            writer.print("""
+                    {
+                        "recommend": %d,
+                        "disrecommend": %d
+                    }
+                    """.formatted(map.get("recommend"), map.get("disrecommend")));
+            
+            writer.close();
             
         } catch (Exception e) {
             // 오류 응답 반환
