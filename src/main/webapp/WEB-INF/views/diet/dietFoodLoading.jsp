@@ -324,7 +324,59 @@ body {
 
 }
 
+.custom-food-table {
+    table-layout: fixed;
+    width: 100%;
+}
 
+.custom-food-table th:nth-child(1) {
+    width: 5%;
+} 
+.custom-food-table th:nth-child(2) {
+    width: 15%;
+} 
+.custom-food-table th:nth-child(3) {
+    width: 10%;
+} 
+.custom-food-table th:nth-child(4) {
+    width: 10%;
+}
+.custom-food-table th:nth-child(5) {
+    width: 10%;
+} 
+.custom-food-table th:nth-child(6) {
+    width: 10%;
+} 
+.custom-food-table th:nth-child(7) {
+    width: 10%;
+} 
+.custom-food-table th:nth-child(8) {
+    width: 10%;
+}  
+.custom-food-table th:nth-child(9) {
+    width: 10%;
+} 
+.custom-food-table th:nth-child(10) {
+    width: 10%;}
+} 
+
+.custom-food-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.custom-food-table th, .food-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    font-size: 14px;
+    position: relative;
+}
+
+.custom-food-table th {
+    background-color: #f8f8f8;
+}
 </style>
 </head>
 <body>
@@ -347,19 +399,18 @@ body {
                             name="searchTerm">
                         <button class="search-icon">🔍</button>
                     </div>
-                    <div class="filter-options">
+<!--                     <div class="filter-options">
                         <label><input type="checkbox" class="favorite-filter"
                             name="favoriteFilter"> 즐겨찾기</label> <label><input
                             type="checkbox" class="my-meal-filter" name="myMealFilter">
                             나의 음식</label>
-                    </div>
+                    </div> -->
                 </div>
-                <br>
             </form>
         </div>
-
+<br>
         <div class="food-list-section">
-            <h2>조회된 음식</h2>
+            <h2>음식 리스트</h2>
 
             <table class="food-table">
                 <thead>
@@ -381,21 +432,57 @@ body {
                     <!-- 데이터는 JavaScript로 동적 생성 -->
                     <c:forEach items="${list}" var="dto">
                         <tr>
-                            <td><input type="checkbox" data-id="${dto.diet_no}"></td>
-                            <td>${dto.diet_name}</td>
-                            <td>${dto.regdate}</td>
-                            <td>${dto.diet_total_kcal}</td>
-                            <td>${dto.meal_classify}</td>
-                            <td>${dto.creator_id }</td>
+                            <td><input type="checkbox" data-id="${dto.food_cd}"></td>
+                            <td>${dto.food_name}</td>
+                            <td>${dto.foodLv4Nm}</td>
+                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.chocdf}</td>
+                            <td>${dto.prot}</td>
+                            <td>${dto.fatce}</td>
+                            <td>${dto.sugar}</td>
+                            <td>${dto.nat}</td>
                             <td>
                             ${dto.diet_bookmark_no}
                                 <button class="star-btn" data-id="${dto.diet_no}">
                                     ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
-                            <td><button class="view-btn" data-id="${dto.diet_no}">
-                                    <img src="assets/images/icon/search-file.png" alt="View"
-                                        width="20" height="20">
-                                </button></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <h2>나의 음식 리스트</h2>
+                        <table class="custom-food-table">
+                <thead>
+                    <tr>
+                        <th>선택</th>
+                        <th>음식명</th>
+                        <th>용량(g)</th>
+                        <th>열량(kcal)</th>
+                        <th>탄수화물</th>
+                        <th>단백질</th>
+                        <th>지방</th>
+                        <th>당류</th>
+                        <th>나트륨</th>
+                        <th>즐겨찾기</th>
+                    </tr>
+                </thead>
+                <tbody id="custom-food-data">
+                    <!-- 데이터는 JavaScript로 동적 생성 -->
+                    <c:forEach items="${list}" var="dto">
+                        <tr>
+                            <td><input type="checkbox" data-id="${dto.food_cd}"></td>
+                            <td>${dto.food_name}</td>
+                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.chocdf}</td>
+                            <td>${dto.prot}</td>
+                            <td>${dto.fatce}</td>
+                            <td>${dto.sugar}</td>
+                            <td>${dto.nat}</td>
+                            <td>
+                            ${dto.diet_bookmark_no}
+                                <button class="star-btn" data-id="${dto.diet_no}">
+                                    ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
+                            </td>
                         </tr>
                     </c:forEach>
                 </tbody>

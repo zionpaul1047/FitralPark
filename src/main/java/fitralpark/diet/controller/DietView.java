@@ -22,6 +22,7 @@ public class DietView extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         //DietView.java
+        //
         // AJAX 요청인지 확인 (상세정보 요청)
         String dietNoParam = req.getParameter("dietNo");
         if (dietNoParam != null) {
