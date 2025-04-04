@@ -16,7 +16,7 @@ public class SessionCheckFilter implements Filter {
 
     // 로그인 필요 없는 경로 목록
     private static final String[] excludePaths = {
-        "/login.do", "/logout.do", "/register.do", "/auth.jsp",
+        "/index.do", "/login.do", "/logout.do", "/register.do", "/auth.jsp",
         "/checkId.do", "/sendAuthEmail.do", "/checkAuthCode.do",
         "/favicon.ico", "/assets/"
     };
