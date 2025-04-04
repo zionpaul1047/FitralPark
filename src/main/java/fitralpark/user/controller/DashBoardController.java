@@ -25,8 +25,12 @@ public class DashBoardController extends HttpServlet {
 		
 		System.out.println("페이지 실행");
 		
+		UserDTO userdto = (UserDTO)(req.getSession().getAttribute("loginUser"));
+		String id = userdto.getMemberId();
+		
 		
 		//세션값 임시
+<<<<<<< HEAD
 		 UserDTO userdto = (UserDTO)(req.getSession().getAttribute("loginUser"));
        String id = userdto.getMemberId();
 
@@ -48,6 +52,24 @@ public class DashBoardController extends HttpServlet {
        dao.close();
 
        System.out.println(dto);
+=======
+//		String id = "hong";
+		String rank = "junior";
+		String mentor_check = "0";
+		
+		UserDTO userDto = new UserDTO();
+		userDto.setMemberId(id);
+		
+		//DashBoardController.java
+		UserDAO dao = new UserDAO();
+		
+		
+		DashDTO dto = dao.getDashInfo(userDto);
+		
+		dao.close();
+		
+		System.out.println(dto);
+>>>>>>> test
 		
 		
 		//임시코드(DB 연결 전 테스트)

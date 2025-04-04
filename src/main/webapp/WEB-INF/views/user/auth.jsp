@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,8 +43,9 @@
 					</div>
 					<div class="form-group mb-0">
 						<button type="submit" class="btn btn-primary w-100">로그인</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
+					
 				</form>
 				<div class="already_member_box d-flex justify-content-between px-2">
 					<span role="button" onclick="moveToRegister()">회원가입하기</span>
@@ -123,9 +124,9 @@
 						<%-- 닉네임 --%>
 						<div class="form-group">
 							<label for="nickname">닉네임<span class="text-danger"> *</span></label>
-							<input type="text" name="nickname" id="nickname" class="form-control input-large"
-								maxlength="15" placeholder="한글/영문/숫자 조합, 최대 15자" required />
-							<small class="form-text text-muted">한글, 영문, 숫자만 입력 가능하며 최대 15자까지 입력할 수 있습니다.</small>
+							<input type="text" name="nickname" id="nickname" class="form-control input-medium"
+								maxlength="15" required />
+							<small id="nicknameMessage" class="form-text text-muted mt-1">한글(완성형, 자모음 단독사용 불가), 영문, 숫자만 가능하며 2~15자 이내</small>
 						</div>
 
 						<%-- 연락처 --%>
@@ -231,7 +232,7 @@
 					</div>
 					<div class="form-group mt-3">
 						<button type="submit" class="btn btn-primary w-100">회원가입</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
 				</form>
 				<div class="already_member_box text-center">
@@ -270,29 +271,51 @@
 	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
-	
-	<%
-	    // 세션에서 로그인 후 이동할 경로 가져오기
-	    String redirect = (String) session.getAttribute("redirectAfterLogin");
-	    if (redirect != null) {
-	        session.removeAttribute("redirectAfterLogin");
-	%>
-	    <script>
-	    window.opener.location.href = "<%=request.getContextPath() + redirect%>"; // 부모창 리디렉션
-	    window.opener.document.getElementById("overlay").style.display = "none"; // 오버레이 제거
-	    // 팝업 닫기
-	    window.close();
-	    </script>
-	<%
-	    } else {
-	%>
-	    <script>
-	        window.opener.location.reload(); // 그냥 새로고침
-	        window.opener.document.getElementById("overlay").style.display = "none";
-	    </script> -->
-	<%
-	    }
-	%>
+	<script>
+		window.addEventListener("beforeunload", function () {
+			if (window.opener && !window.closed) {
+				try {
+					const overlay = window.opener.document.getElementById("overlay");
+					if (overlay) overlay.style.display = "none";
+				} catch (e) {
+				// 접근 오류 무시
+				}
+			}
+		});
+	</script>
+
+<c:if test="${not empty sessionScope.loginUser}">
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			if (window.opener && !window.opener.closed) {
+				const overlay = window.opener.document.getElementById("overlay");
+				if (overlay) overlay.style.display = "none";
+
+				const redirect = '${sessionScope.redirectAfterLogin}';
+				if (redirect) {
+					window.opener.location.href = contextPath + redirect;
+				} else {
+					window.opener.location.reload();
+				}
+				window.close();
+			}
+		});
+	</script>
+</c:if>
+
+<script>
+  function cancelLogin() {
+    if (window.opener) {
+      try {
+        const overlay = window.opener.document.getElementById("overlay");
+        if (overlay) overlay.style.display = "none";
+      } catch (e) {
+        // 접근 오류 무시
+      }
+    }
+    window.close();
+  }
+</script>
 
 
 

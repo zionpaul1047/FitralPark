@@ -173,23 +173,33 @@
 				
 				<div id="mainbox">
 				<h1>자유 게시판 글쓰기</h1>
-				<form class="write-form" action="/community/bulletinWrite" method="post">
+				<form class="write-form" action="/fitralpark/bulletinWriteOK.do" method="post">
 					<div class="form-group">
 						<label for="category">말머리</label>
-						<select id="search_category">
-						    <option value="">전체</option>
+						<select id="search_category" name="header_no">
+						    <option value="">선택</option>
 						    <c:forEach items="${headerList}" var="headerDto">
 						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
 						    </c:forEach>
 						</select>
 					</div>
 					<div class="form-group">
+						<label for="category">말머리</label>
+						<select name="category" id="category" required>
+							<option value="">말머리 선택</option>
+							<option value="운동">운동</option>
+							<option value="식단">식단</option>
+							<option value="헬스장">헬스장</option>
+							<option value="후기">후기</option>
+						</select>
+					</div>
+					<div class="form-group">
 						<label for="title">제목</label>
-						<input type="text" name="title" id="title" required>
+						<input type="text" name="post_subject" id="title" required>
 					</div>
 					<div class="form-group">
 						<label for="content">내용</label>
-						<textarea name="content" id="content" required></textarea>
+						<textarea name="post_content" id="content" required></textarea>
 					</div>
 					<div class="button-group">
 						<button type="submit">작성하기</button>

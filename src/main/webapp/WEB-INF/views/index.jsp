@@ -34,7 +34,6 @@
         }
         .grid_center_R{
         /* border: 1px solid black; */
-        	width: 1000px;
         }
         .grid_bottom{
         /* border: 1px solid black; */

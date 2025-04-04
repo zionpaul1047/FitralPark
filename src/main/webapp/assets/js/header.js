@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
 	const header = document.getElementById("header");
 	const fullMenu = document.getElementById("full-menu");
 	const fullOpenBtn = document.querySelector(".btn_open");
@@ -25,9 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// 로그인 팝업
-	if (authButton) {
+	if (
+		authButton &&
+		window.opener == null &&
+		window.name !== 'LoginPopup' &&
+		window.location.pathname === contextPath + "/index.do"
+	) {
 		authButton.addEventListener("click", () => {
+			const overlay = document.getElementById("overlay");
+			if (overlay) overlay.style.display = "block";
+
 			window.open(
 				contextPath + "/login.do",
 				"LoginPopup",

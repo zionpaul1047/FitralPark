@@ -1,0 +1,96 @@
+@charset "UTF-8";
+
+#mdfyuserinfo {
+	/* border: 1px solid black; */
+	border-radius: 10px;
+	background-color: white;
+	width: 860px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+	margin-bottom: 30px;
+	
+}
+
+#mdfyuserinfo > h1 {
+	display: block;
+	width: 860px;
+	font-size: 1.5rem;
+	font-weight: bold;
+	text-align: center;
+	
+}
+#mdfyuserinfo > h1 + div {
+	display: block;
+	width: 860px;
+	font-size: 0.95rem;
+	text-align: center;
+}
+
+#mdfyuserinfo > form .reg_input {
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	width: 200px;
+	height: 38px;
+	font-size: 14px;
+}
+
+#mdfyuserinfo > form .wide_input {
+	border: 1px solid #ced4da;
+	border-radius: .25rem;
+	width: 400px;
+	height: 38px;
+	font-size: 14px;
+}
+
+#mdfyuserinfo > form > .mdfy_item {
+	margin: 10px 20px;
+}
+
+#mdfyuserinfo > form > .mdfy_item > .mdfy_item_subj {
+	/* border: 1px solid gold; */
+	font-size: 0.92rem;
+	margin-bottom: 5px;
+} 
+
+#mdfyuserinfo > form > .mdfy_item > .mdfy_item_content {
+	/* border: 1px solid blue; */
+	font-size: 0.92rem;
+} 
+
+#mdfyuserinfo > form button  {
+	border: 1px solid #ced4da;
+	border-radius: 3px;
+	padding: 8px;
+	
+}
+
+#mdfyuserinfo  form button, #mdfyuserinfo  form input[type=button]  {
+	border: 1px solid #ced4da;
+	border-radius: 3px;
+	padding: 8px;
+	
+}
+
+
+#mdfyuserinfo > form .no_mdfy_content {
+	color: #8c8c8c;
+}
+
+#form_bottom {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+/* 	padding-bottom: 30px; */
+}
+
+#form_bottom button {
+	width: 200px;
+	border: 1px solid #ced4da;
+	border-radius: 3px;
+	padding: 8px;
+}
+
+.ncsry_item {
+	color: tomato;
+}
+

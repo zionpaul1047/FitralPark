@@ -12,7 +12,7 @@ import fitralpark.nutrition.dto.NutritionDTO;
 public class NutritionDAO {
 
     // 데이터베이스 연결 정보
-    private static final String DB_URL = "jdbc:oracle:thin:@localhost:1521:xe"; // 오라클 DB URL
+    private static final String DB_URL = "jdbc:oracle:thin:@192.168.10.46:1521:xe"; // 오라클 DB URL
     private static final String DB_USER = "server"; // 오라클 사용자명
     private static final String DB_PASSWORD = "java1234"; // 오라클 비밀번호
 
@@ -25,15 +25,20 @@ public class NutritionDAO {
     // 검색어로 데이터를 조회하는 메서드
     public List<NutritionDTO> searchFoods(String keyword) {
         List<NutritionDTO> foodList = new ArrayList<>();
-        String sql = "SELECT food_name, nut_con_str_qua, enerc, protein, chocdf, fatce, sugar, na, ca, fe, p, k, chole, fasat, fatrn, vataRae, cartb, thia, ribf, nia, vitac, vitd, food_size " +
+        String sql = "SELECT food_name, NVL(nut_con_str_qua, 0) AS nut_con_str_qua, NVL(enerc, 0) AS enerc, NVL(protein, 0) AS protein, NVL(chocdf, 0) AS chocdf, NVL(fatce, 0) AS fatce, NVL(sugar, 0) AS sugar, NVL(na, 0) AS na, NVL(ca, 0) AS ca, NVL(fe, 0) AS fe, NVL(p, 0) AS p, NVL(k, 0) AS k, NVL(chole, 0) AS chole, NVL(fasat, 0) AS fasat, NVL(fatrn, 0) AS fatrn, NVL(vataRae, 0) AS vataRae, NVL(cartb, 0) AS cartb, NVL(thia, 0) AS thia, NVL(ribf, 0) AS ribf, NVL(nia, 0) AS nia, NVL(vitac, 0) AS vitac, NVL(vitd, 0) AS vitd, NVL(food_size, 0) AS food_size " +
                      "FROM individual_diet_record_food_nutrient WHERE food_name LIKE ?";
+        /*
+        String sql = "SELECT food_name, nut_con_str_qua, enerc, protein, chocdf, fatce, sugar, na, ca, fe, p, k, chole, fasat, fatrn, vataRae, cartb, thia, ribf, nia, vitac, vitd, food_size " +
+        		"FROM individual_diet_record_food_nutrient WHERE food_name LIKE ?";
+        */
 
         try (Connection conn = getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            pstmt.setString(1, "%" + "피자" + "%"); // 검색어를 LIKE 조건에 설정
+            pstmt.setString(1, "%" + keyword + "%"); // 검색어를 LIKE 조건에 설정
             ResultSet rs = pstmt.executeQuery();
-
+            System.out.println("SQL 쿼리 실행: " + sql);
+            System.out.println("검색 파라미터: %" + keyword + "%");
             while (rs.next()) {
                 NutritionDTO dto = new NutritionDTO();
                 dto.setFood_name(rs.getString("food_name"));
