@@ -27,23 +27,27 @@ public class DashBoardController extends HttpServlet {
 		
 		
 		//세션값 임시
-		String id = (String)(req.getSession().getAttribute("loginUser"));
-		
-		String rank = "junior";
-		String mentor_check = "0";
-		
-		UserDTO userDto = new UserDTO();
-		userDto.setMemberId(id);
-		
-		//DashBoardController.java
-		UserDAO dao = new UserDAO();
-		
-		
-		DashDTO dto = dao.getDashInfo(userDto);
-		
-		dao.close();
-		
-		System.out.println(dto);
+		 UserDTO userdto = (UserDTO)(req.getSession().getAttribute("loginUser"));
+       String id = userdto.getMemberId();
+
+
+       //세션값 임시
+       //String id = "hong";
+       String rank = "junior";
+       String mentor_check = "0";
+
+       UserDTO userDto = new UserDTO();
+       userDto.setMemberId(id);
+
+       //DashBoardController.java
+       UserDAO dao = new UserDAO();
+
+
+       DashDTO dto = dao.getDashInfo(userDto);
+
+       dao.close();
+
+       System.out.println(dto);
 		
 		
 		//임시코드(DB 연결 전 테스트)

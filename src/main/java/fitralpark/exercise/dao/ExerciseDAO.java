@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.naming.Context;
@@ -289,6 +290,134 @@ public class ExerciseDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public boolean deleteCustomExercise(String customExerciseNo) {
+		try {
+			// 트랜잭션 시작
+			conn.setAutoCommit(false);
+			
+			try {
+				// 1. 먼저 관련된 카테고리 그룹 삭제
+				String deleteCategorySQL = "DELETE FROM custom_exercise_category_group WHERE custom_exercise_no = ?";
+				PreparedStatement pstatCategory = conn.prepareStatement(deleteCategorySQL);
+				pstatCategory.setString(1, customExerciseNo);
+				pstatCategory.executeUpdate();
+				
+				// 2. 운동 부위 링크 삭제
+				String deletePartSQL = "DELETE FROM custom_exercise_part_link WHERE custom_exercise_no = ?";
+				PreparedStatement pstatPart = conn.prepareStatement(deletePartSQL);
+				pstatPart.setString(1, customExerciseNo);
+				pstatPart.executeUpdate();
+				
+				// 3. 마지막으로 custom_exercise 테이블에서 삭제
+				String deleteExerciseSQL = "DELETE FROM custom_exercise WHERE custom_exercise_no = ?";
+				PreparedStatement pstatExercise = conn.prepareStatement(deleteExerciseSQL);
+				pstatExercise.setString(1, customExerciseNo);
+				int result = pstatExercise.executeUpdate();
+				
+				// 모든 작업이 성공하면 커밋
+				conn.commit();
+				return result > 0;
+				
+			} catch (Exception e) {
+				// 오류 발생 시 롤백
+				conn.rollback();
+				throw e;
+			} finally {
+				// 자동 커밋 모드 복원
+				conn.setAutoCommit(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public List<ExerciseDTO> getSelectedExercises(String[] exerciseNos) {
+	    List<ExerciseDTO> list = new ArrayList<>();
+	    
+	    try {
+	        List<String> normalExercises = new ArrayList<>();
+	        List<String> customExercises = new ArrayList<>();
+	        
+	        // 운동 번호 분류
+	        for (String no : exerciseNos) {
+	            if (no.startsWith("C")) {
+	                customExercises.add(no.substring(1));
+	            } else {
+	                normalExercises.add(no);
+	            }
+	        }
+	        
+	        // 일반 운동 조회
+	        if (!normalExercises.isEmpty()) {
+	            StringBuilder sql = new StringBuilder();
+	            sql.append("SELECT e.exercise_no, e.exercise_name, ");
+	            sql.append("LISTAGG(DISTINCT ec.exercise_category_name, ', ') WITHIN GROUP (ORDER BY ec.exercise_category_name) as category_name, ");
+	            sql.append("LISTAGG(DISTINCT ep.exercise_part_name, ', ') WITHIN GROUP (ORDER BY ep.exercise_part_name) as part_name, ");
+	            sql.append("e.calories_per_unit ");
+	            sql.append("FROM exercise e ");
+	            sql.append("LEFT JOIN exercise_category_group ecg ON e.exercise_no = ecg.exercise_no ");
+	            sql.append("LEFT JOIN exercise_category ec ON ecg.exercise_category_no = ec.exercise_category_no ");
+	            sql.append("LEFT JOIN exercise_part_link epl ON e.exercise_no = epl.exercise_no ");
+	            sql.append("LEFT JOIN exercise_part ep ON epl.exercise_part_no = ep.exercise_part_no ");
+	            sql.append("WHERE e.exercise_no IN (").append(String.join(",", Collections.nCopies(normalExercises.size(), "?"))).append(") ");
+	            sql.append("GROUP BY e.exercise_no, e.exercise_name, e.calories_per_unit");
+	            
+	            PreparedStatement pstat = conn.prepareStatement(sql.toString());
+	            for (int i = 0; i < normalExercises.size(); i++) {
+	                pstat.setString(i + 1, normalExercises.get(i));
+	            }
+	            
+	            ResultSet rs = pstat.executeQuery();
+	            while (rs.next()) {
+	                ExerciseDTO dto = new ExerciseDTO();
+	                dto.setExerciseNo(rs.getString("exercise_no"));
+	                dto.setExerciseName(rs.getString("exercise_name"));
+	                dto.setExerciseCategoryName(rs.getString("category_name"));
+	                dto.setExercisePartName(rs.getString("part_name"));
+	                dto.setCaloriesPerUnit(rs.getString("calories_per_unit"));
+	                list.add(dto);
+	            }
+	        }
+	        
+	        // 사용자 정의 운동 조회
+	        if (!customExercises.isEmpty()) {
+	            StringBuilder sql = new StringBuilder();
+	            sql.append("SELECT ce.custom_exercise_no, ce.custom_exercise_name, ");
+	            sql.append("LISTAGG(DISTINCT ec.exercise_category_name, ', ') WITHIN GROUP (ORDER BY ec.exercise_category_name) as category_name, ");
+	            sql.append("LISTAGG(DISTINCT ep.exercise_part_name, ', ') WITHIN GROUP (ORDER BY ep.exercise_part_name) as part_name, ");
+	            sql.append("ce.calories_per_unit ");
+	            sql.append("FROM custom_exercise ce ");
+	            sql.append("LEFT JOIN custom_exercise_category_group ceg ON ce.custom_exercise_no = ceg.custom_exercise_no ");
+	            sql.append("LEFT JOIN exercise_category ec ON ceg.exercise_category_no = ec.exercise_category_no ");
+	            sql.append("LEFT JOIN custom_exercise_part_link cepl ON ce.custom_exercise_no = cepl.custom_exercise_no ");
+	            sql.append("LEFT JOIN exercise_part ep ON cepl.exercise_part_no = ep.exercise_part_no ");
+	            sql.append("WHERE ce.custom_exercise_no IN (").append(String.join(",", Collections.nCopies(customExercises.size(), "?"))).append(") ");
+	            sql.append("GROUP BY ce.custom_exercise_no, ce.custom_exercise_name, ce.calories_per_unit");
+	            
+	            PreparedStatement pstat = conn.prepareStatement(sql.toString());
+	            for (int i = 0; i < customExercises.size(); i++) {
+	                pstat.setString(i + 1, customExercises.get(i));
+	            }
+	            
+	            ResultSet rs = pstat.executeQuery();
+	            while (rs.next()) {
+	                ExerciseDTO dto = new ExerciseDTO();
+	                dto.setCustomExerciseNo(rs.getString("custom_exercise_no"));
+	                dto.setCustomExerciseName(rs.getString("custom_exercise_name"));
+	                dto.setCustomExerciseCategoryName(rs.getString("category_name"));
+	                dto.setCustomExercisePartName(rs.getString("part_name"));
+	                dto.setCustomCaloriesPerUnit(rs.getString("calories_per_unit"));
+	                list.add(dto);
+	            }
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return list;
 	}
 	
 }

@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK 루틴 생성</title>
+<script src="https://kit.fontawesome.com/11104cc7aa.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -13,7 +15,7 @@
             padding: 20px;
         }
         .popup-container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             border: 1px solid #FFD700;
             border-radius: 10px;
@@ -57,7 +59,7 @@
             margin-right: 5px;
         }
         
-        /* 루틴틴 테이블 스타일 */
+        /* 루틴 테이블 스타일 */
         .routine-table-container {
             margin: 20px 0;
             border: 1px solid #ddd;
@@ -67,6 +69,7 @@
         .routine-table {
         	font-size: 14px;
             width: 100%;
+            min-width: 900px;
             border-collapse: collapse;
         }
         .routine-table th, 
@@ -174,11 +177,29 @@
 		    text-overflow: ellipsis;
 		}
 		
-		.routine-table th:nth-child(2) { width: 150px; } /* 운동명 */
-		.routine-table th:nth-child(3) { width: 150px; } /* 운동 카테고리 */
-		.routine-table th:nth-child(4) { width: 150px; } /* 운동 부위 */
-		.routine-table th:nth-child(5) { width: 100px; } /* 소모 열량 */
+		.routine-table th:nth-child(1) { width: 4%; }   /* 체크박스 */
+		.routine-table th:nth-child(2) { width: 16%; }  /* 운동명 */
+		.routine-table th:nth-child(3) { width: 14%; }  /* 운동 카테고리 */
+		.routine-table th:nth-child(4) { width: 14%; }  /* 운동 부위 */
+		.routine-table th:nth-child(5) { width: 12%; }  /* 소모 열량 */
+		.routine-table th:nth-child(6) { width: 10%; }  /* 세트 */
+		.routine-table th:nth-child(7) { width: 10%; }  /* 횟수 */
+		.routine-table th:nth-child(8) { width: 10%; }  /* 시간 */
+		.routine-table th:nth-child(9) { width: 10%; }  /* 중량 */
+		.routine-table th:nth-child(10) { width: 4%; }  /* 삭제 버튼 */
 		
+        .routine-table input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            text-align: center;
+        }
+        
+        /* 중량 입력 필드는 조금 더 넓게 */
+        .routine-table input[name="weight"] {
+            width: 70px;
+        }
     </style>
 </head>
 <body>
@@ -221,12 +242,32 @@
 					        <th>운동 카테고리</th>
 					        <th>운동 부위</th>
 					        <th>소모 열량(kcal)</th>
-					        <th></th>
-					        <th></th>
+					        <th>세트</th>
+					        <th>횟수</th>
+					        <th>시간(분)</th>
+					        <th>중량(kg)</th>
 					        <th></th>
 	                    </tr>
 	                </thead>
 	                <tbody>
+	                    <c:forEach items="${selectedExercises}" var="exercise">
+	                        <tr data-exercise-no="${exercise.exerciseNo}">
+	                            <td><input type="checkbox" name="exercise-select"></td>
+	                            <td>${exercise.exerciseName != null ? exercise.exerciseName : exercise.customExerciseName}</td>
+	                            <td>${exercise.exerciseCategoryName != null ? exercise.exerciseCategoryName : exercise.customExerciseCategoryName}</td>
+	                            <td>${exercise.exercisePartName != null ? exercise.exercisePartName : exercise.customExercisePartName}</td>
+	                            <td>${exercise.caloriesPerUnit != null ? exercise.caloriesPerUnit : exercise.customCaloriesPerUnit}</td>
+	                            <td><input type="number" class="form-control" name="sets" min="0" value="0" style="width: 60px;"></td>
+	                            <td><input type="number" class="form-control" name="reps" min="0" value="0" style="width: 60px;"></td>
+	                            <td><input type="number" class="form-control" name="time" min="0" value="0" style="width: 60px;"></td>
+	                            <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0" style="width: 70px;"></td>
+	                            <td>
+	                                <button type="button" class="btn" onclick="removeRow(this)">
+	                                    <i class="fa-solid fa-xmark"></i>
+	                                </button>
+	                            </td>
+	                        </tr>
+	                    </c:forEach>
 	                </tbody>
 	            </table>
 	        </div>
@@ -251,45 +292,89 @@
 	    </div>
     
     <script>
-
-        function deleteSelectedItems() {
-            const table = document.getElementById('routine-table').getElementsByTagName('tbody')[0];
-            const rows = table.getElementsByTagName('tr');
-            for (let i = rows.length - 1; i >= 0; i--) {
-                const checkbox = rows[i].getElementsByTagName('input')[0];
-                if (checkbox.checked) {
-                    table.deleteRow(i);
+        // 팝업창에서 전달받은 운동 데이터를 처리하는 함수
+        function addExercises(exercises) {
+            console.log('Adding exercises:', exercises);
+            
+            const tbody = document.querySelector('#routine-table tbody');
+            
+            exercises.forEach(exercise => {
+                // 이미 존재하는 운동인지 확인
+                const existingRow = tbody.querySelector(`tr[data-exercise-no="${exercise.exerciseNo}"]`);
+                if (existingRow) {
+                    console.log('이미 추가된 운동입니다:', exercise.exerciseName);
+                    return;
                 }
+                
+                // 새로운 행 생성
+                const tr = document.createElement('tr');
+                tr.setAttribute('data-exercise-no', exercise.exerciseNo);
+                
+                // 행 내용 설정
+                tr.innerHTML = `
+                    <td><input type="checkbox" name="exercise-select"></td>
+                    <td>${exercise.exerciseName}</td>
+                    <td>${exercise.exerciseCategoryName}</td>
+                    <td>${exercise.exercisePartName}</td>
+                    <td>${exercise.caloriesPerUnit}</td>
+                    <td><input type="number" class="form-control" name="sets" min="0" value="0"></td>
+                    <td><input type="number" class="form-control" name="reps" min="0" value="0"></td>
+                    <td><input type="number" class="form-control" name="time" min="0" value="0"></td>
+                    <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0"></td>
+                    <td>
+                        <button type="button" class="btn" onclick="removeRow(this)">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+                
+                // 테이블에 행 추가
+                tbody.appendChild(tr);
+                console.log('Added new row:', exercise.exerciseName);
+            });
+        }
+
+        // 행 삭제 함수도 순수 JavaScript로 수정
+        function removeRow(button) {
+            const row = button.closest('tr');
+            if (row) {
+                row.remove();
             }
         }
 
-        function removeRow(button) {
-            const row = button.closest('tr');
-            row.parentNode.removeChild(row);
+        // 선택된 항목 삭제
+        function deleteSelectedItems() {
+            $('#routine-table tbody tr').each(function() {
+                if ($(this).find('input[name="exercise-select"]').prop('checked')) {
+                    $(this).remove();
+                }
+            });
         }
 
+        // 폼 초기화
         function resetForm() {
-            document.getElementById('routine-name').value = '';
-            document.getElementById('routine-category').selectedIndex = 0;
-            document.getElementById('time-slot').selectedIndex = 0;
-            document.querySelector('input[name="visibility"][value="public"]').checked = true;
-            
-            const tbody = document.getElementById('routine-table').getElementsByTagName('tbody')[0];
-            tbody.innerHTML = '';
+            $('#routine-name').val('');
+            $('#routine-category').prop('selectedIndex', 0);
+            $('input[name="visibility"][value="public"]').prop('checked', true);
+            $('#routine-table tbody').empty();
         }
-        
+
         function openExercisePopup() {
-            window.open(
+            // 팝업창 열기 전에 현재 창의 이름을 설정
+            window.name = 'routineAddForm';
+            
+            // 팝업창 열기
+            const popup = window.open(
                 '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
                 'exercisePopup',
                 'width=1000,height=1000,scrollbars=yes'
             );
+
+            // 팝업창이 차단되었는지 확인
+            if (!popup || popup.closed || typeof popup.closed == 'undefined') {
+                alert('팝업이 차단되었습니다. 팝업 차단을 해제해주세요.');
+            }
         }
-        
-        
-        
-        
-    
     </script>
 </body>
 </html>
