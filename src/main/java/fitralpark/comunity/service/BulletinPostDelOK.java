@@ -12,34 +12,47 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostDelOK.do")
 public class BulletinPostDelOK extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html; charset=UTF-8");
 
 		//BulletinPostDelOK
-		req.setCharacterEncoding("UTF-8");
-        
+		HttpSession session = req.getSession();
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
+	
+		if (userDto == null) {
+			resp.sendRedirect(req.getContextPath() + "/login.do");
+			return;
+		}
+
         String post_no = req.getParameter("post_no");  // 요청에서 post_no 가져오기
-        
-        CommunityDAO dao = new CommunityDAO();  // DAO 객체 생성
-        CommunityDTO result = dao.delPost(post_no);  // 삭제 실행
-        
-        resp.setContentType("text/plain; charset=UTF-8");
-        PrintWriter out = resp.getWriter();
-        
-        if (result != null) {
-            out.print("success");
-        } else {
-            out.print("fail");
+        String creator_id = req.getParameter("creator_id");
+
+        if (!creator_id.equals(userDto.getMemberId())) {
+            resp.getWriter().write("fail");
+            return;
+        }
+
+        CommunityDAO dao = new CommunityDAO(); // DAO 객체 생성
+
+        try {
+            dao.bulletin_Del_Post(post_no);
+            resp.getWriter().write("success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.getWriter().write("error");
+        } finally {
+            dao.close();
         }
         
-        dao.close();
-		
-		
-
+        resp.sendRedirect("/fitralpark/bulletinList.do");
+        
 	}
 
 }

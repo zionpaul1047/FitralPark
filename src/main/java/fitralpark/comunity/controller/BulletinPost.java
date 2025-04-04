@@ -32,7 +32,7 @@ public class BulletinPost extends HttpServlet {
 		String post_no = req.getParameter("post_no");
 		
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO dto = dao.getPost(post_no);
+		CommunityDTO dto = dao.getPost(post_no, req.getSession());
 		
 		// 댓글 목록 조회
 		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);

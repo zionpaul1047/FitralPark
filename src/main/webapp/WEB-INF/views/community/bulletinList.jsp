@@ -206,6 +206,8 @@ body h1 {
 						<h1>
 							<strong>자유 게시판</strong>
 						</h1>
+						
+						
 						<table id="boardtable" >
 							<tr>
 								<th>번호</th>
@@ -223,7 +225,7 @@ body h1 {
 								<td><a href="">${dto.nickname}(${dto.creator_id})</a></td>
 								<td>${dto.regdate}</td>
 								<td>${dto.post_recommend}</td>
-								<td>${dto.post_record_cnt}</td>
+								<td>${dto.views}</td>
 							</tr>
 							</c:forEach>
 						</table>
@@ -274,7 +276,7 @@ body h1 {
 							<input type="text" name="searchWord" class="search_txt" placeholder="  검색" value="${searchWord}">
 							<input type="submit" class="search_btn" id="btn_search" value="검색">
 						</div>
-						<button type="button" id="btnadd_post" onclick="location.href='bulletinWrite.do'">글쓰기</button>
+						<button type="button" id="btnadd_post" onclick="location.href='bulletinPostWrite.do'">글쓰기</button>
 					</div>
 					</form>
 				</div>

@@ -40,8 +40,7 @@ public class BulletinPostEdit extends HttpServlet {
 		    return;
 		}
 		
-		// 댓글 목록, 말머리 조회
-		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
+		// 말머리 조회
 		ArrayList<CommunityDTO> headerList = dao.getHeaderList();
 		
 		// 불러오기

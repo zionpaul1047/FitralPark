@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
+import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostOK.do")
@@ -29,7 +30,28 @@ public class BulletinPostOK extends HttpServlet {
 			return;
 		}
         
+		CommunityDTO communityDto = new CommunityDTO();
+		CommunityDAO dao = new CommunityDAO();
 		
+		String post_no = req.getParameter("post_no");
+		String vote_check = req.getParameter("vote_check");
+		
+		communityDto.setPost_no(post_no);
+		communityDto.setVote_check(vote_check);
+		
+		if (vote_check != null) {
+			
+			boolean result = dao.bulletin_Vote_Check(communityDto, userDto);
+				if (true == result) {
+					return;
+				} else {
+					dao.bulletin_Vote_Record(communityDto, userDto);
+				}
+		} 
+		
+		dao.close();
+
+
 
        
     }

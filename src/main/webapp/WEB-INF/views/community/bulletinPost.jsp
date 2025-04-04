@@ -241,7 +241,7 @@
 					</tr>
 					<tr>
 						<th>조회수</th>
-						<td>${post.post_record_cnt}</td>
+						<td>${post.views}</td>
 						<th>추천수</th>
 						<td>${post.post_recommend}</td>
 					</tr>
@@ -254,7 +254,7 @@
 				<!-- 추천, 비추천 -->
 				<div class="recommend_area">
 					<button type="button" id="btn_recommend" class="recommend_button" data-post_no="${post.post_no}"><i class="fa-regular fa-thumbs-up"></i>추천</button>
-					<span id="recommend_count" class="recommend_count">${post.post_recommend}</span>
+					<span id="recommend_count" class="recommend_count" >${post.post_recommend}</span>
 					<button type="button" id="btn_decommend" class="decommend_button" data-post_no="${post.post_no}"><i class="fa-regular fa-thumbs-down"></i>비추천</button>
 					<span id="decommend_count" class="decommend_count">${post.post_decommend}</span>
 				</div>
@@ -317,34 +317,37 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
 	$(document).ready(function() {
+		
 		// 추천 버튼 클릭 이벤트
 		$("#btn_recommend").click(function() {
 			var postNo = $(this).data("post_no");
-			updateRecommend(postNo, "recommend");
+			updateRecommend(postNo, "0");
 		});
 
 		// 비추천 버튼 클릭 이벤트
 		$("#btn_decommend").click(function() {
 			var postNo = $(this).data("post_no");
-			updateRecommend(postNo, "decommend");
+			updateRecommend(postNo, "1");
 		});
 
 		// 추천/비추천 업데이트 함수
-		function updateRecommend(postNo, type) {
+		function updateRecommend(post_no, vote_check) {
 			$.ajax({
-				url: "/bulletinpostok.do",
-				type: "POST", // POST 방식으로 변경
+				url: "${pageContext.request.contextPath}/bulletinPostOK.do",
+				type: "POST",
 				data: {
-					post_no: postNo,
-					type: type // 추천인지 비추천인지 구분하는 type 파라미터 추가
+					post_no: post_no,
+					vote_check: vote_check // 추천인지 비추천인지 구분하는 type 파라미터 추가
 				},
 				success: function(data) {
 					if (data.success) {
-						$("#recommend_count").text(data.recommend);
-						$("#decommend_count").text(data.decommend);
+						$("#recommend_count").text(data.post_recommend);
+						$("#decommend_count").text(data.post_decommend);
+						window.location.reload();
 					} else {
-						alert(data.message); // 중복 추천/비추천 등의 에러 메시지 표시
+						window.location.reload();
 					}
 				},
 				error: function(error) {

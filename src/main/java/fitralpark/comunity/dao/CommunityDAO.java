@@ -3,11 +3,13 @@ package fitralpark.comunity.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import fitralpark.comunity.dto.CommunityDTO;
@@ -42,14 +44,13 @@ public class CommunityDAO {
 		
 		try {
 			
-			String sql = "insert into bulletin_post (bulletin_post_no, bulletin_post_subject, bulletin_post_content, private_check, bulletin_post_recommend, bulletin_post_decommend, post_record_cnt, regdate, creator_id, bulletin_post_header_no) values (seq_bulletin_post_no.nextVal, ?, ?, ?, default, default, default, sysdate, ?, ?)";
+			String sql = "insert into bulletin_post (bulletin_post_no, bulletin_post_subject, bulletin_post_content, private_check, bulletin_post_recommend, bulletin_post_decommend, post_record_cnt, regdate, creator_id, bulletin_post_header_no) values (SEQ_BULLETIN_POST_NO.nextVal, ?, ?, default, default, default, default, sysdate, ?, ?)";
 			
 			pstat = conn.prepareStatement(sql);
 			pstat.setString(1, communityDto.getPost_subject());
 			pstat.setString(2, communityDto.getPost_content());
-			pstat.setString(3, communityDto.getPrivate_check());
-			pstat.setString(4, userDto.getMemberId());
-			pstat.setString(5, communityDto.getHeader_no());
+			pstat.setString(3, userDto.getMemberId());
+			pstat.setString(4, communityDto.getHeader_no());
 			
 			return pstat.executeUpdate();
 			
@@ -197,7 +198,7 @@ public class CommunityDAO {
 				dto.setCreator_id(rs.getString("creator_id"));
 				dto.setRegdate(rs.getString("regdate"));
 				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
-				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
+				dto.setViews(rs.getString("views"));
 
 				list.add(dto);
 			}
@@ -218,7 +219,7 @@ public class CommunityDAO {
 					+ "        (select member_nickname from member where creator_id = member.member_id) as member_nickname,"
 					+ "        creator_id, to_char(regdate, 'yyyy-mm-dd') as regdate,"
 					+ "        announcement_post_recommend,"
-					+ "        post_record_cnt from announcement_post order by announcement_post_no desc";
+					+ "        views from announcement_post order by announcement_post_no desc";
 			
 			rs = stat.executeQuery(sql);
 			
@@ -230,7 +231,7 @@ public class CommunityDAO {
 				dto.setCreator_id("creator_id");
 				dto.setRegdate(rs.getString("regdate"));
 				dto.setPost_recommend("announcement_post_recommend");
-				dto.setPost_record_cnt("post_record_cnt");
+				dto.setViews("views");
 				
 				list.add(dto);
 			}
@@ -256,7 +257,7 @@ public class CommunityDAO {
 					+ "        (select member_nickname from member where creator_id = member.member_id) as member_nickname,"
 					+ "        creator_id, to_char(regdate, 'yyyy-mm-dd') as regdate,"
 					+ "        qna_post_recommend,"
-					+ "        post_record_cnt from qna_post order by qna_post_no desc";
+					+ "        views from qna_post order by qna_post_no desc";
 			
 			
 			rs = stat.executeQuery(sql);
@@ -269,7 +270,7 @@ public class CommunityDAO {
 				dto.setCreator_id("creator_id");
 				dto.setRegdate(rs.getString("regdate"));
 				dto.setPost_recommend("qna_post_recommend");
-				dto.setPost_record_cnt("post_record_cnt");
+				dto.setViews("views");
 				
 				list.add(dto);
 				
@@ -284,6 +285,7 @@ public class CommunityDAO {
 		return null;
 	}
 	
+	//갯수 세기
 	public int getTotalBulletinPosts() {
 		try {
 			//게시판 게시글 갯수 카운트
@@ -322,6 +324,7 @@ public class CommunityDAO {
 	    return null;
 	}
 
+	
 	public int getTotalPosts(String searchWord, String searchSel) {
 		int total = 0;
 		
@@ -396,20 +399,41 @@ public class CommunityDAO {
 	}
 
 	//게시글 불러오기
-	public CommunityDTO getPost(String post_no) {
-		CommunityDTO dto = null;
+	public CommunityDTO getPost(String post_no, HttpSession session) {
+		PreparedStatement pstat1 = null;
+	    PreparedStatement pstat2 = null;
+	    CommunityDTO dto = null;
 		
-    
 		try {
-			String sql = "SELECT bp.*, m.member_nickname as nickname, bph.bulletin_post_header_name as header_name " +
+			String visitedKey = "visited_" + post_no;
+	        Boolean visited = (Boolean) session.getAttribute(visitedKey);
+	        
+	        System.out.println("Post No: " + post_no);
+	        System.out.println("Visited: " + visited);
+	        
+	        // 변경: 조건부 조회수 증가 로직
+	        if (visited == null) {
+	            String sql1 = "UPDATE bulletin_post SET views = views + 1 WHERE bulletin_post_no = ?";
+	            pstat1 = conn.prepareStatement(sql1);
+	            pstat1.setString(1, post_no);
+	            int updateResult = pstat1.executeUpdate();
+	            
+	            System.out.println("Update Result: " + updateResult);  // 변경: 디버깅용 로그 추가
+	            
+	            // 변경: 방문 표시
+	            session.setAttribute(visitedKey, true);
+	        }
+			
+			
+			String sql2 = "SELECT bp.*, m.member_nickname as nickname, bph.bulletin_post_header_name as header_name " +
 					"FROM bulletin_post bp " +
 					"LEFT JOIN member m ON bp.creator_id = m.member_id " +
 					"LEFT JOIN bulletin_post_header bph ON bp.bulletin_post_header_no = bph.bulletin_post_header_no " +
 					"WHERE bp.bulletin_post_no = ?";
 
-			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, post_no);
-			rs = pstat.executeQuery();
+			pstat2 = conn.prepareStatement(sql2);
+			pstat2.setString(1, post_no);
+			rs = pstat2.executeQuery();
 			
 			if(rs.next()) {
 				dto = new CommunityDTO();
@@ -419,7 +443,7 @@ public class CommunityDAO {
 				dto.setCreator_id(rs.getString("creator_id"));
 				dto.setNickname(rs.getString("nickname"));
 				dto.setRegdate(rs.getString("regdate"));
-				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
+				dto.setViews(rs.getString("views"));
 				dto.setPost_recommend(rs.getString("bulletin_post_recommend"));
 				dto.setPost_decommend(rs.getString("bulletin_post_decommend"));
 				dto.setHeader_name(rs.getString("header_name"));
@@ -474,11 +498,6 @@ public class CommunityDAO {
 		
 		try {
 			
-			System.out.println(dto.getPost_subject());
-			System.out.println(dto.getPost_content());
-			System.out.println(dto.getHeader_no());
-			System.out.println(dto.getPost_no()); 
-			
 			String sql = "UPDATE bulletin_post SET bulletin_post_subject = ?, bulletin_post_content = ?, bulletin_post_header_no = ? where bulletin_post_no = ?";
 			
 			pstat = conn.prepareStatement(sql);
@@ -516,29 +535,37 @@ public class CommunityDAO {
 		
 	}
 
-	public CommunityDTO delPost(String post_no) {
+	//게시글 삭제 메서드
+	public boolean bulletin_Del_Post(String post_no) {
 		
 		PreparedStatement pstat1 = null;
 	    PreparedStatement pstat2 = null;
-		
+	    boolean success = false;
+	    
 		try {
-			
-            String sql1 = "Delete from bulletin_comment where bulletin_post_no = ?";
+			//댓글 삭제
+            String sql1 = "DELETE FROM bulletin_comment WHERE bulletin_post_no = ?";
             pstat1 = conn.prepareStatement(sql1);
             pstat1.setString(1, post_no);
             
             pstat1.executeUpdate();
             
-            String sql2 = "Delete from bulletin_post where bulletin_post_no = ?";
+			//게시글 삭제
+            String sql2 = "DELETE FROM bulletin_post WHERE bulletin_post_no = ?";
             pstat2 = conn.prepareStatement(sql2);
             pstat2.setString(1, post_no);
             
             pstat2.executeUpdate();
               
-            conn.commit();
+            conn.commit();  // 트랜잭션 커밋
+            success = true;  // 성공 표시
             
         } catch (Exception e) {
-        	
+        	try {
+				conn.rollback();
+			} catch (SQLException rollbackEx) { 
+	            rollbackEx.printStackTrace();
+			}
             e.printStackTrace();
             
         } finally {
@@ -546,18 +573,154 @@ public class CommunityDAO {
             try {
                 if (pstat1 != null) pstat1.close();
                 if (pstat2 != null) pstat2.close();
+				conn.setAutoCommit(true);
             } catch (Exception closeEx) {
                 closeEx.printStackTrace();
             }
         }
 		
-		return null;
+		return success;
 	}
 
+	
+	
+	
+	
+	
+	//추천 비추천 추가 메서드
+	public int bulletin_Vote_Record(CommunityDTO communityDto, UserDTO userDto) {
+		PreparedStatement pstat1 = null;
+	    PreparedStatement pstat2 = null;
+		int result = 0;
+		
+		try {
+			conn.setAutoCommit(false); 
+			//추천, 비추천 기록
+			String sql = "INSERT INTO bulletin_vote_record (bulletin_vote_record_no, bulletin_post_no, regdate, vote_check, member_id) values (seq_bulletin_vote_record_no.nextVal, ?, sysdate, ?, ?)";
+			
+			pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, communityDto.getPost_no());
+	        pstat.setString(2, communityDto.getVote_check());
+	        pstat.setString(3, userDto.getMemberId());
+	        result = pstat.executeUpdate();
+			
+			//추천, 비추천 업데이트
+	        if(communityDto.getVote_check().equals("0")) {
+	        	String sql1 = "UPDATE bulletin_post SET bulletin_post_recommend = bulletin_post_recommend + 1 WHERE bulletin_post_no = ?";
 
+				pstat1 = conn.prepareStatement(sql1);
+				pstat1.setString(1, communityDto.getPost_no());
+				pstat1.executeUpdate();
+
+
+	        } else if(communityDto.getVote_check().equals("1")) {
+	        	String sql2 = "UPDATE bulletin_post SET bulletin_post_decommend = bulletin_post_decommend + 1 WHERE bulletin_post_no = ?";
+
+				pstat2 = conn.prepareStatement(sql2);
+				pstat2.setString(1, communityDto.getPost_no());
+				pstat2.executeUpdate();
+	        }
+	    
+			conn.commit();  // 트랜잭션 커밋
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstat1 != null) pstat1.close();
+				if (pstat2 != null) pstat2.close();
+				conn.setAutoCommit(true);  // 자동 커밋 모드 복원
+			} catch (Exception closeEx) {
+				closeEx.printStackTrace();
+			}
+		}
+		
+		return result;
+		
+	}
+
+	//추천, 비추천 눌렀을 경우 체크 -> 있으면 삭제 및 업데이트
+	public boolean bulletin_Vote_Check(CommunityDTO communityDto, UserDTO userDto) {
+		
+		PreparedStatement pstat1 = null;
+		PreparedStatement pstat2 = null;
+		PreparedStatement pstat3 = null;
+		boolean success = false;
+
+		try {
+			conn.setAutoCommit(false);
+
+			//추천, 비추천 기록 조회
+			 String checkSql = "SELECT vote_check FROM bulletin_vote_record WHERE bulletin_post_no = ? AND member_id = ?";
+	        pstat = conn.prepareStatement(checkSql);
+	        pstat.setString(1, communityDto.getPost_no());
+	        pstat.setString(2, userDto.getMemberId());
+	        rs = pstat.executeQuery();
+			
+	        
+	        
+	        	
+				if(rs.next()) {
+				       
+		        	String vote_check = rs.getString("vote_check");
+		            // vote_check 값에 따른 처리
+		        	if(vote_check.equals("0")) {
+						
+						String sql1 = "UPDATE bulletin_post SET bulletin_post_recommend = bulletin_post_recommend - 1 WHERE bulletin_post_no = ?";
+						pstat1 = conn.prepareStatement(sql1);
+						pstat1.setString(1, communityDto.getPost_no());
+						pstat1.executeUpdate();
+
+					} else if(vote_check.equals("1")) {
+
+						String sql2 = "UPDATE bulletin_post SET bulletin_post_decommend = bulletin_post_decommend - 1 WHERE bulletin_post_no = ?";
+						pstat2 = conn.prepareStatement(sql2);
+						pstat2.setString(1, communityDto.getPost_no());
+						pstat2.executeUpdate();
+
+					} 
+
+					//추천, 비추천 기록 삭제
+					String sql3 = "DELETE FROM bulletin_vote_record WHERE bulletin_post_no = ? AND member_id = ?";
+					pstat3 = conn.prepareStatement(sql3);
+					pstat3.setString(1, communityDto.getPost_no());
+					pstat3.setString(2, userDto.getMemberId());
+					int deleteResult = pstat3.executeUpdate();
+
+					if(deleteResult > 0) {
+						conn.commit();
+						success = true;
+					}	
+				        
+				        
+				}
+				
+		} catch (Exception e) {
+			try {
+            conn.rollback(); 
+        } catch (Exception rollbackEx) {
+            rollbackEx.printStackTrace();
+        }
+        e.printStackTrace();
+		} finally {
+	        try {
+	            if (pstat1 != null) pstat1.close(); 
+	            if (pstat2 != null) pstat2.close();
+	            if (pstat3 != null) pstat3.close();
+	            conn.setAutoCommit(true);
+	        } catch (Exception closeEx) {
+	            closeEx.printStackTrace();
+	        }
+    	}
+   
+    return success;
+    
+	}
+	
+	
+	
 	
 }
-
 
 
 

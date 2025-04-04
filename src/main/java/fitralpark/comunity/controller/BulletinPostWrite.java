@@ -15,7 +15,7 @@ import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostWrite.do")
-public class BulletinWrite extends HttpServlet {
+public class BulletinPostWrite extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

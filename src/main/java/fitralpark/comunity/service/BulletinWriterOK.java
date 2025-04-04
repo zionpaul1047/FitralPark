@@ -20,7 +20,6 @@ public class BulletinWriterOK extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("text/html; charset=UTF-8");
 
@@ -30,18 +29,19 @@ public class BulletinWriterOK extends HttpServlet {
 		
 		String post_subject = req.getParameter("post_subject");
 		String post_content = req.getParameter("post_content");
-		
-		CommunityDTO communityDto = new CommunityDTO();
-		communityDto.setPost_subject(post_subject);
-		communityDto.setPost_content(post_content);
-		communityDto.setCreator_id(session.getAttribute("auth").toString());
+		String header_no = req.getParameter("header_no");
 		
 		CommunityDAO dao = new CommunityDAO();
+		CommunityDTO communityDto = new CommunityDTO();
+		communityDto.setHeader_no(header_no);
+		communityDto.setPost_subject(post_subject);
+		communityDto.setPost_content(post_content);
+
 		int result = dao.Bulletin_post_add(communityDto, userDto);
 		dao.close();
 		
 		if (result == 1) {
-			resp.sendRedirect("/fitralpark/community/Bulletinlist.do");
+			resp.sendRedirect("/fitralpark/bulletinList.do");
 		} else {
 			PrintWriter writer = resp.getWriter();
 			writer.print("""
