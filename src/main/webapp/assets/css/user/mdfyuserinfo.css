@@ -64,7 +64,7 @@
 	
 }
 
-#mdfyuserinfo > form button, #mdfyuserinfo > form input[type=button]  {
+#mdfyuserinfo  form button, #mdfyuserinfo  form input[type=button]  {
 	border: 1px solid #ced4da;
 	border-radius: 3px;
 	padding: 8px;
@@ -88,5 +88,9 @@
 	border: 1px solid #ced4da;
 	border-radius: 3px;
 	padding: 8px;
+}
+
+.ncsry_item {
+	color: tomato;
 }
 

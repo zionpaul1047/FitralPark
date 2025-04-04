@@ -9,11 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/mdfyuserinfo.do")
-public class MdfyUserInfo extends HttpServlet {
+public class MdfyUserInfoController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//MdfyUserInfo.java
+		//MdfyUserInfoController.java
 		
 
 		req.getRequestDispatcher("/WEB-INF/views/user/mdfyuserinfo.jsp").forward(req, resp);

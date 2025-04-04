@@ -65,39 +65,41 @@
     			<main id="mdfyuserinfo">
     				<h1>회원정보 수정</h1>
     				<div>변경할 정보를 입력해주세요.</div>
-	    			<form>
+	    			<form id="member_info_form" action="">
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">아이디</div>
+	    					<div class="mdfy_item_subj">아이디 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content no_mdfy_content">hong123</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">비밀번호</div>
+	    					<div class="mdfy_item_subj">비밀번호 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
 	    						<input type="password" id="user_pw" class="wide_input" placeholder="영문 대소문자+숫자+특수문자 중 2가지 이상, 8~16자">
+	    						<small id="pwValidationMessage" style="display: block; margin-top: 4px;"></small>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">비밀번호 확인</div>
+	    					<div class="mdfy_item_subj">비밀번호 확인 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
 	    						<input type="password" id="user_pw_vrfy" class="wide_input" placeholder="비밀번호를 다시 입력하세요">
+	    						<small id="pwMatchMessage" style="display: block; margin-top: 4px;"></small>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">이름</div>
+	    					<div class="mdfy_item_subj">이름 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content no_mdfy_content">홍길동</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">주민등록번호</div>
+	    					<div class="mdfy_item_subj">주민등록번호 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content no_mdfy_content">980101-1******</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">닉네임</div>
+	    					<div class="mdfy_item_subj">닉네임 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
 	    						<input type="text" id="user_nickname" class="wide_input" placeholder="한글/영문/숫자 조합, 최대 15자">
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">연락처</div>
+	    					<div class="mdfy_item_subj">연락처 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
 	    						<select id="user_tel1" class="reg_input">
 	    							<option>010</option>
@@ -129,18 +131,34 @@
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
-	    					<div class="mdfy_item_subj">이메일</div>
+	    					<div class="mdfy_item_subj">이메일 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
-	    						<input type="text" id="user_email_prefix" class="reg_input" placeholder="아이디"> @ <select id="user_email_domain" class="reg_input">
-													    							<option>선택</option>
-													    							<option>gmail.com</option>
-													    							<option>naver.com</option>
-													    							<option>daum.net</option>
-													    							<option>hanmail.net</option>
-													    							<option>nate.com</option>
-													    							<option>kakao.com</option>
-													    							<option>직접입력</option>
-													    						</select> <button type="button">인증번호 발송</button>
+	    						<div>
+	    							<div>
+			    						<input type="text" id="user_email_prefix" class="reg_input" placeholder="아이디"> @ <select id="user_email_domain" class="reg_input">
+															    							<option value="default" selected>선택</option>
+															    							<option value="gmail.com">gmail.com</option>
+															    							<option value="naver.com">naver.com</option>
+															    							<option value="daum.net">daum.net</option>
+															    							<option value="hanmail.net">hanmail.net</option>
+															    							<option value="nate.com">nate.com</option>
+															    							<option value="kakao.com">kakao.com</option>
+															    							<option value="custom">직접입력</option>
+															    						</select> <button id="emailAuthBtn" type="button">인증번호 발송</button>
+									</div>
+									<div>
+										<input type="text" id="email_domain_custom" class="wide_input" placeholder="직접 도메인 입력" style="display: none;">
+									</div>
+								</div>
+								<div><small id="emailMessage">이메일을 모두 입력해주세요.</small></div>
+								<div id="authCodeWrap" style="display: none; width: 100%;">
+									<div>
+										<input type="text" id="authCode" class="reg_input" maxlength="6" placeholder="인증번호를 입력해주세요" >
+										<button type="button" id="authCodeCheckBtn">확인</button>
+										<small id="authTimer"></small>
+									</div>
+									<div id="authCodeMessage" style="color: red;"></div>
+								</div>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
@@ -157,7 +175,7 @@
 	    					</div>
 	    				</div>
 	    				<div id="form_bottom">
-	    					<button>보내기</button>
+	    					<button id="mdfy_submit_btn">회원정보 수정</button>
 	    				</div>
 	    				
 	    			</form>
