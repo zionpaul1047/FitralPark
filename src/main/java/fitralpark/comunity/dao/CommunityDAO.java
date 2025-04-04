@@ -405,22 +405,17 @@ public class CommunityDAO {
 	    CommunityDTO dto = null;
 		
 		try {
+			//session으로 체크
 			String visitedKey = "visited_" + post_no;
 	        Boolean visited = (Boolean) session.getAttribute(visitedKey);
 	        
-	        System.out.println("Post No: " + post_no);
-	        System.out.println("Visited: " + visited);
-	        
-	        // 변경: 조건부 조회수 증가 로직
 	        if (visited == null) {
 	            String sql1 = "UPDATE bulletin_post SET views = views + 1 WHERE bulletin_post_no = ?";
 	            pstat1 = conn.prepareStatement(sql1);
 	            pstat1.setString(1, post_no);
 	            int updateResult = pstat1.executeUpdate();
 	            
-	            System.out.println("Update Result: " + updateResult);  // 변경: 디버깅용 로그 추가
 	            
-	            // 변경: 방문 표시
 	            session.setAttribute(visitedKey, true);
 	        }
 			
