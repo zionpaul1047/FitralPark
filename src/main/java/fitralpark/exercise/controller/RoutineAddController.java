@@ -24,7 +24,7 @@ public class RoutineAddController extends HttpServlet {
 
 	    String creatorId = ((UserDTO) req.getSession().getAttribute("loginUser")).getMemberId();
 
-	    ExerciseDAO dao = new ExerciseDAO();	
+	    ExerciseDAO dao = new ExerciseDAO();
 
 	    for (int i = 0; i < names.length; i++) {
 	        dao.insertCustomExercise(
