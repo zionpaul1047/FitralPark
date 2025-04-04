@@ -270,7 +270,10 @@
 
 				<!-- 댓글 띄우기 -->
 				<div id="comment_area">
+				<form action="bulletinCommentOK.do" method="post">
 				<c:forEach items="${Comment_list}" var="commentDto">
+					<input type="hidden" name="comment_no" value="${commentDto.comment_no}">
+					<input type="hidden" name="creator_id" value="${commentDto.creator_id}">
 					<div class="comment_item">
 						<div class="comment_header">
 							<div class="comment_nickname">
@@ -285,6 +288,7 @@
 						</div>
 					</div>
 				</c:forEach>
+				</form>
 				</div>
 			
 				<div id="button_area">

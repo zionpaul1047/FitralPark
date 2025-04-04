@@ -711,9 +711,22 @@ public class CommunityDAO {
     return success;
     
 	}
-	
-	
-	
+
+
+	public void bulletin_Del_Comment(String comment_no) {
+		
+		try {
+			String sql = "DELETE FROM bulletin_post_comment WHERE post_comment_no = ?";
+
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, comment_no);
+			pstat.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+		
+	}
 	
 }
 

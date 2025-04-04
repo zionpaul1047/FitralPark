@@ -63,14 +63,19 @@ public class SessionCheckFilter implements Filter {
             session.setAttribute("redirectAfterLogin", command);
             session.setAttribute("loginRequired", true);
 
-            // 일반 요청인지, AJAX인지 판별 필요시 여기에 조건 추가 가능
+            // 변경: AJAX 요청 체크
             if ("XMLHttpRequest".equals(httpReq.getHeader("X-Requested-With"))) {
                 httpRes.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 필요");
             } else {
-				//httpRes.sendRedirect(contextPath + "/login.do?show=login");
+                // 변경: JavaScript로 로그인 팝업 호출
+                httpRes.setContentType("text/html; charset=UTF-8");
+                PrintWriter out = httpRes.getWriter();
+                out.println("<script>");
+                out.println("window.parent.showLoginPopup();");  // 부모 창의 로그인 팝업 호출
+                out.println("</script>");
+                out.close();
             }
-
-            return; // 요청 차단
+            return;
         }
 
         // 로그인된 상태인데 이전 플래그가 남아있다면 제거
