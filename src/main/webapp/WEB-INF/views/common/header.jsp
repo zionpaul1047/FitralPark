@@ -2,9 +2,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- 공통 CSS/JS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 <!-- contextPath 전역 변수 -->
 <script>
 	const contextPath = '${pageContext.request.contextPath}';
+	let loginPopupWindow = null;
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
@@ -117,36 +121,18 @@
 			const overlay = document.getElementById("overlay");
 			if (overlay) overlay.style.display = "block";
 
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
-			);
+			if (loginPopupWindow == null || loginPopupWindow.closed) {
+				loginPopupWindow = window.open(
+					contextPath + "/login.do",
+					"loginPopup",
+					"width=800,height=850,resizable=no,scrollbars=no"
+				);
+			} else {
+				loginPopupWindow.focus(); // 이미 열린 팝업이 있을 경우 다시 띄우지 않고 포커스만 주기
+			}
 		});
 	</script>
 </c:if>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-	// 수동 로그인 팝업 버튼
-	const authButton = document.getElementById("authButton");
-	if (authButton) {
-		authButton.addEventListener("click", function () {
-			const overlay = document.getElementById("overlay");
-			if (overlay) overlay.style.display = "block";
-
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
-			);
-		});
-	}
-});
-</script>
-
-
 
 
 <!-- full-menu -->
@@ -188,20 +174,20 @@ document.addEventListener("DOMContentLoaded", function () {
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">커뮤니티</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/announcementList.do">커뮤니티</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">공지사항</a></li>
-					<li><a href="">자유게시판</a></li>
-					<li><a href="">Q&A게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/announcementList.do">공지사항</a></li>
+					<li><a href="${pageContext.request.contextPath}/bulletinList.do">자유게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/qnaList.do">Q&A게시판</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">마이페이지</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/dashboard.do">마이페이지</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">대시보드</a></li>
-					<li><a href="">나의활동</a></li>
-					<li><a href="">회원정보</a></li>
+					<li><a href="${pageContext.request.contextPath}/dashboard.do">대시보드</a></li>
+					<li><a href="#">나의활동</a></li>
+					<li><a href="${pageContext.request.contextPath}/mdfyuserinfo.do">회원정보수정</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 		</ul>

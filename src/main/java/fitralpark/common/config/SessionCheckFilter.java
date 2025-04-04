@@ -23,7 +23,7 @@ public class SessionCheckFilter implements Filter {
 
     // 로그인 보호가 필요한 경로
     private static final String[] protectedPaths = {
-        "/dashboard.do", "/diet.do", "/recommendation.do"
+        "/dashboard.do", "/bulletinList.do", "/diet.do", "/recommendation.do"
     };
 
     @Override

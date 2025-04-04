@@ -21,7 +21,7 @@ public class LoginController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // 기본 로그인 페이지 (직접 접근 시 auth.jsp로 포워딩)
+        // auth.jsp로 포워딩
         RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/user/auth.jsp");
         dispatcher.forward(request, response);
     }
@@ -36,27 +36,43 @@ public class LoginController extends HttpServlet {
 
         // DB에서 로그인 정보 확인
         UserDAO dao = new UserDAO();
-        UserDTO loginUser = dao.login(username, password);  // UserDAO에 정의된 login 메서드 사용
+        UserDTO loginUser = dao.login(username, password); // login() 메서드는 UserDAO에 작성 필요
 
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
 
         if (loginUser != null) {
-            // 로그인 성공 → 세션에 사용자 정보 저장
+            // 로그인 성공 → 세션에 DTO 저장
             HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
 
-            // 팝업에서 로그인한 경우 → 부모창 새로고침 & 팝업 닫기
-            out.println("<script>");
-            out.println("alert('로그인 성공!');");
-            out.println("if (window.opener) { window.opener.location.reload(); window.close(); }");
-            out.println("</script>");
-        } else {
-            // 로그인 실패
-            out.println("<script>");
-            out.println("alert('아이디 또는 비밀번호가 올바르지 않습니다.');");
-            out.println("history.back();");
-            out.println("</script>");
-        }
-    }
+			String redirect = (String) session.getAttribute("redirectAfterLogin");
+			if (redirect == null || redirect.isEmpty()) {
+				redirect = "/index.do";
+			} else {
+				session.removeAttribute("redirectAfterLogin");
+			}
+
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('로그인 성공!');");
+			out.println("if (window.opener) {");
+			out.println("  window.opener.location.href='" + request.getContextPath() + redirect + "';");
+			out.println("  var overlay = window.opener.document.getElementById('overlay');");
+			out.println("  if (overlay) overlay.style.display = 'none';");
+			out.println("  window.close();");
+			out.println("} else {");
+			out.println("  location.href='" + request.getContextPath() + redirect + "';");
+			out.println("}");
+			out.println("</script>");
+
+		} else {
+			// 로그인 실패 시에만 실행되어야 하는 코드
+			PrintWriter out = response.getWriter();
+			out.println("<script>");
+			out.println("alert('아이디 또는 비밀번호가 일치하지 않습니다.');");
+			out.println("history.back();");
+			out.println("</script>");
+		}
+
+	}
 }

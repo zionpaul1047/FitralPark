@@ -1,4 +1,4 @@
-package fitralpark.exercise.controller;
+package fitralpark.user.controller;
 
 import java.io.IOException;
 
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/exercise/routineAdd.do")
-public class RoutineAdd extends HttpServlet {
-
+@WebServlet("/mdfyuserinfo.do")
+public class MdfyUserInfoController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		//RoutineAdd.java
-			
+		//MdfyUserInfoController.java
+		
 
-		req.getRequestDispatcher("/WEB-INF/views/exercise/routineAdd.jsp").forward(req, resp);
+		req.getRequestDispatcher("/WEB-INF/views/user/mdfyuserinfo.jsp").forward(req, resp);
+
 	}
 
 }

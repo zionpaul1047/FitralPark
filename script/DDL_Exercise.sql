@@ -82,14 +82,6 @@ CREATE TABLE exercise_part_link (
     CONSTRAINT fk_link_exercise FOREIGN KEY (exercise_no) REFERENCES exercise(exercise_no)
 );
 
-CREATE TABLE custom_exercise_part_link (
-    custom_exercise_part_link_no NUMBER PRIMARY KEY,
-    exercise_part_no NUMBER,
-    custom_exercise_no NUMBER,
-    CONSTRAINT fk_custom_link_part FOREIGN KEY (exercise_part_no) REFERENCES exercise_part(exercise_part_no),
-    CONSTRAINT fk_custom_link_exercise FOREIGN KEY (custom_exercise_no) REFERENCES custom_exercise(custom_exercise_no)
-);
-
 CREATE TABLE exercise_record (
     exercise_record_no NUMBER PRIMARY KEY,
     record_date DATE DEFAULT SYSDATE NOT NULL,
@@ -121,9 +113,6 @@ CREATE TABLE routine (
     public_check NUMBER DEFAULT 0 NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
     routine_category_no NUMBER NOT NULL,
-    views NUMBER Default 1,
-    recommend NUMBER Default 0,
-    disrecommend NUMBER Default 0,
     CONSTRAINT fk_routine_category FOREIGN KEY (routine_category_no) REFERENCES routine_category(routine_category_no),
     CONSTRAINT fk_routine_member FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );
