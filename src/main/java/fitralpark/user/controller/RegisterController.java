@@ -34,9 +34,9 @@ public class RegisterController extends HttpServlet {
 		// hidden input에서 바로 받기
 		String email = req.getParameter("email");
 
-		String address = req.getParameter("zipcode") + " " + req.getParameter("address") + " "
+		String address = req.getParameter("zipcode") + "◈" + req.getParameter("address") + "◈"
 				+ req.getParameter("address_detail");
-
+		
 		// 2. DTO 생성
 		UserDTO dto = new UserDTO();
 		dto.setMemberId(id);

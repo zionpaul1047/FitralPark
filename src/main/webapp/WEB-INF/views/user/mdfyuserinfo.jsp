@@ -65,69 +65,69 @@
     			<main id="mdfyuserinfo">
     				<h1>회원정보 수정</h1>
     				<div>변경할 정보를 입력해주세요.</div>
-	    			<form id="member_info_form" action="">
+	    			<form id="member_info_form" action="modfyuserinfook.do">
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">아이디 <span class="ncsry_item">*</span></div>
-	    					<div class="mdfy_item_content no_mdfy_content">hong123</div>
+	    					<div class="mdfy_item_content no_mdfy_content">${userInfo.memberId }</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">비밀번호 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
-	    						<input type="password" id="user_pw" class="wide_input" placeholder="영문 대소문자+숫자+특수문자 중 2가지 이상, 8~16자">
+	    						<input type="password" id="user_pw" class="wide_input" placeholder="영문 대소문자+숫자+특수문자 중 2가지 이상, 8~16자" maxlength="16">
 	    						<small id="pwValidationMessage" style="display: block; margin-top: 4px;"></small>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">비밀번호 확인 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
-	    						<input type="password" id="user_pw_vrfy" class="wide_input" placeholder="비밀번호를 다시 입력하세요">
+	    						<input type="password" id="user_pw_vrfy" class="wide_input" placeholder="비밀번호를 다시 입력하세요" maxlength="16">
 	    						<small id="pwMatchMessage" style="display: block; margin-top: 4px;"></small>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">이름 <span class="ncsry_item">*</span></div>
-	    					<div class="mdfy_item_content no_mdfy_content">홍길동</div>
+	    					<div class="mdfy_item_content no_mdfy_content">${userInfo.memberName}</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">주민등록번호 <span class="ncsry_item">*</span></div>
-	    					<div class="mdfy_item_content no_mdfy_content">980101-1******</div>
+	    					<div class="mdfy_item_content no_mdfy_content">${userInfo.personalNumber}</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">닉네임 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
-	    						<input type="text" id="user_nickname" class="wide_input" placeholder="한글/영문/숫자 조합, 최대 15자">
+	    						<input type="text" id="user_nickname" class="wide_input" placeholder="한글/영문/숫자 조합, 최대 15자" value="${userInfo.memberNickname}">
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">연락처 <span class="ncsry_item">*</span></div>
 	    					<div class="mdfy_item_content">
 	    						<select id="user_tel1" class="reg_input">
-	    							<option>010</option>
-	    							<option>011</option>
-	    							<option>016</option>
-	    							<option>017</option>
-	    							<option>018</option>
-	    							<option>019</option>
-	    							<option>02 (서울)</option>
-	    							<option>031 (경기)</option>
-	    							<option>032 (인천)</option>
-	    							<option>033 (강원)</option>
-	    							<option>041 (충남)</option>
-	    							<option>042 (대전)</option>
-	    							<option>043 (충북)</option>
-	    							<option>044 (세종)</option>
-	    							<option>051 (부산)</option>
-	    							<option>052 (울산)</option>
-	    							<option>053 (대구)</option>
-	    							<option>054 (경북)</option>
-	    							<option>055 (경남)</option>
-	    							<option>061 (전남)</option>
-	    							<option>062 (광주)</option>
-	    							<option>063 (전북)</option>
-	    							<option>064 (제주)</option>
-	    							<option>070 (인터넷전화)</option>
-	    							<option>직접입력</option>
-	    						</select> - <input type="text" id="user_tel2" class="reg_input"> - <input type="text" id="user_tel3" class="reg_input">
+	    							<option value="010">010</option>
+	    							<option value="011">011</option>
+	    							<option value="016">016</option>
+	    							<option value="017">017</option>
+	    							<option value="018">018</option>
+	    							<option value="019">019</option>
+	    							<option value="02">02 (서울)</option>
+	    							<option value="031">031 (경기)</option>
+	    							<option value="032">032 (인천)</option>
+	    							<option value="033">033 (강원)</option>
+	    							<option value="041">041 (충남)</option>
+	    							<option value="042">042 (대전)</option>
+	    							<option value="043">043 (충북)</option>
+	    							<option value="044">044 (세종)</option>
+	    							<option value="051">051 (부산)</option>
+	    							<option value="052">052 (울산)</option>
+	    							<option value="053">053 (대구)</option>
+	    							<option value="054">054 (경북)</option>
+	    							<option value="055">055 (경남)</option>
+	    							<option value="061">061 (전남)</option>
+	    							<option value="062">062 (광주)</option>
+	    							<option value="063">063 (전북)</option>
+	    							<option value="064">064 (제주)</option>
+	    							<option value="070">070 (인터넷전화)</option>
+	    							<option value="custom">직접입력</option>
+	    						</select> - <input type="text" id="user_tel2" class="reg_input" value="${userInfo.tel2}"> - <input type="text" id="user_tel3" class="reg_input"  value="${userInfo.tel3}">
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
@@ -135,8 +135,8 @@
 	    					<div class="mdfy_item_content">
 	    						<div>
 	    							<div>
-			    						<input type="text" id="user_email_prefix" class="reg_input" placeholder="아이디"> @ <select id="user_email_domain" class="reg_input">
-															    							<option value="default" selected>선택</option>
+			    						<input type="text" id="user_email_prefix" class="reg_input" placeholder="아이디" value="${userInfo.email1}"> @ <select id="user_email_domain" class="reg_input">
+															    							<option value="default">선택</option>
 															    							<option value="gmail.com">gmail.com</option>
 															    							<option value="naver.com">naver.com</option>
 															    							<option value="daum.net">daum.net</option>
@@ -164,14 +164,14 @@
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">주소</div>
 	    					<div class="mdfy_item_content">
-	    						<div><input type="text" id="input_postcode" class="reg_input" placeholder="우편번호" readonly> <input type="button" id="zipCodeCheckBtn" onclick="execDaumPostcode()" value="주소 검색"></div>
-	    						<div><input type="text" id="input_address" class="wide_input" placeholder="기본주소" readonly></div>
+	    						<div><input type="text" id="input_postcode" class="reg_input" placeholder="우편번호" value="${userInfo.address1}" readonly> <input type="button" id="zipCodeCheckBtn" onclick="execDaumPostcode()" value="주소 검색"></div>
+	    						<div><input type="text" id="input_address" class="wide_input" placeholder="기본주소" value="${userInfo.address2}" readonly></div>
 	    					</div>
 	    				</div>
 	    				<div class="mdfy_item">
 	    					<div class="mdfy_item_subj">상세주소(선택)</div>
 	    					<div class="mdfy_item_content">
-	    						<input type="text" id="input_detailAddress" class="wide_input" placeholder="나머지 주소 (선택 입력 가능)">
+	    						<input type="text" id="input_detailAddress" class="wide_input" placeholder="나머지 주소 (선택 입력 가능)"  value="${userInfo.address3}">
 	    					</div>
 	    				</div>
 	    				<div id="form_bottom">
@@ -218,6 +218,9 @@
 	      });
 	    });
 	    
+	  //기존 회원정보 불러오기
+	  $('#user_tel1').val('${userInfo.tel1}');
+	  $('#user_email_domain').val('${userInfo.email2}');
 	    
 	   
     </script>

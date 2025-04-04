@@ -69,6 +69,14 @@ let tel_invalid = false;
 let pw_invalid = false;
 let email_invalid = false;
 
+$(document).ready(function() {
+	const org_nick;
+	const org_tel;
+	const org_pw;
+	const org_email;
+
+});
+
 
 //이벤트 설정
 
@@ -102,9 +110,11 @@ if (pwInput && pwConfirm) {
 		if (validatePasswordFormat(pwInput.value)) {
 			pwMessage.innerText = "사용 가능한 비밀번호입니다.";
 			pwMessage.style.color = "green";
+			pw_invalid = true;
 		} else {
 			pwMessage.innerText = "8~16자, 영문 대소문자/숫자/특수문자 중 2종 이상 조합 필요";
 			pwMessage.style.color = "red";
+			pw_invalid = false;
 		}
 		if (pwConfirm.value !== "") {
 			pwMatchMessage.innerText = pwInput.value === pwConfirm.value ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.";
@@ -146,16 +156,39 @@ document.getElementById('user_tel2').addEventListener('input', function() {
 	const tel2_regex = /[0-9]{3,4}/;
 	const tel3_regex = /[0-9]{4}/;
 	
-	if(tel2_regex.test(user_tel2)) {
+	if(tel2_regex.test(user_tel2.value)) {
 		tel_invalid = true;
 	} else {
 		tel_invalid = false;
 	}
-	if(tel3_regex.test(user_tel3)) {
+	if(tel3_regex.test(user_tel3.value)) {
 			tel_invalid = true;
-		} else {
-			tel_invalid = false;
-		}
+	} else {
+		tel_invalid = false;
+	}
+	console.log('user_tel2', user_tel2.value);
+	console.log('user_tel3',user_tel3.value);
+	console.log('tel_invalid', tel_invalid);
+	
+});
+
+document.getElementById('user_tel3').addEventListener('input', function() {
+	const tel2_regex = /[0-9]{3,4}/;
+	const tel3_regex = /[0-9]{4}/;
+	
+	if(tel2_regex.test(user_tel2.value)) {
+		tel_invalid = true;
+	} else {
+		tel_invalid = false;
+	}
+	if(tel3_regex.test(user_tel3.value)) {
+			tel_invalid = true;
+	} else {
+		tel_invalid = false;
+	}
+	console.log('user_tel2', user_tel2.value);
+	console.log('user_tel3',user_tel3.value);
+	console.log('tel_invalid', tel_invalid);
 	
 });
 
@@ -314,22 +347,30 @@ $('#mdfy_submit_btn').click(function() {
 	//const input_postcode = document.getElementById('input_postcode');//우편번호
 	//const input_address = document.getElementById('input_address');//주소
 	//const input_detailAddress = document.getElementById('input_detailAddress'); //상세주소
+	
 	if(nick_invalid && tel_invalid && pw_invalid && email_invalid) {
+		//alert('첫번째 if 내부');
 		document.getElementById(member_info_form).submit();
 		
 	} else {
-		if(nick_invalid) {
-			
-		} else if (tel_invalid) {
+		//alert('첫번째 else 내부');
+		if(!pw_invalid) {
+			alert('비밀번호를 확인해주세요.');
+			return false;
+		} else if (!tel_invalid) {
 			alert('연락처를 확인해주세요.');
-		} else if (pw_invalid) {
-			alert('비민번호를 확인해주세요.');
-		} else if (email_invalid) {
+			return false;
+		} else if (!nick_invalid) {
+			alert('닉네임을 확인해주세요.');
+			return false;
+		} else if (!email_invalid) {
 			alert('이메일을 확인해주세요.');
+			return false;
 		}
+		
+		//alert('return 전');
 		return false;
 	}
-	
-	
-	
+
 });
+

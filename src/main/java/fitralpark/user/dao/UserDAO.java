@@ -994,6 +994,57 @@ public class UserDAO {
 	    return dto;
 	}
 
+	public UserDTO getUserInfo(String id) {
+		try {
+			UserDTO dto = new UserDTO();
+			
+			
+			String sql = """
+							select MEMBER_ID
+							     , substr(substr(PERSONALNUMBER, 1, 7), 1, 6) || '-' || substr(substr(PERSONALNUMBER, 1, 7), 7, 1) || '******' as PERSONALNUMBER
+							     , MEMBER_NICKNAME 
+							     , case when tel like '%-%-%' then substr(tel, 1, instr(tel, '-', 1, 1) -1) else null end as tel1
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 1) + 1, instr(tel, '-', 1, 2) - 1 - instr(tel, '-', 1, 1)) else null end as tel2
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 2) + 1, length(tel)) else null end as tel3
+							     , substr(EMAIL, 1, instr(EMAIL, '@', 1, 1) -1) as email1
+							     , substr(EMAIL, instr(EMAIL, '@', 1, 1) + 1, length(EMAIL)) as email2
+							     , case when ADDRESS like '%◈%◈%' or ADDRESS like '%◈%' then substr(ADDRESS, 1, instr(ADDRESS, '◈', 1, 1) -1)
+							             when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) -1, length(instr(ADDRESS, '◈', 1, 1) -1))
+							             else null end as addr1
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, instr(ADDRESS, '◈', 1, 2) - 1 - instr(ADDRESS, '◈', 1, 1)) 
+							            when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, length(ADDRESS))
+							             else null end as addr2
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 2) + 1, length(ADDRESS)) else null end as addr3
+							    from member
+							    where member_id = ?
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, id);
+			
+			rs = pstat.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMemberId(rs.getString("MEMBER_ID")); 
+				dto.setPersonalNumber(rs.getString("PERSONALNUMBER")); 
+				dto.setMemberNickname(rs.getString("MEMBER_NICKNAME")); 
+				dto.setTel1(rs.getString("tel1")); 
+				dto.setTel2(rs.getString("tel2")); 
+				dto.setTel3(rs.getString("tel3"));
+				dto.setEmail1(rs.getString("EMAIL1"));
+				dto.setEmail2(rs.getString("EMAIL2"));
+				dto.setAddress1(rs.getString("addr1")); 
+				dto.setAddress2(rs.getString("addr2")); 
+				dto.setAddress3(rs.getString("addr3"));
+				
+				return dto;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 
 
 }
