@@ -251,16 +251,16 @@
 	                </thead>
 	                <tbody>
 	                    <c:forEach items="${selectedExercises}" var="exercise">
-	                        <tr data-exercise-no="${exercise.exerciseNo}">
+	                        <tr data-exercise-no="${exercise.exerciseNo != null ? exercise.exerciseNo : 'C'.concat(exercise.customExerciseNo)}">
 	                            <td><input type="checkbox" name="exercise-select"></td>
 	                            <td>${exercise.exerciseName != null ? exercise.exerciseName : exercise.customExerciseName}</td>
 	                            <td>${exercise.exerciseCategoryName != null ? exercise.exerciseCategoryName : exercise.customExerciseCategoryName}</td>
 	                            <td>${exercise.exercisePartName != null ? exercise.exercisePartName : exercise.customExercisePartName}</td>
 	                            <td>${exercise.caloriesPerUnit != null ? exercise.caloriesPerUnit : exercise.customCaloriesPerUnit}</td>
-	                            <td><input type="number" class="form-control" name="sets" min="0" value="0" style="width: 60px;"></td>
-	                            <td><input type="number" class="form-control" name="reps" min="0" value="0" style="width: 60px;"></td>
-	                            <td><input type="number" class="form-control" name="time" min="0" value="0" style="width: 60px;"></td>
-	                            <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0" style="width: 70px;"></td>
+	                            <td><input type="number" class="form-control" name="sets" min="0" value="0"></td>
+	                            <td><input type="number" class="form-control" name="reps" min="0" value="0"></td>
+	                            <td><input type="number" class="form-control" name="time" min="0" value="0"></td>
+	                            <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0"></td>
 	                            <td>
 	                                <button type="button" class="btn" onclick="removeRow(this)">
 	                                    <i class="fa-solid fa-xmark"></i>
