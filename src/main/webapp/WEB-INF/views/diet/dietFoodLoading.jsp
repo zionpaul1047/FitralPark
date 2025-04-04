@@ -443,8 +443,8 @@ body {
                             <td>${dto.nat}</td>
                             <td>
                             ${dto.diet_bookmark_no}
-                                <button class="star-btn" data-id="${dto.diet_no}">
-                                    ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
+                                <button class="star-btn" data-id="${dto.food_no}">
+                                    ${dto.food_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
                         </tr>
                     </c:forEach>

@@ -49,13 +49,13 @@ public class DietDTO {
     //individual_diet_record_food_nutrient
     private String food_cd;
     private String food_name;
-    private String foodLv4Nm;
-    private String foodLv5Cd;
-    private String foodLv6Cd;
+    private String foodLv4_name;
+    private String foodLv5_Cd;
+    private String foodLv6_Cd;
     private String nut_con_srtr_qua;
     private int enerc;
     private int water;
-    private int prot;
+    private int protein;
     private int fatce;
     private int ash;
     private int chocdf;
@@ -65,9 +65,9 @@ public class DietDTO {
     private int fe;
     private int p;
     private int k;
-    private int nat;
-    private int vitaRae;
-    private int retol;
+    private int na;
+    private int vitarae;
+    private int retinol;
     private int cartb;
     private int thia;
     private int ribf;
@@ -131,7 +131,6 @@ public class DietDTO {
     //private int food_creation_type;
     //private int intake;
 
-    private String aaa;
     
     private String diet_category;
     
@@ -217,6 +216,11 @@ public class DietDTO {
  this.diet_category = dietCategory; // 초기화 추가
  this.diet_bookmark_no = dietBookmarkNo;
 }
+
+
+ 
+
+    
 
 }
 

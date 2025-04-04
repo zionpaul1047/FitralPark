@@ -9,6 +9,64 @@
 <meta charset="UTF-8">
 <title>식단 라이브러리</title>
 <style>
+/* 추천/비추천 버튼 컨테이너 */
+#recommend-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 버튼과 텍스트 간격 */
+    font-size: 14px;
+    color: #555; /* 기본 텍스트 색상 */
+}
+
+/* 추천/비추천 버튼 공통 스타일 */
+button.recommend-btn, button.disrecommend-btn {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
+}
+
+/* 추천 버튼 스타일 */
+button.recommend-btn {
+    background-color: #eafaf1; /* 연한 초록색 배경 */
+    color: #28a745; /* 초록색 텍스트 */
+    border: 1px solid #d4edda; /* 연한 초록색 테두리 */
+}
+
+button.recommend-btn:hover {
+    background-color: #d4edda; /* 호버 시 더 진한 초록색 배경 */
+    color: #155724; /* 호버 시 더 진한 초록색 텍스트 */
+}
+
+/* 비추천 버튼 스타일 */
+button.disrecommend-btn {
+    background-color: #fdecea; /* 연한 빨간색 배경 */
+    color: #dc3545; /* 빨간색 텍스트 */
+    border: 1px solid #f5c6cb; /* 연한 빨간색 테두리 */
+}
+
+button.disrecommend-btn:hover {
+    background-color: #f5c6cb; /* 호버 시 더 진한 빨간색 배경 */
+    color: #721c24; /* 호버 시 더 진한 빨간색 텍스트 */
+}
+
+/* 추천/비추천 카운트 스타일 */
+span.recommend-count, span.disrecommend-count {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333; /* 기본 텍스트 색상 */
+}
+
+.star-btn {
+    background: none;
+    border: none;
+    color: gold;
+    cursor: pointer;
+    font-size: 16px;
+}
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -322,13 +380,6 @@ h3 {
 	width: 40px;
 }
 
-.star-btn {
-	background: none;
-	border: none;
-	color: #ccc;
-	font-size: 18px;
-	cursor: pointer;
-}
 
 .star-btn.active {
 	color: gold;

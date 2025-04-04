@@ -393,7 +393,6 @@ body {
 							<td>${dto.meal_classify}</td>
 							<td>${dto.creator_id }</td>
 							<td>
-							${dto.diet_bookmark_no}
 								<button class="star-btn" data-id="${dto.diet_no}">
 									${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
 							</td>
@@ -463,37 +462,6 @@ body {
 	<script src="script.js"></script>
 	<script>
 	//즐겨찾기
-	// 즐겨찾기 버튼 클릭 이벤트 처리
-	/* document.querySelectorAll('.star-btn').forEach(button => {
-	    button.addEventListener('click', async function() {
-	        const dietNo = this.dataset.id;
-	        const isBookmarked = this.textContent.includes('★');
-	        
-	        try {
-	            const response = await fetch('/dietLoading.do', {
-	                method: 'POST',
-	                headers: { 'Content-Type': 'application/json' },
-	                body: JSON.stringify({
-	                    action: 'toggleBookmark',
-	                    dietNo: parseInt(dietNo),
-	                    isBookmarked: isBookmarked
-	                })
-	            });
-	            
-	            if (!response.ok) throw new Error('서버 오류');
-	            
-	            const data = await response.json();
-	            this.textContent = data.isBookmarked ? '★' : '☆';
-	            
-	        } catch (error) {
-	            console.error('즐겨찾기 오류:', error);
-	            alert('즐겨찾기 처리 중 오류가 발생했습니다.');
-	        }
-	    });
-	});
- */
- 
-
 	document.querySelectorAll('.star-btn').forEach(btn => {
 	    btn.addEventListener('click', async function(evt) {
 	        
