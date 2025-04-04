@@ -11,14 +11,6 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-<<<<<<< Updated upstream
-                        
-=======
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-                                
-        
->>>>>>> Stashed changes
-        
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
                                 
         
