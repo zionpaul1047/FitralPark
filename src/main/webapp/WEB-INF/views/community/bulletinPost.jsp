@@ -270,7 +270,6 @@
 
 				<!-- 댓글 띄우기 -->
 				<div id="comment_area">
-				<form action="bulletinCommentOK.do" method="post">
 				<c:forEach items="${Comment_list}" var="commentDto">
 					<input type="hidden" name="comment_no" value="${commentDto.comment_no}">
 					<input type="hidden" name="comment_creator_id" value="${commentDto.creator_id}">
@@ -278,8 +277,14 @@
 						<div class="comment_header">
 							<div class="comment_nickname">
 								<a href="">${commentDto.nickname}(${commentDto.creator_id})</a>
-								<i class="fa-regular fa-pen-to-square"></i>
-								<i class="fa-solid fa-xmark"></i>
+								<button type="button" 
+        onclick="editComment('${commentDto.comment_no}', '${commentDto.creator_id}')">
+    <i class="fa-regular fa-pen-to-square"></i>
+</button>
+<button type="button" 
+        onclick="deleteComment('${commentDto.comment_no}', '${commentDto.creator_id}')">
+    <i class="fa-solid fa-xmark"></i>
+</button>
 							</div>
 							<div class="comment_regdate">
 								${commentDto.regdate}
@@ -290,7 +295,6 @@
 						</div>
 					</div>
 				</c:forEach>
-				</form>
 				</div>
 			
 				<div id="button_area">
@@ -299,7 +303,7 @@
 					</div>
 					<div class="right_button">
 						<button type="button" onclick="location.href='bulletinPostEdit.do?post_no=${post.post_no}'">수정</button>
-						<button type="button" onclick="window.open('bulletinPostDel	.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
+						<button type="button" onclick="window.open('bulletinPostDel.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
 					</div>
 				</div>
 				</div>
@@ -363,6 +367,53 @@
 			});
 		}
 	});
+
+	function editComment(commentNo, creatorId) {
+
+		var form = document.createElement('form');
+		form.method = 'POST';
+		form.action = 'bulletinCommentEdit.do';
+		
+		var commentNoInput = document.createElement('input');
+		commentNoInput.type = 'hidden';
+		commentNoInput.name = 'comment_no';
+		commentNoInput.value = commentNo;
+		
+		var creatorIdInput = document.createElement('input');
+		creatorIdInput.type = 'hidden';
+		creatorIdInput.name = 'comment_creator_id';
+		creatorIdInput.value = creatorId;
+		
+		form.appendChild(commentNoInput);
+		form.appendChild(creatorIdInput);
+		document.body.appendChild(form);
+		form.submit();
+	}
+
+	function deleteComment(commentNo, creatorId) {
+		if(confirm('댓글을 삭제하시겠습니까?')) {
+			// POST 방식으로 폼 제출
+			var form = document.createElement('form');
+			form.method = 'POST';
+			form.action = 'bulletinCommentDel.do';
+			
+			var commentNoInput = document.createElement('input');
+			commentNoInput.type = 'hidden';
+			commentNoInput.name = 'comment_no';
+			commentNoInput.value = commentNo;
+			
+			var creatorIdInput = document.createElement('input');
+			creatorIdInput.type = 'hidden';
+			creatorIdInput.name = 'comment_creator_id';
+			creatorIdInput.value = creatorId;
+			
+			form.appendChild(commentNoInput);
+			form.appendChild(creatorIdInput);
+			document.body.appendChild(form);
+			form.submit();
+		}
+	}
+
 </script>
 	
 
