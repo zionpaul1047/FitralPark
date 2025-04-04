@@ -251,12 +251,12 @@
 	                </thead>
 	                <tbody>
 	                    <c:forEach items="${selectedExercises}" var="exercise">
-	                        <tr data-exercise-no="${exercise.exerciseNo != null ? exercise.exerciseNo : 'C'.concat(exercise.customExerciseNo)}">
+	                        <tr>
 	                            <td><input type="checkbox" name="exercise-select"></td>
-	                            <td>${exercise.exerciseName != null ? exercise.exerciseName : exercise.customExerciseName}</td>
-	                            <td>${exercise.exerciseCategoryName != null ? exercise.exerciseCategoryName : exercise.customExerciseCategoryName}</td>
-	                            <td>${exercise.exercisePartName != null ? exercise.exercisePartName : exercise.customExercisePartName}</td>
-	                            <td>${exercise.caloriesPerUnit != null ? exercise.caloriesPerUnit : exercise.customCaloriesPerUnit}</td>
+	                            <td></td>
+	                            <td></td>
+	                            <td></td>
+	                            <td></td>
 	                            <td><input type="number" class="form-control" name="sets" min="0" value="0"></td>
 	                            <td><input type="number" class="form-control" name="reps" min="0" value="0"></td>
 	                            <td><input type="number" class="form-control" name="time" min="0" value="0"></td>
@@ -313,10 +313,10 @@
                 // 행 내용 설정
                 tr.innerHTML = `
                     <td><input type="checkbox" name="exercise-select"></td>
-                    <td>${exercise.exerciseName}</td>
-                    <td>${exercise.exerciseCategoryName}</td>
-                    <td>${exercise.exercisePartName}</td>
-                    <td>${exercise.caloriesPerUnit}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                     <td><input type="number" class="form-control" name="sets" min="0" value="0"></td>
                     <td><input type="number" class="form-control" name="reps" min="0" value="0"></td>
                     <td><input type="number" class="form-control" name="time" min="0" value="0"></td>
@@ -339,6 +339,16 @@
             const row = button.closest('tr');
             if (row) {
                 row.remove();
+            }
+            
+            // 테이블이 비었을 때 초기 메시지 추가
+            const tbody = document.querySelector('#routine-table tbody');
+            if (tbody.children.length === 0) {
+                tbody.innerHTML = `
+                    <tr id="noRes">
+                        <td colspan="10">운동을 추가해주세요.</td>
+                    </tr>
+                `;
             }
         }
 

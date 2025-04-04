@@ -219,10 +219,10 @@
                 <c:forEach items="${exerciseList}" var="ex">
                     <tr>
                         <td><input type="checkbox" name="selectExercise" value="${ex.exerciseNo}"></td>
-                        <td>${ex.exerciseName}</td>
-                        <td>${ex.exerciseCategoryName}</td>
-                        <td>${ex.exercisePartName}</td>
-                        <td>${ex.caloriesPerUnit}</td>
+                        <td name="exerciseName">${ex.exerciseName}</td>
+                        <td name="exerciseCategoryName">${ex.exerciseCategoryName}</td>
+                        <td name="exercisePartName">${ex.exercisePartName}</td>
+                        <td name="caloriesPerUnit">${ex.caloriesPerUnit}</td>
                         <td>⭐</td>
                     </tr>
                 </c:forEach>
@@ -245,10 +245,10 @@
 		        <c:forEach items="${customExerciseList}" var="customex">
 		            <tr data-exercise-no="${customex.customExerciseNo}">
 		                <td><input type="checkbox" name="customSelectExercise" value="${customex.customExerciseNo}"></td>
-		                <td>${customex.customExerciseName}</td>
-		                <td>${customex.customExerciseCategoryName}</td>
-		                <td>${customex.customExercisePartName}</td>
-		                <td>${customex.customCaloriesPerUnit}</td>
+		                <td name="exerciseName">${customex.customExerciseName}</td>
+		                <td name="exerciseCategoryName">${customex.customExerciseCategoryName}</td>
+		                <td name="exercisePartName">${customex.customExercisePartName}</td>
+		                <td name="caloriesPerUnit">${customex.customCaloriesPerUnit}</td>
 		                <td>
 		                    <button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}', '${customex.customExerciseName}', '${customex.customExerciseCategoryNo}', '${customex.customExercisePartNo}', '${customex.customCaloriesPerUnit}')"><i class="fa-solid fa-pen-to-square"></i></button>
 		                    <button type="button" class="rudBtn" onclick="deleteCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-x"></i></button>
@@ -355,31 +355,6 @@
     <script>
     
     
-    function sendToParent() {
-        const checked = document.querySelectorAll('input[name="selectExercise"]:checked, input[name="customSelectExercise"]:checked');
-        const selected = Array.from(checked).map(chk => {
-            const row = chk.closest('tr');
-            return {
-                exerciseNo: chk.value,
-                exerciseName: row.children[1].textContent,
-                exerciseCategoryName: row.children[2].textContent,
-                exercisePartName: row.children[3].textContent,
-                caloriesPerUnit: row.children[4].textContent
-            };
-        });
-
-        if (selected.length === 0) {
-            alert("운동을 하나 이상 선택해주세요.");
-            return;
-        }
-
-        if (window.opener && !window.opener.closed) {
-            window.opener.addExercises(selected);
-            window.close();
-        } else {
-            alert('부모 창을 찾을 수 없습니다.');
-        }
-    }
     
     function addExerciseItem() {
         const editForm = document.getElementById('editForm');
@@ -587,46 +562,6 @@
     
     </script>
 
-    <!-- 에러 메시지가 있으면 표시 -->
-    <c:if test="${not empty error}">
-        <div class="alert alert-danger">${error}</div>
-    </c:if>
-
-    <!-- 선택된 운동 정보가 있으면 테이블에 추가 -->
-    <c:if test="${not empty selectedExercises}">
-        <c:forEach items="${selectedExercises}" var="exercise">
-            <script>
-                const exerciseData = {
-                    exerciseNo: '${exercise.exerciseNo}' || 'C${exercise.customExerciseNo}',
-                    exerciseName: '${exercise.exerciseName}' || '${exercise.customExerciseName}',
-                    exerciseCategoryName: '${exercise.exerciseCategoryName}' || '${exercise.customExerciseCategoryName}',
-                    exercisePartName: '${exercise.exercisePartName}' || '${exercise.customExercisePartName}',
-                    caloriesPerUnit: '${exercise.caloriesPerUnit}' || '${exercise.customCaloriesPerUnit}'
-                };
-                
-                // 테이블에 행 추가
-                const tbody = document.querySelector('#routine-table tbody');
-                const newRow = document.createElement('tr');
-                newRow.dataset.exerciseNo = exerciseData.exerciseNo;
-                
-                newRow.innerHTML = `
-                    <td><input type="checkbox" name="exercise-select"></td>
-                    <td>\${exerciseData.exerciseName}</td>
-                    <td>\${exerciseData.exerciseCategoryName}</td>
-                    <td>\${exerciseData.exercisePartName}</td>
-                    <td>\${exerciseData.caloriesPerUnit}</td>
-                    <td><input type="number" class="form-control" name="sets" min="0" value="0" style="width: 60px;"></td>
-                    <td><input type="number" class="form-control" name="reps" min="0" value="0" style="width: 60px;"></td>
-                    <td><input type="number" class="form-control" name="time" min="0" value="0" style="width: 60px;"></td>
-                    <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0" style="width: 70px;"></td>
-                    <td><button type="button" class="btn" onclick="removeRow(this)"><i class="fa-solid fa-xmark"></i></button></td>
-                `;
-                
-                tbody.appendChild(newRow);
-            </script>
-        </c:forEach>
-    </c:if>
-
     <script>
         function openExercisePopup() {
             window.name = 'mainWindow'; // 부모 창의 이름 설정
@@ -635,6 +570,70 @@
                 'exercisePopup',
                 'width=1000,height=1000,scrollbars=yes'
             );
+    }
+    </script>
+
+    <script>
+    function sendToParent() {
+        const checked = document.querySelectorAll('input[name="selectExercise"]:checked, input[name="customSelectExercise"]:checked');
+        
+        if (checked.length === 0) {
+            alert("운동을 하나 이상 선택해주세요.");
+            return;
+        }
+
+        // 부모창의 tbody 요소 찾기
+        const parentTbody = opener.document.querySelector('#routine-table tbody');
+        
+        // 선택된 운동들을 부모창의 테이블에 추가
+        checked.forEach(checkbox => {
+            const row = checkbox.closest('tr');
+            const isCustom = checkbox.name === 'customSelectExercise';
+            const exerciseNo = isCustom ? 'C' + checkbox.value : checkbox.value;
+            
+            // 이미 존재하는 운동인지 확인
+            const existingRow = parentTbody.querySelector(`tr[data-exercise-no="${exerciseNo}"]`);
+            if (existingRow) {
+                return; // 이미 존재하면 건너뛰기
+            }
+
+            // 데이터 가져오기
+            const exerciseName = row.querySelector('td[name="exerciseName"]').textContent;
+            const categoryName = row.querySelector('td[name="exerciseCategoryName"]').textContent;
+            const partName = row.querySelector('td[name="exercisePartName"]').textContent;
+            const calories = row.querySelector('td[name="caloriesPerUnit"]').textContent;
+
+            // 새로운 행 생성
+            const newRow = document.createElement('tr');
+            newRow.setAttribute('data-exercise-no', exerciseNo);
+            
+            newRow.innerHTML = `
+                <td><input type="checkbox" name="exercise-select"></td>
+                <td>${exerciseName}</td>
+                <td>${categoryName}</td>
+                <td>${partName}</td>
+                <td>${calories}</td>
+                <td><input type="number" class="form-control" name="sets" min="0" value="0"></td>
+                <td><input type="number" class="form-control" name="reps" min="0" value="0"></td>
+                <td><input type="number" class="form-control" name="time" min="0" value="0"></td>
+                <td><input type="number" class="form-control" name="weight" min="0" step="0.1" value="0"></td>
+                <td>
+                    <button type="button" class="btn" onclick="removeRow(this)">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </td>
+            `;
+            
+            parentTbody.appendChild(newRow);
+        });
+
+        // 초기 메시지 제거
+        const noResRow = parentTbody.querySelector('#noRes');
+        if (noResRow) {
+            noResRow.remove();
+        }
+
+        window.close();
     }
     </script>
 </body>
