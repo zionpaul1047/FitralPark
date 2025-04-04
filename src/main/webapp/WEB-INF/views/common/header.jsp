@@ -169,20 +169,20 @@
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">커뮤니티</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/announcementList.do">커뮤니티</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">공지사항</a></li>
-					<li><a href="">자유게시판</a></li>
-					<li><a href="">Q&A게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/announcementList.do">공지사항</a></li>
+					<li><a href="${pageContext.request.contextPath}/bulletinList.do">자유게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/qnaList.do">Q&A게시판</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">마이페이지</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/dashboard.do">마이페이지</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">대시보드</a></li>
-					<li><a href="">나의활동</a></li>
-					<li><a href="">회원정보</a></li>
+					<li><a href="${pageContext.request.contextPath}/dashboard.do">대시보드</a></li>
+					<li><a href="#">나의활동</a></li>
+					<li><a href="${pageContext.request.contextPath}/mdfyuserinfo.do">회원정보수정</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 		</ul>

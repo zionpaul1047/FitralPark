@@ -42,8 +42,9 @@
 					</div>
 					<div class="form-group mb-0">
 						<button type="submit" class="btn btn-primary w-100">로그인</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
+					
 				</form>
 				<div class="already_member_box d-flex justify-content-between px-2">
 					<span role="button" onclick="moveToRegister()">회원가입하기</span>
@@ -122,9 +123,9 @@
 						<%-- 닉네임 --%>
 						<div class="form-group">
 							<label for="nickname">닉네임<span class="text-danger"> *</span></label>
-							<input type="text" name="nickname" id="nickname" class="form-control input-large"
-								maxlength="15" placeholder="한글/영문/숫자 조합, 최대 15자" required />
-							<small class="form-text text-muted">한글, 영문, 숫자만 입력 가능하며 최대 15자까지 입력할 수 있습니다.</small>
+							<input type="text" name="nickname" id="nickname" class="form-control input-medium"
+								maxlength="15" required />
+							<small id="nicknameMessage" class="form-text text-muted mt-1">한글(완성형, 자모음 단독사용 불가), 영문, 숫자만 가능하며 2~15자 이내</small>
 						</div>
 
 						<%-- 연락처 --%>
@@ -230,7 +231,7 @@
 					</div>
 					<div class="form-group mt-3">
 						<button type="submit" class="btn btn-primary w-100">회원가입</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
 				</form>
 				<div class="already_member_box text-center">
@@ -269,6 +270,32 @@
 	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
+	<script>
+		window.addEventListener("beforeunload", function () {
+			if (window.opener && !window.closed) {
+				try {
+					const overlay = window.opener.document.getElementById("overlay");
+					if (overlay) overlay.style.display = "none";
+				} catch (e) {
+				// 접근 오류 무시
+				}
+			}
+		});
+	</script>
+
+	<script>
+	  function cancelLogin() {
+	    if (window.opener) {
+	      try {
+	        const overlay = window.opener.document.getElementById("overlay");
+	        if (overlay) overlay.style.display = "none";
+	      } catch (e) {
+	        // 접근 오류 무시
+	      }
+	    }
+	    window.close();
+	  }
+	</script>
 
 
 

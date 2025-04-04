@@ -180,8 +180,32 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 	// 닉네임 유효성 검사
-	document.getElementById("nickname")?.addEventListener("input", function() {
+/*	document.getElementById("nickname")?.addEventListener("blur", function() {
 		this.value = this.value.replace(/[^가-힣a-zA-Z0-9]/g, '');
+	});*/
+	const nicknameInput = document.getElementById("nickname");
+	const nicknameMessage = document.getElementById("nicknameMessage");
+
+	nicknameInput?.addEventListener("blur", function () {
+	  const value = this.value.trim();
+	  const isValid = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{2,15}$/.test(value); // 2~15자, 허용 문자만
+
+	  if (!isValid) {
+	    nicknameMessage.textContent = "닉네임은 한글(완성형, 자모음 단독사용 불가), 영문, 숫자만 가능하며 2~15자 이내여야 합니다.";
+	  } else {
+	    nicknameMessage.textContent = "";
+	  }
+	});
+	
+	document.querySelector("form[action$='register.do']")?.addEventListener("submit", function (e) {
+	  const value = nicknameInput.value.trim();
+	  const isValid = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{2,15}$/.test(value);
+
+	  if (!isValid) {
+	    e.preventDefault();
+	    nicknameMessage.textContent = "닉네임은 한글, 영문, 숫자만 가능하며 2~15자 이내여야 합니다.";
+	    nicknameInput.focus();
+	  }
 	});
 
 	// 이메일 도메인 처리
