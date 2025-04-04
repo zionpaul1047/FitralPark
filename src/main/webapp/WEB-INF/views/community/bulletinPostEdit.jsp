@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+<script src="https://kit.fontawesome.com/7abd1088b7.js" crossorigin="anonymous"></script>
     <style>
         body {
         background-color: rgb(218, 243, 211);
@@ -60,7 +62,7 @@
 			border-bottom: 1px solid #ddd;
 		}
         
-		#content {
+		#post_content {
 			width: 100%;
 			height: 400px;
 			padding: 10px;
@@ -170,27 +172,31 @@
 				<main>
 				
 				<div id="mainbox">
-				<h1>질문하기</h1>
-				<form class="write-form" action="/community/bulletinWrite" method="post">
+				<h1>자유 게시글 수정하기</h1>
+				<form class="edit-form" action="/fitralpark/bulletinPostEditOK.do" method="post">
+				
+					<input type="hidden" name="post_no" value="${post.post_no}">
+					
 					<div class="form-group">
 						<label for="category">말머리</label>
-						<select name="category" id="category">
-							<option value="">말머리 선택</option>
-							<option value="일반">운동</option>
-							<option value="질문">식단</option>
-							<option value="헬스장">헬스장</option>
+						<select id="search_category" name="header_no">
+						    <option value="${post.header_no}" selected>${post.header_name}</option>
+   						    <option value="">선택</option>
+						    <c:forEach items="${headerList}" var="headerDto">
+						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
+						    </c:forEach>
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="title">제목</label>
-						<input type="text" name="title" id="title" required>
+						<label for="post_subject">제목</label>
+						<input type="text" name="post_subject" id="post_subject" required value="${post.post_subject}">
 					</div>
 					<div class="form-group">
-						<label for="content">내용</label>
-						<textarea name="content" id="content" required></textarea>
+						<label for="post_content">내용</label>
+						<textarea name="post_content" id="post_content" required>${post.post_content}</textarea>
 					</div>
 					<div class="button-group">
-						<button type="submit">작성하기</button>
+						<button type="submit">수정하기</button>
 						<button type="button" onclick="history.back()">취소</button>
 					</div>
 				</form>

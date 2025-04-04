@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+<script src="https://kit.fontawesome.com/7abd1088b7.js" crossorigin="anonymous"></script>
     <style>
         body {
         background-color: rgb(218, 243, 211);
@@ -171,7 +173,16 @@
 				
 				<div id="mainbox">
 				<h1>자유 게시판 글쓰기</h1>
-				<form class="write-form" action="/community/bulletinWrite" method="post">
+				<form class="write-form" action="/fitralpark/bulletinWriteOK.do" method="post">
+					<div class="form-group">
+						<label for="category">말머리</label>
+						<select id="search_category" name="header_no">
+						    <option value="">선택</option>
+						    <c:forEach items="${headerList}" var="headerDto">
+						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
+						    </c:forEach>
+						</select>
+					</div>
 					<div class="form-group">
 						<label for="category">말머리</label>
 						<select name="category" id="category" required>
@@ -184,11 +195,11 @@
 					</div>
 					<div class="form-group">
 						<label for="title">제목</label>
-						<input type="text" name="title" id="title" required>
+						<input type="text" name="post_subject" id="title" required>
 					</div>
 					<div class="form-group">
 						<label for="content">내용</label>
-						<textarea name="content" id="content" required></textarea>
+						<textarea name="post_content" id="content" required></textarea>
 					</div>
 					<div class="button-group">
 						<button type="submit">작성하기</button>
