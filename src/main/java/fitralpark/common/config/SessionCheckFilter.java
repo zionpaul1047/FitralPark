@@ -23,7 +23,7 @@ public class SessionCheckFilter implements Filter {
 
     // 로그인 보호가 필요한 경로
     private static final String[] protectedPaths = {
-        "/dashboard.do", "/mypage.do", "/diet.do", "/recommendation.do"
+        "/dashboard.do", "/bulletinList.do", "/diet.do", "/recommendation.do"
     };
 
     @Override
@@ -67,7 +67,7 @@ public class SessionCheckFilter implements Filter {
             if ("XMLHttpRequest".equals(httpReq.getHeader("X-Requested-With"))) {
                 httpRes.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 필요");
             } else {
-                httpRes.sendRedirect(contextPath + "/login.do?show=login");
+				//httpRes.sendRedirect(contextPath + "/login.do?show=login");
             }
 
             return; // 요청 차단

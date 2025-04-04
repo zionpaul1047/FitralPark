@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -283,19 +284,38 @@
 		});
 	</script>
 
+<c:if test="${not empty sessionScope.loginUser}">
 	<script>
-	  function cancelLogin() {
-	    if (window.opener) {
-	      try {
-	        const overlay = window.opener.document.getElementById("overlay");
-	        if (overlay) overlay.style.display = "none";
-	      } catch (e) {
-	        // 접근 오류 무시
-	      }
-	    }
-	    window.close();
-	  }
+		window.addEventListener("DOMContentLoaded", function () {
+			if (window.opener && !window.opener.closed) {
+				const overlay = window.opener.document.getElementById("overlay");
+				if (overlay) overlay.style.display = "none";
+
+				const redirect = '${sessionScope.redirectAfterLogin}';
+				if (redirect) {
+					window.opener.location.href = contextPath + redirect;
+				} else {
+					window.opener.location.reload();
+				}
+				window.close();
+			}
+		});
 	</script>
+</c:if>
+
+<script>
+  function cancelLogin() {
+    if (window.opener) {
+      try {
+        const overlay = window.opener.document.getElementById("overlay");
+        if (overlay) overlay.style.display = "none";
+      } catch (e) {
+        // 접근 오류 무시
+      }
+    }
+    window.close();
+  }
+</script>
 
 
 

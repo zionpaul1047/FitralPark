@@ -8,6 +8,7 @@
 <!-- contextPath 전역 변수 -->
 <script>
 	const contextPath = '${pageContext.request.contextPath}';
+	let loginPopupWindow = null;
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
@@ -120,11 +121,15 @@
 			const overlay = document.getElementById("overlay");
 			if (overlay) overlay.style.display = "block";
 
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=800,height=850,resizable=no,scrollbars=no"
-			);
+			if (loginPopupWindow == null || loginPopupWindow.closed) {
+				loginPopupWindow = window.open(
+					contextPath + "/login.do",
+					"loginPopup",
+					"width=800,height=850,resizable=no,scrollbars=no"
+				);
+			} else {
+				loginPopupWindow.focus(); // 이미 열린 팝업이 있을 경우 다시 띄우지 않고 포커스만 주기
+			}
 		});
 	</script>
 </c:if>
