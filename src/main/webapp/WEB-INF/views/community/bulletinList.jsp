@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
 <style>
 body {
 	background-color: rgb(218, 243, 211);
@@ -87,16 +88,22 @@ body h1 {
 /* 테이블 컬럼 너비 */
 #boardtable th:nth-child(1) { width: 60px; }  /* 번호 */
 #boardtable th:nth-child(2) { width: auto; }  /* 제목 */
-#boardtable th:nth-child(3) { width: 100px; } /* 작성자 */
+#boardtable th:nth-child(3) { width: 150px; } /* 작성자 */
 #boardtable th:nth-child(4) { width: 150px; } /* 날짜 */
 #boardtable th:nth-child(5), 
 #boardtable th:nth-child(6) { width: 80px; }  /* 추천수, 조회수 */
 
 /* 게시글 호버 효과 */
-#boardtable tr:hover {
+#boardtable td a {
+    color: #333;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+#boardtable td a:hover {
     background-color: #f5f5f5;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    color: #666666;
 }
 
 /* 페이지네이션 스타일 */
@@ -123,9 +130,7 @@ body h1 {
 }
 
 .pagination .active {
-    background-color: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
+    color: #333;
 }
 
 /* 검색 및 글쓰기 영역 */
@@ -145,7 +150,8 @@ body h1 {
 
 #board_etc_box #search_sel, 
 .search_btn, 
-.search_txt {
+.search_txt, 
+#search_category {
     display: inline-block;
     padding: 10px;
     border-radius: 20px;
@@ -165,12 +171,14 @@ body h1 {
 }
 
 /* 버튼 호버 효과 */
+#search_category:hover,
 #btnadd_post:hover,
 .search_btn:hover,
 #search_sel:hover {
     background-color: #f5f5f5;
     border-color: #999;
 }
+
 </style>
 </head>
 <body>
@@ -198,6 +206,8 @@ body h1 {
 						<h1>
 							<strong>자유 게시판</strong>
 						</h1>
+						
+						
 						<table id="boardtable" >
 							<tr>
 								<th>번호</th>
@@ -207,181 +217,39 @@ body h1 {
 								<th>추천수</th>
 								<th>조회수</th>
 							</tr>
+							<c:forEach items="${bulletin_list}" var="dto" varStatus="status">
 							<tr>
-								<td>2</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
+								<td>${(page - 1) * pageSize + status.index + 1}</td>
+								<td><a href="bulletinPost.do?post_no=${dto.post_no}
+								">[${dto.header_name}] ${dto.post_subject}</a></td>
+								<td><a href="">${dto.nickname}(${dto.creator_id})</a></td>
+								<td>${dto.regdate}</td>
+								<td>${dto.post_recommend}</td>
+								<td>${dto.views}</td>
 							</tr>
-							<tr>
-								<td>2</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>[운동] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>[식단] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td>[헬스장] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>[후기] 아 운동 너무 어렵다</td>
-								<td>김진혁</td>
-								<td>2025-03-28</td>
-								<td>김진혁</td>
-								<td>15</td>
-							</tr>
+							</c:forEach>
 						</table>
 						
 						<!-- 페이지네이션 -->
 						<div class="pagination">
-							<a href="#" class="active">1</a>
-							<a href="#">2</a>
-							<a href="#">3</a>
-							<a href="#">4</a>
-							<a href="#">5</a>
-							<a href="#">6</a>
-							<a href="#">7</a>
-							<a href="#">8</a>
-							<a href="#">9</a>
-							<a href="#">10</a>
-							<a href="#">다음</a>
+							<c:if test="${page > 1}">
+								<a href="bulletinList.do?page=${page-1}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">이전</a>
+							</c:if>
+							
+							<c:forEach begin="${startPage}" end="${endPage}" var="i">
+								<c:choose>
+									<c:when test="${page == i}">
+										<span class="active">${i}</span>
+									</c:when>
+									<c:otherwise>
+										<a href="bulletinList.do?page=${i}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<c:if test="${page < totalPages}">
+								<a href="bulletinList.do?page=${page+1}&search_category=${searchCategory}&search_sel=${searchSel}&searchWord=${searchWord}">다음</a>
+							</c:if>
 						</div>
 						
 					</div>
@@ -390,19 +258,27 @@ body h1 {
 						
 					</div>					
 
-
+					<form action="/fitralpark/bulletinList.do" method="get">
 					<div id="board_etc_box">
 						<div class="search_area">
-							<select id="search_sel">
-								<option value="제목">제목</option>
-								<option value="작성자">작성자</option>
-								<option value="날짜">날짜</option>
+							<select id="search_category" name="search_category">
+								<option value="">전체</option>
+								<c:forEach items="${headerList}" var="headerDto">
+									<option value="${headerDto.header_no}" ${searchCategory == headerDto.header_no ? 'selected' : ''}>${headerDto.header_name}</option>
+								</c:forEach>
 							</select>
-							<input type="search" class="search_txt" placeholder="  검색">
-							<button type="submit" class="search_btn" id="btn_search">검색</button>
+							<select id="search_sel" name="search_sel">
+								<option value="post_subject" ${searchSel == 'post_subject' ? 'selected' : ''}>제목</option>
+								<option value="post_subject&post_content" ${searchSel == 'post_subject&post_content' ? 'selected' : ''}>제목&내용</option>
+								<option value="creator_id" ${searchSel == 'creator_id' ? 'selected' : ''}>작성자</option>
+								<option value="regdate" ${searchSel == 'regdate' ? 'selected' : ''}>날짜</option>
+							</select>
+							<input type="text" name="searchWord" class="search_txt" placeholder="  검색" value="${searchWord}">
+							<input type="submit" class="search_btn" id="btn_search" value="검색">
 						</div>
-						<button type="button" id="btnadd_post" onclick="location.href='bulletinWrite.do'">글쓰기</button>
+						<button type="button" id="btnadd_post" onclick="location.href='bulletinPostWrite.do'">글쓰기</button>
 					</div>
+					</form>
 				</div>
 	
 	
@@ -421,6 +297,18 @@ body h1 {
 
 
 </body>
+
+<script>
+
+	function search() {
+    const category = document.getElementById('search_category').value;
+    const sel = document.getElementById('search_sel').value;
+    const word = document.getElementById('searchWord').value;
+    location.href = '/fitralpark/bulletinList.do?search_category=' + category + '&search_sel=' + sel + '&searchWord=' + word;
+}
+
+</script>
+
 
 
 </html>
