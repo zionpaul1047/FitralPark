@@ -47,3 +47,289 @@ function execDaumPostcode() {
         }
     }).open();
 }
+
+//기타 이벤트 설정
+//각 엘리먼트 접근 변수
+const select_email_domain = document.getElementById('user_email_domain');
+const pwMessage = document.getElementById("pwValidationMessage");
+const pwMatchMessage = document.getElementById("pwMatchMessage");
+const pwInput = document.getElementById("user_pw");
+const pwConfirm = document.getElementById("user_pw_vrfy");
+
+const user_nickname = document.getElementById('user_nickname');
+const user_tel1 = document.getElementById('user_tel1');
+const user_tel2 = document.getElementById('user_tel2');
+const user_tel3 = document.getElementById('user_tel3');
+const input_postcode = document.getElementById('input_postcode');
+const input_address = document.getElementById('input_address');
+const input_detailAddress = document.getElementById('input_detailAddress');
+
+let nick_invalid = false;
+let tel_invalid = false;
+let pw_invalid = false;
+let email_invalid = false;
+
+
+//이벤트 설정
+
+//기타 이메일 도메인 창 열기 
+select_email_domain.addEventListener('change', function() {
+	open_domain_input(select_email_domain.value);
+});
+
+function open_domain_input(selItem) {
+	if(selItem == 'custom') {
+		$('#email_domain_custom').css('display', 'block');
+		$('#email_domain_custom').focus();
+		
+	} else {
+		$('#email_domain_custom').css('display', 'none');
+	}
+	console.log(selItem);
+}
+
+
+//비밀번호 검증
+if (pwInput && pwConfirm) {
+	function validatePasswordFormat(password) {
+		const lengthValid = password.length >= 8 && password.length <= 16;
+		const patterns = [/[A-Z]/, /[a-z]/, /[0-9]/, /[!@#$%^&*(),.?":{}|<>]/];
+		const matched = patterns.filter(p => p.test(password)).length;
+		return lengthValid && matched >= 2;
+	}
+
+	pwInput.addEventListener("input", () => {
+		if (validatePasswordFormat(pwInput.value)) {
+			pwMessage.innerText = "사용 가능한 비밀번호입니다.";
+			pwMessage.style.color = "green";
+		} else {
+			pwMessage.innerText = "8~16자, 영문 대소문자/숫자/특수문자 중 2종 이상 조합 필요";
+			pwMessage.style.color = "red";
+		}
+		if (pwConfirm.value !== "") {
+			pwMatchMessage.innerText = pwInput.value === pwConfirm.value ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.";
+			pwMatchMessage.style.color = pwInput.value === pwConfirm.value ? "green" : "red";
+			
+			if (pwInput.value === pwConfirm.value) {
+				pwMatchMessage.innerText = '비밀번호가 일치합니다.';
+				pwMatchMessage.style.color = 'green';
+				pw_invalid = true;
+			} else {
+				pwMatchMessage.innerText = '비밀번호가 일치하지 않습니다.';
+				pwMatchMessage.style.color = 'red';
+				pw_invalid = false;
+			}
+			
+		}
+	});
+
+	pwConfirm.addEventListener("input", () => {
+		pwMatchMessage.innerText = pwInput.value === pwConfirm.value ? "비밀번호가 일치합니다." : "비밀번호가 일치하지 않습니다.";
+		pwMatchMessage.style.color = pwInput.value === pwConfirm.value ? "green" : "red";
+	});
+}
+
+//닉네임 검증
+document.getElementById('user_nickname').addEventListener('input', function() {
+	const nick_regex = /[가-힣a-zA-Z0-9]{1,15}/;
+	
+	if(nick_regex.test(user_nickname)) {
+		nick_invalid = true;
+	} else {
+		nick_invalid = false;
+	}
+	
+});
+
+//연락처 검증
+document.getElementById('user_tel2').addEventListener('input', function() {
+	const tel2_regex = /[0-9]{3,4}/;
+	const tel3_regex = /[0-9]{4}/;
+	
+	if(tel2_regex.test(user_tel2)) {
+		tel_invalid = true;
+	} else {
+		tel_invalid = false;
+	}
+	if(tel3_regex.test(user_tel3)) {
+			tel_invalid = true;
+		} else {
+			tel_invalid = false;
+		}
+	
+});
+
+
+
+
+
+
+
+//이메일 전송 이벤트
+const emailAuthBtn = document.getElementById("emailAuthBtn");
+const authCodeInput = document.getElementById("authCode");
+const authCodeWrap = document.getElementById("authCodeWrap");
+const authCodeMsg = document.getElementById("authCodeMessage");
+const authTimer = document.getElementById("authTimer");
+const authCodeCheckBtn = document.getElementById("authCodeCheckBtn");
+
+let resendCooldown = 10;  // 재요청 제한 시간 10초
+let authValidTime = 300;  // 인증번호 유효 시간 5분
+
+let resendInterval = null;
+let authTimerInterval = null;
+
+// 인증 버튼 클릭 (서버로 인증요청하여 처리)
+emailAuthBtn.addEventListener("click", () => {
+	const prefix = document.getElementById("user_email_prefix").value.trim();
+	const domainSel = document.getElementById("user_email_domain").value;
+	const custom = document.getElementById("email_domain_custom").value.trim();
+	const domain = domainSel === "custom" ? custom : domainSel;
+	const email = `${prefix}@${domain}`;
+	const emailMessage = document.getElementById("emailMessage");
+	const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+	if (!prefix || !domain) {
+		emailMessage.innerText = "이메일을 모두 입력해주세요.";
+		emailMessage.style.color = "red";
+		return;
+	}
+	if (!regex.test(email)) {
+		emailMessage.innerText = "올바른 이메일 형식이 아닙니다.";
+		emailMessage.style.color = "red";
+		return;
+	}
+
+	// 서버에 인증 메일 요청
+	fetch(`${contextPath}/sendAuthEmail.do?email=${encodeURIComponent(email)}`)
+		.then(res => res.json())
+		.then(data => {
+			if (data.success) {
+				authCodeWrap.style.display = "block";
+				authCodeInput.value = "";
+				authCodeMsg.innerText = "";
+				authCodeInput.focus();
+				emailMessage.innerText = "인증번호가 이메일로 전송되었습니다.";
+				emailMessage.style.color = "green";
+
+				// 타이머 설정
+				let timeLeft = authValidTime;
+				clearInterval(authTimerInterval);
+				authTimerInterval = setInterval(() => {
+					const min = Math.floor(timeLeft / 60);
+					const sec = timeLeft % 60;
+					authTimer.innerText = `남은 시간: ${min}분 ${sec < 10 ? '0' + sec : sec}초`;
+					timeLeft--;
+					if (timeLeft < 0) {
+						clearInterval(authTimerInterval);
+						authTimer.inneraText = "인증 시간이 만료되었습니다.";
+					}
+				}, 1000);
+
+				// 재요청 버튼 타이머
+				emailAuthBtn.disabled = true;
+				let cooldown = resendCooldown;
+				emailAuthBtn.innerText = `${cooldown--}초 후 재요청`;
+				clearInterval(resendInterval);
+				resendInterval = setInterval(() => {
+					emailAuthBtn.innerText = `${cooldown--}초 후 재요청`;
+					if (cooldown < 0) {
+						clearInterval(resendInterval);
+						emailAuthBtn.disabled = false;
+						emailAuthBtn.innerText = "인증번호 재발송";
+					}
+				}, 1000);
+			} else {
+				emailMessage.innerText = "이메일 전송에 실패했습니다.";
+				emailMessage.style.color = "red";
+			}
+		})
+		.catch(err => {
+			console.error("인증 요청 실패:", err);
+			emailMessage.innerText = "서버 오류가 발생했습니다.";
+			emailMessage.style.color = "red";
+		});
+});
+
+
+
+// 인증번호 확인 함수
+authCodeCheckBtn.addEventListener("click", validateAuthCode);
+function validateAuthCode() {
+	const inputCode = authCodeInput.value.trim();
+
+	// 서버에 POST 요청
+	fetch(`${contextPath}/checkAuthCode.do`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+		body: `code=${encodeURIComponent(inputCode)}`
+	})
+		.then(res => res.json())
+		.then(data => {
+			if (data.match) {
+				authCodeMsg.innerText = "인증에 성공했습니다.";
+				authCodeMsg.style.color = "green";
+				window.isEmailVerified = true;
+
+				// UI 잠금 처리
+				document.getElementById("user_email_prefix").readOnly = true;
+				document.getElementById("user_email_domain").disabled = true;
+				document.getElementById("email_domain_custom").readOnly = true;
+				emailAuthBtn.innerText = "인증완료";
+				emailAuthBtn.disabled = true;
+				authCodeCheckBtn.disabled = true;
+				clearInterval(authTimerInterval);
+				authTimer.innerText = "";
+				
+				email_invalid = true;
+			} else {
+				authCodeMsg.innerText = "인증번호가 일치하지 않거나 만료되었습니다.";
+				authCodeMsg.style.color = "red";
+				
+				email_invalid = false;
+			}
+		})
+		.catch(err => {
+			console.error("인증번호 검증 오류:", err);
+			authCodeMsg.innerText = "서버 오류가 발생했습니다.";
+			authCodeMsg.style.color = "red";
+			
+			email_invalid = false;
+		});
+}
+
+
+//회원정보 수정 버튼
+$('#mdfy_submit_btn').click(function() {
+	//pwInput //패스워드
+	//pwConfirm //패스워드 확인
+	//user_nickname //닉네임
+	//const user_nickname = document.getElementById('user_nickname');
+	//const user_tel1 = document.getElementById('user_tel1');//연락처1
+	//const user_tel2 = document.getElementById('user_tel2');//연락처2
+	//const user_tel3 = document.getElementById('user_tel3');//연락처3
+	//const input_postcode = document.getElementById('input_postcode');//우편번호
+	//const input_address = document.getElementById('input_address');//주소
+	//const input_detailAddress = document.getElementById('input_detailAddress'); //상세주소
+	if(nick_invalid && tel_invalid && pw_invalid && email_invalid) {
+		document.getElementById(member_info_form).submit();
+		
+	} else {
+		if(nick_invalid) {
+			
+		} else if (tel_invalid) {
+			alert('연락처를 확인해주세요.');
+		} else if (pw_invalid) {
+			alert('비민번호를 확인해주세요.');
+		} else if (email_invalid) {
+			alert('이메일을 확인해주세요.');
+		}
+		return false;
+	}
+	
+	
+	
+});
