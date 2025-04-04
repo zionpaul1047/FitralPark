@@ -273,17 +273,19 @@
 				<form action="bulletinCommentOK.do" method="post">
 				<c:forEach items="${Comment_list}" var="commentDto">
 					<input type="hidden" name="comment_no" value="${commentDto.comment_no}">
-					<input type="hidden" name="creator_id" value="${commentDto.creator_id}">
+					<input type="hidden" name="comment_creator_id" value="${commentDto.creator_id}">
 					<div class="comment_item">
 						<div class="comment_header">
 							<div class="comment_nickname">
 								<a href="">${commentDto.nickname}(${commentDto.creator_id})</a>
+								<i class="fa-regular fa-pen-to-square"></i>
+								<i class="fa-solid fa-xmark"></i>
 							</div>
 							<div class="comment_regdate">
 								${commentDto.regdate}
 							</div>
 						</div>
-						<div class="comment_content">s
+						<div class="comment_content">
 							${commentDto.comment_content}
 						</div>
 					</div>
