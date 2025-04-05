@@ -75,12 +75,18 @@
 					<!-- 로그인 상태 -->
 					<div class="welcome_msg">${sessionScope.loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
 					<ul class="icon_menu_grup">
-						<!-- 알림, 대시보드, 마이페이지 아이콘 유지 -->
+						<!-- 알림 아이콘 -->
+						<li class="icon_menu" id="alarmButton">
+							<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/belloff.png" alt="알림" style="width: 24px; height: 24px;">
+						</li>
+						<div id="alarmDropdown" class="alarm-dropdown">
+						    <!-- 알림 목록이 동적으로 출력될 위치 -->
+						</div>
 						<li class="icon_menu">
 							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
 						</li>
 						<li class="icon_menu">
-							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
+							<a href="${pageContext.request.contextPath}/dashboard.do"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
 						</li>
 					</ul>
 					<ul class="login_btn">
@@ -92,12 +98,7 @@
 					</ul>
 				</c:otherwise>
 			</c:choose>
-
 		</nav>
-
-
-
-
 		<!-- btn_open -->
 		<div class="btn_open">
 			<span class="top"></span> <span class="middle"></span> <span
