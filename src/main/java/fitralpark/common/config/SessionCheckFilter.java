@@ -6,7 +6,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 /**
- * 🔐 로그인 보호 필터
+ *  로그인 보호 필터
  * - 보호 경로에 대해 로그인 상태인지 확인
  * - 미로그인 시 로그인 팝업 트리거용 속성 저장
  * - 로그인 성공 시 해당 속성 제거
@@ -18,12 +18,16 @@ public class SessionCheckFilter implements Filter {
     private static final String[] excludePaths = {
         "/index.do", "/login.do", "/logout.do", "/register.do", "/auth.jsp",
         "/checkId.do", "/sendAuthEmail.do", "/checkAuthCode.do",
-        "/favicon.ico", "/assets/,"
+        "/favicon.ico", "/assets/"
     };
 
     // 로그인 보호가 필요한 경로
     private static final String[] protectedPaths = {
-        "/dashboard.do",
+        
+    	//마이페이지 관련
+    	"/dashboard.do",
+    	
+    	//커뮤니티 관련
         "/bulletinPost.do",
         "/bulletinPostDel.do",
     	"/bulletinPostDel.do",
@@ -32,7 +36,14 @@ public class SessionCheckFilter implements Filter {
     	"/bulletinPostEditOK.do",
     	"/bulletinPostOK.do",
     	"/bulletinWriteOK.do",
-    	"/bulletinPostEdit.do"
+    	"/bulletinPostEdit.do",
+    	
+    	//운동 관련
+    	"/exerciseList.do",
+    	"/exerciseRecommend.do",
+    	
+    	//test
+    	"/qnaList.do"
     };
 
     @Override
@@ -75,7 +86,7 @@ public class SessionCheckFilter implements Filter {
             if ("XMLHttpRequest".equals(httpReq.getHeader("X-Requested-With"))) {
                 httpRes.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 필요");
             } else {
-                // 보호된 경로 접근 시 → index.do로 튕김
+                // 보호된 경로 접근 시 index.do로 튕김
                 httpRes.sendRedirect(contextPath + "/index.do");
             }
 

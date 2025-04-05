@@ -33,7 +33,7 @@ public class RegisterController extends HttpServlet {
 		}
 
 		String email = req.getParameter("email");
-		String address = req.getParameter("zipcode") + " " + req.getParameter("address") + " " + req.getParameter("address_detail");
+		String address = req.getParameter("zipcode") + "◈" + req.getParameter("address") + "◈" + req.getParameter("address_detail");
 
 		// 2. 서버 유효성 검사
 		resp.setContentType("text/html;charset=UTF-8");
@@ -64,11 +64,7 @@ public class RegisterController extends HttpServlet {
 			return;
 		}
 
-		// 3. DTO 생성
-		String address = req.getParameter("zipcode") + "◈" + req.getParameter("address") + "◈"
-				+ req.getParameter("address_detail");
-		
-		// 2. DTO 생성
+		// 3. DTO 생성		
 		UserDTO dto = new UserDTO();
 		dto.setMemberId(id);
 		dto.setPw(pw);
