@@ -1364,8 +1364,8 @@
 					url: '/fitralpark/dashrecordexcs.do',
 					data: {
 						id: '${id}',
-						sets: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
-						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
+						sets: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
+						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
 						weight: $('#today_exercise .dash_content_part[style="display: block;"] .load span').text(),
 						exercise_time: $('#today_exercise .dash_content_part[style="display: block;"] .times span').text(),
 						exercise_no: $('#today_exercise .dash_content_part[style="display: block;"]').data('excsno'),
