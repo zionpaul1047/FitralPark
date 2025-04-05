@@ -20,6 +20,7 @@ public class UserDTO {
     private String email;                  // 이메일
     private String address;                // 주소
     
+    //회원정보 수정을 위한 부가 필드
     private String tel1;
     private String tel2;
     private String tel3;
@@ -29,6 +30,8 @@ public class UserDTO {
     private String email1;
     private String email2;
     private String email3;
+    private String tel_select;
+    private String email_domain_select;
     
     
     // 프로필 관련
