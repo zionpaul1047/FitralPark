@@ -31,20 +31,18 @@
 		maxIdle: 최대 보유 수
 		maxWaitMillis: 대여 꽉찬 상태 > 신규 대여 > 기다리는 최대 시간 
 	-->
-	<Resource
-		name="jdbc/pool"
-		auth="Container"
-		type="javax.sql.DataSource"
-		factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
-		initialSize="20"
-		maxActive="20"
-		maxIdle="10"
-		maxWaitMillis="10000"
-		username="server"
-		password="java1234"
-		driverClassName="oracle.jdbc.driver.OracleDriver"
-		url="jdbc:oracle:thin:@192.168.10.46:1521:XE"
-    />
+    <Resource
+    name="jdbc/pool"
+    auth="Container"
+    type="javax.sql.DataSource"
+    driverClassName="oracle.jdbc.driver.OracleDriver"
+    url="jdbc:oracle:thin:@localhost:1521:xe"
+    username="server"
+    password="java1234"
+    maxActive="20"
+    maxIdle="10"
+    maxWait="-1"
+/>
 
 	
 	
