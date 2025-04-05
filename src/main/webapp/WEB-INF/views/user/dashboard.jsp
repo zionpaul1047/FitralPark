@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {
         background-color: rgb(218, 243, 211);
@@ -689,7 +690,8 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%-- <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %> --%>
+			    <%@ include file="/WEB-INF/views/common/left_menu_mypage.jsp" %>
 		</div>
 		
 		<div class="grid_center">
@@ -776,14 +778,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button class="card_btn" onclick="location.href='#!';">운동 등록/수정</button>
+					            <button class="card_btn" onclick="location.href='/fitralpark/exerciseList.do';">운동 등록/수정</button>
 					            <button class="card_btn" onclick="do_record('today_exercise');">운동 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyExcsList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 운동이 없습니다.<br>운동을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button class="card_btn_wide" onclick="location.href='#!';">운동 등록</button>
+				        		<button class="card_btn_wide" onclick="location.href='/fitralpark/exerciseList.do';">운동 등록</button>
 				        	</div>
 				        </c:if>
 			        </div>
@@ -815,14 +817,14 @@
 						        </div>
 					        </c:forEach>
 					        <div class="bottom_part">
-					            <button class="card_btn"  onclick="location.href='#!';">식단 등록/수정</button>
+					            <button class="card_btn"  onclick="location.href='/fitralpark/dietRecommend.do';">식단 등록/수정</button>
 					            <button class="card_btn" onclick="do_record('today_diet');">식사 완료</button>
 					        </div>
 				        </c:if>
 				        <c:if test="${dto.tdyDietList.size() le 0}">
 				        	<div class="mid_part_empty">등록된 식단이 없습니다.<br>식단을 등록해주세요.</div>
 				        	<div class="bottom_part">
-				        		<button class="card_btn_wide" onclick="location.href='#!';">식단 등록</button>
+				        		<button class="card_btn_wide" onclick="location.href='dietRecommend.do';">식단 등록</button>
 				        	</div>
 				        </c:if>
 				        
@@ -1363,8 +1365,8 @@
 					url: '/fitralpark/dashrecordexcs.do',
 					data: {
 						id: '${id}',
-						sets: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
-						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
+						sets: $('#today_exercise .dash_content_part[style="display: block;"] .sets span').text(),
+						reps_per_set: $('#today_exercise .dash_content_part[style="display: block;"] .ining span').text(),
 						weight: $('#today_exercise .dash_content_part[style="display: block;"] .load span').text(),
 						exercise_time: $('#today_exercise .dash_content_part[style="display: block;"] .times span').text(),
 						exercise_no: $('#today_exercise .dash_content_part[style="display: block;"]').data('excsno'),

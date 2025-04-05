@@ -96,41 +96,34 @@ public class UserDAO {
 
 	// 회원 정보 수정 (UPDATE)
 	public int updateMember(UserDTO dto) {
-		String sql = "UPDATE member SET "
-				+ "pw = ?, member_pic = ?, background_pic = ?, member_nickname = ?, member_name = ?, "
-				+ "personalnumber = ?, allergy = ?, tel = ?, email = ?, address = ?, "
-				+ "fitness_score = ?, community_score = ?, restrict_check = ?, withdraw_check = ?, "
-				+ "mentor_check = ?, admin_check = ?, plan_public_check = ? " + "WHERE member_no = ?";
-
-		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-			pstmt.setString(1, dto.getPw());
-			pstmt.setString(2, dto.getMemberPic());
-			pstmt.setString(3, dto.getBackgroundPic());
-			pstmt.setString(4, dto.getMemberNickname());
-			pstmt.setString(5, dto.getMemberName());
-			pstmt.setString(6, dto.getPersonalNumber());
-			pstmt.setString(7, dto.getAllergy());
-			pstmt.setString(8, dto.getTel());
-			pstmt.setString(9, dto.getEmail());
-			pstmt.setString(10, dto.getAddress());
-			pstmt.setInt(11, dto.getFitnessScore());
-			pstmt.setInt(12, dto.getCommunityScore());
-			pstmt.setInt(13, dto.getRestrictCheck());
-			pstmt.setInt(14, dto.getWithdrawCheck());
-			pstmt.setInt(15, dto.getMentorCheck());
-			pstmt.setInt(16, dto.getAdminCheck());
-			pstmt.setInt(17, dto.getPlanPublicCheck());
-			pstmt.setInt(18, dto.getMemberNo());
-
-			System.out.println("[DEBUG] 회원가입 시도: " + dto);
-
-			return pstmt.executeUpdate();
-
+		
+		try {
+			String sql = """
+					update member 
+					   set pw = ?
+					     , member_nickname = ?
+					     , tel = ?
+					     , email = ?
+					     , address = ?
+					 where member_id = ?
+					""";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPw());
+			pstat.setString(2, dto.getMemberNickname());
+			pstat.setString(3, dto.getTel());
+			pstat.setString(4, dto.getEmail());
+			pstat.setString(5, dto.getAddress());
+			pstat.setString(6, dto.getMemberId());
+			
+			return pstat.executeUpdate();
+			
+			
 		} catch (Exception e) {
 			System.err.println("[회원정보 수정 실패 - 예외 발생]");
 			e.printStackTrace();
 		}
+		
 
 		return 0;
 	}
@@ -992,6 +985,64 @@ public class UserDAO {
 	        try { if (pstat != null) pstat.close(); } catch (Exception e) {}
 	    }
 	    return dto;
+	}
+
+	public UserDTO getUserInfo(String id) {
+		try {
+			UserDTO dto = new UserDTO();
+			
+			
+			String sql = """
+							select MEMBER_ID
+							     , MEMBER_NAME
+							     , substr(substr(PERSONALNUMBER, 1, 7), 1, 6) || '-' || substr(substr(PERSONALNUMBER, 1, 7), 7, 1) || '******' as PERSONALNUMBER
+							     , MEMBER_NICKNAME 
+							     , case when tel like '%-%-%' then substr(tel, 1, instr(tel, '-', 1, 1) -1) else null end as tel1
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 1) + 1, instr(tel, '-', 1, 2) - 1 - instr(tel, '-', 1, 1)) else null end as tel2
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 2) + 1, length(tel)) else null end as tel3
+							     , case when tel like '%-%-%' then 'default' else 'custom' end as tel_select
+							     , substr(EMAIL, 1, instr(EMAIL, '@', 1, 1) -1) as email1
+							     , substr(EMAIL, instr(EMAIL, '@', 1, 1) + 1, length(EMAIL)) as email2
+							     , case when substr(EMAIL, instr(EMAIL, '@', 1, 1) + 1, length(EMAIL)) in ('gmail.com', 'naver.com', 'daum.net', 'hanmail.net', 'nate.com', 'kakao.com') then 'default' else 'custom' end as eamil_domain_select
+							     , case when ADDRESS like '%◈%◈%' or ADDRESS like '%◈%' then substr(ADDRESS, 1, instr(ADDRESS, '◈', 1, 1) -1)
+							             when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) -1, length(instr(ADDRESS, '◈', 1, 1) -1))
+							             else null end as addr1
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, instr(ADDRESS, '◈', 1, 2) - 1 - instr(ADDRESS, '◈', 1, 1)) 
+							            when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, length(ADDRESS))
+							             else null end as addr2
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 2) + 1, length(ADDRESS)) else null end as addr3
+							    from member
+							    where member_id = ?
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, id);
+			
+			rs = pstat.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMemberId(rs.getString("MEMBER_ID")); 
+				dto.setMemberName(rs.getString("MEMBER_NAME"));
+				dto.setPersonalNumber(rs.getString("PERSONALNUMBER")); 
+				dto.setMemberNickname(rs.getString("MEMBER_NICKNAME")); 
+				dto.setTel1(rs.getString("tel1")); 
+				dto.setTel2(rs.getString("tel2")); 
+				dto.setTel3(rs.getString("tel3"));
+				dto.setEmail1(rs.getString("EMAIL1"));
+				dto.setEmail2(rs.getString("EMAIL2"));
+				dto.setAddress1(rs.getString("addr1")); 
+				dto.setAddress2(rs.getString("addr2")); 
+				dto.setAddress3(rs.getString("addr3"));
+				dto.setTel_select(rs.getString("tel_select"));
+				dto.setEmail_domain_select(rs.getString("eamil_domain_select"));
+				
+				
+				return dto;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 

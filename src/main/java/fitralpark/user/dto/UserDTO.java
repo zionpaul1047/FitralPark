@@ -19,7 +19,21 @@ public class UserDTO {
     private String tel;                    // 전화번호
     private String email;                  // 이메일
     private String address;                // 주소
-
+    
+    //회원정보 수정을 위한 부가 필드
+    private String tel1;
+    private String tel2;
+    private String tel3;
+    private String address1;
+    private String address2;
+    private String address3;
+    private String email1;
+    private String email2;
+    private String email3;
+    private String tel_select;
+    private String email_domain_select;
+    
+    
     // 프로필 관련
     private String memberPic;              // 프로필 사진 경로
     private String backgroundPic;          // 배경 사진 경로
