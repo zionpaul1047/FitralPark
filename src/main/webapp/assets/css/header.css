@@ -175,9 +175,9 @@
 }
 
 #alarmDropdown {
-	position: absolute;
-	right: 0;
-	top: 30px;
+	position: fixed;
+	right: 70px; /* 위치 조정 필요시 조절 */
+	top: 55px; /* 헤더 아래로 떨어지게 */
 	background: #fff;
 	border: 1px solid #ddd;
 	border-radius: 6px;
@@ -188,6 +188,8 @@
 	visibility: hidden;
 	transition: all 0.3s ease;
 	padding: 10px;
+
+	z-index: 3000; /* 🎯 높게 설정 */
 }
 
 #alarmDropdown.show {

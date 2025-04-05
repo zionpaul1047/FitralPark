@@ -75,13 +75,27 @@
 					<!-- 로그인 상태 -->
 					<div class="welcome_msg">${sessionScope.loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
 					<ul class="icon_menu_grup">
-						<!-- 알림 아이콘 -->
-						<li class="icon_menu" id="alarmButton">
-							<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/belloff.png" alt="알림" style="width: 24px; height: 24px;">
-						</li>
-						<div id="alarmDropdown" class="alarm-dropdown">
-						    <!-- 알림 목록이 동적으로 출력될 위치 -->
-						</div>
+					
+					<!-- 알람 버튼 -->
+					<li class="icon_menu" id="alarmButton">
+						<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/belloff.png" alt="알림" style="width: 24px; height: 24px;">
+					</li>
+					<div id="alarmDropdown" class="alarm-dropdown">
+					    <!-- 알림 목록 출력 예정 -->
+					    <div class="alarm-toggle">
+					        <label for="alarmToggle">알림 수신</label>
+					        <label class="switch">
+					            <input type="checkbox" id="alarmToggle">
+					            <span class="slider"></span>
+					        </label>
+					    </div>
+					    <div class="alarm-list">
+					        <p>알림 내용이 여기에 표시됩니다.</p>
+					    </div>
+					</div>
+						
+						
+						
 						<li class="icon_menu">
 							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
 						</li>

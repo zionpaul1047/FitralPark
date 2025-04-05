@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			e.stopPropagation();
 			alarmDropdown.classList.toggle("show");
 		});
-
 		document.addEventListener("click", (e) => {
 			if (!alarmDropdown.contains(e.target)) {
 				alarmDropdown.classList.remove("show");
@@ -62,9 +61,21 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	}
 
+
 	if (alarmToggle && alarmIcon) {
 		alarmToggle.addEventListener("change", () => {
 			alarmIcon.src = contextPath + "/assets/images/icon/" + (alarmToggle.checked ? "bellon.png" : "belloff.png");
+			
+
+			// ⚠️ 추가 기능: 서버에 상태 저장할 경우 아래 코드 추가 가능
+			/*
+			fetch(contextPath + "/toggleAlarmSetting.do", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ alarmOn: isOn })
+			});
+			*/
+			
 		});
 	}
 });
