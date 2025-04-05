@@ -3,3 +3,4 @@
 
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/assets/images/logo/favicon.ico" type="image/x-icon">
 <link rel="icon" href="${pageContext.request.contextPath}/assets/images/logo/favicon.png" type="image/png">
+

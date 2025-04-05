@@ -25,3 +25,52 @@
 .layout-sidebar-right {
 	width: 100px;
 }
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
+  gap: 20px;
+}
+
+.box {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.wide-box {
+  grid-column: span 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.search-input {
+  flex: 1;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.search-btn {
+  padding: 10px 16px;
+  margin-left: 10px;
+  background: #244d8e;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.map-area {
+  background: #ddd;
+  height: 160px;
+  margin: 10px 0;
+}
+
+.ranking-box {
+  background: white;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+}
