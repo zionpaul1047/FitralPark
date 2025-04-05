@@ -19,7 +19,7 @@
 		<!-- 로고 -->
 		<h1 class="h_logo">
 			<a href="${pageContext.request.contextPath}/index.do">
-				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="핏트럴파크">
+				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="FitralPark">
 			</a>
 		</h1>
 		<!-- 메인 메뉴 -->
@@ -30,7 +30,7 @@
 					<a href="#">식단 관리</a>
 					<ul class="sub_menu">
 						<li><a href="#">식단 계획캘린더</a></li>
-						<li><a href="#">식단 라이브러리</a></li>
+						<li><a href="${pageContext.request.contextPath}/diet/dietRecommend.do">식단 라이브러리</a></li>
 						<li><a href="#">식단 분석</a></li>
 					</ul>
 				</li>
@@ -51,11 +51,11 @@
 					</ul>
 				</li>
 				<li class="menu_col">
-					<a href="#">커뮤니티</a>
+					<a href="${pageContext.request.contextPath}/bulletinList.do">커뮤니티</a>
 					<ul class="sub_menu">
-						<li><a href="">공지사항</a></li>
-						<li><a href="">자유게시판</a></li>
-						<li><a href="">Q&A게시판</a></li>
+						<li><a href="${pageContext.request.contextPath}/announcementList.do">공지사항</a></li>
+						<li><a href="${pageContext.request.contextPath}/bulletinPost.do">자유게시판</a></li>
+						<li><a href="${pageContext.request.contextPath}/qnaList.do">Q&A게시판</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -73,7 +73,9 @@
 				</c:when>
 				<c:otherwise>
 					<!-- 로그인 상태 -->
-					<div class="welcome_msg">${sessionScope.loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
+					<div class="welcome_msg">
+						<strong>${sessionScope.loginUser.memberName}</strong> 님 반갑습니다. 어서오세요.
+					</div>
 					<ul class="icon_menu_grup">
 					
 					<!-- 알람 버튼 -->

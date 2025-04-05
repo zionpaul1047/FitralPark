@@ -1,80 +1,60 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>FITRALPARK</title>
-<%@ include file="/WEB-INF/views/common/asset.jsp" %>
-    <style>
-        body {
-        background-color: rgb(218, 243, 211);
-        
-        }  
-        .grid{
-            display: grid;
-		    grid-template-rows: 125px auto 1fr;
-		    grid-template-columns: 1fr;
-		    min-height: 100%;
-        }
-        .grid_top{
-        	/* border: 1px solid black; */
-            grid-row: 1;
-        }
-        .grid_center{
-        	/* border: 1px solid black; */
-            grid-row: 2;
-		    display: grid;
-		    grid-template-columns: calc(50% - 424px) auto;
-        }
-        .grid_center_L{
-        /* border: 1px solid black; */
-        }
-        .grid_center_R{
-        /* border: 1px solid black; */
-        }
-        .grid_bottom{
-        /* border: 1px solid black; */
-            grid-row: 3;
-        }
-        
-    </style>
+	<meta charset="UTF-8">
+	<title>FITRALPARK</title>
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+	<script>
+		const contextPath = "${pageContext.request.contextPath}";
+	</script>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/index.css">
+	
 </head>
 <body>
-	<div class="grid">
-	
-		<div class="grid_top">
 
-				<!-- 메인메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/header.jsp" %>
-			    <!-- 오른쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
-			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
-		</div>
-		
-		<div class="grid_center">
-		
-			<div class="grid_center_L"></div>
-			
-			<div class="grid_center_R">
-				<!-- 컨텐츠페이지 -->
-    			<%@ include file="/WEB-INF/views/common/content_page.jsp" %>
-			</div>
-			
-		</div>
-		
-		<div class="grid_bottom">
-				<%@ include file="/WEB-INF/views/common/footer.jsp" %>
-		</div>
-		
-	</div>
+
+<div class="layout-wrapper">
+
+  <!-- 헤더 영역 -->
+  <header class="layout-header">
+    <%@ include file="/WEB-INF/views/common/header.jsp" %>
+  </header>
+
+  <!-- 콘텐츠 영역 -->
+<main class="layout-main">
+  <div class="main-content-area">
+    
+    <!-- 실제 콘텐츠 -->
+    <div class="layout-content">
+      <%@ include file="/WEB-INF/views/common/content_page.jsp" %>
+    </div>
+
+    <!-- 우측 고정 사이드바 -->
+    <aside class="layout-sidebar-right">
+      <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
+    </aside>
+
+  </div>
+</main>
+
+  <!-- 푸터 영역 -->
+  <footer class="layout-footer">
+    <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+  </footer>
+
+</div>
 
 
     <script>
-	 	// 모든 메뉴 항목을 선택
+/* 	 	// 모든 메뉴 항목을 선택
 	    const menuItems = document.querySelectorAll('.sf_submenu_1 div');
 	
 	    // 클릭 이벤트 추가
@@ -92,13 +72,9 @@
 	        item.style.backgroundColor = 'oldlace'; // 클릭된 항목 배경색 설정
 	        item.style.fontWeight = 'bold'; // 클릭된 항목 글씨 굵게 설정
 	      });
-	    });
+	    }); */
 
     </script>
-    
-
-
-
 </body>
 
 

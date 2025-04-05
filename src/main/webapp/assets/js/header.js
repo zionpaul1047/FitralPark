@@ -79,3 +79,14 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 	}
 });
+
+window.addEventListener("scroll", function () {
+	const header = document.getElementById("header");
+	if (!header) return;
+
+	if (window.scrollY > 10) {
+		header.classList.add("scrolled");
+	} else {
+		header.classList.remove("scrolled");
+	}
+});
