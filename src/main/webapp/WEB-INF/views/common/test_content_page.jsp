@@ -3,8 +3,11 @@
 
   <!-- 1. 식품 검색 상단 배너 -->
   <div class="box wide-box">
-    <input type="text" placeholder="식품영양정보 검색" class="search-input" />
-    <button class="search-btn">🔍</button>
+    <form action="${pageContext.request.contextPath}/nutrition/foodsearch.do" method="POST">
+  <input type="text" name="query" placeholder="식품영양정보 검색" required
+         style="width: 400px; height: 35px; padding: 5px;">
+  <button type="submit" style="height: 35px;">🔍</button>
+</form>
   </div>
 
   <!-- 2. 운동센터 검색 + 지도 -->
