@@ -252,6 +252,19 @@
           <input type="text" placeholder="검색어를 입력하세요" class="search-input">
           <button class="search-icon">🔍</button>
         </div>
+        
+         <div class="filter-options">
+            <label class="checkbox-container">
+              <input type="checkbox" class="favorite-filter">
+              <span>즐겨찾기</span>
+            </label>
+            <label class="checkbox-container">
+              <input type="checkbox" class="my-meal-filter">
+              <span>나의 루틴</span>
+            </label>
+          </div>
+          <br>
+        
       </div>
       
       <div class="routine-list-section">

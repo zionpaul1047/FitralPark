@@ -13,26 +13,25 @@ import javax.servlet.http.HttpSession;
 import fitralpark.diet.dao.DietDAO;
 import fitralpark.diet.dto.DietDTO;
 
-@WebServlet("/dietRecommend.do")
-public class DietRecommendationController extends HttpServlet {
+@WebServlet("/dietFoodLoading.do")
+public class DietFoodLoading extends HttpServlet {
     
     private final int PAGE_SIZE = 10;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        // 세션에서 사용자 ID 추출
+        /// 세션에서 사용자 ID 추출
         HttpSession session = req.getSession();
         String memberId = (String) session.getAttribute("memberId");
         if (memberId == null)
             memberId = "guest";
-        
-        memberId = "hong";
-
+    
 
         // DAO 호출
         DietDAO dao = new DietDAO();
-        
+
+    
         String pageParam = req.getParameter("page");
         int currentPage = 1;
         try {
@@ -55,18 +54,20 @@ public class DietRecommendationController extends HttpServlet {
             int calorieMax = Integer.parseInt(req.getParameter("calorieMax"));
             String mealClassify = req.getParameter("mealClassify");
             String searchTerm = req.getParameter("searchTerm");
-            String dietCategory = req.getParameter("dietCategory");
             boolean favoriteFilter = req.getParameter("favoriteFilter") != null ? true : false;
             boolean myMealFilter = req.getParameter("myMealFilter") != null ? true : false;
 
-            list = dao.searchRecomDiets(calorieMin, calorieMax, mealClassify, searchTerm, dietCategory, favoriteFilter, myMealFilter, memberId, begin, end);
+            list = dao.searchDiets(calorieMin, calorieMax, mealClassify, searchTerm, favoriteFilter, myMealFilter, memberId, begin, end);
             
             req.setAttribute("isSearch", false);
 
         } else {
 
             // 검색X
-            list = dao.getRecommendDiets(begin, end, memberId);
+            list = dao.getFoods(begin, end, memberId);
+
+            //커스텀푸드로 변경
+            
             
             req.setAttribute("isSearch", true);
 
@@ -74,13 +75,12 @@ public class DietRecommendationController extends HttpServlet {
 
         int totalCount = dao.getTotalCount(memberId);
         int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
-        
 
         req.setAttribute("list", list);
         req.setAttribute("currentPage", currentPage);
         req.setAttribute("totalPages", totalPages);
-        req.getRequestDispatcher("/WEB-INF/views/diet/dietRecommend.jsp").forward(req, resp);
-
+        req.getRequestDispatcher("/WEB-INF/views/diet/dietFoodLoading.jsp").forward(req, resp);
     }
-    
+
 }
+
