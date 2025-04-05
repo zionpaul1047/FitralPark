@@ -23,7 +23,16 @@ public class SessionCheckFilter implements Filter {
 
     // 로그인 보호가 필요한 경로
     private static final String[] protectedPaths = {
-        "/dashboard.do", "/bulletinList.do", "/diet.do", "/recommendation.do"
+        "/dashboard.do",
+        "/bulletinPost.do",
+        "/bulletinPostDel.do",
+    	"/bulletinPostDel.do",
+    	"/bulletinPostWrite.do",
+    	"/bulletinPostDelOK.do",
+    	"/bulletinPostEditOK.do",
+    	"/bulletinPostOK.do",
+    	"/bulletinWriteOK.do",
+    	"/bulletinPostEdit.do"
     };
 
     @Override
@@ -63,14 +72,14 @@ public class SessionCheckFilter implements Filter {
             session.setAttribute("redirectAfterLogin", command);
             session.setAttribute("loginRequired", true);
 
-            // 일반 요청인지, AJAX인지 판별 필요시 여기에 조건 추가 가능
             if ("XMLHttpRequest".equals(httpReq.getHeader("X-Requested-With"))) {
                 httpRes.sendError(HttpServletResponse.SC_UNAUTHORIZED, "로그인 필요");
             } else {
-				//httpRes.sendRedirect(contextPath + "/login.do?show=login");
+                // 보호된 경로 접근 시 → index.do로 튕김
+                httpRes.sendRedirect(contextPath + "/index.do");
             }
 
-            return; // 요청 차단
+            return;
         }
 
         // 로그인된 상태인데 이전 플래그가 남아있다면 제거
