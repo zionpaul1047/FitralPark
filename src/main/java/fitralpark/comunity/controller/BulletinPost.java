@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPost.do")
 public class BulletinPost extends HttpServlet {
@@ -21,13 +22,8 @@ public class BulletinPost extends HttpServlet {
 
 		//BulletinPost
 		HttpSession session = req.getSession();
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (null != session.getAttribute("loginUser")) {
-					
-		} else {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
 		
 		String post_no = req.getParameter("post_no");
 		

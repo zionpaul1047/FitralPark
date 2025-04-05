@@ -173,7 +173,7 @@
 				
 				<div id="mainbox">
 				<h1>자유 게시글 수정하기</h1>
-				<form class="edit-form" action="/fitralpark/bulletinPostEditOK.do" method="post">
+				<form class="edit-form" action="/bulletinPostEditOK.do" method="post">
 				
 					<input type="hidden" name="post_no" value="${post.post_no}">
 					

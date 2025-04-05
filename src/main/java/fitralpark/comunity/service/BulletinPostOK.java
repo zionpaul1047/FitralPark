@@ -25,10 +25,6 @@ public class BulletinPostOK extends HttpServlet {
 		HttpSession session = req.getSession();
 		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (userDto == null) {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
         
 		CommunityDTO communityDto = new CommunityDTO();
 		CommunityDAO dao = new CommunityDAO();
