@@ -20,6 +20,8 @@ public class CommunityDTO {
 	private String post_record_cnt;
 	private String regdate;
 	private String creator_id;
+	private String admin_check;
+	private String mentor_check;
 	private String nickname;
 	private String views;
 

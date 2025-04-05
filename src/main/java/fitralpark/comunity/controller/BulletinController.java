@@ -18,6 +18,7 @@ public class BulletinController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		// 페이지 파라미터 처리
 		String pageStr = req.getParameter("page");
 		int page = (pageStr != null && !pageStr.isEmpty()) ? Integer.parseInt(pageStr) : 1;
@@ -35,7 +36,7 @@ public class BulletinController extends HttpServlet {
 		ArrayList<CommunityDTO> list = dao.Bulletin_list(page, searchWord, pageSize, searchSel, searchCategory);
 		
 		// 전체 게시글 수 조회 (검색 조건 포함)
-		int totalPosts = dao.getTotalPosts(searchWord, searchSel);
+		int totalPosts = dao.getTotalPosts(searchWord, searchSel, searchCategory);
 		int totalPages = (int) Math.ceil((double) totalPosts / pageSize);
 		
 		// 시작 페이지와 끝 페이지 계산
@@ -58,6 +59,7 @@ public class BulletinController extends HttpServlet {
 		
 		// DAO 연결 해제
 		dao.close();
+		
 		
 		// JSP로 포워딩
 		req.getRequestDispatcher("/WEB-INF/views/community/bulletinList.jsp").forward(req, resp);

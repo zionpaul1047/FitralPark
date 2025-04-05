@@ -1,6 +1,7 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -27,14 +28,12 @@ public class BulletinPostWrite extends HttpServlet {
 		HttpSession session = req.getSession();
 		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-<<<<<<< Updated upstream
-=======
 		if (userDto == null) {
 			resp.sendRedirect(req.getContextPath() + "/login.do");
 			return;
 		}
 		
->>>>>>> Stashed changes
+		
 		CommunityDAO dao = new CommunityDAO();
 		CommunityDTO communityDto = new CommunityDTO();
 		
@@ -43,8 +42,7 @@ public class BulletinPostWrite extends HttpServlet {
 		
 		// 말머리 불러오기
 		req.setAttribute("headerList", headerList);
-		
-		//
+			
 		
 		
 		// DAO 연결 해제

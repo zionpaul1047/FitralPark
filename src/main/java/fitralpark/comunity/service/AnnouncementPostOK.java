@@ -14,14 +14,14 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
-@WebServlet("/bulletinPostOK.do")
-public class BulletinPostOK extends HttpServlet {
+@WebServlet("/announcementPostOK.do")
+public class AnnouncementPostOK extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-    	
+        
         HttpSession session = req.getSession();
         UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
         
@@ -49,7 +49,9 @@ public class BulletinPostOK extends HttpServlet {
                     return;
                 }
                 // 댓글 수정 처리
-                boolean success = dao.bulletin_Edit_Comment(comment_no, comment_content);
+                communityDto.setComment_no(comment_no);
+                communityDto.setComment_content(comment_content);
+                boolean success = dao.announcement_Edit_Comment(communityDto);
                 resp.setContentType("text/plain");
                 resp.getWriter().write(success ? "success" : "fail");
                 return;
@@ -58,17 +60,20 @@ public class BulletinPostOK extends HttpServlet {
                 communityDto.setPost_no(post_no);
                 communityDto.setVote_check(vote_check);
                 
-                boolean result = dao.bulletin_Vote_Check(communityDto, userDto);
+                boolean result = dao.announcement_Vote_Check(communityDto, userDto);
                 if (true == result) {
                     return;
                 } else {
-                    dao.bulletin_Vote_Record(communityDto, userDto);
+                    dao.announcement_Vote_Record(communityDto, userDto);
                 }
             } else if (comment_content != null && !comment_content.trim().isEmpty()) {
                 // 댓글 작성 처리
-                boolean success = dao.bulletin_Write_Comment(post_no, comment_content, userDto.getMemberId());
+                communityDto.setPost_no(post_no);
+                communityDto.setComment_content(comment_content);
+                communityDto.setCreator_id(userDto.getMemberId());
+                boolean success = dao.announcement_Write_Comment(communityDto);
                 if (success) {
-                    resp.sendRedirect("/fitralpark/bulletinPost.do?post_no=" + post_no);
+                    resp.sendRedirect("/fitralpark/announcementPost.do?post_no=" + post_no);
                 } else {
                     PrintWriter out = resp.getWriter();
                     out.println("<script>");
@@ -90,4 +95,4 @@ public class BulletinPostOK extends HttpServlet {
             dao.close();
         }
     }
-}
+} 

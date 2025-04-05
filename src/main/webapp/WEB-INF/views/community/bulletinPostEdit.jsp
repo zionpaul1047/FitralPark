@@ -160,7 +160,7 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%@ include file="/WEB-INF/views/common/left_menu_community.jsp" %>
 		</div>
 		
 		<div class="grid_center">

@@ -272,7 +272,7 @@
 				<div id="mainbox">
 				<div id="smallbox">
 				<h1>
-					<strong>자유 게시판</strong>
+					<strong>공지사항</strong>
 				</h1>
 				<table id="posttable">
 					<tr>
@@ -306,7 +306,7 @@
 				</div>
 				
 				<div id="comment_form">
-					<form action="/fitralpark/bulletinPostOK.do" method="post">
+					<form action="/fitralpark/announcementPostOK.do" method="post">
 						<input type="hidden" name="post_no" value="${post.post_no}">
 						<textarea id="comment_textarea" name="comment_content" placeholder="댓글을 입력하세요."></textarea>
 						<div>
@@ -351,11 +351,11 @@
 			
 				<div id="button_area">
 					<div class="left_button">
-						<button type="button" onclick="location.href='bulletinList.do'">목록</button>
+						<button type="button" onclick="location.href='announcementList.do'">목록</button>
 					</div>
 					<div class="right_button">
-						<button type="button" onclick="location.href='bulletinPostEdit.do?post_no=${post.post_no}'">수정</button>
-						<button type="button" onclick="window.open('bulletinPostDel.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
+						<button type="button" onclick="location.href='announcementPostEdit.do?post_no=${post.post_no}'">수정</button>
+						<button type="button" onclick="window.open('announcementPostDel.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
 					</div>
 				</div>
 				</div>
@@ -397,11 +397,11 @@
 		// 추천/비추천 업데이트 함수
 		function updateRecommend(post_no, vote_check) {
 			$.ajax({
-				url: "${pageContext.request.contextPath}/bulletinPostOK.do",
+				url: "${pageContext.request.contextPath}/announcementPostOK.do",
 				type: "POST",
 				data: {
 					post_no: post_no,
-					vote_check: vote_check // 추천인지 비추천인지 구분하는 type 파라미터 추가
+					vote_check: vote_check
 				},
 				success: function(data) {
 					if (data.success) {
@@ -464,7 +464,7 @@
 		}
 
 		$.ajax({
-			url: '/fitralpark/bulletinCommentEditOK.do',
+			url: '/fitralpark/announcementCommentEditOK.do',
 			type: 'POST',
 			data: {
 				comment_no: commentNo,
@@ -492,7 +492,7 @@
 		if(confirm('댓글을 삭제하시겠습니까?')) {
 			var form = document.createElement('form');
 			form.method = 'POST';
-			form.action = 'bulletinCommentDelOK.do';
+			form.action = 'announcementCommentDelOK.do';
 			
 			var commentNoInput = document.createElement('input');
 			commentNoInput.type = 'hidden';
@@ -520,4 +520,4 @@
 </script>
 	
 
-</html>
+</html> 

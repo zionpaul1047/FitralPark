@@ -1,6 +1,7 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -22,7 +23,8 @@ public class BulletinPostEdit extends HttpServlet {
 
 		//BulletinPost
 		HttpSession session = req.getSession();
-		UserDTO dto = (UserDTO) session.getAttribute("loginUser");
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
+		
 		
 		
 		String post_no = req.getParameter("post_no");
@@ -30,8 +32,15 @@ public class BulletinPostEdit extends HttpServlet {
 		CommunityDAO dao = new CommunityDAO();
 		CommunityDTO communitydto = dao.getPost(post_no, req.getSession());
 		
-		if (!dto.getMemberId().equals(communitydto.getCreator_id())) {
-		    resp.sendRedirect(req.getContextPath() + "/community/bulletinList.do");
+		if (!userDto.getMemberId().equals(communitydto.getCreator_id())) {
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+			out.println("<script>");
+			out.println("alert('수정 권한이 없습니다.');");
+			out.println("window.close();");
+	        out.println("history.back();");
+			out.println("</script>");
+			out.close();
 		    return;
 		}
 		
