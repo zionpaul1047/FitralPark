@@ -1085,9 +1085,9 @@ public class CommunityDAO {
 	public int getTotalAnnouncementPosts(String word, String searchSel, String searchCategory) {
 		try {
 			String sql = "SELECT COUNT(*) as total FROM announcement_post ap "
-					  + "LEFT JOIN member m ON ap.creator_id = m.member_id "
-					  + "LEFT JOIN announcement_post_header aph ON ap.announcement_post_header_no = aph.announcement_post_header_no "
-					  + "WHERE 1=1 ";
+					  + "LEFT JOIN member m ON ap.creator_id = m.member_id " +
+					  "LEFT JOIN announcement_post_header aph ON ap.announcement_post_header_no = aph.announcement_post_header_no " +
+					  "WHERE 1=1 ";
 			
 			// 검색어가 있는 경우
 			if (word != null && !word.trim().isEmpty()) {
@@ -1121,21 +1121,21 @@ public class CommunityDAO {
 			if (word != null && !word.trim().isEmpty()) {
 				if (searchSel != null && !searchSel.isEmpty()) {
 					switch (searchSel) {
-						case "post_subject": //범위: 제목
+						case "post_subject":
 							pstat.setString(paramIndex++, "%" + word + "%");
 							break;
-						case "post_subject&post_content": //범위: 제목 + 내용
-							pstat.setString(paramIndex++, "%" + word + "%");
-							pstat.setString(paramIndex++, "%" + word + "%");
-							break;
-						case "creator_id": //범위: 작성자
+						case "post_subject&post_content":
 							pstat.setString(paramIndex++, "%" + word + "%");
 							pstat.setString(paramIndex++, "%" + word + "%");
 							break;
-						case "regdate": //범위: 날짜
+						case "creator_id":
+							pstat.setString(paramIndex++, "%" + word + "%");
 							pstat.setString(paramIndex++, "%" + word + "%");
 							break;
-						default: //범위: 전체
+						case "regdate":
+							pstat.setString(paramIndex++, "%" + word + "%");
+							break;
+						default:
 							pstat.setString(paramIndex++, "%" + word + "%");
 							pstat.setString(paramIndex++, "%" + word + "%");
 							pstat.setString(paramIndex++, "%" + word + "%");
@@ -1291,6 +1291,398 @@ public class CommunityDAO {
 		}
 		
 		return 0;
+	}
+
+	// QNA 게시글 목록 조회
+	public ArrayList<CommunityDTO> Qna_list(int page, String word, int pageSize, String searchSel, String searchCategory) {
+		ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
+		
+		try {
+			String sql = "SELECT * FROM (" +
+					"SELECT a.*, ROWNUM rnum FROM (" +
+					"SELECT qp.qna_post_no, qp.qna_post_subject, qp.qna_post_content, " +
+					"qp.creator_id, qp.regdate, qp.views, qp.qna_post_recommend, qp.qna_post_decommend, " +
+					"m.member_nickname as nickname, " +
+					"qph.qna_post_header_name as post_header_name " +
+					"FROM qna_post qp " +
+					"LEFT JOIN member m ON qp.creator_id = m.member_id " +
+					"LEFT JOIN qna_post_header qph ON qp.qna_post_header_no = qph.qna_post_header_no " +
+					"WHERE 1=1 ";
+
+			// 검색어가 있는 경우
+			if (word != null && !word.trim().isEmpty()) {
+				// 검색어가 있고 searchSel이 입력된 경우
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject": //범위: 제목
+							sql += "AND qp.qna_post_subject LIKE ? ";
+							break;
+						case "post_subject&post_content": //범위: 제목 + 내용
+							sql += "AND (qp.qna_post_subject LIKE ? OR qp.qna_post_content LIKE ?) ";
+							break;
+						case "creator_id": //범위: 작성자
+							sql += "AND m.member_id LIKE ? OR m.member_nickname LIKE ? ";
+							break;
+						case "regdate": //범위: 날짜
+							sql += "AND TO_CHAR(qp.regdate, 'YYYY-MM-DD') LIKE ? ";
+							break;
+						default: //범위: 전체
+							sql += "AND (qp.qna_post_subject LIKE ? OR m.member_id LIKE ? OR qph.qna_post_header_name LIKE ?) ";
+					}
+				} else {
+					sql += "AND (qp.qna_post_subject LIKE ? OR m.member_id LIKE ? OR qph.qna_post_header_name LIKE ?) ";
+				}
+			}
+
+			// 말머리 검색
+			if (searchCategory != null && !searchCategory.isEmpty()) {
+				sql += "AND qp.qna_post_header_no = ? ";
+			}
+
+			sql += "ORDER BY qp.qna_post_no DESC" +
+				   ") a WHERE ROWNUM <= ?) " +
+				   "WHERE rnum > ?";
+
+			pstat = conn.prepareStatement(sql);
+
+			int parameterIndex = 1;
+
+			// 검색어 파라미터 설정
+			if (word != null && !word.trim().isEmpty()) {
+				String searchWord = "%" + word + "%";
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "post_subject&post_content":
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "creator_id":
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "regdate":
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						default:
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+					}
+				} else {
+					pstat.setString(parameterIndex++, searchWord);
+					pstat.setString(parameterIndex++, searchWord);
+					pstat.setString(parameterIndex++, searchWord);
+				}
+			}
+
+			// 말머리 검색 파라미터 설정
+			if (searchCategory != null && !searchCategory.isEmpty()) {
+				pstat.setString(parameterIndex++, searchCategory);
+			}
+
+			// 페이징 파라미터 설정
+			pstat.setInt(parameterIndex++, page * pageSize);
+			pstat.setInt(parameterIndex++, (page - 1) * pageSize);
+
+			rs = pstat.executeQuery();
+
+			while (rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setPost_no(rs.getString("qna_post_no"));
+				dto.setPost_subject(rs.getString("qna_post_subject"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setNickname(rs.getString("nickname"));
+				dto.setRegdate(rs.getString("regdate"));
+				dto.setViews(rs.getString("views"));
+				dto.setPost_recommend(rs.getString("qna_post_recommend"));
+				dto.setPost_decommend(rs.getString("qna_post_decommend"));
+				dto.setHeader_name(rs.getString("post_header_name"));
+				list.add(dto);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	// QNA 게시글 총 개수 조회
+	public int getQnaTotalPosts(String word, String searchSel, String searchCategory) {
+		try {
+			String sql = "SELECT COUNT(*) as total FROM qna_post qp " +
+					"LEFT JOIN member m ON qp.creator_id = m.member_id " +
+					"LEFT JOIN qna_post_header qph ON qp.qna_post_header_no = qph.qna_post_header_no " +
+					"WHERE 1=1 ";
+
+			if (word != null && !word.trim().isEmpty()) {
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							sql += "AND qp.qna_post_subject LIKE ? ";
+							break;
+						case "post_subject&post_content":
+							sql += "AND (qp.qna_post_subject LIKE ? OR qp.qna_post_content LIKE ?) ";
+							break;
+						case "creator_id":
+							sql += "AND m.member_id LIKE ? OR m.member_nickname LIKE ? ";
+							break;
+						case "regdate":
+							sql += "AND TO_CHAR(qp.regdate, 'YYYY-MM-DD') LIKE ? ";
+							break;
+						default:
+							sql += "AND (qp.qna_post_subject LIKE ? OR m.member_id LIKE ? OR qph.qna_post_header_name LIKE ?) ";
+					}
+				} else {
+					sql += "AND (qp.qna_post_subject LIKE ? OR m.member_id LIKE ? OR qph.qna_post_header_name LIKE ?) ";
+				}
+			}
+
+			if (searchCategory != null && !searchCategory.isEmpty()) {
+				sql += "AND qp.qna_post_header_no = ? ";
+			}
+
+			pstat = conn.prepareStatement(sql);
+
+			int parameterIndex = 1;
+
+			if (word != null && !word.trim().isEmpty()) {
+				String searchWord = "%" + word + "%";
+				if (searchSel != null && !searchSel.isEmpty()) {
+					switch (searchSel) {
+						case "post_subject":
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "post_subject&post_content":
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "creator_id":
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						case "regdate":
+							pstat.setString(parameterIndex++, searchWord);
+							break;
+						default:
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+							pstat.setString(parameterIndex++, searchWord);
+					}
+				} else {
+					pstat.setString(parameterIndex++, searchWord);
+					pstat.setString(parameterIndex++, searchWord);
+					pstat.setString(parameterIndex++, searchWord);
+				}
+			}
+
+			if (searchCategory != null && !searchCategory.isEmpty()) {
+				pstat.setString(parameterIndex++, searchCategory);
+			}
+
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getInt("total");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+	// QNA 헤더 목록 조회
+	public ArrayList<CommunityDTO> getQnaHeaderList() {
+		ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
+		try {
+			String sql = "SELECT qna_post_header_no, qna_post_header_name FROM qna_post_header ORDER BY qna_post_header_no ASC";
+			stat = conn.createStatement();
+			rs = stat.executeQuery(sql);
+			
+			while (rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setHeader_no(rs.getString("qna_post_header_no"));
+				dto.setHeader_name(rs.getString("qna_post_header_name"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stat != null) stat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	// QNA 게시글 추가
+	public int Qna_post_add(CommunityDTO dto, UserDTO userDto) {
+		try {
+			String sql = "INSERT INTO qna_post (qna_post_no, qna_post_subject, qna_post_content, creator_id, regdate, views, qna_post_recommend, qna_post_decommend, qna_post_header_no) " +
+					"VALUES (seq_qna_post_no.nextval, ?, ?, ?, default, default, default, default, ?)";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_subject());
+			pstat.setString(2, dto.getPost_content());
+			pstat.setString(3, dto.getCreator_id());
+			pstat.setString(4, dto.getHeader_no());
+			
+			return pstat.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+	public boolean Qna_post_delete(String post_no) {
+		String sql = "DELETE FROM qna_post WHERE qna_post_no = ?";
+		
+		try {
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public boolean Qna_post_edit(CommunityDTO dto) {
+		String sql = "UPDATE qna_post SET qna_post_subject = ?, qna_post_content = ?, qna_post_header_no = ? WHERE qna_post_no = ?";
+		
+		try {
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_subject());
+			pstat.setString(2, dto.getPost_content());
+			pstat.setString(3, dto.getHeader_no());
+			pstat.setString(4, dto.getPost_no());
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// Q&A 댓글 조회
+	public CommunityDTO getQnaComment(String comment_no) {
+		try {
+			String sql = "SELECT qc.*, m.member_nickname " +
+						"FROM qna_comment qc " +
+						"LEFT JOIN member m ON qc.creator_id = m.member_id " +
+						"WHERE qc.qna_comment_no = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, comment_no);
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setComment_no(rs.getString("qna_comment_no"));
+				dto.setPost_no(rs.getString("qna_post_no"));
+				dto.setComment_content(rs.getString("qna_comment_content"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setNickname(rs.getString("member_nickname"));
+				dto.setRegdate(rs.getString("regdate"));
+				return dto;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	// Q&A 댓글 삭제
+	public boolean Qna_comment_delete(String comment_no) {
+		try {
+			String sql = "DELETE FROM qna_comment WHERE qna_comment_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, comment_no);
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// Q&A 댓글 수정
+	public boolean Qna_comment_edit(CommunityDTO dto) {
+		try {
+			String sql = "UPDATE qna_comment SET qna_comment_content = ? WHERE qna_comment_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getComment_content());
+			pstat.setString(2, dto.getComment_no());
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	// Q&A 댓글 목록 조회
+	public ArrayList<CommunityDTO> Qna_Comment_list(String post_no) {
+		ArrayList<CommunityDTO> list = new ArrayList<CommunityDTO>();
+		try {
+			String sql = "SELECT qc.*, m.member_nickname " +
+						"FROM qna_comment qc " +
+						"LEFT JOIN member m ON qc.creator_id = m.member_id " +
+						"WHERE qc.qna_post_no = ? " +
+						"ORDER BY qc.qna_comment_no ASC";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			rs = pstat.executeQuery();
+			
+			while (rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setComment_no(rs.getString("qna_comment_no"));
+				dto.setPost_no(rs.getString("qna_post_no"));
+				dto.setComment_content(rs.getString("qna_comment_content"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setNickname(rs.getString("member_nickname"));
+				dto.setRegdate(rs.getString("regdate"));
+				list.add(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// Q&A 댓글 작성
+	public boolean Qna_comment_add(CommunityDTO dto) {
+		try {
+			String sql = "INSERT INTO qna_comment (qna_comment_no, qna_post_no, qna_comment_content, creator_id, regdate) " +
+						"VALUES (seq_qna_comment_no.nextval, ?, ?, ?, default)";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_no());
+			pstat.setString(2, dto.getComment_content());
+			pstat.setString(3, dto.getCreator_id());
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }
