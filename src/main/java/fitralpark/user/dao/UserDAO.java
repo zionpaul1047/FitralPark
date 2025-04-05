@@ -983,6 +983,8 @@ public class UserDAO {
 	            dto.setPw(rs.getString("pw"));
 	            dto.setMemberName(rs.getString("member_name"));
 	            dto.setMemberNickname(rs.getString("member_nickname"));
+	            dto.setAdminCheck(rs.getInt("admin_check"));
+				dto.setMentorCheck(rs.getInt("mentor_check"));
 	        }
 
 	    } catch (Exception e) {

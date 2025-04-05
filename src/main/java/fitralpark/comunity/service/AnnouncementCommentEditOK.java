@@ -12,9 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.user.dto.UserDTO;
+import fitralpark.comunity.dto.CommunityDTO;
 
-@WebServlet("/bulletinCommentEditOK.do")
-public class BulletinCommentEditOK extends HttpServlet {
+@WebServlet("/announcementCommentEditOK.do")
+public class AnnouncementCommentEditOK extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -44,7 +45,10 @@ public class BulletinCommentEditOK extends HttpServlet {
         CommunityDAO dao = new CommunityDAO();
         
         try {
-            boolean success = dao.bulletin_Edit_Comment(comment_no, comment_content);
+            CommunityDTO communityDto = new CommunityDTO();
+            communityDto.setComment_no(comment_no);
+            communityDto.setComment_content(comment_content);
+            boolean success = dao.announcement_Edit_Comment(communityDto);
             
             resp.setContentType("application/json");
             if (success) {
@@ -61,4 +65,4 @@ public class BulletinCommentEditOK extends HttpServlet {
             dao.close();
         }
     }
-}
+} 

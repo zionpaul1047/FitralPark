@@ -35,6 +35,7 @@ public class BulletinPostDel extends HttpServlet {
 			out.println("<script>");
 			out.println("alert('삭제 권한이 없습니다.');");
 			out.println("window.close();");
+			out.println("history.back();");
 			out.println("</script>");
 			out.close();
 		    return;

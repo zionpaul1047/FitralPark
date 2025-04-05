@@ -1,6 +1,7 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -32,6 +33,7 @@ public class BulletinPostWrite extends HttpServlet {
 			return;
 		}
 		
+		
 		CommunityDAO dao = new CommunityDAO();
 		CommunityDTO communityDto = new CommunityDTO();
 		
@@ -40,8 +42,7 @@ public class BulletinPostWrite extends HttpServlet {
 		
 		// 말머리 불러오기
 		req.setAttribute("headerList", headerList);
-		
-		//
+			
 		
 		
 		// DAO 연결 해제

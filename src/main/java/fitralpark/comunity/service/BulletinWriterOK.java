@@ -36,7 +36,8 @@ public class BulletinWriterOK extends HttpServlet {
 		communityDto.setHeader_no(header_no);
 		communityDto.setPost_subject(post_subject);
 		communityDto.setPost_content(post_content);
-
+		
+		
 		int result = dao.Bulletin_post_add(communityDto, userDto);
 		dao.close();
 		

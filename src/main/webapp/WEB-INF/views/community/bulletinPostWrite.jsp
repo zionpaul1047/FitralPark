@@ -160,7 +160,7 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%@ include file="/WEB-INF/views/common/left_menu_community.jsp" %>
 		</div>
 		
 		<div class="grid_center">
@@ -181,16 +181,6 @@
 						    <c:forEach items="${headerList}" var="headerDto">
 						        <option value="${headerDto.header_no}">${headerDto.header_name}</option>
 						    </c:forEach>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="category">말머리</label>
-						<select name="category" id="category" required>
-							<option value="">말머리 선택</option>
-							<option value="운동">운동</option>
-							<option value="식단">식단</option>
-							<option value="헬스장">헬스장</option>
-							<option value="후기">후기</option>
 						</select>
 					</div>
 					<div class="form-group">
