@@ -55,6 +55,131 @@
 				</div>
 			</div>
 
+			<!-- 아이디 찾기 폼 -->
+			<div class="accounts_forms find_id_form w-100" id="find-id" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>아이디 찾기</h1>
+					<p class="mt-2">가입 시 등록한 이름과 이메일을 입력하세요.</p>
+				</div>
+			
+				<!-- 아이디 찾기 성공 시 메시지 -->
+				<c:if test="${not empty foundId}">
+					<div class="alert alert-success text-center mt-3" role="alert">
+						회원님의 아이디는 <strong>${foundId}</strong> 입니다.
+					</div>
+					<div class="text-center mt-3">
+						<button type="button" class="btn btn-primary w-100" onclick="moveToLogin()">로그인 하러 가기</button>
+					</div>
+				</c:if>
+			
+				<!-- 아이디 찾기 실패 시 메시지 -->
+				<c:if test="${not empty findIdError}">
+					<div class="alert alert-danger text-center mt-2" role="alert">
+						${findIdError}
+					</div>
+				</c:if>
+			
+				<!-- 아이디 찾기 입력 폼 -->
+				<c:if test="${empty foundId}">
+					<form method="POST" action="${pageContext.request.contextPath}/find-id.do">
+						<div class="form-group">
+							<label for="find_id_name">이름</label>
+							<input type="text" class="form-control" id="find_id_name" name="name" required>
+						</div>
+						<div class="form-group">
+							<label for="find_id_email">이메일</label>
+							<input type="email" class="form-control" id="find_id_email" name="email" required>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary w-100">아이디 찾기</button>
+							<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+						</div>
+					</form>
+				</c:if>
+			</div>
+
+
+			
+			<!-- 비밀번호 찾기 폼 -->
+			<div class="accounts_forms find_pw_form w-100" id="find-pw" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>비밀번호 찾기</h1>
+					<p class="mt-2">가입 시 등록한 정보(아이디, 이름, 이메일)를 입력하세요.</p>
+				</div>
+			
+				<!-- 사용자 정보 입력 및 인증번호 발송 -->
+				<div class="form-group">
+					<label for="find_pw_id">아이디</label>
+					<input type="text" class="form-control" id="find_pw_id" name="id" required>
+				</div>
+				<div class="form-group">
+					<label for="find_pw_name">이름</label>
+					<input type="text" class="form-control" id="find_pw_name" name="name" required>
+				</div>
+				<div class="form-group">
+					<label for="find_pw_email">이메일</label>
+					<input type="email" class="form-control" id="find_pw_email" name="email" required>
+				</div>
+			
+				<!-- 인증번호 발송 버튼 -->
+				<div class="form-group">
+					<button type="button" class="btn btn-primary w-100" id="sendPwAuthBtn">인증번호 받기</button>
+				</div>
+			
+				<!-- 인증번호 입력 및 확인 -->
+				<div class="form-group" id="pwAuthCodeWrap" style="display: none;">
+					<label for="pwAuthCodeInput">인증번호 입력</label>
+					<div class="d-flex align-items-center">
+						<input type="text" id="pwAuthCodeInput" maxlength="6" class="form-control mr-2" placeholder="●●●●●●" style="max-width: 140px;">
+						<button type="button" id="pwAuthCodeCheckBtn" class="btn btn-secondary">확인</button>
+					</div>
+					<small id="pwAuthCodeMessage" class="form-text mt-1 text-danger"></small>
+				</div>
+			
+				<div class="form-group">
+					<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+				</div>
+			</div>
+			
+			
+			<!-- 비밀번호 재설정 폼 -->
+			<div class="accounts_forms reset_pw_form w-100" id="reset-pw" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>비밀번호 재설정</h1>
+					<p class="mt-2">인증번호를 입력하고 새로운 비밀번호를 설정하세요.</p>
+				</div>
+				<form method="POST" action="${pageContext.request.contextPath}/reset-pw.do">
+					<div class="form-group">
+						<label for="inputAuthCode">인증번호</label>
+						<input type="text" class="form-control" id="inputAuthCode" name="authCode" maxlength="6" required />
+					</div>
+					<div class="form-group">
+						<label for="newPassword">새 비밀번호</label>
+						<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="영문/숫자/특수문자 조합 8~16자" required />
+					</div>
+					<div class="form-group">
+						<label for="confirmPassword">비밀번호 확인</label>
+						<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required />
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary w-100">비밀번호 재설정</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+					</div>
+				</form>
+			</div>
+
+
+
+
 			<!-- 회원가입 폼 -->
 			<div class="accounts_forms signup_form w-100" id="signup" style="display: none;">
 				<div class="title text-center">

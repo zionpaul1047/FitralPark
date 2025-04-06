@@ -49,6 +49,7 @@ public class MailUtil {
             Transport.send(message);
             return true;
         } catch (Exception e) {
+            System.err.println("[MailUtil] 이메일 전송 중 오류 발생!");
             e.printStackTrace();
             return false;
         }

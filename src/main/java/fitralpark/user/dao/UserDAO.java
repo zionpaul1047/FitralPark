@@ -1047,6 +1047,79 @@ public class UserDAO {
 		return null;
 	}
 
+	public String findIdByNameAndEmail(String name, String email) {
+	    String sql = "SELECT member_id FROM member WHERE member_name = ? AND email = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+	        pstmt.setString(1, name);
+	        pstmt.setString(2, email);
+
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("member_id");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	
+
+	// 비밀번호 변경 메서드
+	public int updatePassword(String id, String newPassword) {
+	    int result = 0;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        conn = DBUtil.getConnection();
+	        String sql = "UPDATE member SET pw = ? WHERE member_id = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, newPassword);
+	        pstmt.setString(2, id);
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        this.close(conn, pstmt, null);
+	    }
+
+	    return result;
+	}
+
+	// 사용자 ID + 이메일 일치 여부 확인
+	public boolean checkUserByIdAndEmail(String id, String email) {
+	    boolean result = false;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    try {
+	        conn = DBUtil.getConnection();
+	        String sql = "SELECT COUNT(*) FROM member WHERE member_id = ? AND email = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, email);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            result = rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn, pstmt, rs);
+	    }
+	    return result;
+	}
+
+
+	//자원 해제를 위한 유틸리티 메서드
+	private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+	    try { if (rs != null) rs.close(); } catch (Exception e) {}
+	    try { if (pstmt != null) pstmt.close(); } catch (Exception e) {}
+	    try { if (conn != null) conn.close(); } catch (Exception e) {}
+	}
 
 }
