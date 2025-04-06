@@ -2,65 +2,57 @@ package fitralpark.exercise.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.google.gson.JsonObject;
 
 import fitralpark.exercise.dao.RoutineDAO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/exercise/toggleFavorite.do")
 public class ToggleFavoriteController extends HttpServlet {
-    private static final long serialVersionUID = 1L;
-    private static final Logger logger = Logger.getLogger(ToggleFavoriteController.class.getName());
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-            throws ServletException, IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        PrintWriter out = response.getWriter();
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    	
+    	req.setCharacterEncoding("UTF-8");
+        resp.setContentType("application/json; charset=UTF-8");
         
-        String memberId = request.getParameter("memberId");
-        String routineNo = request.getParameter("routineNo");
-        String action = request.getParameter("action");
+        HttpSession session = req.getSession();
+        UserDTO loginUser = (UserDTO) session.getAttribute("loginUser");
+        JsonObject result = new JsonObject();
         
-        logger.info("ToggleFavorite request - memberId: " + memberId + ", routineNo: " + routineNo + ", action: " + action);
-        
-        if (memberId == null || routineNo == null || action == null) {
-            logger.warning("Missing parameters - memberId: " + memberId + ", routineNo: " + routineNo + ", action: " + action);
-            out.print("{\"success\":false, \"error\":\"필수 파라미터가 누락되었습니다.\"}");
-            return;
-        }
-        
-        RoutineDAO dao = new RoutineDAO();
-        
-        try {
-            if ("add".equals(action)) {
-                boolean success = dao.addFavorite(memberId, routineNo);
-                logger.info("Add favorite result: " + success);
-                out.print("{\"success\":" + success + "}");
-            } else if ("remove".equals(action)) {
-                boolean success = dao.removeFavorite(memberId, routineNo);
-                logger.info("Remove favorite result: " + success);
-                out.print("{\"success\":" + success + "}");
-            } else if ("check".equals(action)) {
-                boolean isFavorite = dao.isFavorite(memberId, routineNo);
-                logger.info("Check favorite result: " + isFavorite);
-                out.print("{\"isFavorite\":" + isFavorite + "}");
+        if (loginUser == null) {
+            result.addProperty("success", false);
+            result.addProperty("message", "로그인이 필요합니다.");
+        } else {
+            String memberId = loginUser.getMemberId();
+            String routineNo = req.getParameter("routineNo");
+
+            RoutineDAO dao = new RoutineDAO();
+            boolean isFavorite = dao.isFavoriteRoutine(memberId, routineNo);
+
+            boolean success;
+            if (isFavorite) {
+                success = dao.removeFavoriteRoutine(memberId, routineNo);
             } else {
-                logger.warning("Invalid action: " + action);
-                out.print("{\"success\":false, \"error\":\"잘못된 액션입니다.\"}");
+                success = dao.addFavoriteRoutine(memberId, routineNo);
             }
-        } catch (Exception e) {
-            logger.severe("Error in ToggleFavoriteController: " + e.getMessage());
-            e.printStackTrace();
-            out.print("{\"success\":false, \"error\":\"" + e.getMessage() + "\"}");
-        } finally {
-            out.flush();
-            out.close();
+
+            dao.close();
+            result.addProperty("success", success);
+            result.addProperty("favorite", !isFavorite);
         }
+
+        PrintWriter writer = resp.getWriter();
+        writer.print(result.toString());
+        writer.close();
+    	
     }
+    
 } 

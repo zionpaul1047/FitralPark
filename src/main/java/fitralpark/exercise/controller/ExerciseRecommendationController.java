@@ -20,6 +20,7 @@ public class ExerciseRecommendationController extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		//ExerciseRecommendationController.java
+		
 		RoutineDAO dao = new RoutineDAO();
 		
 		ArrayList<RoutineDTO> list = dao.routineList();

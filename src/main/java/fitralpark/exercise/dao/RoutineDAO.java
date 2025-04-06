@@ -15,6 +15,7 @@ import javax.sql.DataSource;
 import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.exercise.dto.RoutineDTO;
 import fitralpark.exercise.dto.RoutineExerciseDTO;
+import fitralpark.user.dto.UserDTO;
 
 public class RoutineDAO {
 	
@@ -370,82 +371,6 @@ public class RoutineDAO {
 		}
 	}
 
-	public boolean isFavorite(String memberId, String routineNo) {
-		PreparedStatement pstat = null;
-		ResultSet rs = null;
-		try {
-			String sql = "SELECT COUNT(*) FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
-			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, memberId);
-			pstat.setString(2, routineNo);
-			rs = pstat.executeQuery();
-			
-			if (rs.next()) {
-				return rs.getInt(1) > 0;
-			}
-			return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("즐겨찾기 확인 중 오류가 발생했습니다.", e);
-		} finally {
-			try {
-				if (rs != null) rs.close();
-				if (pstat != null) pstat.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public boolean addFavorite(String memberId, String routineNo) {
-		PreparedStatement pstat = null;
-		try {
-			// 먼저 이미 즐겨찾기 되어있는지 확인
-			if (isFavorite(memberId, routineNo)) {
-				return true; // 이미 즐겨찾기 되어있으면 성공으로 처리
-			}
-			
-			String sql = "INSERT INTO exercise_routine_favorite (exercise_routine_favorite_no, member_id, routine_no) VALUES (seq_routine_favorite.NEXTVAL, ?, ?)";
-			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, memberId);
-			pstat.setString(2, routineNo);
-			
-			int result = pstat.executeUpdate();
-			return result > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("즐겨찾기 추가 중 오류가 발생했습니다.", e);
-		} finally {
-			try {
-				if (pstat != null) pstat.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public boolean removeFavorite(String memberId, String routineNo) {
-		PreparedStatement pstat = null;
-		try {
-			String sql = "DELETE FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
-			pstat = conn.prepareStatement(sql);
-			pstat.setString(1, memberId);
-			pstat.setString(2, routineNo);
-			
-			int result = pstat.executeUpdate();
-			return result > 0;
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("즐겨찾기 삭제 중 오류가 발생했습니다.", e);
-		} finally {
-			try {
-				if (pstat != null) pstat.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public List<String> getAllRoutineNos() {
 		List<String> routineNos = new ArrayList<>();
 		PreparedStatement pstat = null;
@@ -472,6 +397,96 @@ public class RoutineDAO {
 		}
 		
 		return routineNos;
+	}
+
+	public boolean isFavoriteRoutine(String memberId, String routineNo) {
+		
+		String sql = "SELECT COUNT(*) FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
+	    
+		try {
+	        PreparedStatement pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, memberId);
+	        pstat.setString(2, routineNo);
+	        ResultSet rs = pstat.executeQuery();
+	        
+	        if (rs.next()) {
+	            return rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	    
+	}
+	
+	public boolean addFavoriteRoutine(String memberId, String routineNo) {
+	    String sql = "INSERT INTO exercise_routine_favorite (exercise_routine_favorite_no, regdate, member_id, routine_no) "
+	               + "VALUES (seq_exercise_routine_favorite.NEXTVAL, SYSDATE, ?, ?)";
+	    System.out.println("routineNo = " + routineNo);
+	    
+	    try (PreparedStatement pstat = conn.prepareStatement(sql)) {
+	        pstat.setString(1, memberId);
+	        pstat.setString(2, routineNo);
+	        return pstat.executeUpdate() == 1;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public boolean removeFavoriteRoutine(String memberId, String routineNo) {
+	    String sql = "DELETE FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
+	    
+	    try (PreparedStatement pstat = conn.prepareStatement(sql)) {
+	        pstat.setString(1, memberId);
+	        pstat.setString(2, routineNo);
+	        return pstat.executeUpdate() == 1;
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    
+	    return false;
+	}
+	
+	public List<RoutineDTO> getRoutineList(String memberId) {
+		List<RoutineDTO> list = new ArrayList<>();
+	    String sql = "SELECT r.routine_no, r.routine_name, r.creation_date, r.public_check, " +
+	                 "r.creator_id, r.routine_category_no, r.views, r.recommend, r.disrecommend, " +
+	                 "m.member_nickname, rc.routine_category_name, " +
+	                 "CASE WHEN f.member_id IS NOT NULL THEN 1 ELSE 0 END AS favorite_check " +
+	                 "FROM routine r " +
+	                 "JOIN member m ON r.creator_id = m.member_id " +
+	                 "JOIN routine_category rc ON r.routine_category_no = rc.routine_category_no " +
+	                 "LEFT JOIN exercise_routine_favorite f ON r.routine_no = f.routine_no AND f.member_id = ? " +
+	                 "ORDER BY r.creation_date DESC";
+	    
+	    try {
+	        PreparedStatement pstat = conn.prepareStatement(sql);
+	        pstat.setString(1, memberId);
+	        ResultSet rs = pstat.executeQuery();
+	        
+	        while (rs.next()) {
+	            RoutineDTO dto = new RoutineDTO();
+	            dto.setRoutineNo(rs.getString("routine_no"));
+	            dto.setRoutineName(rs.getString("routine_name"));
+	            dto.setCreationDate(rs.getString("creation_date"));
+	            dto.setPublicCheck(rs.getString("public_check"));
+	            dto.setCreatorId(rs.getString("creator_id"));
+	            dto.setRoutineCategoryNo(rs.getString("routine_category_no"));
+	            dto.setViews(rs.getString("views"));
+	            dto.setRecommend(rs.getString("recommend"));
+	            dto.setDisrecommend(rs.getString("disrecommend"));
+	            dto.setMemberNickname(rs.getString("member_nickname"));
+	            dto.setRoutineCategoryName(rs.getString("routine_category_name"));
+	            dto.setFavoriteCheck(rs.getString("favorite_check")); // 여기에 즐겨찾기 여부
+	            list.add(dto);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 
 }

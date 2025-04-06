@@ -632,8 +632,9 @@
         /* 즐겨찾기 별표 스타일 */
         .favorite-star {
             cursor: pointer;
-            font-size: 1.2em;
-            transition: color 0.3s;
+		    font-size: 1.2em;
+		    color: #ccc;
+		    transition: color 0.3s;
         }
 
         .favorite-star:not(.favorite) {
@@ -756,7 +757,13 @@
 							<td>${dto.totalCalories}</td>
 							<td>${dto.creationDate}</td>
 							<td>${dto.memberNickname}</td>
-							<td class="favorite-star" data-routine-no="${dto.routineNo}" onclick="toggleFavorite('${dto.routineNo}', this)">★</td>
+							<td class="favorite-star" data-routine-no="${dto.routineNo}" 
+							    onclick="toggleFavorite('${dto.routineNo}', this)">
+							    <c:choose>
+							        <c:when test="${dto.favoriteCheck == '1'}">★</c:when>
+							        <c:otherwise>☆</c:otherwise>
+							    </c:choose>
+							</td>
 							<td>${dto.views}</td>
 							<td>
 								<c:if test="${dto.memberId eq sessionScope.loginUser.memberId}">
@@ -851,67 +858,36 @@
                 'width=1100, height=900, scrollbars=yes, resizable=yes'
             );
         }
-	    
-	let isProcessing = false; // 전역 변수로 처리 중 상태 관리
-
-	function toggleFavorite(routineNo, element) {
-	    const memberId = '${sessionScope.loginUser.memberId}';
-	    if (!memberId) {
-	        alert('로그인이 필요합니다.');
-	        return;
-	    }
-	    
-	    // 현재 상태에 따라 액션 결정
-	    const isFavorite = element.classList.contains('favorite');
-	    const action = isFavorite ? 'remove' : 'add';
-	    
-	    // 서버에 요청
-	    fetch('${pageContext.request.contextPath}/exercise/toggleFavorite.do', {
-	        method: 'POST',
-	        headers: {
-	            'Content-Type': 'application/x-www-form-urlencoded',
-	        },
-	        body: `memberId=${memberId}&routineNo=${routineNo}&action=${action}`
-	    })
-	    .then(response => response.json())
-	    .then(data => {
-	        if (data.success) {
-	            // 서버 응답에 따라 UI 업데이트
-	            element.classList.toggle('favorite');
-	            element.innerHTML = data.isFavorite ? '★' : '☆';
-	        } else {
-	            alert(data.error || '즐겨찾기 처리 중 오류가 발생했습니다.');
-	        }
-	    })
-	    .catch(error => {
-	        console.error('Error:', error);
-	        alert('서버와의 통신 중 오류가 발생했습니다.');
-	    });
-	}
-
-	// 페이지 로드 시 초기 상태 설정
-	document.addEventListener('DOMContentLoaded', function() {
-	    const memberId = '${sessionScope.loginUser.memberId}';
-	    if (!memberId) return;
-	    
-	    // 서버에서 모든 즐겨찾기 상태를 한 번에 가져오기
-	    fetch('${pageContext.request.contextPath}/exercise/getFavorites.do?memberId=' + memberId)
-	    .then(response => response.json())
-	    .then(data => {
-	        if (data.success) {
-	            data.favorites.forEach(routineNo => {
-	                const star = document.querySelector(`.favorite-star[data-routine-no="${routineNo}"]`);
-	                if (star) {
-	                    star.classList.add('favorite');
-	                    star.innerHTML = '★';
-	                }
-	            });
-	        }
-	    })
-	    .catch(error => {
-	        console.error('Error loading favorites:', error);
-	    });
-	});
+        
+        function toggleFavorite(routineNo, element) {
+            fetch('${pageContext.request.contextPath}/exercise/toggleFavorite.do', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ routineNo: routineNo })
+            })
+            
+            .then(res => res.json())
+            .then(data => {
+            	console.log('응답:', data);
+                if (data.success) {
+                    // 즐겨찾기 상태에 따라 별 색상/상태 변경
+                    if (data.favorite) {
+                        element.classList.add('favorite');
+                    } else {
+                        element.classList.remove('favorite');
+                    }
+                } else {
+                    alert('즐겨찾기 처리 중 오류 발생: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('에러 발생:', error);
+                alert('즐겨찾기 요청 실패');
+            });
+        }
+        
 	</script>
 
 </body>
