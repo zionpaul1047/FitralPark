@@ -322,6 +322,7 @@
 						<div class="comment_header">
 							<div class="comment_nickname">
 								<a href="">${commentDto.nickname}(${commentDto.creator_id})</a>
+                                
 								<c:if test="${loginUser.memberId eq commentDto.creator_id}">
 									<button type="button" class="edit-btn" onclick="toggleEdit(this, '${commentDto.comment_no}', '${commentDto.creator_id}')">
 										<i class="fa-regular fa-pen-to-square"></i>

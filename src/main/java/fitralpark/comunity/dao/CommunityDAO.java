@@ -1685,4 +1685,370 @@ public class CommunityDAO {
 		}
 	}
 
+	public CommunityDTO getQnaPost(String post_no, HttpSession session) {
+		CommunityDTO dto = null;
+		String sql = "SELECT q.qna_post_no, q.qna_post_subject, q.qna_post_content, q.private_check, " +
+					"q.qna_post_recommend, q.qna_post_decommend, q.post_record_cnt, q.regdate, q.views, " +
+					"q.creator_id, m.member_nickname, q.qna_post_header_no, h.qna_post_header_name " +
+					"FROM qna_post q " +
+					"JOIN member m ON q.creator_id = m.member_id " +
+					"JOIN qna_post_header h ON q.qna_post_header_no = h.qna_post_header_no " +
+					"WHERE q.qna_post_no = ?";
+		
+		try {
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				dto = new CommunityDTO();
+				dto.setPost_no(rs.getString("qna_post_no"));
+				dto.setPost_subject(rs.getString("qna_post_subject"));
+				dto.setPost_content(rs.getString("qna_post_content"));
+				dto.setPrivate_check(rs.getString("private_check"));
+				dto.setPost_recommend(rs.getString("qna_post_recommend"));
+				dto.setPost_decommend(rs.getString("qna_post_decommend"));
+				dto.setPost_record_cnt(rs.getString("post_record_cnt"));
+				dto.setRegdate(rs.getString("regdate"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setNickname(rs.getString("member_nickname"));
+				dto.setHeader_no(rs.getString("qna_post_header_no"));
+				dto.setHeader_name(rs.getString("qna_post_header_name"));
+				dto.setViews(rs.getString("views"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstat != null) pstat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return dto;
+	}
+
+	public ArrayList<CommunityDTO> getQnaCommentList(String post_no) {
+		ArrayList<CommunityDTO> list = new ArrayList<>();
+		String sql = "SELECT qc.qna_comment_no, qc.qna_comment_content, qc.regdate, " +
+					"qc.creator_id, m.member_nickname " +
+					"FROM qna_comment qc " +
+					"JOIN member m ON qc.creator_id = m.member_id " +
+					"WHERE qc.qna_post_no = ? " +
+					"ORDER BY qc.qna_comment_no ASC";
+		
+		try {
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			rs = pstat.executeQuery();
+			
+			while (rs.next()) {
+				CommunityDTO dto = new CommunityDTO();
+				dto.setComment_no(rs.getString("qna_comment_no"));
+				dto.setComment_content(rs.getString("qna_comment_content"));
+				dto.setRegdate(rs.getString("regdate"));
+				dto.setCreator_id(rs.getString("creator_id"));
+				dto.setNickname(rs.getString("member_nickname"));
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstat != null) pstat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+
+	// Q&A 추천/비추천 기록 추가
+	public int Qna_Vote_Record(CommunityDTO dto, UserDTO userDto) {
+		PreparedStatement pstat1 = null;
+		int result = 0;
+		
+		try {
+			conn.setAutoCommit(false);
+			// 추천, 비추천 기록
+			String sql = "INSERT INTO qna_vote_record (qna_vote_record_no, qna_post_no, regdate, vote_check, member_id) " +
+						"VALUES (seq_qna_vote_record_no.nextval, ?, sysdate, ?, ?)";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPost_no());
+			pstat.setString(2, dto.getVote_check());
+			pstat.setString(3, userDto.getMemberId());
+			result = pstat.executeUpdate();
+			
+			// 추천, 비추천 업데이트
+			if (dto.getVote_check().equals("0")) {
+				String sql1 = "UPDATE qna_post SET qna_post_recommend = qna_post_recommend + 1 WHERE qna_post_no = ?";
+				pstat1 = conn.prepareStatement(sql1);
+				pstat1.setString(1, dto.getPost_no());
+				pstat1.executeUpdate();
+			} else if (dto.getVote_check().equals("1")) {
+				String sql2 = "UPDATE qna_post SET qna_post_decommend = qna_post_decommend + 1 WHERE qna_post_no = ?";
+				pstat1 = conn.prepareStatement(sql2);
+				pstat1.setString(1, dto.getPost_no());
+				pstat1.executeUpdate();
+			}
+			
+			conn.commit();
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstat1 != null) pstat1.close();
+				conn.setAutoCommit(true);
+			} catch (Exception closeEx) {
+				closeEx.printStackTrace();
+			}
+		}
+		
+		return result;
+	}
+
+	// Q&A 추천, 비추천 눌렀을 경우 체크 -> 있으면 삭제 및 업데이트
+	public boolean Qna_Vote_Check(CommunityDTO dto, UserDTO userDto) {
+		PreparedStatement pstat1 = null;
+		PreparedStatement pstat2 = null;
+		PreparedStatement pstat3 = null;
+		boolean success = false;
+
+		try {
+			conn.setAutoCommit(false);
+
+			// 추천, 비추천 기록 조회
+			String checkSql = "SELECT vote_check FROM qna_vote_record WHERE qna_post_no = ? AND member_id = ?";
+			pstat = conn.prepareStatement(checkSql);
+			pstat.setString(1, dto.getPost_no());
+			pstat.setString(2, userDto.getMemberId());
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				String vote_check = rs.getString("vote_check");
+				// vote_check 값에 따른 처리
+				if (vote_check.equals("0")) {
+					String sql1 = "UPDATE qna_post SET qna_post_recommend = qna_post_recommend - 1 WHERE qna_post_no = ?";
+					pstat1 = conn.prepareStatement(sql1);
+					pstat1.setString(1, dto.getPost_no());
+					pstat1.executeUpdate();
+				} else if (vote_check.equals("1")) {
+					String sql2 = "UPDATE qna_post SET qna_post_decommend = qna_post_decommend - 1 WHERE qna_post_no = ?";
+					pstat2 = conn.prepareStatement(sql2);
+					pstat2.setString(1, dto.getPost_no());
+					pstat2.executeUpdate();
+				}
+				
+				// 추천, 비추천 기록 삭제
+				String sql3 = "DELETE FROM qna_vote_record WHERE qna_post_no = ? AND member_id = ?";
+				pstat3 = conn.prepareStatement(sql3);
+				pstat3.setString(1, dto.getPost_no());
+				pstat3.setString(2, userDto.getMemberId());
+				int deleteResult = pstat3.executeUpdate();
+				
+				if (deleteResult > 0) {
+					conn.commit();
+					success = true;
+				}
+			}
+			
+		} catch (Exception e) {
+			try {
+				conn.rollback();
+			} catch (Exception rollbackEx) {
+				rollbackEx.printStackTrace();
+			}
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstat1 != null) pstat1.close();
+				if (pstat2 != null) pstat2.close();
+				if (pstat3 != null) pstat3.close();
+				conn.setAutoCommit(true);
+			} catch (Exception closeEx) {
+				closeEx.printStackTrace();
+			}
+		}
+		
+		return success;
+	}
+
+	// Q&A 댓글 수정
+	public boolean qna_Edit_Comment(String comment_no, String comment_content) {
+		try {
+			String sql = "UPDATE qna_comment SET qna_comment_content = ? WHERE qna_comment_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, comment_content);
+			pstat.setString(2, comment_no);
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				if (pstat != null) pstat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	// Q&A 댓글 작성
+	public boolean qna_Write_Comment(String post_no, String comment_content, String creator_id) {
+		try {
+			String sql = "INSERT INTO qna_comment (qna_comment_no, qna_post_no, qna_comment_content, creator_id, regdate) " +
+						"VALUES (seq_qna_comment_no.nextval, ?, ?, ?, sysdate)";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			pstat.setString(2, comment_content);
+			pstat.setString(3, creator_id);
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstat != null) pstat.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	// 게시글 신고 처리
+	public boolean addReport(String post_no, String reporter_id, String target_type) {
+		try {
+			conn.setAutoCommit(false);
+			
+			String tableName = "";
+			String postNoColumn = "";
+			String reportCountColumn = "";
+			String boardType = "";
+			
+			// 게시판 타입에 따라 테이블명과 컬럼명 설정
+			switch(target_type) {
+				case "bulletin_post":
+					tableName = "bulletin_post";
+					postNoColumn = "bulletin_post_no";
+					reportCountColumn = "post_record_cnt";
+					boardType = "bulletin";
+					break;
+				case "bulletin_comment":
+					tableName = "bulletin_comment";
+					postNoColumn = "bulletin_comment_no";
+					reportCountColumn = "comment_record_cnt";
+					boardType = "bulletin";
+					break;
+				case "announcement_post":
+					tableName = "announcement_post";
+					postNoColumn = "announcement_post_no";
+					reportCountColumn = "post_record_cnt";
+					boardType = "announcement";
+					break;
+				case "announcement_comment":
+					tableName = "announcement_comment";
+					postNoColumn = "announcement_comment_no";
+					reportCountColumn = "comment_record_cnt";
+					boardType = "announcement";
+					break;
+				case "qna_post":
+					tableName = "qna_post";
+					postNoColumn = "qna_post_no";
+					reportCountColumn = "post_record_cnt";
+					boardType = "qna";
+					break;
+				case "qna_comment":
+					tableName = "qna_comment";
+					postNoColumn = "qna_comment_no";
+					reportCountColumn = "comment_record_cnt";
+					boardType = "qna";
+					break;
+				default:
+					return false;
+			}
+			
+			// 게시글/댓글의 신고 횟수 증가
+			String updatePostSql = "UPDATE " + tableName + " SET " + reportCountColumn + " = NVL(" + reportCountColumn + ", 0) + 1 WHERE " + postNoColumn + " = ?";
+			pstat = conn.prepareStatement(updatePostSql);
+			pstat.setString(1, post_no);
+			int postResult = pstat.executeUpdate();
+			
+			// 신고된 사용자의 누적 신고 횟수 증가
+			String updateMemberSql = "UPDATE member SET report_cnt = NVL(report_cnt, 0) + 1 " +
+								   "WHERE member_id = (SELECT creator_id FROM " + tableName + " WHERE " + postNoColumn + " = ?)";
+			pstat = conn.prepareStatement(updateMemberSql);
+			pstat.setString(1, post_no);
+			int memberResult = pstat.executeUpdate();
+			
+			if (postResult > 0 && memberResult > 0) {
+				conn.commit();
+				return true;
+			} else {
+				conn.rollback();
+				return false;
+			}
+			
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException ex) {
+				ex.printStackTrace();
+			}
+			e.printStackTrace();
+			return false;
+		} finally {
+			try {
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	// 게시글 신고 횟수 조회
+	public int getPostReportCount(String post_no) {
+		try {
+			String sql = "SELECT post_record_cnt FROM qna_post WHERE qna_post_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, post_no);
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getInt("post_record_cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	// 사용자의 누적 신고 횟수 조회
+	public int getUserReportCount(String member_id) {
+		try {
+			String sql = "SELECT report_cnt FROM member WHERE member_id = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, member_id);
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getInt("report_cnt");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
 }

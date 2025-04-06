@@ -178,9 +178,174 @@ CREATE TABLE qna_vote_record (
     CONSTRAINT FK_vote_record_qna_member_id FOREIGN KEY (member_id) REFERENCES member(member_id)
 );
 
+-- 자유게시판 게시글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_bulletin_post_score
+AFTER INSERT ON bulletin_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 2
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- Q&A 게시글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_qna_post_score
+AFTER INSERT ON qna_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 2
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- 공지사항 게시글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_announcement_post_score
+AFTER INSERT ON announcement_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 2
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- 자유게시판 댓글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_bulletin_comment_score
+AFTER INSERT ON bulletin_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 1
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- Q&A 댓글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_qna_comment_score
+AFTER INSERT ON qna_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 1
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- 공지사항 댓글 작성 시 커뮤니티 점수 증가 트리거
+CREATE OR REPLACE TRIGGER trg_announcement_comment_score
+AFTER INSERT ON announcement_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score + 1
+    WHERE member_id = :NEW.creator_id;
+END;
+/
+
+-- 자유게시판 게시글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_bulletin_post_delete_score
+AFTER DELETE ON bulletin_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 2
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- Q&A 게시글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_qna_post_delete_score
+AFTER DELETE ON qna_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 2
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- 공지사항 게시글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_announcement_post_delete_score
+AFTER DELETE ON announcement_post
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 2
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- 자유게시판 댓글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_bulletin_comment_delete_score
+AFTER DELETE ON bulletin_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 1
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- Q&A 댓글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_qna_comment_delete_score
+AFTER DELETE ON qna_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 1
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- 공지사항 댓글 삭제 시 커뮤니티 점수 감소 트리거
+CREATE OR REPLACE TRIGGER trg_announcement_comment_delete_score
+AFTER DELETE ON announcement_comment
+FOR EACH ROW
+BEGIN
+    UPDATE member
+    SET community_score = community_score - 1
+    WHERE member_id = :OLD.creator_id;
+END;
+/
+
+-- 자유게시판 트리거 신고 5회 이상 시 삭제
+CREATE OR REPLACE TRIGGER delete_free_post_on_report
+AFTER UPDATE OF post_record_cnt ON bulletin_post
+FOR EACH ROW
+WHEN (NEW.post_record_cnt >= 5)
+BEGIN
+    -- 먼저 관련 댓글 삭제
+    DELETE FROM bulletin_comment WHERE bulletin_post_no = :NEW.bulletin_post_no;
+    -- 그 다음 게시글 삭제
+    DELETE FROM bulletin_post WHERE bulletin_post_no = :NEW.bulletin_post_no;
+END;
+/
+
+-- Q&A 게시판 트리거 신고 5회 이상 시 삭제
+CREATE OR REPLACE TRIGGER delete_qna_post_on_report
+AFTER UPDATE OF post_record_cnt ON qna_post
+FOR EACH ROW
+WHEN (NEW.post_record_cnt >= 5)
+BEGIN
+    -- 먼저 관련 댓글 삭제
+    DELETE FROM qna_comment WHERE qna_post_no = :NEW.qna_post_no;
+    -- 그 다음 게시글 삭제
+    DELETE FROM qna_post WHERE qna_post_no = :NEW.qna_post_no;
+END;
+/
+
+
+
 
 commit;
 
+
+ALTER TABLE bulletin_post modify views default 0 NOT NULL; 
+alter table bulletin_post modify bulletin_post_recommend default 0;
+alter table bulletin_post modify bulletin_post_decommend default 0;
+alter table bulletin_post modify POST_RECORD_CNT default 0;
 
 
 
