@@ -30,10 +30,10 @@
     
     <!-- 실제 콘텐츠 -->
     <div class="layout-content">
-      <%@ include file="/WEB-INF/views/common/test_content_page.jsp" %>
+      <%@ include file="/WEB-INF/views/common/main_content_page.jsp" %>
     </div>
 
-    <!-- 우측 고정 사이드바 -->
+    <!-- 우측 사이드바 -->
     <aside class="layout-sidebar-right">
       <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
     </aside>
@@ -71,6 +71,10 @@
 	    }); */
 
     </script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=8d60ef8deb86dfe497046e0750fa9f23&libraries=services"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main_content_page.js"></script>
+
+
 </body>
 
 
