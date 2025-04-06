@@ -69,7 +69,7 @@
             max-width: var(--container-width);
             margin: 0 auto;
             padding: var(--spacing-unit);
-            /* border: 1px solid var(--border-color); */
+            border: 2px solid var(--border-color);
             margin-bottom: 20px;	
             border-radius: 20px;
         }
@@ -182,7 +182,7 @@
         .search-row input, 
         .search-row select {
             padding: 6px 8px;
-            margin-right: 10px;
+            margin: auto 10px;
             border: 1px solid var(--border-color);
             transition: border-color var(--transition-speed);
             font-size: 14px;
@@ -539,6 +539,20 @@
         .routine-row td:last-child {
             border-right: none;
         }
+
+        .btn-edit {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-edit:hover {
+            background-color: #45a049;
+        }
 	</style>
 </head>
 <body>
@@ -560,30 +574,31 @@
 			
 			<div class="grid_center_R">
     <div class="container">
-        <h2 class="title">운동 라이브러리</h2>
+        <h2 class="title">루틴 추천</h2>
         
         <!-- 운동 검색 영역 -->
         <div class="search-section">
             <div class="search-header">
                 <h3>루틴 검색</h3>
                 <div class="search-input-group">
-                    <input type="text" class="search-input" placeholder="운동 검색">
+                    <input type="text" class="search-input" placeholder="루틴 검색">
                     <button class="search-btn">검색</button>
                 </div>
             </div>
             <div class="search-options">
                 <div class="search-row">
                     <span>소모 칼로리(kcal)</span>
-                    <input type="text" class="calorie-min" placeholder="최소값"> ~ 
+                    <input type="text" class="calorie-min" placeholder="최소값">~ 
                     <input type="text" class="calorie-max" placeholder="최대값">
                     <span>운동 카테고리</span>
                     <select class="category-select">
                         <option value="">전체</option>
-                        <option value="유산소 운동">유산소 운동</option>
-                        <option value="근력 운동">근력 운동</option>
-                        <option value="스트레칭">스트레칭</option>
-                        <option value="코어 운동">코어 운동</option>
-                        <option value="유연성 운동">유연성 운동</option>
+                        <option value="1">근력</option>
+                        <option value="2">유산소</option>
+                        <option value="3">유연성</option>
+                        <option value="4">균형</option>
+                        <option value="5">복합</option>
+                        <option value="6">저항</option>
                     </select>
                 </div>
             </div>
@@ -604,20 +619,11 @@
           </div>
           <br>
             <div class="filter-row">
-                <span>운동 분류 카테고리</span>
-                <label><input type="checkbox" name="category" value="전신 운동"> 전신 운동</label>
-                <label><input type="checkbox" name="category" value="코어/복부"> 코어/복부</label>
-                <label><input type="checkbox" name="category" value="상체 운동"> 상체 운동</label>
-                <label><input type="checkbox" name="category" value="하체/둔근 운동"> 하체/둔근 운동</label>
-                <label><input type="checkbox" name="category" value="유산소 운동"> 유산소 운동</label>
-                <label><input type="checkbox" name="category" value="맨몸 운동"> 맨몸 운동</label>
-            </div>
-            <div class="filter-row">
                 <span>운동 난이도 수준</span>
-                <label><input type="checkbox" name="level" value="초급"> 초급</label>
-                <label><input type="checkbox" name="level" value="중급"> 중급</label>
-                <label><input type="checkbox" name="level" value="고급"> 고급</label>
-                <label><input type="checkbox" name="level" value="프로"> 프로</label>
+                <label><input type="checkbox" name="level" value="1"> 초급</label>
+                <label><input type="checkbox" name="level" value="2"> 중급</label>
+                <label><input type="checkbox" name="level" value="3"> 상급</label>
+                <label><input type="checkbox" name="level" value="4"> 재활</label>
             </div>
         </div>
         
@@ -630,13 +636,14 @@
 						<th>선택</th>
 						<th>루틴 이름</th>
 						<th>루틴 카테고리</th>
-						<th>포함 운동 카테고리</th>
-						<th>포함 운동 부위</th>
+						<th>운동 카테고리</th>
+						<th>운동 부위</th>
 						<th>소모 총 열량(kcal)</th>
 						<th>등록일</th>
 						<th>작성자</th>
 						<th>즐겨찾기</th>
 						<th>조회수</th>
+						<th>수정</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -657,6 +664,11 @@
 							<td>${dto.memberNickname}</td>
 							<td>⭐</td>
 							<td>${dto.views}</td>
+							<td>
+								<c:if test="${dto.memberId eq sessionScope.loginUser.memberId}">
+									<button type="button" class="btn-edit" onclick="openRoutineEditPopup('${dto.routineNo}')">수정</button>
+								</c:if>
+							</td>
 						</tr>
 						<tr class="exercise-detail" data-parent="${dto.routineNo}" style="display: none;">
 					    <td colspan="10">
@@ -683,7 +695,7 @@
 				</tbody>
 			</table>
             <div class="button-section">
-                <button class="btn-large">+ 운동 생성</button>
+                <button class="btn-large" onclick="openRoutineAddPopup()">+ 루틴 생성</button>
             </div>
         </div>
     </div>
@@ -726,6 +738,25 @@
 	            'width=900,height=600,resizable=yes,scrollbars=yes'
 	        );
 	    }
+	    
+		function openRoutineAddPopup() {
+            
+            // 팝업창 열기
+            const popup = window.open(
+                '${pageContext.request.contextPath}/exercise/routineAdd.do',
+                'routineAddPopup',
+                'width=1100, height=900, scrollbars=yes, resizable=yes'
+            );
+            popup.focus();
+        }
+
+        function openRoutineEditPopup(routineNo) {
+            window.open(
+                '${pageContext.request.contextPath}/exercise/editRoutine.do?routineNo=' + routineNo,
+                'routineEditPopup',
+                'width=1100, height=900, scrollbars=yes, resizable=yes'
+            );
+        }
 	    
 	</script>
 	

@@ -14,6 +14,7 @@ import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 import fitralpark.exercise.dto.ExerciseDTO;
+import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.user.dto.UserDTO;
 
 //(DB 접근 DAO 클래스 자리)
@@ -332,6 +333,62 @@ public class ExerciseDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public boolean updateRoutine(String routineNo, String routineName, String routineCategory, String publicCheck,
+			List<ExerciseRecordDTO> exerciseList) {
+		
+		String updateRoutineSQL = "UPDATE routine SET routine_name = ?, routine_category_no = ?, public_check = ? WHERE routine_no = ?";
+	    String deleteRecordsSQL = "DELETE FROM exercise_record WHERE routine_no = ?";
+	    String insertRecordSQL = "INSERT INTO exercise_record (exercise_record_no, record_date, sets, reps_per_set, weight, exercise_time, creator_id, exercise_no, custom_exercise_no, exercise_creation_type, routine_no) " +
+	                             "VALUES (seq_exercise_record.NEXTVAL, SYSDATE, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+	    try {
+	        conn.setAutoCommit(false);
+
+	        // 1. 루틴 정보 업데이트
+	        try (PreparedStatement pstat = conn.prepareStatement(updateRoutineSQL)) {
+	            pstat.setString(1, routineName);
+	            pstat.setString(2, routineCategory);
+	            pstat.setString(3, publicCheck);
+	            pstat.setString(4, routineNo);
+	            pstat.executeUpdate();
+	        }
+
+	        // 2. 기존 운동 기록 삭제
+	        try (PreparedStatement pstat = conn.prepareStatement(deleteRecordsSQL)) {
+	            pstat.setString(1, routineNo);
+	            pstat.executeUpdate();
+	        }
+
+	        // 3. 새로운 운동 기록 추가
+	        try (PreparedStatement pstat = conn.prepareStatement(insertRecordSQL)) {
+	            for (ExerciseRecordDTO dto : exerciseList) {
+	                pstat.setString(1, dto.getSets());
+	                pstat.setString(2, dto.getRepsPerSet());
+	                pstat.setString(3, dto.getWeight());
+	                pstat.setString(4, dto.getExerciseTime());
+	                pstat.setString(5, dto.getCreatorId());
+	                pstat.setString(6, dto.getExerciseNo());
+	                pstat.setString(7, dto.getCustomExerciseNo());
+	                pstat.setString(8, dto.getExerciseCreationType());
+	                pstat.setString(9, routineNo);
+
+	                pstat.addBatch();
+	            }
+	            pstat.executeBatch();
+	        }
+
+	        conn.commit();
+	        return true;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        try { conn.rollback(); } catch (Exception ignore) {}
+	        return false;
+	    } finally {
+	        try { conn.setAutoCommit(true); } catch (Exception ignore) {}
+	    }
 	}
 	
 }

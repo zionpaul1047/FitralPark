@@ -7,12 +7,16 @@ public class RoutineDTO {
 	private String routineNo;
     private String routineName;
     private String routineCategoryName;
+    private String routineCategoryNo;
     private String exerciseCategories;
     private String exerciseParts;
     private String totalCalories;
     private String creationDate;
     private String memberNickname;
+    private String memberId;
     private String views;
+    private String publicCheck;
+    
 	public String getRoutineNo() {
 		return routineNo;
 	}
@@ -30,6 +34,12 @@ public class RoutineDTO {
 	}
 	public void setRoutineCategoryName(String routineCategoryName) {
 		this.routineCategoryName = routineCategoryName;
+	}
+	public String getRoutineCategoryNo() {
+		return routineCategoryNo;
+	}
+	public void setRoutineCategoryNo(String routineCategoryNo) {
+		this.routineCategoryNo = routineCategoryNo;
 	}
 	public String getExerciseCategories() {
 		return exerciseCategories;
@@ -61,11 +71,23 @@ public class RoutineDTO {
 	public void setMemberNickname(String memberNickname) {
 		this.memberNickname = memberNickname;
 	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
+	}
 	public String getViews() {
 		return views;
 	}
 	public void setViews(String views) {
 		this.views = views;
+	}
+	public String getPublicCheck() {
+		return publicCheck;
+	}
+	public void setPublicCheck(String publicCheck) {
+		this.publicCheck = publicCheck;
 	}
     
     

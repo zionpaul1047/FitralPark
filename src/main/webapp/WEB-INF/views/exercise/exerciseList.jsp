@@ -11,9 +11,10 @@
 <meta charset="UTF-8">
 <title>FITRALPACK</title>
 	<link rel="stylesheet" href="assets/css/exercise.css">
+	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
     <style>
         body {
-        background-color: rgb(218, 243, 211);
+        	background-color: rgb(218, 243, 211);
         
         }  
         .grid{
@@ -21,7 +22,6 @@
 		    grid-template-rows: 125px auto 1fr;
 		    grid-template-columns: 1fr;
 		    min-height: 100%;
-		    
         }
         .grid_top{
         	/* border: 1px solid black; */

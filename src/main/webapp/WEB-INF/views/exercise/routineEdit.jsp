@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>FITRALPARK 루틴 생성</title>
+<title>FITRALPARK 루틴 수정</title>
 <script src="https://kit.fontawesome.com/11104cc7aa.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
@@ -204,21 +203,21 @@
 </head>
 <body>
 	<div class="popup-container">
-		<h2>루틴 생성</h2>
+		<h2>루틴 수정</h2>
 	        
 	        <div class="form-group">
 	            <label for="routine-name">루틴 명칭:</label>
-	            <input type="text" id="routine-name" class="form-control" placeholder="루틴 이름 입력">
+	            <input type="text" id="routine-name" class="form-control" placeholder="루틴 이름 입력" value="${routine.routineName}">
 	        </div>
 	        
 	        <div class="form-group">
 	            <label for="routine-category">루틴 카테고리:</label>
 	            <select id="routine-category" class="form-control">
 	                <option value="">카테고리 선택</option>
-	                <option value="1">초보자 운동 루틴</option>
-	                <option value="2">중급자 운동 루틴</option>
-	                <option value="3">상급자 운동 루틴</option>
-	                <option value="4">재활 운동 루틴</option>
+	                <option value="1" ${routine.routineCategoryNo == 1 ? 'selected' : ''}>초보자 운동 루틴</option>
+	                <option value="2" ${routine.routineCategoryNo == 2 ? 'selected' : ''}>중급자 운동 루틴</option>
+	                <option value="3" ${routine.routineCategoryNo == 3 ? 'selected' : ''}>상급자 운동 루틴</option>
+	                <option value="4" ${routine.routineCategoryNo == 4 ? 'selected' : ''}>재활 운동 루틴</option>
 	            </select>
 	        </div>
 	        
@@ -226,8 +225,8 @@
 	        <div class="form-group">
 	            <label>루틴 공개 여부:</label>
 	            <div class="radio-group">
-	                <label><input type="radio" name="visibility" value="public" checked> 공개</label>
-	                <label><input type="radio" name="visibility" value="private"> 비공개</label>
+	                <label><input type="radio" name="visibility" value="public" ${routine.publicCheck == 1 ? 'checked' : ''}> 공개</label>
+	                <label><input type="radio" name="visibility" value="private" ${routine.publicCheck == 0 ? 'checked' : ''}> 비공개</label>
 	            </div>
 	        </div>
 	        
@@ -249,6 +248,24 @@
 	                    </tr>
 	                </thead>
 	                <tbody>
+	                    <c:forEach var="exercise" items="${exercises}" varStatus="status">
+	                        <tr id="tr_${exercise.customExerciseNo != null ? 'cus_'.concat(exercise.customExerciseNo) : 'ex_'.concat(exercise.exerciseNo)}">
+	                            <td name="no">${status.count}</td>
+	                            <td name="exerciseName">${exercise.exerciseName}</td>
+	                            <td name="exerciseCategoryName">${exercise.exerciseCategoryNames}</td>
+	                            <td name="exercisePartName">${exercise.exercisePartNames}</td>
+	                            <td name="caloriesPerUnit">${exercise.caloriesPerUnit}</td>
+	                            <td name="sets"><input type="number" class="form-control" name="sets" min="0" value="${exercise.sets}"></td>
+	                            <td name="reps"><input type="number" class="form-control" name="reps" min="0" value="${exercise.repsPerSet}"></td>
+	                            <td name="time"><input type="number" class="form-control" name="time" min="0" value="${exercise.exerciseTime}"></td>
+	                            <td name="weight"><input type="number" class="form-control" name="weight" min="0" value="${exercise.weight}"></td>
+	                            <td name="cancle">
+	                                <a href="javascript:void(0);" onclick="removeRow(this);return false;" class="btn">
+	                                    <i class="fa-solid fa-xmark"></i>
+	                                </a>
+	                            </td>
+	                        </tr>
+	                    </c:forEach>
 	                </tbody>
 	            </table>
 	        </div>
@@ -297,13 +314,12 @@
             </div>
 	        
 	        <div class="action-buttons">
-	            <button type="button" onclick="submitRoutine(false)">+ 루틴 등록하기</button>
-	            <button type="button" onclick="submitRoutine(true)">+ 루틴 추가 후 즐겨찾기 등록</button>
+	            <button type="button" onclick="submitRoutine()">루틴 수정하기</button>
+	            <button type="button" onclick="window.close()">취소</button>
 	        </div>
 	    </div>
     
     <script>
-
         // 행 삭제 함수도 순수 JavaScript로 수정
         function removeRow(button) {
             const row = button.closest('tr');
@@ -316,10 +332,21 @@
             if (tbody.children.length === 0) {
                 tbody.innerHTML = `
                     <tr id="noRes">
-                        <td colspan="9">운동 목록에서 항목을 선택해주세요.</td>
+                        <td colspan="10">운동 목록에서 항목을 선택해주세요.</td>
                     </tr>
                 `;
             }
+            
+            // 번호 재정렬
+            reorderNumbers();
+        }
+
+        // 번호 재정렬 함수
+        function reorderNumbers() {
+            const rows = document.querySelectorAll('#resTb tbody tr:not(#noRes)');
+            rows.forEach((row, index) => {
+                row.querySelector('td[name="no"]').textContent = index + 1;
+            });
         }
 
         // 선택된 항목 삭제
@@ -329,18 +356,18 @@
                     $(this).remove();
                 }
             });
+            reorderNumbers();
         }
 
         // 폼 초기화
         function resetForm() {
-            $('#routine-name').val('');
-            $('#routine-category').prop('selectedIndex', 0);
-            $('input[name="visibility"][value="public"]').prop('checked', true);
-            $('#resTb tbody').empty();
+            if (!confirm('입력한 내용을 초기화하시겠습니까?')) {
+                return;
+            }
+            location.reload();
         }
 
         function openExercisePopup() {
-            
             // 팝업창 열기
             const popup = window.open(
                 '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
@@ -351,34 +378,52 @@
         }
         
         $(function(){
-            $("#resTb tbody").append($("#resInfoTr").html());
+            if ($("#resTb tbody tr").length === 0) {
+                $("#resTb tbody").append($("#resInfoTr").html());
+            }
         });
 
         function setResList(exArr){
             if($("#noRes").length > 0) $("#noRes").remove();
 
             for(var i=0; i<exArr.length; i++){
-                
                 var trCnt = $("#resTb tbody tr").length;
                 $("#resTb tbody").append($("#resTr").html());
                 var lastTr = $("#resTb tbody tr:last");
 
-                $(lastTr).attr("id", "tr_" + exArr[i].exerciseNo);
-                $(lastTr).find("td[name='no']").append(trCnt+1);
-                $(lastTr).find("td[name='exerciseName']").append(exArr[i].exerciseName);
-                $(lastTr).find("td[name='exerciseCategoryName']").append(exArr[i].exerciseCategoryName);
-                $(lastTr).find("td[name='exercisePartName']").append(exArr[i].exercisePartName);
-                $(lastTr).find("td[name='caloriesPerUnit']").append(exArr[i].caloriesPerUnit);
+                // exerciseNo가 ex_ 또는 cus_로 시작하는지 확인
+                var exerciseId = exArr[i].exerciseNo;
+                if (!exerciseId.startsWith('ex_') && !exerciseId.startsWith('cus_')) {
+                    exerciseId = 'ex_' + exerciseId;
+                }
+
+                $(lastTr).attr("id", "tr_" + exerciseId);
+                $(lastTr).find("td[name='no']").text(trCnt+1);
+                $(lastTr).find("td[name='exerciseName']").text(exArr[i].exerciseName);
+                $(lastTr).find("td[name='exerciseCategoryName']").text(exArr[i].exerciseCategoryName);
+                $(lastTr).find("td[name='exercisePartName']").text(exArr[i].exercisePartName);
+                $(lastTr).find("td[name='caloriesPerUnit']").text(exArr[i].caloriesPerUnit);
             }
         }
 
         function removeRow(ths) {
             var $tr = $(ths).parents("tr");
             $tr.remove(); 
+            
+            // 번호 재정렬
+            $("#resTb tbody tr").each(function(index) {
+                $(this).find("td[name='no']").text(index + 1);
+            });
+            
+            // 테이블이 비었을 때 초기 메시지 추가
+            if ($("#resTb tbody tr").length === 0) {
+                $("#resTb tbody").append($("#resInfoTr").html());
+            }
         }
         
-        function submitRoutine(addToFavorites) {
+        function submitRoutine() {
             // 필수 입력값 검증
+            const routineNo = '${routine.routineNo}';
             const routineName = document.getElementById('routine-name').value;
             const routineCategory = document.getElementById('routine-category').value;
             const publicCheck = document.querySelector('input[name="visibility"]:checked').value === 'public' ? 1 : 0;
@@ -403,10 +448,10 @@
 
             rows.forEach(row => {
                 const rowId = row.id; // tr_ex_1 또는 tr_cus_1 형식
-                const exerciseId = rowId.split('_')[1] + '_' + rowId.split('_')[2]; // ex_1 또는 cus_1 형식으로 재구성
+                const exerciseId = rowId.split('tr_')[1]; // ex_1 또는 cus_1 형식
                 
                 const exercise = {
-                    exerciseNo: exerciseId,
+                    exerciseId: exerciseId,
                     sets: row.querySelector('input[name="sets"]').value || 0,
                     repsPerSet: row.querySelector('input[name="reps"]').value || 0,
                     exerciseTime: row.querySelector('input[name="time"]').value || 0,
@@ -417,17 +462,17 @@
 
             // 서버로 전송할 데이터
             const data = {
+                routineNo: routineNo,
                 routineName: routineName,
                 routineCategory: routineCategory,
                 publicCheck: publicCheck,
-                exercises: exercises,
-                addToFavorites: addToFavorites
+                exercises: exercises
             };
 
             console.log('Sending data to server:', data);
 
             // AJAX로 서버에 전송
-            fetch('${pageContext.request.contextPath}/exercise/addRoutine.do', {
+            fetch('${pageContext.request.contextPath}/exercise/updateRoutine.do', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -437,16 +482,16 @@
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
-                    alert('루틴이 성공적으로 등록되었습니다.');
+                    alert('루틴이 성공적으로 수정되었습니다.');
                     window.opener.location.reload(); // 부모 창 새로고침
                     window.close();
                 } else {
-                    alert('루틴 등록에 실패했습니다: ' + result.message);
+                    alert('루틴 수정에 실패했습니다: ' + result.message);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('루틴 등록 중 오류가 발생했습니다.');
+                alert('루틴 수정 중 오류가 발생했습니다.');
             });
         }
     </script>
