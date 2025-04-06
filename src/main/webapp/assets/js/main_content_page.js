@@ -169,10 +169,17 @@ window.addEventListener("DOMContentLoaded", function() {
 					});
 
 					const li = document.createElement('li');
+					const imageUrl = "assets/images/icon/EmptyImage.png";
+
 					li.innerHTML = `
-					  <strong>${place.place_name}</strong><br>
-					  주소: ${place.road_address_name || place.address_name || '주소 없음'}<br>
-					  전화: ${place.phone || '전화번호 없음'}<br>
+					  <div class="place-item">
+					    <img src="${imageUrl}" alt="썸네일" class="place-thumb">
+					    <div class="place-info">
+					      <strong>${place.place_name}</strong><br>
+					      주소: ${place.road_address_name || place.address_name || '주소 없음'}<br>
+					      전화: ${place.phone || '전화번호 없음'}<br>
+					    </div>
+					  </div>
 					`;
 
 					const detailBtn = document.createElement('button');
@@ -273,3 +280,18 @@ document.addEventListener("keydown", function(e) {
 		document.getElementById("modalContentArea").innerHTML = "";
 	}
 });
+
+
+/* 회원가입 버튼 클릭시 회원가입 팝업 띄우기*/
+function openJoinPopup() {
+  const width = 800;
+  const height = 850;
+  const left = (screen.width - width) / 2;
+  const top = (screen.height - height) / 2;
+
+  window.open(
+    '/fitralpark/login.do?show=signup',
+    'joinPopup',
+    `width=${width},height=${height},left=${left},top=${top},resizable=no`
+  );
+}

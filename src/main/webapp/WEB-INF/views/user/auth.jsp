@@ -13,6 +13,9 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/auth/auth.css">
+<script>
+	const contextPath = '${pageContext.request.contextPath}';
+</script>
 </head>
 <body class="login-page">
 	<div class="login_section">
@@ -257,11 +260,16 @@
 		}
 	</script>
 	<script>
-		window.addEventListener('DOMContentLoaded', function () {
+		window.addEventListener('DOMContentLoaded', function() {
 			const params = new URLSearchParams(window.location.search);
-			if (params.get("show") === "login") {
+			const show = params.get("show");
+
+			if (show === "login") {
 				document.getElementById("signup").style.display = "none";
-		    	document.getElementById("login").style.display = "block";
+				document.getElementById("login").style.display = "block";
+			} else if (show === "signup") {
+				document.getElementById("login").style.display = "none";
+				document.getElementById("signup").style.display = "block";
 			}
 		});
 	</script>
