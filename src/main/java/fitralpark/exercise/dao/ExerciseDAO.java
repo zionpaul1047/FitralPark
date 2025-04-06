@@ -358,7 +358,7 @@ public class ExerciseDAO {
 
 	        // 3. 새 운동 기록 추가
 	        String insertSql = "INSERT INTO routine_exercise (routine_exercise_no, routine_no, exercise_no, custom_exercise_no, sets, reps_per_set, exercise_time, weight) VALUES (seq_routine_exercise.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
-	        System.out.println("routineNo = " + routineNo);
+	        
 	        PreparedStatement pstat3 = conn.prepareStatement(insertSql);
 
 	        for (ExerciseRecordDTO dto : exerciseList) {

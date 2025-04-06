@@ -25,6 +25,8 @@ public class RoutineDAO {
 	
 	public RoutineDAO() {
 		
+		
+		
 		try {
 			
 			Context ctx = new InitialContext();
@@ -489,6 +491,8 @@ public class RoutineDAO {
 	}
 
 	public void editFavorite(String routineNo, String memberId) {
+		
+		private DataSource dataSource;
 
 		try {
 
