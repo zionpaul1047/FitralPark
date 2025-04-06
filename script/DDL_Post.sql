@@ -336,10 +336,28 @@ BEGIN
 END;
 /
 
-
+CREATE OR REPLACE TRIGGER reset_scores_on_report
+AFTER UPDATE OF report_cnt ON member
+FOR EACH ROW
+WHEN (NEW.report_cnt >= 10)
+BEGIN
+    -- 해당 회원의 모든 점수를 0으로 초기화
+    UPDATE member 
+    SET community_score = 0,
+        fitness_score = 0
+    WHERE member_id = :NEW.member_id;
+END;
+/
 
 
 commit;
+
+ALTER TABLE member ADD report_cnt NUMBER DEFAULT 0 NOT NULL;
+
+UPDATE bulletin_post SET post_record_cnt = 0; 
+UPDATE qna_post SET post_record_cnt = 0; 
+UPDATE announcement_post SET post_record_cnt = 0; 
+
 
 
 ALTER TABLE bulletin_post modify views default 0 NOT NULL; 
