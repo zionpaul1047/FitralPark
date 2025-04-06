@@ -6,6 +6,7 @@
    <meta charset="UTF-8">
    <title>FITRALPARK</title>
    <%@ include file="/WEB-INF/views/common/asset.jsp" %>
+   <script src="https://kit.fontawesome.com/11104cc7aa.js" crossorigin="anonymous"></script>
    <style>
    
    		body {
@@ -268,9 +269,11 @@
         /* 첫 번째 선언 */
         .exercise-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             margin-bottom: var(--spacing-unit);
             border: 1px solid #e0e0e0;
+            table-layout: fixed;
         }
 
         .exercise-table th {
@@ -279,10 +282,74 @@
             border-right: 1px solid #e0e0e0;
             border-bottom: 2px solid #e0e0e0;
             padding: 15px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .exercise-table th:last-child {
-            border-right: none;
+        .exercise-table td {
+            padding: 15px 10px;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        /* 각 열의 너비 조정 */
+        .exercise-table th:nth-child(1), /* 선택 */
+        .exercise-table td:nth-child(1) {
+            width: 5%;
+        }
+
+        .exercise-table th:nth-child(2), /* 루틴 이름 */
+        .exercise-table td:nth-child(2) {
+            width: 15%;
+        }
+
+        .exercise-table th:nth-child(3), /* 루틴 카테고리 */
+        .exercise-table td:nth-child(3) {
+            width: 11%;
+        }
+
+        .exercise-table th:nth-child(4), /* 운동 카테고리 */
+        .exercise-table td:nth-child(4) {
+            width: 12%;
+        }
+
+        .exercise-table th:nth-child(5), /* 운동 부위 */
+        .exercise-table td:nth-child(5) {
+            width: 10%;
+        }
+
+        .exercise-table th:nth-child(6), /* 소모 총 열량 */
+        .exercise-table td:nth-child(6) {
+            width: 10%;
+        }
+
+        .exercise-table th:nth-child(7), /* 등록일 */
+        .exercise-table td:nth-child(7) {
+            width: 10%;
+        }
+
+        .exercise-table th:nth-child(8), /* 작성자 */
+        .exercise-table td:nth-child(8) {
+            width: 7%;
+        }
+
+        .exercise-table th:nth-child(9), /* 즐겨찾기 */
+        .exercise-table td:nth-child(9) {
+            width: 8%;
+        }
+
+        .exercise-table th:nth-child(10), /* 조회수 */
+        .exercise-table td:nth-child(10) {
+            width: 7%;
+        }
+
+        .exercise-table th:nth-child(11), /* 수정 */
+        .exercise-table td:nth-child(11) {
+            width: 5%;
         }
 
         .star {
@@ -498,6 +565,7 @@
             border-collapse: collapse;
             background-color: white;
             border: 1px solid #e0e0e0;
+            table-layout: fixed;
         }
 
         .sub-table th, 
@@ -506,8 +574,15 @@
             padding: 12px 8px;
             text-align: center;
             font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            word-break: break-word;
         }
 
+        /* 서브 테이블 열 너비 조정 */
+        .sub-table th:nth-child(1), /* 운동 이름 */
+        .sub-table td:nth-child(1) {
+            width: 20%;
         .sub-table th {
             background-color: #f5f5f5;
             font-weight: 600;
@@ -520,18 +595,18 @@
 
         /* 운동 리스트 테이블 스타일 수정 */
         .routine-row {
-            border-bottom: 1px solid #e0e0e0;
             background-color: #ffffff;
+            transition: background-color 0.3s;
         }
 
         .routine-row:hover {
             background-color: #f8f8f8;
-            cursor: pointer;
         }
 
         .routine-row td {
             padding: 15px 10px;
             border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
             vertical-align: middle;
             height: 50px;
         }
@@ -552,6 +627,25 @@
         
         .btn-edit:hover {
             background-color: #45a049;
+        }
+
+        /* 즐겨찾기 별표 스타일 */
+        .favorite-star {
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: color 0.3s;
+        }
+
+        .favorite-star:not(.favorite) {
+            color: #ccc; /* 비활성화된 별표 색상 */
+        }
+
+        .favorite-star.favorite {
+            color: #ff6b6b; /* 활성화된 별표 색상 (빨간색) */
+        }
+
+        .favorite-star:hover {
+            transform: scale(1.2);
         }
 	</style>
 </head>
@@ -662,11 +756,11 @@
 							<td>${dto.totalCalories}</td>
 							<td>${dto.creationDate}</td>
 							<td>${dto.memberNickname}</td>
-							<td>⭐</td>
+							<td class="favorite-star" data-routine-no="${dto.routineNo}" onclick="toggleFavorite('${dto.routineNo}', this)">★</td>
 							<td>${dto.views}</td>
 							<td>
 								<c:if test="${dto.memberId eq sessionScope.loginUser.memberId}">
-									<button type="button" class="btn-edit" onclick="openRoutineEditPopup('${dto.routineNo}')">수정</button>
+									<button type="button" class="btn-edit" onclick="openRoutineEditPopup('${dto.routineNo}')"><i class="fa-solid fa-pen-to-square"></i></button>
 								</c:if>
 							</td>
 						</tr>
@@ -758,7 +852,67 @@
             );
         }
 	    
+	let isProcessing = false; // 전역 변수로 처리 중 상태 관리
+
+	function toggleFavorite(routineNo, element) {
+	    const memberId = '${sessionScope.loginUser.memberId}';
+	    if (!memberId) {
+	        alert('로그인이 필요합니다.');
+	        return;
+	    }
+	    
+	    // 현재 상태에 따라 액션 결정
+	    const isFavorite = element.classList.contains('favorite');
+	    const action = isFavorite ? 'remove' : 'add';
+	    
+	    // 서버에 요청
+	    fetch('${pageContext.request.contextPath}/exercise/toggleFavorite.do', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/x-www-form-urlencoded',
+	        },
+	        body: `memberId=${memberId}&routineNo=${routineNo}&action=${action}`
+	    })
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            // 서버 응답에 따라 UI 업데이트
+	            element.classList.toggle('favorite');
+	            element.innerHTML = data.isFavorite ? '★' : '☆';
+	        } else {
+	            alert(data.error || '즐겨찾기 처리 중 오류가 발생했습니다.');
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	        alert('서버와의 통신 중 오류가 발생했습니다.');
+	    });
+	}
+
+	// 페이지 로드 시 초기 상태 설정
+	document.addEventListener('DOMContentLoaded', function() {
+	    const memberId = '${sessionScope.loginUser.memberId}';
+	    if (!memberId) return;
+	    
+	    // 서버에서 모든 즐겨찾기 상태를 한 번에 가져오기
+	    fetch('${pageContext.request.contextPath}/exercise/getFavorites.do?memberId=' + memberId)
+	    .then(response => response.json())
+	    .then(data => {
+	        if (data.success) {
+	            data.favorites.forEach(routineNo => {
+	                const star = document.querySelector(`.favorite-star[data-routine-no="${routineNo}"]`);
+	                if (star) {
+	                    star.classList.add('favorite');
+	                    star.innerHTML = '★';
+	                }
+	            });
+	        }
+	    })
+	    .catch(error => {
+	        console.error('Error loading favorites:', error);
+	    });
+	});
 	</script>
-	
+
 </body>
 </html>

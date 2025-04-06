@@ -338,56 +338,59 @@ public class ExerciseDAO {
 	public boolean updateRoutine(String routineNo, String routineName, String routineCategory, String publicCheck,
 			List<ExerciseRecordDTO> exerciseList) {
 		
-		String updateRoutineSQL = "UPDATE routine SET routine_name = ?, routine_category_no = ?, public_check = ? WHERE routine_no = ?";
-	    String deleteRecordsSQL = "DELETE FROM exercise_record WHERE routine_no = ?";
-	    String insertRecordSQL = "INSERT INTO exercise_record (exercise_record_no, record_date, sets, reps_per_set, weight, exercise_time, creator_id, exercise_no, custom_exercise_no, exercise_creation_type, routine_no) " +
-	                             "VALUES (seq_exercise_record.NEXTVAL, SYSDATE, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-	    try {
+		try {
 	        conn.setAutoCommit(false);
 
-	        // 1. 루틴 정보 업데이트
-	        try (PreparedStatement pstat = conn.prepareStatement(updateRoutineSQL)) {
-	            pstat.setString(1, routineName);
-	            pstat.setString(2, routineCategory);
-	            pstat.setString(3, publicCheck);
-	            pstat.setString(4, routineNo);
-	            pstat.executeUpdate();
-	        }
+	        // 1. 루틴 이름, 카테고리, 공개 여부 수정
+	        String updateRoutineSql = "UPDATE routine SET routine_name = ?, routine_category_no = ?, public_check = ? WHERE routine_no = ?";
+	        PreparedStatement pstat1 = conn.prepareStatement(updateRoutineSql);
+	        pstat1.setString(1, routineName);
+	        pstat1.setString(2, routineCategory);
+	        pstat1.setString(3, publicCheck);
+	        pstat1.setString(4, routineNo);
+	        pstat1.executeUpdate();
 
 	        // 2. 기존 운동 기록 삭제
-	        try (PreparedStatement pstat = conn.prepareStatement(deleteRecordsSQL)) {
-	            pstat.setString(1, routineNo);
-	            pstat.executeUpdate();
-	        }
+	        String deleteSql = "DELETE FROM routine_exercise WHERE routine_no = ?";
+	        PreparedStatement pstat2 = conn.prepareStatement(deleteSql);
+	        pstat2.setString(1, routineNo);
+	        pstat2.executeUpdate();
 
-	        // 3. 새로운 운동 기록 추가
-	        try (PreparedStatement pstat = conn.prepareStatement(insertRecordSQL)) {
-	            for (ExerciseRecordDTO dto : exerciseList) {
-	                pstat.setString(1, dto.getSets());
-	                pstat.setString(2, dto.getRepsPerSet());
-	                pstat.setString(3, dto.getWeight());
-	                pstat.setString(4, dto.getExerciseTime());
-	                pstat.setString(5, dto.getCreatorId());
-	                pstat.setString(6, dto.getExerciseNo());
-	                pstat.setString(7, dto.getCustomExerciseNo());
-	                pstat.setString(8, dto.getExerciseCreationType());
-	                pstat.setString(9, routineNo);
+	        // 3. 새 운동 기록 추가
+	        String insertSql = "INSERT INTO routine_exercise (routine_exercise_no, routine_no, exercise_no, custom_exercise_no, sets, reps_per_set, exercise_time, weight) VALUES (seq_routine_exercise.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+	        PreparedStatement pstat3 = conn.prepareStatement(insertSql);
 
-	                pstat.addBatch();
+	        for (ExerciseRecordDTO dto : exerciseList) {
+	            String exerciseId = dto.getExerciseNo(); // ex_1 또는 cus_2
+
+	            String exerciseNo = null;
+	            String customExerciseNo = null;
+	            if (exerciseId.startsWith("ex_")) {
+	                exerciseNo = exerciseId.substring(3);
+	            } else if (exerciseId.startsWith("cus_")) {
+	                customExerciseNo = exerciseId.substring(4);
 	            }
-	            pstat.executeBatch();
+
+	            pstat3.setString(1, routineNo);
+	            pstat3.setString(2, exerciseNo);
+	            pstat3.setString(3, customExerciseNo);
+	            pstat3.setString(4, dto.getSets());
+	            pstat3.setString(5, dto.getRepsPerSet());
+	            pstat3.setString(6, dto.getExerciseTime());
+	            pstat3.setString(7, dto.getWeight());
+	            pstat3.addBatch();
 	        }
 
+	        pstat3.executeBatch();
 	        conn.commit();
 	        return true;
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        try { conn.rollback(); } catch (Exception ignore) {}
+	        try { conn.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
 	        return false;
 	    } finally {
-	        try { conn.setAutoCommit(true); } catch (Exception ignore) {}
+	        try { conn.setAutoCommit(true); } catch (Exception e) { e.printStackTrace(); }
 	    }
 	}
 	

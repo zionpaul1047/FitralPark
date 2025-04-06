@@ -205,158 +205,157 @@
 	<div class="popup-container">
 		<h2>루틴 수정</h2>
 	        
-	        <div class="form-group">
-	            <label for="routine-name">루틴 명칭:</label>
-	            <input type="text" id="routine-name" class="form-control" placeholder="루틴 이름 입력" value="${routine.routineName}">
-	        </div>
-	        
-	        <div class="form-group">
-	            <label for="routine-category">루틴 카테고리:</label>
-	            <select id="routine-category" class="form-control">
-	                <option value="">카테고리 선택</option>
-	                <option value="1" ${routine.routineCategoryNo == 1 ? 'selected' : ''}>초보자 운동 루틴</option>
-	                <option value="2" ${routine.routineCategoryNo == 2 ? 'selected' : ''}>중급자 운동 루틴</option>
-	                <option value="3" ${routine.routineCategoryNo == 3 ? 'selected' : ''}>상급자 운동 루틴</option>
-	                <option value="4" ${routine.routineCategoryNo == 4 ? 'selected' : ''}>재활 운동 루틴</option>
-	            </select>
-	        </div>
-	        
-	        
-	        <div class="form-group">
-	            <label>루틴 공개 여부:</label>
-	            <div class="radio-group">
-	                <label><input type="radio" name="visibility" value="public" ${routine.publicCheck == 1 ? 'checked' : ''}> 공개</label>
-	                <label><input type="radio" name="visibility" value="private" ${routine.publicCheck == 0 ? 'checked' : ''}> 비공개</label>
+	        <form action="${pageContext.request.contextPath}/exercise/updateRoutine.do" method="POST">
+	            <input type="hidden" name="routineNo" value="${routine.routineNo}">
+	            
+	            <div class="form-group">
+	                <label for="routine-name">루틴 명칭:</label>
+	                <input type="text" id="routine-name" name="routineName" class="form-control" value="${routine.routineName}" required>
 	            </div>
-	        </div>
-	        
-	        <!-- 루틴 테이블 -->
-	        <div class="routine-table-container">
-	            <table class="routine-table" id="resTb">
-	                <thead>
-	                    <tr>
-                            <th>번호</th>
-					        <th>운동명</th>
-					        <th>운동 카테고리</th>
-					        <th>운동 부위</th>  
-					        <th>소모 열량(kcal)</th>
-					        <th>세트</th>
-					        <th>횟수</th>
-					        <th>시간(분)</th>
-					        <th>중량(kg)</th>
-					        <th>취소</th>
-	                    </tr>
-	                </thead>
-	                <tbody>
-	                    <c:forEach var="exercise" items="${exercises}" varStatus="status">
-	                        <tr id="tr_${exercise.customExerciseNo != null ? 'cus_'.concat(exercise.customExerciseNo) : 'ex_'.concat(exercise.exerciseNo)}">
-	                            <td name="no">${status.count}</td>
-	                            <td name="exerciseName">${exercise.exerciseName}</td>
-	                            <td name="exerciseCategoryName">${exercise.exerciseCategoryNames}</td>
-	                            <td name="exercisePartName">${exercise.exercisePartNames}</td>
-	                            <td name="caloriesPerUnit">${exercise.caloriesPerUnit}</td>
-	                            <td name="sets"><input type="number" class="form-control" name="sets" min="0" value="${exercise.sets}"></td>
-	                            <td name="reps"><input type="number" class="form-control" name="reps" min="0" value="${exercise.repsPerSet}"></td>
-	                            <td name="time"><input type="number" class="form-control" name="time" min="0" value="${exercise.exerciseTime}"></td>
-	                            <td name="weight"><input type="number" class="form-control" name="weight" min="0" value="${exercise.weight}"></td>
-	                            <td name="cancle">
-	                                <a href="javascript:void(0);" onclick="removeRow(this);return false;" class="btn">
-	                                    <i class="fa-solid fa-xmark"></i>
-	                                </a>
-	                            </td>
+	            
+	            <div class="form-group">
+	                <label for="routine-category">루틴 카테고리:</label>
+	                <select id="routine-category" name="routineCategory" class="form-control" required>
+	                    <option value="">카테고리 선택</option>
+	                    <option value="1" ${routine.routineCategoryNo == '1' ? 'selected' : ''}>초보자 운동 루틴</option>
+	                    <option value="2" ${routine.routineCategoryNo == '2' ? 'selected' : ''}>중급자 운동 루틴</option>
+	                    <option value="3" ${routine.routineCategoryNo == '3' ? 'selected' : ''}>상급자 운동 루틴</option>
+	                    <option value="4" ${routine.routineCategoryNo == '4' ? 'selected' : ''}>재활 운동 루틴</option>
+	                </select>
+	            </div>
+	            
+	            <div class="form-group">
+	                <label>루틴 공개 여부:</label>
+	                <div class="radio-group">
+	                    <label>
+	                        <input type="radio" name="publicCheck" value="1" ${routine.publicCheck == '1' ? 'checked' : ''}>
+	                        공개
+	                    </label>
+	                    <label>
+	                        <input type="radio" name="publicCheck" value="0" ${routine.publicCheck == '0' ? 'checked' : ''}>
+	                        비공개
+	                    </label>
+	                </div>
+	            </div>
+	            
+	            <div class="routine-table-container">
+	                <table class="routine-table" id="exerciseTable">
+	                    <thead>
+	                        <tr>
+	                            <th>번호</th>
+	                            <th>운동명</th>
+	                            <th>운동 카테고리</th>
+	                            <th>운동 부위</th>
+	                            <th>소모 열량(kcal)</th>
+	                            <th>세트</th>
+	                            <th>횟수</th>
+	                            <th>시간(분)</th>
+	                            <th>중량(kg)</th>
+	                            <th>삭제</th>
 	                        </tr>
-	                    </c:forEach>
-	                </tbody>
-	            </table>
-	        </div>
-	        
-            <%-- 버튼 --%>
-	        <div class="buttons-row">
-	        	<div>
-		            <button class="btn" onclick="resetForm()">초기화</button>
-		        </div>
-	            <div>
-	                <button class="btn btn-primary" onclick="openExercisePopup()">↪ 불러오기</button>
+	                    </thead>
+	                    <tbody>
+	                        <c:forEach var="exercise" items="${exercises}" varStatus="status">
+	                            <tr>
+	                                <td>${status.count}</td>
+	                                <td>${exercise.exerciseName}</td>
+	                                <td>${exercise.exerciseCategoryNames}</td>
+	                                <td>${exercise.exercisePartNames}</td>
+	                                <td>${exercise.caloriesPerUnit}</td>
+	                                <td>
+	                                    <input type="hidden" name="exerciseIds" value="${exercise.customExerciseNo != null ? 'cus_'.concat(exercise.customExerciseNo) : 'ex_'.concat(exercise.exerciseNo)}">
+	                                    <input type="number" name="sets" min="0" value="${exercise.sets}" class="form-control">
+	                                </td>
+	                                <td><input type="number" name="reps" min="0" value="${exercise.repsPerSet}" class="form-control"></td>
+	                                <td><input type="number" name="time" min="0" value="${exercise.exerciseTime}" class="form-control"></td>
+	                                <td><input type="number" name="weight" min="0" step="0.1" value="${exercise.weight}" class="form-control"></td>
+	                                <td>
+	                                    <button type="button" class="btn delete-row">
+	                                        <i class="fa-solid fa-xmark"></i>
+	                                    </button>
+	                                </td>
+	                            </tr>
+	                        </c:forEach>
+	                    </tbody>
+	                </table>
 	            </div>
-	        </div>
-	        
-	        <div class="table-responsive">
-	        	<table class="routine-table" style="display:none;">
-                    <tbody id="resTr">
-                        <tr>
-                            <td name="no"></td>
-                            <td name="exerciseName"></td>
-                            <td name="exerciseCategoryName"></td>
-                            <td name="exercisePartName"></td>
-                            <td name="caloriesPerUnit"></td>
-                            <td name="sets"><input type="number" class="form-control" name="sets" min="0" value="0"></td>
-                            <td name="reps"><input type="number" class="form-control" name="reps" min="0" value="0"></td>
-                            <td name="time"><input type="number" class="form-control" name="time" min="0" value="0"></td>
-                            <td name="weight"><input type="number" class="form-control" name="weight" min="0" value="0"></td>
-                            <td name="cancle">
-                                <a href="javascript:void(0);" onclick="removeRow(this);return false;" class="btn">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-	        </div>
-            
-            <div class="table-responsive">
-                <table class="routine-table" style="display:none;">        
-                    <tbody id="resInfoTr">
-                        <tr id="noRes">
-                            <td colspan="9">운동 목록에서 항목을 선택해주세요.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-	        
-	        <div class="action-buttons">
-	            <button type="button" onclick="submitRoutine()">루틴 수정하기</button>
-	            <button type="button" onclick="window.close()">취소</button>
-	        </div>
+	            
+	            <div class="buttons-row">
+	                <button type="button" class="btn" onclick="resetForm()">초기화</button>
+	                <button type="button" class="btn btn-primary" onclick="openExercisePopup()">↪ 불러오기</button>
+	            </div>
+	            
+	            <div class="action-buttons">
+	                <button type="submit">루틴 수정하기</button>
+	                <button type="button" onclick="window.close()">취소</button>
+	            </div>
+	        </form>
 	    </div>
     
     <script>
-        // 행 삭제 함수도 순수 JavaScript로 수정
-        function removeRow(button) {
-            const row = button.closest('tr');
-            if (row) {
+        // 행 삭제
+        document.querySelectorAll('.delete-row').forEach(button => {
+            button.addEventListener('click', function() {
+                const row = this.closest('tr');
                 row.remove();
-            }
-            
-            // 테이블이 비었을 때 초기 메시지 추가
-            const tbody = document.querySelector('#resTb tbody');
-            if (tbody.children.length === 0) {
-                tbody.innerHTML = `
-                    <tr id="noRes">
-                        <td colspan="10">운동 목록에서 항목을 선택해주세요.</td>
-                    </tr>
-                `;
-            }
-            
-            // 번호 재정렬
-            reorderNumbers();
-        }
+                reorderRows();
+            });
+        });
 
-        // 번호 재정렬 함수
-        function reorderNumbers() {
-            const rows = document.querySelectorAll('#resTb tbody tr:not(#noRes)');
+        // 행 번호 재정렬
+        function reorderRows() {
+            const rows = document.querySelectorAll('#exerciseTable tbody tr');
             rows.forEach((row, index) => {
-                row.querySelector('td[name="no"]').textContent = index + 1;
+                row.cells[0].textContent = index + 1;
             });
         }
 
-        // 선택된 항목 삭제
-        function deleteSelectedItems() {
-            $('#resTb tbody tr').each(function() {
-                if ($(this).find('input[name="exercise-select"]').prop('checked')) {
-                    $(this).remove();
-                }
+        // 운동 추가 팝업
+        function openExercisePopup() {
+            const popup = window.open(
+                '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
+                'exercisePopup',
+                'width=1100, height=900, scrollbars=yes, resizable=yes'
+            );
+            popup.focus();
+        }
+
+        // 팝업에서 선택된 운동 추가
+        function setResList(exercises) {
+            const tbody = document.querySelector('#exerciseTable tbody');
+            
+            exercises.forEach(exercise => {
+                const row = document.createElement('tr');
+                const exerciseId = exercise.exerciseNo;
+                
+                row.innerHTML = `
+                    <td>${tbody.children.length + 1}</td>
+                    <td>${exercise.exerciseName}</td>
+                    <td>${exercise.exerciseCategoryName}</td>
+                    <td>${exercise.exercisePartName}</td>
+                    <td>${exercise.caloriesPerUnit}</td>
+                    <td>
+                        <input type="hidden" name="exerciseIds" value="ex_${exerciseId}">
+                        <input type="number" name="sets" min="0" value="0" class="form-control">
+                    </td>
+                    <td><input type="number" name="reps" min="0" value="0" class="form-control"></td>
+                    <td><input type="number" name="time" min="0" value="0" class="form-control"></td>
+                    <td><input type="number" name="weight" min="0" step="0.1" value="0" class="form-control"></td>
+                    <td>
+                        <button type="button" class="btn delete-row">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </td>
+                `;
+                
+                tbody.appendChild(row);
+                
+                // 새로 추가된 삭제 버튼에 이벤트 리스너 추가
+                row.querySelector('.delete-row').addEventListener('click', function() {
+                    row.remove();
+                    reorderRows();
+                });
             });
-            reorderNumbers();
         }
 
         // 폼 초기화
@@ -365,134 +364,6 @@
                 return;
             }
             location.reload();
-        }
-
-        function openExercisePopup() {
-            // 팝업창 열기
-            const popup = window.open(
-                '${pageContext.request.contextPath}/exercise/routineAddExerciseList.do',
-                'exercisePopup',
-                'width=1100, height=900, scrollbars=yes, resizable=yes'
-            );
-            popup.focus();
-        }
-        
-        $(function(){
-            if ($("#resTb tbody tr").length === 0) {
-                $("#resTb tbody").append($("#resInfoTr").html());
-            }
-        });
-
-        function setResList(exArr){
-            if($("#noRes").length > 0) $("#noRes").remove();
-
-            for(var i=0; i<exArr.length; i++){
-                var trCnt = $("#resTb tbody tr").length;
-                $("#resTb tbody").append($("#resTr").html());
-                var lastTr = $("#resTb tbody tr:last");
-
-                // exerciseNo가 ex_ 또는 cus_로 시작하는지 확인
-                var exerciseId = exArr[i].exerciseNo;
-                if (!exerciseId.startsWith('ex_') && !exerciseId.startsWith('cus_')) {
-                    exerciseId = 'ex_' + exerciseId;
-                }
-
-                $(lastTr).attr("id", "tr_" + exerciseId);
-                $(lastTr).find("td[name='no']").text(trCnt+1);
-                $(lastTr).find("td[name='exerciseName']").text(exArr[i].exerciseName);
-                $(lastTr).find("td[name='exerciseCategoryName']").text(exArr[i].exerciseCategoryName);
-                $(lastTr).find("td[name='exercisePartName']").text(exArr[i].exercisePartName);
-                $(lastTr).find("td[name='caloriesPerUnit']").text(exArr[i].caloriesPerUnit);
-            }
-        }
-
-        function removeRow(ths) {
-            var $tr = $(ths).parents("tr");
-            $tr.remove(); 
-            
-            // 번호 재정렬
-            $("#resTb tbody tr").each(function(index) {
-                $(this).find("td[name='no']").text(index + 1);
-            });
-            
-            // 테이블이 비었을 때 초기 메시지 추가
-            if ($("#resTb tbody tr").length === 0) {
-                $("#resTb tbody").append($("#resInfoTr").html());
-            }
-        }
-        
-        function submitRoutine() {
-            // 필수 입력값 검증
-            const routineNo = '${routine.routineNo}';
-            const routineName = document.getElementById('routine-name').value;
-            const routineCategory = document.getElementById('routine-category').value;
-            const publicCheck = document.querySelector('input[name="visibility"]:checked').value === 'public' ? 1 : 0;
-            
-            if (!routineName) {
-                alert('루틴 명칭을 입력해주세요.');
-                return;
-            }
-            if (!routineCategory) {
-                alert('루틴 카테고리를 선택해주세요.');
-                return;
-            }
-
-            // 운동 데이터 수집
-            const exercises = [];
-            const rows = document.querySelectorAll('#resTb tbody tr:not(#noRes)');
-            
-            if (rows.length === 0) {
-                alert('최소 한 개 이상의 운동을 추가해주세요.');
-                return;
-            }
-
-            rows.forEach(row => {
-                const rowId = row.id; // tr_ex_1 또는 tr_cus_1 형식
-                const exerciseId = rowId.split('tr_')[1]; // ex_1 또는 cus_1 형식
-                
-                const exercise = {
-                    exerciseId: exerciseId,
-                    sets: row.querySelector('input[name="sets"]').value || 0,
-                    repsPerSet: row.querySelector('input[name="reps"]').value || 0,
-                    exerciseTime: row.querySelector('input[name="time"]').value || 0,
-                    weight: row.querySelector('input[name="weight"]').value || 0
-                };
-                exercises.push(exercise);
-            });
-
-            // 서버로 전송할 데이터
-            const data = {
-                routineNo: routineNo,
-                routineName: routineName,
-                routineCategory: routineCategory,
-                publicCheck: publicCheck,
-                exercises: exercises
-            };
-
-            console.log('Sending data to server:', data);
-
-            // AJAX로 서버에 전송
-            fetch('${pageContext.request.contextPath}/exercise/updateRoutine.do', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('루틴이 성공적으로 수정되었습니다.');
-                    window.opener.location.reload(); // 부모 창 새로고침
-                    window.close();
-                } else {
-                    alert('루틴 수정에 실패했습니다: ' + result.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('루틴 수정 중 오류가 발생했습니다.');
-            });
         }
     </script>
 </body>

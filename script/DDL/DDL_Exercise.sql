@@ -18,6 +18,15 @@
 --DROP TABLE exercise_part;
 --DROP TABLE exercise_category;
 
+CREATE TABLE exercise_routine_favorite (
+	exercise_routine_favorite_no NUMBER PRIMARY KEY,
+	regdate DATE DEFAULT SYSDATE,
+	member_id VARCHAR2(50) NOT NULL,
+	routine_no NUMBER NOT NULL,
+	CONSTRAINT fk_routinefav_routine FOREIGN KEY (routine_no) REFERENCES routine(routine_no),
+    CONSTRAINT fk_routinefav_member FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
+
 
 
 CREATE TABLE weight_unit (

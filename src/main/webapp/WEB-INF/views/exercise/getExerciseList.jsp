@@ -71,12 +71,11 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="exercise" items="${exercises}" varStatus="status">
-            <tr id="tr_${exercise.customExerciseNo != null ? 'cus_'.concat(exercise.customExerciseNo) : 'ex_'.concat(exercise.exerciseNo)}">
-                <td name="no">${status.count}</td>
-                <td name="exerciseName">${exercise.exerciseName}</td>
-                <td name="exerciseCategoryName">${exercise.exerciseCategoryNames}</td>
-                <td name="exercisePartName">${exercise.exercisePartNames}</td>
+        <c:forEach var="exercise" items="${exercises}">
+            <tr>
+                <td>${exercise.exerciseName}</td>
+                <td>${exercise.exerciseCategoryNames}</td>
+                <td>${exercise.exercisePartNames}</td>
                 <td>${exercise.caloriesPerUnit}</td>
                 <td>${exercise.exerciseTime}</td>
                 <td>${exercise.sets}</td>

@@ -12,12 +12,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import fitralpark.common.utils.DBUtil;
-import fitralpark.exercise.dto.ExerciseDTO;
+import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.exercise.dto.RoutineDTO;
 import fitralpark.exercise.dto.RoutineExerciseDTO;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 public class RoutineDAO {
 	
@@ -129,10 +126,7 @@ public class RoutineDAO {
 		            + "LISTAGG(DISTINCT ep.exercise_part_name, ', ') "
 		            + "    WITHIN GROUP (ORDER BY ep.exercise_part_name) AS exercise_parts, "
 		            + "e.calories_per_unit as calories_per_unit, "
-		            + "re.exercise_time as exercise_time, re.sets, re.reps_per_set, re.weight, "
-		            + "re.exercise_no as exercise_no, "
-		            + "re.custom_exercise_no as custom_exercise_no, "
-		            + "CASE WHEN re.custom_exercise_no IS NOT NULL THEN 1 ELSE 0 END as is_custom "
+		            + "re.exercise_time as exercise_time, re.sets, re.reps_per_set, re.weight "
 		            + "FROM routine_exercise re "
 		            + "INNER JOIN ("
 		            + "    SELECT exercise_no, exercise_name, calories_per_unit FROM exercise "
@@ -145,8 +139,8 @@ public class RoutineDAO {
 		            + "INNER JOIN exercise_part ep ON epl.exercise_part_no = ep.exercise_part_no "
 		            + "WHERE re.routine_no = ? "
 		            + "GROUP BY re.routine_exercise_no, e.exercise_name, e.calories_per_unit, "
-		            + "re.exercise_time, re.sets, re.reps_per_set, re.weight, re.exercise_no, re.custom_exercise_no "
-		            + "ORDER BY is_custom ASC, re.routine_exercise_no ASC";
+		            + "re.exercise_time, re.sets, re.reps_per_set, re.weight "
+		            + "ORDER BY re.routine_exercise_no ASC";
 			
 			PreparedStatement pstat = conn.prepareStatement(sql);
 			pstat.setString(1, routineNo);
@@ -164,8 +158,6 @@ public class RoutineDAO {
 				dto.setSets(rs.getString("sets"));
 				dto.setRepsPerSet(rs.getString("reps_per_set"));
 				dto.setWeight(rs.getString("weight"));
-				dto.setExerciseNo(rs.getString("exercise_no"));
-				dto.setCustomExerciseNo(rs.getString("custom_exercise_no"));
 
 				list.add(dto);
 			}
@@ -324,45 +316,162 @@ public class RoutineDAO {
 		}
 	}
 	
-	public boolean insertRoutineExercises(String routineNo, JsonArray exercises) {
+	public boolean insertRoutineExercises(String routineNo, List<ExerciseRecordDTO> exercises) {
 		try {
-			String sql = "INSERT INTO routine_exercise "
-					+ "(routine_exercise_no, routine_no, exercise_no, custom_exercise_no, sets, reps_per_set, exercise_time, weight) "
-					+ "VALUES (seq_routine_exercise.NEXTVAL, TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?), TO_NUMBER(?))";
+			String sql = "INSERT INTO routine_exercise (routine_exercise_no, routine_no, exercise_no, custom_exercise_no, exercise_creation_type, sets, reps_per_set, exercise_time, weight) " +
+						 "VALUES (seq_routine_exercise.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement pstat = conn.prepareStatement(sql);
 			
-			for (int i = 0; i < exercises.size(); i++) {
-				JsonObject exercise = exercises.get(i).getAsJsonObject();
-				String exerciseId = exercise.get("exerciseId").getAsString();
-				
-				// exerciseId가 ex_로 시작하는지 확인
-				boolean isExercise = exerciseId.startsWith("ex_");
-				String cleanExerciseId = exerciseId.replaceAll("[^0-9]", "");
-				
-				pstat.setString(1, routineNo);
-				if (isExercise) {
-					pstat.setString(2, cleanExerciseId);
-					pstat.setString(3, null);
-				} else {
-					pstat.setString(2, null);
-					pstat.setString(3, cleanExerciseId);
+			for (ExerciseRecordDTO exercise : exercises) {
+				try {
+					pstat.setInt(1, Integer.parseInt(routineNo));
+					
+					if (exercise.getExerciseCreationType().equals("0")) {
+						pstat.setInt(2, Integer.parseInt(exercise.getExerciseNo()));
+						pstat.setNull(3, java.sql.Types.INTEGER);
+					} else {
+						pstat.setNull(2, java.sql.Types.INTEGER);
+						pstat.setInt(3, Integer.parseInt(exercise.getCustomExerciseNo()));
+					}
+					
+					pstat.setInt(4, Integer.parseInt(exercise.getExerciseCreationType()));
+					pstat.setInt(5, Integer.parseInt(exercise.getSets()));
+					pstat.setInt(6, Integer.parseInt(exercise.getRepsPerSet()));
+					pstat.setInt(7, Integer.parseInt(exercise.getExerciseTime()));
+					pstat.setFloat(8, Float.parseFloat(exercise.getWeight()));
+					
+					System.out.println("Executing insert for exercise: " + 
+						(exercise.getExerciseCreationType().equals("0") ? 
+						"exercise_no=" + exercise.getExerciseNo() : 
+						"custom_exercise_no=" + exercise.getCustomExerciseNo()));
+					
+					pstat.addBatch();
+				} catch (Exception e) {
+					System.out.println("Error processing exercise: " + e.getMessage());
+					e.printStackTrace();
 				}
-				pstat.setString(4, exercise.get("sets").getAsString());
-				pstat.setString(5, exercise.get("repsPerSet").getAsString());
-				pstat.setString(6, exercise.get("exerciseTime").getAsString());
-				pstat.setString(7, exercise.get("weight").getAsString());
-				
-				pstat.addBatch();
 			}
 			
 			int[] results = pstat.executeBatch();
-			return results.length == exercises.size();
+			boolean success = true;
+			for (int result : results) {
+				if (result <= 0) {
+					success = false;
+					break;
+				}
+			}
+			return success;
 			
 		} catch (Exception e) {
+			System.out.println("Error in insertRoutineExercises: " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public boolean isFavorite(String memberId, String routineNo) {
+		PreparedStatement pstat = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT COUNT(*) FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, memberId);
+			pstat.setString(2, routineNo);
+			rs = pstat.executeQuery();
+			
+			if (rs.next()) {
+				return rs.getInt(1) > 0;
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("즐겨찾기 확인 중 오류가 발생했습니다.", e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstat != null) pstat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public boolean addFavorite(String memberId, String routineNo) {
+		PreparedStatement pstat = null;
+		try {
+			// 먼저 이미 즐겨찾기 되어있는지 확인
+			if (isFavorite(memberId, routineNo)) {
+				return true; // 이미 즐겨찾기 되어있으면 성공으로 처리
+			}
+			
+			String sql = "INSERT INTO exercise_routine_favorite (exercise_routine_favorite_no, member_id, routine_no) VALUES (seq_routine_favorite.NEXTVAL, ?, ?)";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, memberId);
+			pstat.setString(2, routineNo);
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("즐겨찾기 추가 중 오류가 발생했습니다.", e);
+		} finally {
+			try {
+				if (pstat != null) pstat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public boolean removeFavorite(String memberId, String routineNo) {
+		PreparedStatement pstat = null;
+		try {
+			String sql = "DELETE FROM exercise_routine_favorite WHERE member_id = ? AND routine_no = ?";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, memberId);
+			pstat.setString(2, routineNo);
+			
+			int result = pstat.executeUpdate();
+			return result > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("즐겨찾기 삭제 중 오류가 발생했습니다.", e);
+		} finally {
+			try {
+				if (pstat != null) pstat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<String> getAllRoutineNos() {
+		List<String> routineNos = new ArrayList<>();
+		PreparedStatement pstat = null;
+		ResultSet rs = null;
+		
+		try {
+			String sql = "SELECT routine_no FROM routine ORDER BY routine_no";
+			pstat = conn.prepareStatement(sql);
+			rs = pstat.executeQuery();
+			
+			while (rs.next()) {
+				routineNos.add(rs.getString("routine_no"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("루틴 목록 조회 중 오류가 발생했습니다.", e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstat != null) pstat.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return routineNos;
 	}
 
 }
