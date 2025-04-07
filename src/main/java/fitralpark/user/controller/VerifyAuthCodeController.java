@@ -28,7 +28,7 @@ public class VerifyAuthCodeController extends HttpServlet {
                 return;
             }
 
-            String savedCode = (String) session.getAttribute("pwFindAuthCode");
+            String savedCode = (String) session.getAttribute("pwAuthCode");
 
             System.out.println("[VerifyAuthCode] 입력된 코드: " + inputCode);
             System.out.println("[VerifyAuthCode] 세션 저장 코드: " + savedCode);

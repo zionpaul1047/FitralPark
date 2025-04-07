@@ -528,3 +528,39 @@ document.getElementById("pwAuthCodeCheckBtn")?.addEventListener("click", functio
 		messageEl.style.color = "red";
 	});
 });
+
+document.getElementById("resetPwForm")?.addEventListener("submit", function (e) {
+	e.preventDefault();
+
+	const newPw = document.getElementById("newPw").value.trim();
+	const confirmPw = document.getElementById("confirmPw").value.trim();
+
+	if (newPw !== confirmPw) {
+		alert("비밀번호가 일치하지 않습니다.");
+		return;
+	}
+	if (newPw.length < 8 || newPw.length > 16) {
+		alert("비밀번호는 8~16자여야 합니다.");
+		return;
+	}
+
+	fetch(`${contextPath}/reset-pw.do`, {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: `newPassword=${encodeURIComponent(newPw)}`
+	})
+	.then(res => res.json())
+	.then(data => {
+		if (data.success) {
+			alert("비밀번호가 성공적으로 변경되었습니다.");
+			switchForm("login"); // 로그인 화면으로 전환
+		} else {
+			alert(data.message || "비밀번호 변경에 실패했습니다.");
+		}
+	})
+	.catch(err => {
+		alert("서버 오류가 발생했습니다.");
+		console.error("비밀번호 변경 오류:", err);
+	});
+});
+

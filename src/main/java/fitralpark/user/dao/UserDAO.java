@@ -1076,17 +1076,14 @@ public class UserDAO {
 	        conn = DBUtil.getConnection();
 	        String sql = "UPDATE member SET pw = ? WHERE member_id = ?";
 	        pstmt = conn.prepareStatement(sql);
-	        pstmt.setString(1, newPassword);
+	        pstmt.setString(1, newPassword); // 🔐 나중에 암호화 예정
 	        pstmt.setString(2, id);
-
 	        result = pstmt.executeUpdate();
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    } finally {
-	        this.close(conn, pstmt, null);
+	    	this.close(conn, pstmt, null);
 	    }
-
 	    return result;
 	}
 
