@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import fitralpark.nutrition.dao.NutritionDAO;
 import fitralpark.nutrition.dto.NutritionDTO;
-import fitralpark.nutrition.service.NutritionImageSearch;
 
 @WebServlet("/nutrition/foodsearch.do")
 public class NutritionSearchController extends HttpServlet {
@@ -45,10 +44,10 @@ public class NutritionSearchController extends HttpServlet {
             
             
             // 각 음식 이름에 대해 첫 번째 이미지 URL 가져오기
-            for (NutritionDTO item : results) {
-                String imageUrl = NutritionImageSearch.getFirstImageURL(item.getFood_name());
-                item.setFoodLv4Nm(imageUrl); // DTO에 이미지 URL 저장 (foodLv4Nm 필드 사용)
-            }
+//            for (NutritionDTO item : results) {
+//                String imageUrl = NutritionImageSearch.getFirstImageURL(item.getFood_name());
+//                item.setFood_img_croll(imageUrl); // DTO에 이미지 URL 저장 (foodLv4Nm 필드 사용)
+//            }
             
             
             
