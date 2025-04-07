@@ -71,7 +71,7 @@ public class DietDAO {
 
                     DietDTO diet = new DietDTO(rs.getInt("diet_no"), rs.getString("diet_name"), rs.getString("regdate"),
                             rs.getInt("diet_total_kcal"), rs.getString("meal_classify"), rs.getString("creator_id"),
-                            rs.getInt("diet_bookmark_no"), rs.getString("food_name"), rs.getInt("enerc"),
+                            rs.getInt("diet_bookmark_no"), rs.getString("food_name"), rs.getDouble("enerc"),
                             Integer.parseInt(rs.getString("food_size")) // int 변환
                     );
                     diets.add(diet);
