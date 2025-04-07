@@ -12,6 +12,7 @@ import lombok.ToString;
 public class NutritionDTO {
 //	■■■■■■■■■■ API 식품정보 "individual_diet_record_food_nutrient" ■■■■■■■■■■
 
+	private String food_img_croll; //크롤링 이미지
 	private String food_cd;        //식품코드(PK)
     private String food_name;        //식품명
     private String foodLv4Nm;        //대표식품명

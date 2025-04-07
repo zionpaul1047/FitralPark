@@ -12,7 +12,39 @@
     
     <style>
 		
-	
+		#pagination {
+		    display: flex; /* 버튼을 가로로 배치 */
+		    justify-content: center; /* 중앙 정렬 */
+		    margin-top: 20px; /* 위쪽 여백 */
+		    margin-bottom: 20px;
+		}
+		
+		#pagination button {
+		    background-color: #f0f0f0; /* 기본 배경색 */
+		    color: #a3a3a3; /* 텍스트 색상 */
+		    border: 1px solid #ddd; /* 테두리 색상 */
+		    padding: 5px 10px; /* 버튼 크기 */
+		    margin: 0 5px; /* 버튼 간격 */
+		    border-radius: 5px; /* 둥근 모서리 */
+		    font-size: 14px; /* 글꼴 크기 */
+		    cursor: pointer; /* 마우스 포인터 변경 */
+		    transition: background-color 0.3s ease, color 0.3s ease; /* 호버 효과 전환 */
+		}
+		
+		#pagination button strong{
+			color: black;
+		}
+		
+		#pagination button:hover {
+		    background-color: #8ee591; /* 호버 시 배경색 변경 */
+		    color: white; /* 호버 시 텍스트 색상 변경 */
+		}
+		
+		#pagination button.active {
+		    background-color: #8ee591; /* 활성화된 버튼 배경색 */
+		    color: white; /* 활성화된 버튼 텍스트 색상 */
+		    border-color: #4CAF50;
+		}
         
         
     </style>
@@ -147,48 +179,78 @@
 		        	$(".sf_result_section").hide();
 		        }
 		    });
+		    
+		    
 	        // 검색 버튼 클릭 이벤트
-	        $("#sf_food_search_button").click(function() {
-	            performSearch();
-	        });
+	        $("#sf_food_search_button").click(function () {
+		        performSearch(1); // 첫 번째 페이지에서 검색 시작
+		    });
 	        
 	        // 엔터키 입력 이벤트
-	        $("#sf_food_search_input").keypress(function(e) {
-	            if (e.which == 13) {
-	                performSearch();
-	                return false; // 폼 제출 방지
-	            }
+	        $("#sf_food_search_input").keypress(function (e) {
+	        if (e.which == 13) {
+	            performSearch(1); // 첫 번째 페이지에서 검색 시작
+	            return false; // 폼 제출 방지
+	        }
 	        });
 	        
+	        // 페이지네이션 버튼 클릭 이벤트
+	        $(document).on("click", ".page-btn", function () {
+	            const page = $(this).data("page"); // 클릭한 버튼의 페이지 번호 가져오기
+	            performSearch(page); // 해당 페이지로 검색 실행
+	        });
+	        
+
 	        // 검색 함수
-	        function performSearch() {
-	            var query = $("#sf_food_search_input").val().trim();
-	            
-	            if(query.length === 0) {
+	        function performSearch(page) {
+	            const query = $("#sf_food_search_input").val().trim();
+
+	            if (query.length === 0) {
 	                alert("검색어를 입력해 주세요.");
 	                return;
 	            }
-	            
+
 	            // 로딩 표시
 	            $(".loading").show();
 	            $("#sf_result_section").children(":not(.loading)").hide();
-	            
-	            // AJAX 요청
+
+	         // AJAX 요청
 	            $.ajax({
 	                url: "${pageContext.request.contextPath}/nutrition/foodsearch.do",
-	                type: "post",
-	                data: { query: query },
-	                success: function(response) {
-	                    $("#sf_result_section").html(response);
+	                type: "get",
+	                data: { query: query, page: page },
+	                success: function (response) {
+	                    $("#sf_result_section").html(response); // 검색 결과 업데이트
+		                    // 동적으로 이미지 src 설정
+		                    $(".sf_result_img_1").each(function () {
+		                        const foodName = $(this).attr("alt");
+		                        const imgElement = $(this);
+	
+		                        // Google 이미지 API 호출 (이미지 URL 설정)
+		                        $.ajax({
+		                            url: "/nutrition/getImage.do",
+		                            type: "get",
+		                            data: { query: foodName },
+		                            success: function (imageUrl) {
+		                                imgElement.attr("src", imageUrl); // 이미지 업데이트
+		                            },
+		                            error: function () {
+		                                console.error("이미지를 가져오는 중 오류가 발생했습니다.");
+		                            }
+		                        });
+		                    });
+
 	                },
-	                error: function(xhr, status, error) {
+	                error: function (xhr, status, error) {
 	                    $("#sf_result_section").html("<p>검색 중 오류가 발생했습니다: " + error + "</p>");
 	                },
-	                complete: function() {
-	                    $(".loading").hide();
+	                complete: function () {
+	                    $(".loading").hide(); // 로딩 표시 숨기기
 	                }
+	                
 	            });
 	        }
+
 	    });
 
 	
