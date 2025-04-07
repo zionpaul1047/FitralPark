@@ -1,5 +1,6 @@
 let isIdChecked = false;
 let lastCheckedId = "";
+const contextPath = window.contextPath || "";
 
 function moveToRegister() {
 	document.getElementById("login").style.display = "none";
