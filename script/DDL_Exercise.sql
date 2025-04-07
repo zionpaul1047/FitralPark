@@ -18,6 +18,15 @@
 --DROP TABLE exercise_part;
 --DROP TABLE exercise_category;
 
+CREATE TABLE exercise_routine_favorite (
+	exercise_routine_favorite_no NUMBER PRIMARY KEY,
+	regdate DATE DEFAULT SYSDATE,
+	member_id VARCHAR2(50) NOT NULL,
+	routine_no NUMBER NOT NULL,
+	CONSTRAINT fk_routinefav_routine FOREIGN KEY (routine_no) REFERENCES routine(routine_no),
+    CONSTRAINT fk_routinefav_member FOREIGN KEY (member_id) REFERENCES member(member_id)
+);
+
 
 
 CREATE TABLE weight_unit (
@@ -113,6 +122,12 @@ CREATE TABLE routine (
     public_check NUMBER DEFAULT 0 NOT NULL,
     creator_id VARCHAR2(50) NOT NULL,
     routine_category_no NUMBER NOT NULL,
+<<<<<<< HEAD:script/DDL/DDL_Exercise.sql
+    views NUMBER Default 1,											
+    recommend NUMBER Default 0,
+    disrecommend NUMBER Default 0,
+=======
+>>>>>>> origin/HN2:script/DDL_Exercise.sql
     CONSTRAINT fk_routine_category FOREIGN KEY (routine_category_no) REFERENCES routine_category(routine_category_no),
     CONSTRAINT fk_routine_member FOREIGN KEY (creator_id) REFERENCES member(member_id)
 );

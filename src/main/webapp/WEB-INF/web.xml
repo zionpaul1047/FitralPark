@@ -33,5 +33,15 @@
 		<filter-name>EncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+	<servlet>
+		  <servlet-name>DietCalendarServlet</servlet-name>
+		  <servlet-class>your.package.DietCalendarServlet</servlet-class>
+		</servlet>
+		
+		<servlet-mapping>
+		  <servlet-name>DietCalendarServlet</servlet-name>
+		  <url-pattern>/dietCalendar.do</url-pattern>
+		</servlet-mapping>
 
 </web-app>
