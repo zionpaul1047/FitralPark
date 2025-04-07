@@ -28,6 +28,14 @@ public class QnaPost extends HttpServlet {
             return;
         }
         
+        if (null != session.getAttribute("loginUser")) {
+			
+		} else {
+			resp.sendRedirect(req.getContextPath() + "/login.do");
+			return;
+		}
+        
+        
         CommunityDAO dao = new CommunityDAO();
         
         try {
@@ -42,7 +50,7 @@ public class QnaPost extends HttpServlet {
             // 댓글 목록 조회
             ArrayList<CommunityDTO> commentList = dao.getQnaCommentList(post_no);
             
-            req.setAttribute("dto", dto);
+            req.setAttribute("post", dto);
             req.setAttribute("commentList", commentList);
             
             req.getRequestDispatcher("/WEB-INF/views/community/qnaPost.jsp").forward(req, resp);

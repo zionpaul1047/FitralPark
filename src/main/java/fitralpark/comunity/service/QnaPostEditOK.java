@@ -35,7 +35,6 @@ public class QnaPostEditOK extends HttpServlet {
         String post_subject = req.getParameter("post_subject");
         String post_content = req.getParameter("post_content");
         String header_no = req.getParameter("header_no");
-        String privacy_check = req.getParameter("privacy_check");
         
         if (post_subject == null || post_subject.trim().isEmpty() ||
             post_content == null || post_content.trim().isEmpty() ||
@@ -58,7 +57,6 @@ public class QnaPostEditOK extends HttpServlet {
             dto.setPost_subject(post_subject);
             dto.setPost_content(post_content);
             dto.setHeader_no(header_no);
-            dto.setPrivacy_check(privacy_check != null ? "Y" : "N");
             
             boolean result = dao.Qna_post_edit(dto);
             

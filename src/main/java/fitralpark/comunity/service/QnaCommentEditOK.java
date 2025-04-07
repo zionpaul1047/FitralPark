@@ -21,13 +21,13 @@ public class QnaCommentEditOK extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         req.setCharacterEncoding("UTF-8");
-        resp.setContentType("text/html; charset=UTF-8");
+        resp.setContentType("application/json; charset=UTF-8");
         
         HttpSession session = req.getSession();
         UserDTO userDto = (UserDTO)session.getAttribute("loginUser");
         
         if (userDto == null) {
-            resp.sendRedirect("login.do");
+            sendJsonResponse(resp, "error", "로그인이 필요합니다.");
             return;
         }
         
@@ -39,12 +39,7 @@ public class QnaCommentEditOK extends HttpServlet {
             post_no == null || post_no.trim().isEmpty() ||
             comment_content == null || comment_content.trim().isEmpty()) {
             
-            PrintWriter writer = resp.getWriter();
-            writer.println("<script>");
-            writer.println("alert('필수 입력값이 누락되었습니다.');");
-            writer.println("history.back();");
-            writer.println("</script>");
-            writer.close();
+            sendJsonResponse(resp, "error", "필수 입력값이 누락되었습니다.");
             return;
         }
         
@@ -55,17 +50,12 @@ public class QnaCommentEditOK extends HttpServlet {
             CommunityDTO dto = dao.getQnaComment(comment_no);
             
             if (dto == null) {
-                resp.sendRedirect("qnaPost.do?post_no=" + post_no);
+                sendJsonResponse(resp, "error", "댓글을 찾을 수 없습니다.");
                 return;
             }
             
             if (!userDto.getMemberId().equals(dto.getCreator_id())) {
-                PrintWriter writer = resp.getWriter();
-                writer.println("<script>");
-                writer.println("alert('본인이 작성한 댓글만 수정할 수 있습니다.');");
-                writer.println("history.back();");
-                writer.println("</script>");
-                writer.close();
+                sendJsonResponse(resp, "error", "수정 권한이 없습니다.");
                 return;
             }
             
@@ -73,26 +63,22 @@ public class QnaCommentEditOK extends HttpServlet {
             boolean result = dao.Qna_comment_edit(dto);
             
             if (result) {
-                resp.sendRedirect("qnaPost.do?post_no=" + post_no);
+                sendJsonResponse(resp, "success", "댓글이 수정되었습니다.");
             } else {
-                PrintWriter writer = resp.getWriter();
-                writer.println("<script>");
-                writer.println("alert('댓글 수정에 실패했습니다.');");
-                writer.println("history.back();");
-                writer.println("</script>");
-                writer.close();
+                sendJsonResponse(resp, "error", "댓글 수정에 실패했습니다.");
             }
             
         } catch (Exception e) {
             e.printStackTrace();
-            PrintWriter writer = resp.getWriter();
-            writer.println("<script>");
-            writer.println("alert('댓글 수정 중 오류가 발생했습니다.');");
-            writer.println("history.back();");
-            writer.println("</script>");
-            writer.close();
+            sendJsonResponse(resp, "error", "댓글 수정 중 오류가 발생했습니다.");
         } finally {
             dao.close();
         }
+    }
+    
+    private void sendJsonResponse(HttpServletResponse resp, String status, String message) throws IOException {
+        PrintWriter writer = resp.getWriter();
+        writer.println("{\"status\":\"" + status + "\", \"message\":\"" + message + "\"}");
+        writer.close();
     }
 } 

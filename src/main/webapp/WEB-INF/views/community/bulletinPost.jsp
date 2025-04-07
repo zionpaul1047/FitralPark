@@ -277,7 +277,11 @@
 				<table id="posttable">
 					<tr>
 						<th>제목</th>
-						<td>[${post.header_name}] ${post.post_subject}</td>
+						<td>[${post.header_name}] ${post.post_subject}
+							<a href="javascript:void(0);" onclick="window.open('report.do?target_type=bulletin_post&post_no=${post.post_no}&creator_id=${post.creator_id}', 'reportPopup', 'width=500,height=600,resizable=no,scrollbars=no')">
+								<i class="fa-solid fa-land-mine-on" style="cursor: pointer;"></i>
+							</a>
+						</td>
 					</tr>
 					<tr>
 						<th>작성자</th>
