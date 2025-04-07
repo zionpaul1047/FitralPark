@@ -32,8 +32,8 @@ public class FindPwController extends HttpServlet {
             String authCode = String.format("%06d", new Random().nextInt(1000000));
 
             HttpSession session = req.getSession();
-            session.setAttribute("pwFindAuthCode", authCode);
-            session.setAttribute("pwFindUserId", id);
+            session.setAttribute("pwAuthCode", authCode);
+            session.setAttribute("pwResetUserId", id);
 
             // 이메일 전송
             String subject = "[👟FitralPark🌳] 비밀번호 찾기 인증번호입니다.";
