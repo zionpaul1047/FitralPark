@@ -758,3 +758,8 @@ pre {
 	height: 100%;
 	margin: 0 auto;
 }
+
+
+.unembodiment_menu {
+	text-decoration: line-through;
+}
