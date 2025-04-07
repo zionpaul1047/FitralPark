@@ -145,19 +145,19 @@
 				</div>
 			</c:when>
 			<c:otherwise>
-				<!-- ✅ 로그인 후: 미니 대시보드 include -->
+				<!-- 로그인 후: 미니 대시보드 include -->
 				<jsp:include page="/WEB-INF/views/dashboard/user_dashboard_mini.jsp" />
 			</c:otherwise>
 		</c:choose>
 
-		<!-- 📢 공지사항 배너 -->
+		<!-- 공지사항 배너 -->
 		<div class="notice-box">
 			<a href="/notice/view.do?id=1"> <img
 				src="/images/notice_banner.png" alt="공지사항 배너" class="banner-img">
 			</a>
 		</div>
 
-		<!-- 🧃 광고 배너 -->
+		<!-- 광고 배너 -->
 		<div class="ad-banner">
 			<a href="https://example.com" target="_blank"> <img
 				src="/images/ad_banner.jpg" alt="광고 배너" class="banner-img">

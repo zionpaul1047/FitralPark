@@ -9,22 +9,42 @@ import java.io.PrintWriter;
 
 @WebServlet("/verify-auth-code.do")
 public class VerifyAuthCodeController extends HttpServlet {
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         req.setCharacterEncoding("UTF-8");
-        String inputCode = req.getParameter("authCode");
-        HttpSession session = req.getSession();
-        String sessionCode = (String) session.getAttribute("authCode");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
 
-        resp.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = resp.getWriter();
+        try {
+            String inputCode = req.getParameter("authCode");
+            HttpSession session = req.getSession(false); // 세션 없으면 null
 
-        if (sessionCode != null && sessionCode.equals(inputCode)) {
-            out.write("{\"success\": true}");
-        } else {
-            out.write("{\"success\": false, \"message\": \"인증번호가 일치하지 않습니다.\"}");
+            if (session == null) {
+                System.err.println("[VerifyAuthCode] 세션이 존재하지 않습니다.");
+                resp.getWriter().write("{\"result\":\"FAIL\", \"error\": \"no-session\"}");
+                return;
+            }
+
+            String savedCode = (String) session.getAttribute("pwFindAuthCode");
+
+            System.out.println("[VerifyAuthCode] 입력된 코드: " + inputCode);
+            System.out.println("[VerifyAuthCode] 세션 저장 코드: " + savedCode);
+
+            boolean isMatch = savedCode != null && savedCode.equals(inputCode);
+
+            PrintWriter out = resp.getWriter();
+            out.write("{\"result\": \"" + (isMatch ? "OK" : "FAIL") + "\"}");
+            out.flush();
+        } catch (Exception e) {
+            System.err.println("[VerifyAuthCode] 예외 발생:");
+            e.printStackTrace();
+
+            PrintWriter out = resp.getWriter();
+            out.write("{\"result\": \"ERROR\"}");
+            out.flush();
         }
     }
 }
