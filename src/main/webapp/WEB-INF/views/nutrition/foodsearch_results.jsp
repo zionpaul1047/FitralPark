@@ -7,7 +7,7 @@
             <div class="sf_result_section_1">
                 <div class="sf_reult_section_1_1">
                     <div class="sf_result_item_1">
-                        <img src="" alt="음식 이미지" class="sf_result_img_1" id="sf_result_img_1">
+                        <img src="${item.food_img_croll}" alt="${item.food_name}" class="sf_result_img_1" id="sf_result_img_${item.food_cd}">
                         <div class="sf_result_info_1">
                             <div class="sf_result_info_food_name_1">
                                 ${item.food_name} ${item.nut_con_str_qua} &nbsp;&nbsp;&nbsp;
@@ -36,3 +36,31 @@
         </div>
     </c:otherwise>
 </c:choose>
+
+
+    <!-- 페이지네이션 -->
+<div id="pagination">
+    <!-- 이전 버튼 -->
+    <c:if test="${currentPage > 1}">
+        <button class="page-btn" data-page="${currentPage - 1}">이전</button>
+    </c:if>
+
+    <!-- 동적 페이지 번호 -->
+    <c:forEach begin="${startPage}" end="${endPage}" var="page">
+        <c:choose>
+            <c:when test="${page == currentPage}">
+                <button class="page-btn" data-page="${page}"><strong>${page}</strong></button> <!-- 현재 페이지 강조 -->
+            </c:when>
+            <c:otherwise>
+                <button class="page-btn" data-page="${page}">${page}</button>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+
+    <!-- 다음 버튼 -->
+    <c:if test="${currentPage < totalPages}">
+        <button class="page-btn" data-page="${currentPage + 1}">다음</button>
+    </c:if>
+</div>
+
+
