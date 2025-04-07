@@ -7,8 +7,15 @@ function moveToRegister() {
 }
 
 function moveToLogin() {
-	document.getElementById("signup").style.display = "none";
-	document.getElementById("login").style.display = "block";
+  // 모든 폼 숨김
+  const forms = document.querySelectorAll(".accounts_forms");
+  forms.forEach((form) => {
+    form.style.display = "none";
+  });
+
+  // 로그인 폼만 표시
+  const loginForm = document.getElementById("login");
+  if (loginForm) loginForm.style.display = "block";
 }
 
 function redirectToRegister(e) {
@@ -180,8 +187,32 @@ window.addEventListener("DOMContentLoaded", function() {
 
 
 	// 닉네임 유효성 검사
-	document.getElementById("nickname")?.addEventListener("input", function() {
-		this.value = this.value.replace(/[^가-힣a-zA-Z0-9]/g, '');
+	/*	document.getElementById("nickname")?.addEventListener("blur", function() {
+			this.value = this.value.replace(/[^가-힣a-zA-Z0-9]/g, '');
+		});*/
+	const nicknameInput = document.getElementById("nickname");
+	const nicknameMessage = document.getElementById("nicknameMessage");
+
+	nicknameInput?.addEventListener("blur", function() {
+		const value = this.value.trim();
+		const isValid = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{2,15}$/.test(value); // 2~15자, 허용 문자만
+
+		if (!isValid) {
+			nicknameMessage.textContent = "닉네임은 한글(완성형, 자모음 단독사용 불가), 영문, 숫자만 가능하며 2~15자 이내여야 합니다.";
+		} else {
+			nicknameMessage.textContent = "";
+		}
+	});
+
+	document.querySelector("form[action$='register.do']")?.addEventListener("submit", function(e) {
+		const value = nicknameInput.value.trim();
+		const isValid = /^[가-힣ㄱ-ㅎㅏ-ㅣa-zA-Z0-9]{2,15}$/.test(value);
+
+		if (!isValid) {
+			e.preventDefault();
+			nicknameMessage.textContent = "닉네임은 한글, 영문, 숫자만 가능하며 2~15자 이내여야 합니다.";
+			nicknameInput.focus();
+		}
 	});
 
 	// 이메일 도메인 처리
@@ -397,5 +428,102 @@ window.addEventListener("DOMContentLoaded", function() {
 		let val = this.value.replace(/[^0-9+]/g, '');
 		if (val.indexOf('+') > 0) val = val.replace(/\+/g, '');
 		this.value = val;
+	});
+});
+
+
+/*아이디 찾기 비밀번호 찾기*/
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 아이디 찾기 버튼 클릭
+  document.getElementById("findID").addEventListener("click", function () {
+    switchForm("find-id");
+  });
+
+  // 비밀번호 찾기 버튼 클릭
+  document.getElementById("findPw").addEventListener("click", function () {
+    switchForm("find-pw");
+  });
+});
+
+function switchForm(formIdToShow) {
+  const forms = document.querySelectorAll(".accounts_forms");
+  forms.forEach((form) => {
+    form.style.display = "none";
+  });
+  document.getElementById(formIdToShow).style.display = "block";
+}
+
+//비밀번호 재설정 인증번호 클릭 이벤트
+// ?비밀번호 찾기 - 인증번호 전송
+document.getElementById("sendPwAuthBtn")?.addEventListener("click", function () {
+	const id = document.getElementById("find_pw_id").value.trim();
+	const name = document.getElementById("find_pw_name").value.trim();
+	const email = document.getElementById("find_pw_email").value.trim();
+
+	if (!id || !name || !email) {
+		alert("아이디, 이름, 이메일을 모두 입력해주세요.");
+		return;
+	}
+
+	fetch(`${contextPath}/find-pw.do`, {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: `id=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`
+	})
+	.then(res => res.json())
+	.then(data => {
+		if (data.success) {
+			alert("인증번호가 이메일로 전송되었습니다.");
+			document.getElementById("pwAuthCodeWrap").style.display = "block";
+			document.getElementById("pwAuthCodeInput").focus();
+		} else {
+			alert("입력하신 정보와 일치하는 계정이 없습니다.");
+		}
+	})
+	.catch(err => {
+		alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+	});
+});
+
+
+
+
+// ?비밀번호 찾기 - 인증번호 확인
+document.getElementById("pwAuthCodeCheckBtn")?.addEventListener("click", function () {
+	const inputCode = document.getElementById("pwAuthCodeInput").value.trim();
+	const messageEl = document.getElementById("pwAuthCodeMessage");
+
+	if (!inputCode) {
+		messageEl.textContent = "인증번호를 입력해주세요.";
+		messageEl.style.color = "red";
+		return;
+	}
+
+	// 서버에 인증번호 검증 요청
+	fetch(`${contextPath}/verify-auth-code.do`, {
+		method: "POST",
+		headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		body: `authCode=${encodeURIComponent(inputCode)}`
+	})
+	.then(res => res.json())
+	.then(data => {
+		if (data.result === "OK") {
+			messageEl.style.color = "green";
+			messageEl.textContent = "인증이 완료되었습니다.";
+
+			setTimeout(() => {
+				document.querySelector(".find_pw_form").style.display = "none";
+				document.querySelector(".reset_pw_form").style.display = "block";
+			}, 1000);
+		} else {
+			messageEl.style.color = "red";
+			messageEl.textContent = "인증번호가 일치하지 않거나 만료되었습니다.";
+		}
+	})
+	.catch(error => {
+		console.error("비밀번호 인증번호 확인 오류:", error);
+		messageEl.textContent = "인증 중 문제가 발생했습니다.";
+		messageEl.style.color = "red";
 	});
 });

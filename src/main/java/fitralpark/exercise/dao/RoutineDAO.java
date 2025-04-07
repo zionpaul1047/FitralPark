@@ -12,9 +12,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+<<<<<<< HEAD
 import fitralpark.exercise.dto.ExerciseRecordDTO;
+=======
+import fitralpark.common.utils.DBUtil;
+>>>>>>> origin/HN2
 import fitralpark.exercise.dto.RoutineDTO;
-import fitralpark.exercise.dto.RoutineExerciseDTO;
 
 public class RoutineDAO {
 	
@@ -50,11 +53,11 @@ public class RoutineDAO {
 		}
 	}
 
-	public ArrayList<RoutineDTO> routineList() {
+	public ArrayList<RoutineDTO> list() {
 		
 		try {
 
-			ArrayList<RoutineDTO> list = new ArrayList<RoutineDTO>();
+			ArrayList<RoutineDTO> list = new ArrayList<>();
 
 			String sql = "SELECT "
 	                + "r.routine_no as routine_no, "
@@ -65,9 +68,9 @@ public class RoutineDAO {
 	                + "m.member_id as member_id, "
 	                + "r.views as views, "
 	                + "LISTAGG(DISTINCT ec.exercise_category_name, ', ') "
-	                + "WITHIN GROUP (ORDER BY ec.exercise_category_name) as exercise_categories, "
+	                + "   WITHIN GROUP (ORDER BY ec.exercise_category_name) as exercise_categories, "
 	                + "LISTAGG(DISTINCT ep.exercise_part_name, ', ') "
-	                + "WITHIN GROUP (ORDER BY ep.exercise_part_name) as exercise_parts, "
+	                + "   WITHIN GROUP (ORDER BY ep.exercise_part_name) as exercise_parts, "
 	                + "SUM(e.calories_per_unit) as total_calories "
 	                + "FROM routine r "
 	                + "INNER JOIN routine_category rc ON r.routine_category_no = rc.routine_category_no "
@@ -89,9 +92,7 @@ public class RoutineDAO {
 			rs = stat.executeQuery(sql);
 
 			while (rs.next()) {
-				
 				RoutineDTO dto = new RoutineDTO();
-				
 	            dto.setRoutineNo(rs.getString("routine_no"));
 	            dto.setRoutineName(rs.getString("routine_name"));
 	            dto.setRoutineCategoryName(rs.getString("routine_category_name"));
@@ -102,7 +103,6 @@ public class RoutineDAO {
 	            dto.setMemberNickname(rs.getString("member_nickname"));
 	            dto.setMemberId(rs.getString("member_id"));
 	            dto.setViews(rs.getString("views"));
-	            
 	            list.add(dto);
 			}
 			
@@ -115,6 +115,7 @@ public class RoutineDAO {
 		return null;
 	}
 	
+<<<<<<< HEAD
 	public ArrayList<RoutineExerciseDTO> exerciseList(String routineNo) {
 		
 		try {
@@ -526,6 +527,9 @@ public class RoutineDAO {
         }
 
 	}
+=======
+	
+>>>>>>> origin/HN2
 	
 	public void addFavorite(String routineNo, String memberId) {
         String sql = "INSERT INTO diet_bookmark (DIET_BOOKMARK_NO, diet_no, member_id, regdate) VALUES (seq_diet_bookmark.nextVal, ?, ?, SYSDATE)";

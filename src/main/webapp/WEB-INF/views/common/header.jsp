@@ -2,9 +2,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- 공통 CSS/JS -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/font.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css">
 <!-- contextPath 전역 변수 -->
 <script>
 	const contextPath = '${pageContext.request.contextPath}';
+	let loginPopupWindow = null;
 </script>
 <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/header.js"></script>
@@ -15,7 +19,7 @@
 		<!-- 로고 -->
 		<h1 class="h_logo">
 			<a href="${pageContext.request.contextPath}/index.do">
-				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="핏트럴파크">
+				<img src="${pageContext.request.contextPath}/assets/images/logo/widthlogo.png" alt="FitralPark">
 			</a>
 		</h1>
 		<!-- 메인 메뉴 -->
@@ -26,7 +30,7 @@
 					<a href="#">식단 관리</a>
 					<ul class="sub_menu">
 						<li><a href="#">식단 계획캘린더</a></li>
-						<li><a href="#">식단 라이브러리</a></li>
+						<li><a href="${pageContext.request.contextPath}/diet/dietRecommend.do">식단 라이브러리</a></li>
 						<li><a href="#">식단 분석</a></li>
 					</ul>
 				</li>
@@ -47,11 +51,11 @@
 					</ul>
 				</li>
 				<li class="menu_col">
-					<a href="#">커뮤니티</a>
+					<a href="${pageContext.request.contextPath}/bulletinList.do">커뮤니티</a>
 					<ul class="sub_menu">
-						<li><a href="">공지사항</a></li>
-						<li><a href="">자유게시판</a></li>
-						<li><a href="">Q&A게시판</a></li>
+						<li><a href="${pageContext.request.contextPath}/announcementList.do">공지사항</a></li>
+						<li><a href="${pageContext.request.contextPath}/bulletinPost.do">자유게시판</a></li>
+						<li><a href="${pageContext.request.contextPath}/qnaList.do">Q&A게시판</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -69,14 +73,36 @@
 				</c:when>
 				<c:otherwise>
 					<!-- 로그인 상태 -->
-					<div class="welcome_msg">${sessionScope.loginUser.memberName} 님 반갑습니다. 어서오세요.</div>
+					<div class="welcome_msg">
+						<strong>${sessionScope.loginUser.memberName}</strong> 님 반갑습니다. 어서오세요.
+					</div>
 					<ul class="icon_menu_grup">
-						<!-- 알림, 대시보드, 마이페이지 아이콘 유지 -->
+					
+					<!-- 알람 버튼 -->
+					<li class="icon_menu" id="alarmButton">
+						<img id="alarmIcon" src="${pageContext.request.contextPath}/assets/images/icon/belloff.png" alt="알림" style="width: 24px; height: 24px;">
+					</li>
+					<div id="alarmDropdown" class="alarm-dropdown">
+					    <!-- 알림 목록 출력 예정 -->
+					    <div class="alarm-toggle">
+					        <label for="alarmToggle">알림 수신</label>
+					        <label class="switch">
+					            <input type="checkbox" id="alarmToggle">
+					            <span class="slider"></span>
+					        </label>
+					    </div>
+					    <div class="alarm-list">
+					        <p>알림 내용이 여기에 표시됩니다.</p>
+					    </div>
+					</div>
+						
+						
+						
 						<li class="icon_menu">
 							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
 						</li>
 						<li class="icon_menu">
-							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
+							<a href="${pageContext.request.contextPath}/dashboard.do"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
 						</li>
 					</ul>
 					<ul class="login_btn">
@@ -88,12 +114,7 @@
 					</ul>
 				</c:otherwise>
 			</c:choose>
-
 		</nav>
-
-
-
-
 		<!-- btn_open -->
 		<div class="btn_open">
 			<span class="top"></span> <span class="middle"></span> <span
@@ -117,36 +138,18 @@
 			const overlay = document.getElementById("overlay");
 			if (overlay) overlay.style.display = "block";
 
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
-			);
+			if (loginPopupWindow == null || loginPopupWindow.closed) {
+				loginPopupWindow = window.open(
+					contextPath + "/login.do",
+					"loginPopup",
+					"width=800,height=850,resizable=no,scrollbars=no"
+				);
+			} else {
+				loginPopupWindow.focus(); // 이미 열린 팝업이 있을 경우 다시 띄우지 않고 포커스만 주기
+			}
 		});
 	</script>
 </c:if>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-	// 수동 로그인 팝업 버튼
-	const authButton = document.getElementById("authButton");
-	if (authButton) {
-		authButton.addEventListener("click", function () {
-			const overlay = document.getElementById("overlay");
-			if (overlay) overlay.style.display = "block";
-
-			window.open(
-				contextPath + "/login.do",
-				"loginPopup",
-				"width=500,height=600,resizable=no,scrollbars=no"
-			);
-		});
-	}
-});
-</script>
-
-
 
 
 <!-- full-menu -->
@@ -188,20 +191,20 @@ document.addEventListener("DOMContentLoaded", function () {
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">커뮤니티</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/announcementList.do">커뮤니티</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">공지사항</a></li>
-					<li><a href="">자유게시판</a></li>
-					<li><a href="">Q&A게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/announcementList.do">공지사항</a></li>
+					<li><a href="${pageContext.request.contextPath}/bulletinList.do">자유게시판</a></li>
+					<li><a href="${pageContext.request.contextPath}/qnaList.do">Q&A게시판</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
-			<li><a href="">마이페이지</a> <!-- depth02 -->
+			<li><a href="${pageContext.request.contextPath}/dashboard.do">마이페이지</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">대시보드</a></li>
-					<li><a href="">나의활동</a></li>
-					<li><a href="">회원정보</a></li>
+					<li><a href="${pageContext.request.contextPath}/dashboard.do">대시보드</a></li>
+					<li><a href="#">나의활동</a></li>
+					<li><a href="${pageContext.request.contextPath}/mdfyuserinfo.do">회원정보수정</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 		</ul>

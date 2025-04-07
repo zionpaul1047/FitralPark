@@ -1,5 +1,6 @@
 package fitralpark.user.controller;
 
+import fitralpark.common.utils.ValidationUtil;
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.UserDTO;
 
@@ -22,7 +23,6 @@ public class RegisterController extends HttpServlet {
 		String pw = req.getParameter("password");
 		String name = req.getParameter("name");
 		String nickname = req.getParameter("nickname");
-
 		String jumin = req.getParameter("jumin1") + req.getParameter("jumin2_first") + req.getParameter("jumin2_rest");
 
 		String tel = "";
@@ -31,13 +31,40 @@ public class RegisterController extends HttpServlet {
 		} else {
 			tel = req.getParameter("phone1") + "-" + req.getParameter("phone2") + "-" + req.getParameter("phone3");
 		}
-		// hidden input에서 바로 받기
+
 		String email = req.getParameter("email");
+		String address = req.getParameter("zipcode") + "◈" + req.getParameter("address") + "◈" + req.getParameter("address_detail");
 
-		String address = req.getParameter("zipcode") + " " + req.getParameter("address") + " "
-				+ req.getParameter("address_detail");
+		// 2. 서버 유효성 검사
+		resp.setContentType("text/html;charset=UTF-8");
+		String contextPath = req.getContextPath();
 
-		// 2. DTO 생성
+		if (!ValidationUtil.isValidId(id)) {
+			resp.getWriter().write("<script>alert('아이디 형식이 올바르지 않습니다.'); history.back();</script>");
+			return;
+		}
+		if (!ValidationUtil.isValidPassword(pw)) {
+			resp.getWriter().write("<script>alert('비밀번호 형식이 올바르지 않습니다.'); history.back();</script>");
+			return;
+		}
+		if (!ValidationUtil.isValidNickname(nickname)) {
+			resp.getWriter().write("<script>alert('닉네임 형식이 올바르지 않습니다.'); history.back();</script>");
+			return;
+		}
+		if (!ValidationUtil.isValidJumin(jumin)) {
+			resp.getWriter().write("<script>alert('주민등록번호 형식이 올바르지 않습니다.'); history.back();</script>");
+			return;
+		}
+		if (!ValidationUtil.isValidEmail(email)) {
+			resp.getWriter().write("<script>alert('이메일 인증 또는 형식을 확인해주세요.'); history.back();</script>");
+			return;
+		}
+		if (!ValidationUtil.isValidPhone(tel)) {
+			resp.getWriter().write("<script>alert('전화번호 형식이 올바르지 않습니다.'); history.back();</script>");
+			return;
+		}
+
+		// 3. DTO 생성		
 		UserDTO dto = new UserDTO();
 		dto.setMemberId(id);
 		dto.setPw(pw);
@@ -60,20 +87,17 @@ public class RegisterController extends HttpServlet {
 		dto.setAdminCheck(0);
 		dto.setPlanPublicCheck(0);
 
-		// 3. DB 저장
+		// 4. DB 저장
 		UserDAO dao = new UserDAO();
 		int result = dao.insertMember(dto);
 
-		// 4. 결과 처리
-		String contextPath = req.getContextPath(); // /fitralpark
-		resp.setContentType("text/html;charset=UTF-8");
-
+		// 5. 결과 처리
 		if (result > 0) {
 			resp.getWriter().write("<script>"
-				    + "alert('회원가입이 완료되었습니다.');"
-				    + "window.opener.location.href='" + contextPath + "/index.do';"
-				    + "window.location.href='" + contextPath + "/login.do?show=login';"
-				    + "</script>");
+				+ "alert('회원가입이 완료되었습니다.');"
+				+ "window.opener.location.href='" + contextPath + "/index.do';"
+				+ "window.location.href='" + contextPath + "/login.do?show=login';"
+				+ "</script>");
 		} else {
 			resp.getWriter().write("<script>alert('회원가입에 실패했습니다.'); history.back();</script>");
 		}

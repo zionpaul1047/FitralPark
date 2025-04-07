@@ -199,6 +199,52 @@
 	    resize: none; /* 크기 조절 불가능 */
 	}
 	
+	.edit_area {
+	    margin-top: 10px;
+	}
+
+	.edit_textarea {
+	    width: 100%;
+	    min-height: 60px;
+	    margin-bottom: 10px;
+	    padding: 8px;
+	    border: 1px solid #ddd;
+	    border-radius: 4px;
+	    resize: vertical;
+	}
+
+	.edit_buttons {
+	    display: flex;
+	    gap: 10px;
+	    margin-top: 10px;
+	}
+
+	.edit_buttons button {
+	    padding: 10px 20px;
+	    border-radius: 20px;
+	    border: 2px solid #000000;
+	    cursor: pointer;
+	    transition: background-color 0.3s ease;
+	    background-color: #FFFFFF;
+	    color: #000000;
+	}
+
+	.edit_buttons button:hover {
+	    background-color: #f5f5f5;
+	    border-color: #999;
+	}
+
+	.save-btn {
+	    background-color: #FFFFFF !important;
+	}
+
+	.cancel-btn {
+	    background-color: #FFFFFF !important;
+	}
+
+	.edit_buttons button:hover {
+	    opacity: 0.9;
+	}
 	
 </style>
 </head>
@@ -212,7 +258,7 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%@ include file="/WEB-INF/views/common/left_menu_community.jsp" %>
 		</div>
 		
 		<div class="grid_center">
@@ -231,7 +277,11 @@
 				<table id="posttable">
 					<tr>
 						<th>제목</th>
-						<td>[${post.header_name}] ${post.post_subject}</td>
+						<td>[${post.header_name}] ${post.post_subject}
+							<a href="javascript:void(0);" onclick="window.open('report.do?target_type=bulletin_post&post_no=${post.post_no}&creator_id=${post.creator_id}', 'reportPopup', 'width=500,height=600,resizable=no,scrollbars=no')">
+								<i class="fa-solid fa-land-mine-on" style="cursor: pointer;"></i>
+							</a>
+						</td>
 					</tr>
 					<tr>
 						<th>작성자</th>
@@ -241,7 +291,7 @@
 					</tr>
 					<tr>
 						<th>조회수</th>
-						<td>${post.post_record_cnt}</td>
+						<td>${post.views}</td>
 						<th>추천수</th>
 						<td>${post.post_recommend}</td>
 					</tr>
@@ -251,15 +301,17 @@
 					</tr>
 				</table>
 				
+				<!-- 추천, 비추천 -->
 				<div class="recommend_area">
 					<button type="button" id="btn_recommend" class="recommend_button" data-post_no="${post.post_no}"><i class="fa-regular fa-thumbs-up"></i>추천</button>
-					<span id="recommend_count" class="recommend_count">${post.post_recommend}</span>
+					<span id="recommend_count" class="recommend_count" >${post.post_recommend}</span>
 					<button type="button" id="btn_decommend" class="decommend_button" data-post_no="${post.post_no}"><i class="fa-regular fa-thumbs-down"></i>비추천</button>
 					<span id="decommend_count" class="decommend_count">${post.post_decommend}</span>
 				</div>
 				
 				<div id="comment_form">
-					<form action="" method="post">
+					<form action="/fitralpark/bulletinPostOK.do" method="post">
+						<input type="hidden" name="post_no" value="${post.post_no}">
 						<textarea id="comment_textarea" name="comment_content" placeholder="댓글을 입력하세요."></textarea>
 						<div>
 							<button id="comment_btn" type="submit">댓글 작성</button>
@@ -267,20 +319,35 @@
 					</form>
 				</div>
 
-
+				<!-- 댓글 띄우기 -->
 				<div id="comment_area">
 				<c:forEach items="${Comment_list}" var="commentDto">
-					<div class="comment_item">
+					<div class="comment_item" data-comment-no="${commentDto.comment_no}">
 						<div class="comment_header">
 							<div class="comment_nickname">
 								<a href="">${commentDto.nickname}(${commentDto.creator_id})</a>
+								<c:if test="${loginUser.memberId eq commentDto.creator_id}">
+									<button type="button" class="edit-btn" onclick="toggleEdit(this, '${commentDto.comment_no}', '${commentDto.creator_id}')">
+										<i class="fa-regular fa-pen-to-square"></i>
+									</button>
+									<button type="button" onclick="deleteComment('${commentDto.comment_no}', '${commentDto.creator_id}')">
+										<i class="fa-solid fa-xmark"></i>
+									</button>
+								</c:if>
 							</div>
 							<div class="comment_regdate">
 								${commentDto.regdate}
 							</div>
 						</div>
-						<div class="comment_content">s
+						<div class="comment_content" id="content_${commentDto.comment_no}">
 							${commentDto.comment_content}
+						</div>
+						<div class="edit_area" id="edit_${commentDto.comment_no}" style="display: none;">
+							<textarea class="edit_textarea">${commentDto.comment_content}</textarea>
+							<div class="edit_buttons">
+								<button type="button" class="save-btn" onclick="saveComment('${commentDto.comment_no}')">저장</button>
+								<button type="button" class="cancel-btn" onclick="cancelEdit('${commentDto.comment_no}')">취소</button>
+							</div>
 						</div>
 					</div>
 				</c:forEach>
@@ -292,7 +359,7 @@
 					</div>
 					<div class="right_button">
 						<button type="button" onclick="location.href='bulletinPostEdit.do?post_no=${post.post_no}'">수정</button>
-						<button type="button" onclick="location.href='bulletinDelete.do?post_no=${post.post_no}'">삭제</button>
+						<button type="button" onclick="window.open('bulletinPostDel.do?post_no=${post.post_no}', 'deletePopup', 'width=500,height=300,resizable=no,scrollbars=no')">삭제</button>
 					</div>
 				</div>
 				</div>
@@ -316,34 +383,37 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
 	$(document).ready(function() {
+		
 		// 추천 버튼 클릭 이벤트
 		$("#btn_recommend").click(function() {
 			var postNo = $(this).data("post_no");
-			updateRecommend(postNo, "recommend");
+			updateRecommend(postNo, "0");
 		});
 
 		// 비추천 버튼 클릭 이벤트
 		$("#btn_decommend").click(function() {
 			var postNo = $(this).data("post_no");
-			updateRecommend(postNo, "decommend");
+			updateRecommend(postNo, "1");
 		});
 
 		// 추천/비추천 업데이트 함수
-		function updateRecommend(postNo, type) {
+		function updateRecommend(post_no, vote_check) {
 			$.ajax({
-				url: "/bulletinpostok.do",
-				type: "POST", // POST 방식으로 변경
+				url: "${pageContext.request.contextPath}/bulletinPostOK.do",
+				type: "POST",
 				data: {
-					post_no: postNo,
-					type: type // 추천인지 비추천인지 구분하는 type 파라미터 추가
+					post_no: post_no,
+					vote_check: vote_check // 추천인지 비추천인지 구분하는 type 파라미터 추가
 				},
 				success: function(data) {
 					if (data.success) {
-						$("#recommend_count").text(data.recommend);
-						$("#decommend_count").text(data.decommend);
+						$("#recommend_count").text(data.post_recommend);
+						$("#decommend_count").text(data.post_decommend);
+						window.location.reload();
 					} else {
-						alert(data.message); // 중복 추천/비추천 등의 에러 메시지 표시
+						window.location.reload();
 					}
 				},
 				error: function(error) {
@@ -353,6 +423,104 @@
 			});
 		}
 	});
+
+	//댓글 수정
+	function toggleEdit(button, commentNo, creatorId) {
+		const contentDiv = document.getElementById('content_' + commentNo);
+		const editDiv = document.getElementById('edit_' + commentNo);
+		
+		if (!contentDiv || !editDiv) {
+			console.error('Required elements not found');
+			return;
+		}
+		
+		const textarea = editDiv.querySelector('.edit_textarea');
+		if (!textarea) {
+			console.error('Textarea not found');
+			return;
+		}
+		
+		contentDiv.style.display = 'none';
+		editDiv.style.display = 'block';
+		textarea.value = contentDiv.textContent.trim();
+		textarea.focus();
+	}
+
+	function cancelEdit(commentNo) {
+		const contentDiv = document.getElementById('content_' + commentNo);
+		const editDiv = document.getElementById('edit_' + commentNo);
+		
+		contentDiv.style.display = 'block';
+		editDiv.style.display = 'none';
+	}
+
+	function saveComment(commentNo) {
+		const editDiv = document.getElementById('edit_' + commentNo);
+		const textarea = editDiv.querySelector('.edit_textarea');
+		const commentContent = textarea.value.trim();
+		const commentItem = editDiv.closest('.comment_item');
+		const creatorId = commentItem.querySelector('.comment_nickname').textContent.match(/\((.*?)\)/)[1];
+		const postNo = '${post.post_no}';
+
+		if (commentContent === '') {
+			alert('댓글 내용을 입력해주세요.');
+			return;
+		}
+
+		$.ajax({
+			url: '/fitralpark/bulletinCommentEditOK.do',
+			type: 'POST',
+			data: {
+				comment_no: commentNo,
+				comment_content: commentContent,
+				comment_creator_id: creatorId,
+				post_no: postNo
+			},
+			dataType: 'json',
+			success: function(response) {
+				if (response.status === 'success') {
+					const contentDiv = document.getElementById('content_' + commentNo);
+					contentDiv.textContent = commentContent;
+					cancelEdit(commentNo);
+				} else {
+					alert(response.message);
+				}
+			},
+			error: function() {
+				alert('댓글 수정 중 오류가 발생했습니다.');
+			}
+		});
+	}
+
+	function deleteComment(commentNo, creatorId) {
+		if(confirm('댓글을 삭제하시겠습니까?')) {
+			var form = document.createElement('form');
+			form.method = 'POST';
+			form.action = 'bulletinCommentDelOK.do';
+			
+			var commentNoInput = document.createElement('input');
+			commentNoInput.type = 'hidden';
+			commentNoInput.name = 'comment_no';
+			commentNoInput.value = commentNo;
+			
+			var creatorIdInput = document.createElement('input');
+			creatorIdInput.type = 'hidden';
+			creatorIdInput.name = 'comment_creator_id';
+			creatorIdInput.value = creatorId;
+
+			var postNoInput = document.createElement('input');
+			postNoInput.type = 'hidden';
+			postNoInput.name = 'post_no';
+			postNoInput.value = '${post.post_no}';
+			
+			form.appendChild(commentNoInput);
+			form.appendChild(creatorIdInput);
+			form.appendChild(postNoInput);
+			document.body.appendChild(form);
+			form.submit();
+		}
+	}
+
 </script>
 	
 

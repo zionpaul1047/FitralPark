@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,15 +8,14 @@
 	<%@ include file="/WEB-INF/views/common/asset.jsp" %>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<script>
-		const contextPath = "${pageContext.request.contextPath}";
-	</script>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/auth/auth.css">
+<script>
+	const contextPath = '${pageContext.request.contextPath}';
+</script>
 </head>
 <body class="login-page">
 	<div class="login_section">
@@ -43,8 +42,9 @@
 					</div>
 					<div class="form-group mb-0">
 						<button type="submit" class="btn btn-primary w-100">로그인</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
+					
 				</form>
 				<div class="already_member_box d-flex justify-content-between px-2">
 					<span role="button" onclick="moveToRegister()">회원가입하기</span>
@@ -54,6 +54,131 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- 아이디 찾기 폼 -->
+			<div class="accounts_forms find_id_form w-100" id="find-id" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>아이디 찾기</h1>
+					<p class="mt-2">가입 시 등록한 이름과 이메일을 입력하세요.</p>
+				</div>
+			
+				<!-- 아이디 찾기 성공 시 메시지 -->
+				<c:if test="${not empty foundId}">
+					<div class="alert alert-success text-center mt-3" role="alert">
+						회원님의 아이디는 <strong>${foundId}</strong> 입니다.
+					</div>
+					<div class="text-center mt-3">
+						<button type="button" class="btn btn-primary w-100" onclick="moveToLogin()">로그인 하러 가기</button>
+					</div>
+				</c:if>
+			
+				<!-- 아이디 찾기 실패 시 메시지 -->
+				<c:if test="${not empty findIdError}">
+					<div class="alert alert-danger text-center mt-2" role="alert">
+						${findIdError}
+					</div>
+				</c:if>
+			
+				<!-- 아이디 찾기 입력 폼 -->
+				<c:if test="${empty foundId}">
+					<form method="POST" action="${pageContext.request.contextPath}/find-id.do">
+						<div class="form-group">
+							<label for="find_id_name">이름</label>
+							<input type="text" class="form-control" id="find_id_name" name="name" required>
+						</div>
+						<div class="form-group">
+							<label for="find_id_email">이메일</label>
+							<input type="email" class="form-control" id="find_id_email" name="email" required>
+						</div>
+						<div class="form-group">
+							<button type="submit" class="btn btn-primary w-100">아이디 찾기</button>
+							<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+						</div>
+					</form>
+				</c:if>
+			</div>
+
+
+			
+			<!-- 비밀번호 찾기 폼 -->
+			<div class="accounts_forms find_pw_form w-100" id="find-pw" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>비밀번호 찾기</h1>
+					<p class="mt-2">가입 시 등록한 정보(아이디, 이름, 이메일)를 입력하세요.</p>
+				</div>
+			
+				<!-- 사용자 정보 입력 및 인증번호 발송 -->
+				<div class="form-group">
+					<label for="find_pw_id">아이디</label>
+					<input type="text" class="form-control" id="find_pw_id" name="id" required>
+				</div>
+				<div class="form-group">
+					<label for="find_pw_name">이름</label>
+					<input type="text" class="form-control" id="find_pw_name" name="name" required>
+				</div>
+				<div class="form-group">
+					<label for="find_pw_email">이메일</label>
+					<input type="email" class="form-control" id="find_pw_email" name="email" required>
+				</div>
+			
+				<!-- 인증번호 발송 버튼 -->
+				<div class="form-group">
+					<button type="button" class="btn btn-primary w-100" id="sendPwAuthBtn">인증번호 받기</button>
+				</div>
+			
+				<!-- 인증번호 입력 및 확인 -->
+				<div class="form-group" id="pwAuthCodeWrap" style="display: none;">
+					<label for="pwAuthCodeInput">인증번호 입력</label>
+					<div class="d-flex align-items-center">
+						<input type="text" id="pwAuthCodeInput" maxlength="6" class="form-control mr-2" placeholder="●●●●●●" style="max-width: 140px;">
+						<button type="button" id="pwAuthCodeCheckBtn" class="btn btn-secondary">확인</button>
+					</div>
+					<small id="pwAuthCodeMessage" class="form-text mt-1 text-danger"></small>
+				</div>
+			
+				<div class="form-group">
+					<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+				</div>
+			</div>
+			
+			
+			<!-- 비밀번호 재설정 폼 -->
+			<div class="accounts_forms reset_pw_form w-100" id="reset-pw" style="display: none;">
+				<div class="accounts_image">
+					<img src="${pageContext.request.contextPath}/assets/images/logo/squarelogo.png" alt="로고">
+				</div>
+				<div class="title text-center">
+					<h1>비밀번호 재설정</h1>
+					<p class="mt-2">인증번호를 입력하고 새로운 비밀번호를 설정하세요.</p>
+				</div>
+				<form method="POST" action="${pageContext.request.contextPath}/reset-pw.do">
+					<div class="form-group">
+						<label for="inputAuthCode">인증번호</label>
+						<input type="text" class="form-control" id="inputAuthCode" name="authCode" maxlength="6" required />
+					</div>
+					<div class="form-group">
+						<label for="newPassword">새 비밀번호</label>
+						<input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="영문/숫자/특수문자 조합 8~16자" required />
+					</div>
+					<div class="form-group">
+						<label for="confirmPassword">비밀번호 확인</label>
+						<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required />
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-primary w-100">비밀번호 재설정</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="moveToLogin()">취소</button>
+					</div>
+				</form>
+			</div>
+
+
+
 
 			<!-- 회원가입 폼 -->
 			<div class="accounts_forms signup_form w-100" id="signup" style="display: none;">
@@ -123,9 +248,9 @@
 						<%-- 닉네임 --%>
 						<div class="form-group">
 							<label for="nickname">닉네임<span class="text-danger"> *</span></label>
-							<input type="text" name="nickname" id="nickname" class="form-control input-large"
-								maxlength="15" placeholder="한글/영문/숫자 조합, 최대 15자" required />
-							<small class="form-text text-muted">한글, 영문, 숫자만 입력 가능하며 최대 15자까지 입력할 수 있습니다.</small>
+							<input type="text" name="nickname" id="nickname" class="form-control input-medium"
+								maxlength="15" required />
+							<small id="nicknameMessage" class="form-text text-muted mt-1">한글(완성형, 자모음 단독사용 불가), 영문, 숫자만 가능하며 2~15자 이내</small>
 						</div>
 
 						<%-- 연락처 --%>
@@ -231,7 +356,7 @@
 					</div>
 					<div class="form-group mt-3">
 						<button type="submit" class="btn btn-primary w-100">회원가입</button>
-						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="window.close();">취소</button>
+						<button type="button" class="btn btn-secondary w-100 mt-2" onclick="cancelLogin();">취소</button>
 					</div>
 				</form>
 				<div class="already_member_box text-center">
@@ -260,39 +385,66 @@
 		}
 	</script>
 	<script>
-		window.addEventListener('DOMContentLoaded', function () {
+		window.addEventListener('DOMContentLoaded', function() {
 			const params = new URLSearchParams(window.location.search);
-			if (params.get("show") === "login") {
+			const show = params.get("show");
+
+			if (show === "login") {
 				document.getElementById("signup").style.display = "none";
-		    	document.getElementById("login").style.display = "block";
+				document.getElementById("login").style.display = "block";
+			} else if (show === "signup") {
+				document.getElementById("login").style.display = "none";
+				document.getElementById("signup").style.display = "block";
 			}
 		});
 	</script>
 	<!-- auth.js -->
 	<script src="${pageContext.request.contextPath}/assets/js/auth/auth.js"></script>
-	
-	<%
-	    // 세션에서 로그인 후 이동할 경로 가져오기
-	    String redirect = (String) session.getAttribute("redirectAfterLogin");
-	    if (redirect != null) {
-	        session.removeAttribute("redirectAfterLogin");
-	%>
-	    <script>
-	    window.opener.location.href = "<%=request.getContextPath() + redirect%>"; // 부모창 리디렉션
-	    window.opener.document.getElementById("overlay").style.display = "none"; // 오버레이 제거
-	    // 팝업 닫기
-	    window.close();
-	    </script>
-	<%
-	    } else {
-	%>
-	    <script>
-	        window.opener.location.reload(); // 그냥 새로고침
-	        window.opener.document.getElementById("overlay").style.display = "none";
-	    </script> -->
-	<%
-	    }
-	%>
+	<script>
+		window.addEventListener("beforeunload", function () {
+			if (window.opener && !window.closed) {
+				try {
+					const overlay = window.opener.document.getElementById("overlay");
+					if (overlay) overlay.style.display = "none";
+				} catch (e) {
+				// 접근 오류 무시
+				}
+			}
+		});
+	</script>
+
+<c:if test="${not empty sessionScope.loginUser}">
+	<script>
+		window.addEventListener("DOMContentLoaded", function () {
+			if (window.opener && !window.opener.closed) {
+				const overlay = window.opener.document.getElementById("overlay");
+				if (overlay) overlay.style.display = "none";
+
+				const redirect = '${sessionScope.redirectAfterLogin}';
+				if (redirect) {
+					window.opener.location.href = contextPath + redirect;
+				} else {
+					window.opener.location.reload();
+				}
+				window.close();
+			}
+		});
+	</script>
+</c:if>
+
+<script>
+  function cancelLogin() {
+    if (window.opener) {
+      try {
+        const overlay = window.opener.document.getElementById("overlay");
+        if (overlay) overlay.style.display = "none";
+      } catch (e) {
+        // 접근 오류 무시
+      }
+    }
+    window.close();
+  }
+</script>
 
 
 

@@ -37,7 +37,7 @@ public class SendAuthEmailController extends HttpServlet {
         session.setAttribute("emailAuthTime", System.currentTimeMillis());
 
         // 3. 이메일 전송
-        String subject = "[핏트랄파크] 이메일 인증번호입니다.";
+        String subject = "[👟FitralPark🌳] 이메일 인증번호입니다.";
         String content = "인증번호는 [" + code + "] 입니다. 5분 내로 입력해주세요.";
 
         boolean sendSuccess = MailUtil.sendMail(email, subject, content);

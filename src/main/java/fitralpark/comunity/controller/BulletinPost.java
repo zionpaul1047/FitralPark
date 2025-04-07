@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPost.do")
 public class BulletinPost extends HttpServlet {
@@ -21,18 +22,13 @@ public class BulletinPost extends HttpServlet {
 
 		//BulletinPost
 		HttpSession session = req.getSession();
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (null != session.getAttribute("loginUser")) {
-					
-		} else {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
 		
 		String post_no = req.getParameter("post_no");
 		
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO dto = dao.getPost(post_no);
+		CommunityDTO dto = dao.getPost(post_no, req.getSession());
 		
 		// 댓글 목록 조회
 		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);

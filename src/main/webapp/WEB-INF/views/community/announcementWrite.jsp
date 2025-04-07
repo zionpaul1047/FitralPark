@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
-    <style>
+<%@ include file="/WEB-INF/views/common/asset.jsp" %>
+<style>
         body {
         background-color: rgb(218, 243, 211);
         
@@ -146,7 +147,7 @@
             opacity: 0.9;
         }
 
-    </style>
+</style>
 </head>
 <body>
 	<div class="grid">
@@ -158,7 +159,7 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%@ include file="/WEB-INF/views/common/left_menu_community.jsp" %>
 		</div>
 		
 		<div class="grid_center">
@@ -170,31 +171,41 @@
 				<main>
 				
 				<div id="mainbox">
-				<h1>공지사항 쓰기</h1>
-				<form class="write-form" action="/community/bulletinWrite" method="post">
-					<div class="form-group">
-						<label for="category">말머리</label>
-						<select name="category" id="category" required>
-							<option value="">말머리 선택</option>
-							<option value="공지사항">공지사항</option>
-                            <option value="업데이트">업데이트</option>
-							<option value="이벤트">이벤트</option>
-							<option value="점검">점검</option>
-						</select>
-					</div>
-					<div class="form-group">
-						<label for="title">제목</label>
-						<input type="text" name="title" id="title" required>
-					</div>
-					<div class="form-group">
-						<label for="content">내용</label>
-						<textarea name="content" id="content" required></textarea>
-					</div>
-					<div class="button-group">
-						<button type="submit">작성하기</button>
-						<button type="button" onclick="history.back()">취소</button>
-					</div>
-				</form>
+				<div id="smallbox">
+				<h1>
+					<strong>공지사항 작성</strong>
+				</h1>
+				
+				<!-- 글쓰기 폼 -->
+				<div class="write-form">
+					<form method="POST" action="announcementWriteOK.do">
+						<div class="form-group">
+							<label for="header">말머리</label>
+							<select name="header" id="header" required>
+								<option value="">말머리 선택</option>
+								<c:forEach items="${hlist}" var="hdto">
+									<option value="${hdto.header_no}">${hdto.header_name}</option>
+								</c:forEach>
+							</select>
+						</div>
+						
+						<div class="form-group">
+							<label for="subject">제목</label>
+							<input type="text" name="subject" id="subject" required>
+						</div>
+						
+						<div class="form-group">
+							<label for="content">내용</label>
+							<textarea name="content" id="content" required></textarea>
+						</div>
+						
+						<div class="button-group">
+							<button type="submit">등록하기</button>
+							<button type="button" onclick="location.href='/fitralpark/announcementList.do';">취소하기</button>
+						</div>
+					</form>
+				</div>
+				</div>
 				</div>
 				</main>
 				

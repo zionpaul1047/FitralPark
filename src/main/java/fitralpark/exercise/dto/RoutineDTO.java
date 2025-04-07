@@ -8,7 +8,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RoutineDTO {
-	
 	private String routineNo;
     private String routineName;
     private String routineCategoryName;
@@ -20,6 +19,7 @@ public class RoutineDTO {
     private String memberNickname;
     private String memberId;
     private String views;
+<<<<<<< HEAD
     private String publicCheck;
     private String favoriteCheck;
     private String creatorId;
@@ -27,5 +27,6 @@ public class RoutineDTO {
     private String disrecommend;
     
     
+=======
+>>>>>>> origin/HN2
 }
-

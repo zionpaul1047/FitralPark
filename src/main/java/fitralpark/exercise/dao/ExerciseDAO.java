@@ -1,4 +1,5 @@
 package fitralpark.exercise.dao;
+<<<<<<< HEAD
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,42 +18,12 @@ import fitralpark.exercise.dto.ExerciseDTO;
 import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.user.dto.UserDTO;
 
+=======
+>>>>>>> origin/HN2
 //(DB 접근 DAO 클래스 자리)
 public class ExerciseDAO {
-	
-	private Connection conn;
-	private Statement stat;
-	private PreparedStatement pstat;
-	private ResultSet rs;
-	
-	public ExerciseDAO() {
-		
-		try {
-			
-			Context ctx = new InitialContext();
-			Context env = (Context)ctx.lookup("java:comp/env");
-			DataSource ds = (DataSource)env.lookup("jdbc/pool");
-			
-			conn = ds.getConnection();
-			stat = conn.createStatement();
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
-	public void close() {
-		try {
-			this.conn.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public List<ExerciseDTO> getExerciseList(String keyword, String category) {
-	    List<ExerciseDTO> list = new ArrayList<>();
 
+<<<<<<< HEAD
 	    StringBuilder sql = new StringBuilder();
 	    sql.append("SELECT e.exercise_no, e.exercise_name, ");
 	    sql.append("ec.exercise_category_name, ep.exercise_part_name, e.calories_per_unit ");
@@ -395,4 +366,6 @@ public class ExerciseDAO {
 	    }
 	}
 	
+=======
+>>>>>>> origin/HN2
 }

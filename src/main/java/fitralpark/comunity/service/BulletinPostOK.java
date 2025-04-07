@@ -1,6 +1,7 @@
 package fitralpark.comunity.service;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,77 +11,83 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
+import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostOK.do")
 public class BulletinPostOK extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // PostOK
-		req.setCharacterEncoding("UTF-8");
-		resp.setContentType("text/html; charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
     	
-
-        String postNoStr = req.getParameter("post_no");
-        String type = req.getParameter("type");
         HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("loginUser"); // 세션에서 userId 가져오기
-
-        StringBuilder jsonBuilder = new StringBuilder(); // JSON 문자열을 직접 생성하기 위한 StringBuilder
-
-        if (userId == null) {
-            jsonBuilder.append("{\"success\":false,\"message\":\"로그인이 필요합니다.\"}");
-            resp.getWriter().write(jsonBuilder.toString());
+        UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
+        
+        if (userDto == null) {
+            resp.sendRedirect(req.getContextPath() + "/login.do");
             return;
         }
-
-        if (postNoStr == null || type == null) {
-            jsonBuilder.append("{\"success\":false,\"message\":\"잘못된 요청입니다.\"}");
-            resp.getWriter().write(jsonBuilder.toString());
-            return;
-        }
-
-        int postNo = Integer.parseInt(postNoStr);
+        
+        CommunityDTO communityDto = new CommunityDTO();
         CommunityDAO dao = new CommunityDAO();
-
+        
         try {
-            //중복 추천/비추천 검사
-            boolean alreadyVoted = dao.checkAlreadyVoted(postNo, userId);
-            if (alreadyVoted) {
-                jsonBuilder.append("{\"success\":false,\"message\":\"이미 추천/비추천 하셨습니다.\"}");
-                resp.getWriter().write(jsonBuilder.toString());
+            String post_no = req.getParameter("post_no");
+            String vote_check = req.getParameter("vote_check");
+            String comment_content = req.getParameter("comment_content");
+            String action = req.getParameter("action");
+            String comment_no = req.getParameter("comment_no");
+            String comment_creator_id = req.getParameter("comment_creator_id");
+
+            if ("edit".equals(action)) {
+                // 권한 확인
+                if (!userDto.getMemberId().equals(comment_creator_id)) {
+                    resp.setContentType("text/plain");
+                    resp.getWriter().write("unauthorized");
+                    return;
+                }
+                // 댓글 수정 처리
+                boolean success = dao.bulletin_Edit_Comment(comment_no, comment_content);
+                resp.setContentType("text/plain");
+                resp.getWriter().write(success ? "success" : "fail");
                 return;
+            } else if (vote_check != null) {
+                // 추천/비추천 처리
+                communityDto.setPost_no(post_no);
+                communityDto.setVote_check(vote_check);
+                
+                boolean result = dao.bulletin_Vote_Check(communityDto, userDto);
+                if (true == result) {
+                    return;
+                } else {
+                    dao.bulletin_Vote_Record(communityDto, userDto);
+                }
+            } else if (comment_content != null && !comment_content.trim().isEmpty()) {
+                // 댓글 작성 처리
+                boolean success = dao.bulletin_Write_Comment(post_no, comment_content, userDto.getMemberId());
+                if (success) {
+                    resp.sendRedirect("/fitralpark/bulletinPost.do?post_no=" + post_no);
+                } else {
+                    PrintWriter out = resp.getWriter();
+                    out.println("<script>");
+                    out.println("alert('댓글 작성에 실패했습니다.');");
+                    out.println("history.back();");
+                    out.println("</script>");
+                    out.close();
+                }
             }
-
-            if ("recommend".equals(type)) {
-                dao.incrementRecommend(postNo); // 추천수 증가
-            } else if ("decommend".equals(type)) {
-                dao.incrementDecommend(postNo); // 비추천수 증가
-            } else {
-                jsonBuilder.append("{\"success\":false,\"message\":\"잘못된 요청입니다.\"}");
-                resp.getWriter().write(jsonBuilder.toString());
-                return;
-            }
-
-            // 추천/비추천 기록 저장
-            dao.insertVoteRecord(postNo, userId, type);
-
-            // 업데이트된 추천/비추천 수 가져오기
-            int recommendCount = dao.getRecommendCount(postNo);
-            int decommendCount = dao.getDecommendCount(postNo);
-
-            jsonBuilder.append("{\"success\":true,\"recommend\":")
-                    .append(recommendCount)
-                    .append(",\"decommend\":")
-                    .append(decommendCount)
-                    .append("}");
         } catch (Exception e) {
             e.printStackTrace();
-            jsonBuilder.append("{\"success\":false,\"message\":\"추천/비추천 처리 중 오류가 발생했습니다.\"}");
+            PrintWriter out = resp.getWriter();
+            out.println("<script>");
+            out.println("alert('처리 중 오류가 발생했습니다.');");
+            out.println("history.back();");
+            out.println("</script>");
+            out.close();
         } finally {
             dao.close();
         }
-
-        resp.getWriter().write(jsonBuilder.toString());
     }
 }

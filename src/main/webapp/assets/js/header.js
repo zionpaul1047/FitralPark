@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
 	const header = document.getElementById("header");
 	const fullMenu = document.getElementById("full-menu");
 	const fullOpenBtn = document.querySelector(".btn_open");
@@ -25,9 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// 로그인 팝업
-	if (authButton) {
+	if (
+		authButton &&
+		window.opener == null &&
+		window.name !== 'LoginPopup' &&
+		window.location.pathname === contextPath + "/index.do"
+	) {
 		authButton.addEventListener("click", () => {
+			const overlay = document.getElementById("overlay");
+			if (overlay) overlay.style.display = "block";
+
 			window.open(
 				contextPath + "/login.do",
 				"LoginPopup",
@@ -47,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			e.stopPropagation();
 			alarmDropdown.classList.toggle("show");
 		});
-
 		document.addEventListener("click", (e) => {
 			if (!alarmDropdown.contains(e.target)) {
 				alarmDropdown.classList.remove("show");
@@ -55,9 +61,32 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+
 	if (alarmToggle && alarmIcon) {
 		alarmToggle.addEventListener("change", () => {
 			alarmIcon.src = contextPath + "/assets/images/icon/" + (alarmToggle.checked ? "bellon.png" : "belloff.png");
+			
+
+			// ⚠️ 추가 기능: 서버에 상태 저장할 경우 아래 코드 추가 가능
+			/*
+			fetch(contextPath + "/toggleAlarmSetting.do", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ alarmOn: isOn })
+			});
+			*/
+			
 		});
+	}
+});
+
+window.addEventListener("scroll", function () {
+	const header = document.getElementById("header");
+	if (!header) return;
+
+	if (window.scrollY > 10) {
+		header.classList.add("scrolled");
+	} else {
+		header.classList.remove("scrolled");
 	}
 });

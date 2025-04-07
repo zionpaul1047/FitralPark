@@ -23,6 +23,7 @@ public class DashBoardController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
+<<<<<<< HEAD
 		System.out.println("페이지 실행");
 		
 		
@@ -93,9 +94,45 @@ public class DashBoardController extends HttpServlet {
 		req.setAttribute("rank", rank);
 		req.setAttribute("mentor_check", mentor_check);
 		req.setAttribute("id", id);
+=======
+>>>>>>> origin/HN2
 		
+		if(req.getSession().getAttribute("loginUser") == null) {
+			resp.sendRedirect("/fitralpark/index.do");
+		} else {
+			
+			UserDTO userdto = (UserDTO)(req.getSession().getAttribute("loginUser"));
+			String id = userdto.getMemberId();
+			
+			
+			//세션값 임시
+//			String id = "hong";
+			String rank = "junior";
+			String mentor_check = "0";
+			
+			UserDTO userDto = new UserDTO();
+			userDto.setMemberId(id);
+			
+			//DashBoardController.java
+			UserDAO dao = new UserDAO();
+			
+			
+			DashDTO dto = dao.getDashInfo(userDto);
+			
+			dao.close();
+			
+			System.out.println(dto);
+			
+			
+			req.setAttribute("dto", dto);
+			req.setAttribute("rank", rank);
+			req.setAttribute("mentor_check", mentor_check);
+			req.setAttribute("id", id);
+			
 
-		req.getRequestDispatcher("/WEB-INF/views/user/dashboard.jsp").forward(req, resp);
+			req.getRequestDispatcher("/WEB-INF/views/user/dashboard.jsp").forward(req, resp);
+		}
+		
 
 	}
 

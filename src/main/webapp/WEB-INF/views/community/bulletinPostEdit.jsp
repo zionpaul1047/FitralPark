@@ -160,7 +160,7 @@
 			    <!-- 오른쪽메뉴 -->
 			    <%@ include file="/WEB-INF/views/common/sidebar.jsp" %>
 			    <!-- 왼쪽메뉴 -->
-			    <%@ include file="/WEB-INF/views/common/left_menu1.jsp" %>
+			    <%@ include file="/WEB-INF/views/common/left_menu_community.jsp" %>
 		</div>
 		
 		<div class="grid_center">
@@ -173,7 +173,7 @@
 				
 				<div id="mainbox">
 				<h1>자유 게시글 수정하기</h1>
-				<form class="edit-form" action="/fitralpark/bulletinPostEditOK.do" method="post">
+				<form class="edit-form" action="/bulletinPostEditOK.do" method="post">
 				
 					<input type="hidden" name="post_no" value="${post.post_no}">
 					

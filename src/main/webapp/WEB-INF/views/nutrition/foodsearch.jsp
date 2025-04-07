@@ -7,9 +7,12 @@
 <head>
 <meta charset="UTF-8">
 <title>FITRALPARK</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/nutrition/foodsearch.css">
+    
     <style>
-
+		
+	
         
         
     </style>
@@ -37,11 +40,9 @@
 					<div class="content_box">
 		    			<div class="sf_body">
 					        <div class="sf_food_search_bar">
-							    <form action="searchFood" method="GET">
-							        <input type="text" name="query" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
-							        <button type="submit" class="sf_food_search_button">🔍</button>
-							    </form>
-							</div>
+                            <input type="text" id="sf_food_search_input" placeholder="검색어를 입력해 주세요" class="sf_food_search_input">
+                            <button type="button" id="sf_food_search_button" class="sf_food_search_button">🔍</button>
+                        </div>
 
 					
 					        <section class="sf_filter_section">
@@ -70,52 +71,32 @@
 					        </section>
 					        
 					        <div class="sf_submenu_1">
-					            <a href=""><div class="sf_submenu_1_1">메뉴1</div></a>
-					            <a href=""><div class="sf_submenu_1_1">메뉴2</div></a>
+					            <a href=""><div class="sf_submenu_1_1" id="menu1">통합검색</div></a>
+					            <a href=""><div class="sf_submenu_1_1" id="menu2">즐겨찾기</div></a>
+					            <!-- 
 					            <a href=""><div class="sf_submenu_1_1">메뉴3</div></a>
 					            <a href=""><div class="sf_submenu_1_1">메뉴4</div></a>
+					             -->
 					            <span class="sf_list_search_bar">
 					                <input type="text" placeholder="리스트 내 검색" class="sf_list_search_input">
 					                <button class="sf_list_search_button">🔍</button>
 					            </span>
 					        </div>
 					        
-					        <section class="sf_result_section">
-							    <c:forEach var="item" items="${results}">
-							        <div class="sf_result_section_1">
-							            <div class="sf_reult_section_1_1">
-							                <div class="sf_result_item_1">
-							                    <img src="#" alt="사진 크롤링" class="sf_result_img_1" id="sf_result_img_1">
-							                    <div class="sf_result_info_1">
-							                        <div class="sf_result_info_food_name_1">
-													    ${item.food_name} ${item.nut_con_str_qua} &nbsp;&nbsp;&nbsp;<span class="sf_result_info_food_detail_1">(${item.food_size})</span>
-													</div>
+					        <!-- 검색 결과 섹션 -->
+						    <section class="sf_result_section" id="sf_result_section">
+						    	<div class="sf_result_section_defult">위의 검색칸에서 검색을 해주세요</div>
+						        <div class="loading" style="display: none;">검색중...</div>
+						        <!-- 검색 결과가 여기에 표시됩니다 -->
+						    </section>
+						
+						    <!-- 즐겨찾기 섹션 -->
+						    <section class="sf_favorite_section" id="sf_favorite_section" style="display: none;">
+						        <!-- 즐겨찾기 데이터가 여기에 표시됩니다 -->
+						        <p>즐겨찾기 목록을 불러오는 중...</p>
+						    </section>
 
-							                        <div class="sf_result_info_food_detail_1">
-							                            <p>
-							                                칼로리(kcal): ${item.enerc} | 단백질(g): ${item.protein} | 탄수화물(g): ${item.chocdf} | 지방(g): ${item.fatce} | 당류(g): ${item.sugar} | 나트륨(mg): ${item.na}<br>
-							                                칼슘(mg): ${item.ca} | 철(mg): ${item.fe} | 인(mg): ${item.p} | 칼륨(mg): ${item.k} | 콜레스테롤(mg): ${item.chole} | 포화지방(g): ${item.fasat}<br>
-							                                트랜스지방(g): ${item.fatrn} | 비타민A(μg RAE): ${item.vataRae} | 베타카로틴(μg): ${item.cartb} | 티아민(mg): ${item.thia}<br>
-							                                리보플라빈(mg): ${item.ribf} | 나이아신(mg): ${item.nia} | 비타민C(mg): ${item.vitac} | 비타민D(μg): ${item.vitd}
-							                            </p>
-							                        </div>
-							                    </div>
-							                </div>
-							            </div>
-							            <div class="sf_result_section_1_2">
-							                <button class="sf_result_favorite_button_1">즐겨찾기 등록</button>
-							            </div>     
-							        </div>
-							    </c:forEach>
-							    
-							    <!-- 검색 결과가 없는 경우 -->
-							    <c:if test="${empty results}">
-							        <div class="no_results_message">
-							            <p>검색 결과가 없습니다. 다른 키워드로 검색해 주세요.</p>
-							        </div>
-							    </c:if>
-							</section>
-
+                        
 					    </div>
 					</div>
 				</div>
@@ -128,9 +109,87 @@
 		</div>
 		
 	</div>
-
-	<script>
 	
+	<!-- <script src="${pageContext.request.contextPath}/assets/js/nutrition/foodsearch_ajax.js"></script> --> <!-- JavaScript 파일 -->
+	<script>
+	  $(document).ready(function() {
+		  
+		    // 페이지 로드 시 기본값 설정 (통합검색 버튼 활성화)
+			$("#menu1").css({
+		        "background-color": "oldlace",
+		        "font-weight": "bold"
+		    });
+
+		    // 메뉴 클릭 이벤트
+		    $(".sf_submenu_1_1").click(function (e) {
+		        e.preventDefault(); // 기본 동작 방지
+
+		        // 모든 메뉴 배경색 초기화
+		        $(".sf_submenu_1_1").css({
+		        	"background-color": "lightgray",
+			        "font-weight": "normal"
+			    });
+
+		        // 클릭된 메뉴만 활성화
+		        $(this).css	({
+			        "background-color": "oldlace",
+			        "font-weight": "bold"
+			    });
+
+		        // 섹션 전환 처리
+		        if (this.id === "menu1") {
+		        	$(".sf_result_section").show();
+		        	$(".sf_favorite_section").hide();
+		        	$(".loading").hide();
+		        	
+		        } else if (this.id === "menu2") {
+		        	$(".sf_favorite_section").show();
+		        	$(".sf_result_section").hide();
+		        }
+		    });
+	        // 검색 버튼 클릭 이벤트
+	        $("#sf_food_search_button").click(function() {
+	            performSearch();
+	        });
+	        
+	        // 엔터키 입력 이벤트
+	        $("#sf_food_search_input").keypress(function(e) {
+	            if (e.which == 13) {
+	                performSearch();
+	                return false; // 폼 제출 방지
+	            }
+	        });
+	        
+	        // 검색 함수
+	        function performSearch() {
+	            var query = $("#sf_food_search_input").val().trim();
+	            
+	            if(query.length === 0) {
+	                alert("검색어를 입력해 주세요.");
+	                return;
+	            }
+	            
+	            // 로딩 표시
+	            $(".loading").show();
+	            $("#sf_result_section").children(":not(.loading)").hide();
+	            
+	            // AJAX 요청
+	            $.ajax({
+	                url: "${pageContext.request.contextPath}/nutrition/foodsearch.do",
+	                type: "post",
+	                data: { query: query },
+	                success: function(response) {
+	                    $("#sf_result_section").html(response);
+	                },
+	                error: function(xhr, status, error) {
+	                    $("#sf_result_section").html("<p>검색 중 오류가 발생했습니다: " + error + "</p>");
+	                },
+	                complete: function() {
+	                    $(".loading").hide();
+	                }
+	            });
+	        }
+	    });
 
 	
 	</script>

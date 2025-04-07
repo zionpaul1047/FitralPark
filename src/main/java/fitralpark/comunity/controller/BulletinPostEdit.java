@@ -1,6 +1,7 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
+import fitralpark.user.dto.UserDTO;
 
 @WebServlet("/bulletinPostEdit.do")
 public class BulletinPostEdit extends HttpServlet {
@@ -21,27 +23,36 @@ public class BulletinPostEdit extends HttpServlet {
 
 		//BulletinPost
 		HttpSession session = req.getSession();
+		UserDTO userDto = (UserDTO) session.getAttribute("loginUser");
 		
-		if (null != session.getAttribute("loginUser")) {
-					
-		} else {
-			resp.sendRedirect(req.getContextPath() + "/login.do");
-			return;
-		}
+		
 		
 		String post_no = req.getParameter("post_no");
 		
 		CommunityDAO dao = new CommunityDAO();
-		CommunityDTO dto = dao.getPost(post_no);
+		CommunityDTO communitydto = dao.getPost(post_no, req.getSession());
 		
-		// 댓글 목록, 말머리 조회
-		ArrayList<CommunityDTO> list = dao.Bulletin_Comment_list(post_no);
+		if (!userDto.getMemberId().equals(communitydto.getCreator_id())) {
+			resp.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = resp.getWriter();
+			out.println("<script>");
+			out.println("alert('수정 권한이 없습니다.');");
+			out.println("window.close();");
+	        out.println("history.back();");
+			out.println("</script>");
+			out.close();
+		    return;
+		}
+		
+		// 말머리 조회
 		ArrayList<CommunityDTO> headerList = dao.getHeaderList();
 		
 		// 불러오기
 		req.setAttribute("headerList", headerList);
-		req.setAttribute("Comment_list", list);
-		req.setAttribute("post", dto);
+		req.setAttribute("post", communitydto);
+		
+		//세션에 정보 저장
+		session.setAttribute("dto", communitydto);
 		
 		dao.close();
 		

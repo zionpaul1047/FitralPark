@@ -20,6 +20,7 @@ import fitralpark.user.dto.DashFoodDTO;
 import fitralpark.user.dto.DashPhysicalHistDTO;
 import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
+import fitralpark.user.dto.DashTodayIntakeDTO;
 import fitralpark.user.dto.UserDTO;
 
 
@@ -95,41 +96,34 @@ public class UserDAO {
 
 	// 회원 정보 수정 (UPDATE)
 	public int updateMember(UserDTO dto) {
-		String sql = "UPDATE member SET "
-				+ "pw = ?, member_pic = ?, background_pic = ?, member_nickname = ?, member_name = ?, "
-				+ "personalnumber = ?, allergy = ?, tel = ?, email = ?, address = ?, "
-				+ "fitness_score = ?, community_score = ?, restrict_check = ?, withdraw_check = ?, "
-				+ "mentor_check = ?, admin_check = ?, plan_public_check = ? " + "WHERE member_no = ?";
-
-		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-			pstmt.setString(1, dto.getPw());
-			pstmt.setString(2, dto.getMemberPic());
-			pstmt.setString(3, dto.getBackgroundPic());
-			pstmt.setString(4, dto.getMemberNickname());
-			pstmt.setString(5, dto.getMemberName());
-			pstmt.setString(6, dto.getPersonalNumber());
-			pstmt.setString(7, dto.getAllergy());
-			pstmt.setString(8, dto.getTel());
-			pstmt.setString(9, dto.getEmail());
-			pstmt.setString(10, dto.getAddress());
-			pstmt.setInt(11, dto.getFitnessScore());
-			pstmt.setInt(12, dto.getCommunityScore());
-			pstmt.setInt(13, dto.getRestrictCheck());
-			pstmt.setInt(14, dto.getWithdrawCheck());
-			pstmt.setInt(15, dto.getMentorCheck());
-			pstmt.setInt(16, dto.getAdminCheck());
-			pstmt.setInt(17, dto.getPlanPublicCheck());
-			pstmt.setInt(18, dto.getMemberNo());
-
-			System.out.println("[DEBUG] 회원가입 시도: " + dto);
-
-			return pstmt.executeUpdate();
-
+		
+		try {
+			String sql = """
+					update member 
+					   set pw = ?
+					     , member_nickname = ?
+					     , tel = ?
+					     , email = ?
+					     , address = ?
+					 where member_id = ?
+					""";
+			
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, dto.getPw());
+			pstat.setString(2, dto.getMemberNickname());
+			pstat.setString(3, dto.getTel());
+			pstat.setString(4, dto.getEmail());
+			pstat.setString(5, dto.getAddress());
+			pstat.setString(6, dto.getMemberId());
+			
+			return pstat.executeUpdate();
+			
+			
 		} catch (Exception e) {
 			System.err.println("[회원정보 수정 실패 - 예외 발생]");
 			e.printStackTrace();
 		}
+		
 
 		return 0;
 	}
@@ -476,7 +470,141 @@ public class UserDAO {
 			}
 			
 			dto.setCrtdietList(crtdietList);
-
+			
+			//하루 영양소 섭취량
+			DashTodayIntakeDTO tdyIntakeNtr = new DashTodayIntakeDTO();
+			
+			sql = """
+					select nvl(sum(enerc),0) as enerc
+					     , nvl(sum(water),0) as water
+					     , nvl(sum(prot),0) as prot
+					     , nvl(sum(fatce),0) as fatce
+					     , nvl(sum(ash),0) as ash
+					     , nvl(sum(chocdf),0) as chocdf
+					     , nvl(sum(sugar),0) as sugar
+					     , nvl(sum(fibtg),0) as fibtg
+					     , nvl(sum(ca),0) as ca
+					     , nvl(sum(fe),0) as fe
+					     , nvl(sum(p),0) as p
+					     , nvl(sum(k),0) as k
+					     , nvl(sum(nat),0) as nat
+					     , nvl(sum(vitaRae),0) as vitaRae
+					     , nvl(sum(retol),0) as retol
+					     , nvl(sum(cartb),0) as cartb
+					     , nvl(sum(thia),0) as thia
+					     , nvl(sum(ribf),0) as ribf
+					     , nvl(sum(nia),0) as nia
+					     , nvl(sum(vitc),0) as vitc
+					     , nvl(sum(vitd),0) as vitd
+					     , nvl(sum(fasat),0) as fasat
+					     , nvl(sum(fatrn),0) as fatrn
+					     , nvl(sum(chole),0) as chole
+					  from (
+					        select NUTRIENT_CD
+					             , nutrient_content
+					             , case when NUTRIENT_CD = 'enerc' then nutrient_content else 0 end as enerc
+					             , case when NUTRIENT_CD = 'water' then nutrient_content else 0 end as water
+					             , case when NUTRIENT_CD = 'prot' then nutrient_content else 0 end as prot
+					             , case when NUTRIENT_CD = 'fatce' then nutrient_content else 0 end as fatce
+					             , case when NUTRIENT_CD = 'ash' then nutrient_content else 0 end as ash
+					             , case when NUTRIENT_CD = 'chocdf' then nutrient_content else 0 end as chocdf
+					             , case when NUTRIENT_CD = 'sugar' then nutrient_content else 0 end as sugar
+					             , case when NUTRIENT_CD = 'fibtg' then nutrient_content else 0 end as fibtg
+					             , case when NUTRIENT_CD = 'ca' then nutrient_content else 0 end as ca
+					             , case when NUTRIENT_CD = 'fe' then nutrient_content else 0 end as fe
+					             , case when NUTRIENT_CD = 'p' then nutrient_content else 0 end as p
+					             , case when NUTRIENT_CD = 'k' then nutrient_content else 0 end as k
+					             , case when NUTRIENT_CD = 'nat' then nutrient_content else 0 end as nat
+					             , case when NUTRIENT_CD = 'vitaRae' then nutrient_content else 0 end as vitaRae
+					             , case when NUTRIENT_CD = 'retol' then nutrient_content else 0 end as retol
+					             , case when NUTRIENT_CD = 'cartb' then nutrient_content else 0 end as cartb
+					             , case when NUTRIENT_CD = 'thia' then nutrient_content else 0 end as thia
+					             , case when NUTRIENT_CD = 'ribf' then nutrient_content else 0 end as ribf
+					             , case when NUTRIENT_CD = 'nia' then nutrient_content else 0 end as nia
+					             , case when NUTRIENT_CD = 'vitc' then nutrient_content else 0 end as vitc
+					             , case when NUTRIENT_CD = 'vitd' then nutrient_content else 0 end as vitd
+					             , case when NUTRIENT_CD = 'fasat' then nutrient_content else 0 end as fasat
+					             , case when NUTRIENT_CD = 'fatrn' then nutrient_content else 0 end as fatrn
+					             , case when NUTRIENT_CD = 'chole' then nutrient_content else 0 end as chole
+					          from (
+					                select NUTRIENT_CD as nutrient_cd
+					                     , sum(nutrient_content) as nutrient_content
+					                  from (
+					                        select ir.food_no as food_no
+					                             , f.nutrient_cd
+					                             , f.nutrient_content
+					                          from intake_record ir
+					                         inner join (
+					                                         select * 
+					                                          from (
+					                                                    select f.food_no, enerc, water, prot, fatce, ash, chocdf, sugar, fibtg, ca, fe, p, k, nat, vitaRae, retol, cartb, thia, ribf, nia, vitc, vitd, fasat, fatrn, chole
+					                                                      from food f
+					                                                     inner join individual_diet_record_food_nutrient_new ifn
+					                                                        on f.food_cd = ifn.food_cd
+					                                                )
+					                                        unpivot (nutrient_content for nutrient_cd in (enerc, water, prot, fatce, ash, chocdf, sugar, fibtg, ca, fe, p, k, nat, vitaRae, retol, cartb, thia, ribf, nia, vitc, vitd, fasat, fatrn, chole))
+					                                     ) f
+					                            on ir.food_no = f.food_no
+					                         where ir.creator_id = ?
+					                           and ir.regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+					                        union all
+					                        select ir.custom_food_no as food_no
+					                             , cf.nutrient_cd
+					                             , cf.nutrient_content
+					                          from intake_record ir
+					                         inner join (
+					                                     select cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, cfn.NUTRIENT_CD, sum(cfn.NUTRIENT_CONTENT) as NUTRIENT_CONTENT
+					                                              from custom_food cf
+					                                             inner join custom_food_nutrient cfn
+					                                                on cf.custom_food_no = cfn.custom_food_no
+					                                             group by cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, cfn.NUTRIENT_CD
+					                                     union all
+					                                     select cf.CUSTOM_FOOD_NO, cf.CUSTOM_FOOD_NAME, 'enerc',kcal_per_unit
+					                                              from custom_food cf
+					                                     ) cf
+					                           on ir.CUSTOM_FOOD_NO = cf.CUSTOM_FOOD_NO
+					                         where ir.creator_id = ?
+					                           and ir.regdate between to_date(to_char(sysdate, 'yyyymmdd'), 'yyyymmdd') and to_date(to_char(sysdate + 1, 'yyyymmdd'), 'yyyymmdd') - (interval '1' second)
+					                        )
+					                 group by NUTRIENT_CD
+					                )
+					        ) x
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, id);
+			pstat.setString(2, id);
+			
+			rs = pstat.executeQuery();
+			
+			if(rs.next()) {
+				tdyIntakeNtr.setNtrt_calorie(rs.getString("enerc"));
+				tdyIntakeNtr.setNtrt_water(rs.getString("water"));
+				tdyIntakeNtr.setNtrt_prot(rs.getString("prot"));
+				tdyIntakeNtr.setNtrt_fatce(rs.getString("fatce"));
+				tdyIntakeNtr.setNtrt_ash(rs.getString("ash"));
+				tdyIntakeNtr.setNtrt_chocdf(rs.getString("chocdf"));
+				tdyIntakeNtr.setNtrt_sugar(rs.getString("sugar"));
+				tdyIntakeNtr.setNtrt_fibtg(rs.getString("fibtg"));
+				tdyIntakeNtr.setNtrt_ca(rs.getString("ca"));
+				tdyIntakeNtr.setNtrt_fe(rs.getString("fe"));
+				tdyIntakeNtr.setNtrt_p(rs.getString("p"));
+				tdyIntakeNtr.setNtrt_k(rs.getString("k"));
+				tdyIntakeNtr.setNtrt_nat(rs.getString("nat"));
+				tdyIntakeNtr.setNtrt_vitaRae(rs.getString("vitaRae"));
+				tdyIntakeNtr.setNtrt_retol(rs.getString("retol"));
+				tdyIntakeNtr.setNtrt_cartb(rs.getString("cartb"));
+				tdyIntakeNtr.setNtrt_thia(rs.getString("thia"));
+				tdyIntakeNtr.setNtrt_ribf(rs.getString("ribf"));
+				tdyIntakeNtr.setNtrt_nia(rs.getString("nia"));
+				tdyIntakeNtr.setNtrt_vitc(rs.getString("vitc"));
+				tdyIntakeNtr.setNtrt_vitd(rs.getString("vitd"));
+				tdyIntakeNtr.setNtrt_fasat(rs.getString("fasat"));
+				tdyIntakeNtr.setNtrt_fatrn(rs.getString("fatrn"));
+				tdyIntakeNtr.setNtrt_chole(rs.getString("chole"));
+				
+			}
+			
+			dto.setTdyintake(tdyIntakeNtr);
 			
 			
 			return dto;
@@ -848,6 +976,8 @@ public class UserDAO {
 	            dto.setPw(rs.getString("pw"));
 	            dto.setMemberName(rs.getString("member_name"));
 	            dto.setMemberNickname(rs.getString("member_nickname"));
+	            dto.setAdminCheck(rs.getInt("admin_check"));
+				dto.setMentorCheck(rs.getInt("mentor_check"));
 	        }
 
 	    } catch (Exception e) {
@@ -859,6 +989,137 @@ public class UserDAO {
 	    return dto;
 	}
 
+	public UserDTO getUserInfo(String id) {
+		try {
+			UserDTO dto = new UserDTO();
+			
+			
+			String sql = """
+							select MEMBER_ID
+							     , MEMBER_NAME
+							     , substr(substr(PERSONALNUMBER, 1, 7), 1, 6) || '-' || substr(substr(PERSONALNUMBER, 1, 7), 7, 1) || '******' as PERSONALNUMBER
+							     , MEMBER_NICKNAME 
+							     , case when tel like '%-%-%' then substr(tel, 1, instr(tel, '-', 1, 1) -1) else null end as tel1
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 1) + 1, instr(tel, '-', 1, 2) - 1 - instr(tel, '-', 1, 1)) else null end as tel2
+							     , case when tel like '%-%-%' then substr(tel, instr(tel, '-', 1, 2) + 1, length(tel)) else null end as tel3
+							     , case when tel like '%-%-%' then 'default' else 'custom' end as tel_select
+							     , substr(EMAIL, 1, instr(EMAIL, '@', 1, 1) -1) as email1
+							     , substr(EMAIL, instr(EMAIL, '@', 1, 1) + 1, length(EMAIL)) as email2
+							     , case when substr(EMAIL, instr(EMAIL, '@', 1, 1) + 1, length(EMAIL)) in ('gmail.com', 'naver.com', 'daum.net', 'hanmail.net', 'nate.com', 'kakao.com') then 'default' else 'custom' end as eamil_domain_select
+							     , case when ADDRESS like '%◈%◈%' or ADDRESS like '%◈%' then substr(ADDRESS, 1, instr(ADDRESS, '◈', 1, 1) -1)
+							             when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) -1, length(instr(ADDRESS, '◈', 1, 1) -1))
+							             else null end as addr1
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, instr(ADDRESS, '◈', 1, 2) - 1 - instr(ADDRESS, '◈', 1, 1)) 
+							            when ADDRESS like '%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 1) + 1, length(ADDRESS))
+							             else null end as addr2
+							     , case when ADDRESS like '%◈%◈%' then substr(ADDRESS, instr(ADDRESS, '◈', 1, 2) + 1, length(ADDRESS)) else null end as addr3
+							    from member
+							    where member_id = ?
+					""";
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, id);
+			
+			rs = pstat.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMemberId(rs.getString("MEMBER_ID")); 
+				dto.setMemberName(rs.getString("MEMBER_NAME"));
+				dto.setPersonalNumber(rs.getString("PERSONALNUMBER")); 
+				dto.setMemberNickname(rs.getString("MEMBER_NICKNAME")); 
+				dto.setTel1(rs.getString("tel1")); 
+				dto.setTel2(rs.getString("tel2")); 
+				dto.setTel3(rs.getString("tel3"));
+				dto.setEmail1(rs.getString("EMAIL1"));
+				dto.setEmail2(rs.getString("EMAIL2"));
+				dto.setAddress1(rs.getString("addr1")); 
+				dto.setAddress2(rs.getString("addr2")); 
+				dto.setAddress3(rs.getString("addr3"));
+				dto.setTel_select(rs.getString("tel_select"));
+				dto.setEmail_domain_select(rs.getString("eamil_domain_select"));
+				
+				
+				return dto;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	public String findIdByNameAndEmail(String name, String email) {
+	    String sql = "SELECT member_id FROM member WHERE member_name = ? AND email = ?";
+	    try (Connection conn = DBUtil.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, name);
+	        pstmt.setString(2, email);
+
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("member_id");
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	
+
+	// 비밀번호 변경 메서드
+	public int updatePassword(String id, String newPassword) {
+	    int result = 0;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+
+	    try {
+	        conn = DBUtil.getConnection();
+	        String sql = "UPDATE member SET pw = ? WHERE member_id = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, newPassword);
+	        pstmt.setString(2, id);
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        this.close(conn, pstmt, null);
+	    }
+
+	    return result;
+	}
+
+	// 사용자 ID + 이메일 일치 여부 확인
+	public boolean checkUserByIdAndEmail(String id, String email) {
+	    boolean result = false;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
+	    ResultSet rs = null;
+	    try {
+	        conn = DBUtil.getConnection();
+	        String sql = "SELECT COUNT(*) FROM member WHERE member_id = ? AND email = ?";
+	        pstmt = conn.prepareStatement(sql);
+	        pstmt.setString(1, id);
+	        pstmt.setString(2, email);
+	        rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            result = rs.getInt(1) > 0;
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        close(conn, pstmt, rs);
+	    }
+	    return result;
+	}
+
+
+	//자원 해제를 위한 유틸리티 메서드
+	private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+	    try { if (rs != null) rs.close(); } catch (Exception e) {}
+	    try { if (pstmt != null) pstmt.close(); } catch (Exception e) {}
+	    try { if (conn != null) conn.close(); } catch (Exception e) {}
+	}
 
 }

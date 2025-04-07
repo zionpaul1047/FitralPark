@@ -1,10 +1,18 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+ 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/common.css">
     <script src="${pageContext.request.contextPath}/assets/js/jquery-1.12.4.min.js"></script>
     <script src="${pageContext.request.contextPath}/assets/js/jquery-migrate-1.4.1.min.js"></script>
 
 
+<style>
+#div .xi-home, .open {
+	font-family: 'Paperlogy-8ExtraBold'
+}
 
+
+</style>
 
 <!-- 우측 사이드 메뉴바 -->
    <div class="fix-menu">
