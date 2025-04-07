@@ -33,6 +33,12 @@ public class UserDTO {
     private String tel_select;
     private String email_domain_select;
     
+    private String height;
+	private String gender;
+	private String weight;
+	private String age;
+	private String rank;
+    
     
     // 프로필 관련
     private String memberPic;              // 프로필 사진 경로

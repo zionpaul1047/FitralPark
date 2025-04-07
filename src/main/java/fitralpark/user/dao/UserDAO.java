@@ -81,10 +81,9 @@ public class UserDAO {
 			pstmt.setInt(16, dto.getMentorCheck());
 			pstmt.setInt(17, dto.getAdminCheck());
 			pstmt.setInt(18, dto.getPlanPublicCheck());
-
-			System.out.println("[DEBUG] 회원가입 시도: " + dto);
-
+			
 			return pstmt.executeUpdate();
+			
 
 		} catch (Exception e) {
 			System.err.println("[회원가입 실패 - 예외 발생]");
@@ -960,7 +959,34 @@ public class UserDAO {
 	public UserDTO login(String id, String pw) {
 	    UserDTO dto = null;
 	    try {
-	        String sql = "SELECT * FROM member WHERE member_id = ? AND pw = ?";
+	        String sql = """
+	        		select MEMBER_NO, MEMBER_ID, PW, MEMBER_PIC, BACKGROUND_PIC, MEMBER_NICKNAME, MEMBER_NAME, PERSONALNUMBER, ALLERGY, TEL, EMAIL, ADDRESS, FITNESS_SCORE, COMMUNITY_SCORE, RESTRICT_CHECK, WITHDRAW_CHECK, MENTOR_CHECK, ADMIN_CHECK, PLAN_PUBLIC_CHECK, REPORT_CNT
+					    , case
+					            when substr(personalnumber, 7,1) in (1,3) then 'm'
+					            when substr(personalnumber, 7,1) in (2,4) then 'f'
+					        end as gender
+					    , case
+					            when substr(personalnumber, 7,1) in (1,2,5,6)  then to_number(to_char(sysdate,'yyyy')) - to_number('19' || substr(personalnumber, 1,2))
+					            when substr(personalnumber, 7,1) in (3,4,7,8) then to_number(to_char(sysdate,'yyyy')) - to_number('20' || substr(personalnumber, 1,2))
+					        end as age
+					    , (select height from (select height from member_physical where member_id = m.member_id order by regdate desc) where rownum <= 1) as height
+					     , (select weight from (select weight from member_physical where member_id = m.member_id order by regdate desc) where rownum <= 1) as weight
+					     , (
+					         select CLASS_NAME
+					          from (
+					                    select mc.class_no, mc.member_id, class_name 
+					                      from member_class mc
+					                     inner join class c
+					                        on mc.class_no = c.class_no
+					                     order by mc.class_no desc
+					                ) 
+					         where rownum <= 1
+					           and member_id = m.member_id
+					           ) as rank
+					  from member m
+					 where MEMBER_ID = ?
+					   and pw = ?
+	        		""";
 	        pstat = conn.prepareStatement(sql);
 	        pstat.setString(1, id);
 	        pstat.setString(2, pw);
@@ -978,6 +1004,11 @@ public class UserDAO {
 	            dto.setMemberNickname(rs.getString("member_nickname"));
 	            dto.setAdminCheck(rs.getInt("admin_check"));
 				dto.setMentorCheck(rs.getInt("mentor_check"));
+				dto.setGender(rs.getString("gender"));
+				dto.setAge(rs.getString("age"));
+				dto.setHeight(rs.getString("height"));
+				dto.setWeight(rs.getString("weight"));
+				dto.setRank(rs.getString("rank"));
 	        }
 
 	    } catch (Exception e) {

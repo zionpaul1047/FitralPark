@@ -46,7 +46,7 @@ public class LoginController extends HttpServlet {
 			// 로그인 성공 → 세션에 DTO 저장
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", loginUser);
-
+			System.out.println(session);
 			String redirect = (String) session.getAttribute("redirectAfterLogin");
 			if (redirect == null || redirect.isEmpty()) {
 				redirect = "/index.do";

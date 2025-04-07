@@ -30,11 +30,11 @@ public class DashBoardController extends HttpServlet {
 			
 			UserDTO userdto = (UserDTO)(req.getSession().getAttribute("loginUser"));
 			String id = userdto.getMemberId();
-			
+			String rank = userdto.getRank();
 			
 			//세션값 임시
 //			String id = "hong";
-			String rank = "junior";
+//			String rank = "junior";
 			String mentor_check = "0";
 			
 			UserDTO userDto = new UserDTO();

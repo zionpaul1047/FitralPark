@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <div class="grid-3col-custom">
 
-	<style>
+<style>
 .place-item {
 	display: flex;
 	gap: 10px;
@@ -23,6 +23,7 @@
 	line-height: 1.4;
 }
 </style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/user/mini_dash.css">
 
 	<!-- 1행 1열: 식품영양정보 검색 -->
 	<div class="box row-1-col-1">
@@ -146,7 +147,31 @@
 			</c:when>
 			<c:otherwise>
 				<!-- ✅ 로그인 후: 미니 대시보드 include -->
-				<jsp:include page="/WEB-INF/views/dashboard/user_dashboard_mini.jsp" />
+				<div id="profile">
+			            <div id="prf_head">
+			                <div id="prf_head_info">${loginUser.memberName}님의 신체 정보</div>
+			                <div id="rnk">
+			                    <img id="rnk_img" src="/fitralpark/assets/images/icon/${loginUser.rank}.png">
+			                    <div id="rnk_name">${loginUser.rank}</div>
+			                </div>
+			            </div>
+			            <div class="prf_box">
+			                <div>키(cm)</div>
+			                <div>${loginUser.height}</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>성별</div>
+			                <div>${loginUser.gender eq "m" ? "남성" : "여성"}</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>체중(kg)</div>
+			                <div>${loginUser.weight}</div>
+			            </div>
+			            <div class="prf_box">
+			                <div>나이</div>
+			                <div>만 ${loginUser.age}세</div>
+			            </div>
+			        </div>
 			</c:otherwise>
 		</c:choose>
 
