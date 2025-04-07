@@ -44,34 +44,6 @@
         /* border: 1px solid black; */
             grid-row: 3;
         }
-        .routine-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid #ddd;
-        }
-        .routine-header .title {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-        }
-        .routine-header .date {
-            font-size: 24px;
-            font-weight: bold;
-            margin: 0;
-            color: #333;
-        }
-        .routine-header > div:first-child {
-            flex: 1;
-        }
-        .routine-header > div:last-child {
-            text-align: right;
-        }
-        .calorie-inputs {
-        	display: flex;
-        	justify-content: flex-end;
-        }
     </style>
 </head>
 <body>
@@ -116,26 +88,16 @@
 					<div class="routine-panel">
 						<div class="routine-header">
 							<div>
-								<div>김진혁님</div>
-								<div>일일 식단</div>
+								<p class="username">홍길동님의</p>
+								<p class="title">일일 루틴</p>
 							</div>
-							<div>
-								<p class="date">2025.03.10</p>
-							</div>
+							<div class="routine-date" id="currentMonth"></div>
 						</div>
 
 						<div class="routine-controls">
-							<div class="meal-buttons">
-								<button class="meal-btn active">아침</button>
-								<button class="meal-btn">점심</button>
-								<button class="meal-btn">저녁</button>
-								<button class="meal-btn">간식</button>
-							</div>
-							<div class="action-buttons">
-								<button>식단 불러오기</button>
-								<button>식단 삭제하기</button>
-								<button>선택 삭제</button>
-							</div>
+							<button>체지방 줄이기 루틴</button>
+							<button>루틴 불러오기</button>
+							<button>선택 삭제</button>
 						</div>
 
 						<div class="routine-table">
@@ -143,75 +105,74 @@
 								<thead>
 									<tr>
 										<th>선택</th>
-										<th>음식명</th>
-										<th>열량(kcal)</th>
-										<th>개수</th>
-										<th>수정/삭제</th>
+										<th>운동명</th>
+										<th>소모열량(kcal)</th>
+										<th>시간(분)</th>
+										<th></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td><input type="checkbox"></td>
-										<td>닭가슴살</td>
-										<td>164.4</td>
-										<td>1</td>
+										<td><input type="checkbox" /></td>
+										<td>천국의 계단</td>
+										<td>300</td>
+										<td>40</td>
 										<td>
-											<button class="edit-btn">✎</button>
-											<button class="delete-btn">−</button>
+											<button>✎</button>
+											<button>✕</button>
 										</td>
 									</tr>
 									<tr>
-										<td><input type="checkbox"></td>
-										<td>치커리샐러드</td>
-										<td>24</td>
-										<td>1</td>
+										<td><input type="checkbox" /></td>
+										<td>런지</td>
+										<td>100</td>
+										<td>15</td>
 										<td>
-											<button class="edit-btn">✎</button>
-											<button class="delete-btn">−</button>
+											<button>✎</button>
+											<button>✕</button>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td><input type="text" id="" value="팔굽혀펴기" /></td>
+										<td><input type="text" value="100" /></td>
+										<td><input type="text" value="20" /></td>
+										<td>
+											<button>등록하기</button>
 										</td>
 									</tr>
 								</tbody>
 							</table>
-							
-							<div class="calorie-inputs">
-								<button class="check-btn" style="margin-left: 5px; border: 1px solid black; padding: 1px; border-radius: 5px;">✓ 등록하기</button>
-								<button class="reset-btn" style="margin-left: 5px; border: 1px solid black; padding: 1px; border-radius: 5px;">✓ 초기화</button>
-							</div>
+
+							<button class="add-exercise">+ 운동 추가하기</button>
+						</div>
 
 						<div class="routine-actions">
-							<button>선택 음식 정보 조회</button>
-							<button>선택 식단 정보 조회</button>
-							<button>식단 생성</button>
-							<button>식단 삭제</button>
+							<button>선택 운동 정보 조회</button>
+							<button>선택 루틴 정보 조회</button>
+							<button>루틴 생성</button>
+							<button>루틴 삭제</button>
 						</div>
 					</div>
 				</main>
 				<form method="POST" action="">
 					<div class="routine-detail-panel">
 						<div class="routine-tabs">
-							<button class="main-tab active" data-tab="info">식단 정보</button>
+							<button class="main-tab active" data-tab="info">루틴 정보</button>
 						</div>
 
 						<div class="sub-tabs">
-							<button class="sub-tab active" data-tab="fatburn">아침</button>
-							<button class="sub-tab" data-tab="category">식단 카테고리</button>
+							<button class="sub-tab active" data-tab="fatburn">체지방
+								줄이기 루틴</button>
+							<button class="sub-tab" data-tab="category">루틴 카테고리</button>
 						</div>
 
 						<div class="routine-content" id="fatburn">
 							<div class="routine-grid">
 								<div class="routine-card">
-									<div class="exercise-title">닭가슴살</div>
-									
-									<label>열량(kcal)</label> <input type="text" value="123" /> <label>단백질(g)</label>
-									<input type="text" value="40" /> <label>지방(g)</label> <input
-										type="text" value="80" /> <label>탄수화물(g)</label> <input
-										type="text" value="16" /> <label>당류(g)</label> <input
-										type="text" value="0" />
+									<div class="exercise-title">천국의 계단</div>
 
-									
-								</div>
-								<div>
-									<label>열량(kcal)</label> <input type="text" value="300" /> <label>시간(분)</label>
+									<label>소모열량(kcal)</label> <input type="text" value="300" /> <label>시간(분)</label>
 									<input type="text" value="40" /> <label>세트(회)</label> <input
 										type="text" value="3" /> <label>세트 당 횟수(회)</label> <input
 										type="text" value="15" /> <label>중량(kg)</label> <input
