@@ -1,0 +1,119 @@
+@charset "UTF-8";
+#profile {
+       
+       background-color: white;
+       border-radius: 10px;
+       height: 300px;
+       width: 236px;
+
+       position: relative;
+       top: 0;
+       left: 0;
+   }
+
+   /* 프로필 헤드 */
+   #profile > #prf_head {
+       height: 150px;
+       border-radius: 10px;
+       background-color: azure;
+       /* border: 1px solid black; */
+   }
+
+   #profile > #prf_head > #prf_head_info {
+       display: inline-block;
+       
+       font-weight: bold;
+       font-size: 0.7rem;
+
+       position: absolute;
+       top: 50px;
+       left: 30px;
+   }
+
+  
+   /* 랭크 */
+   #profile > #prf_head > #rnk {
+       width: 45px;
+       height: 45px;
+       display: inline-block;
+
+       position: absolute;
+       right: 50px;
+       top: 20px;
+   }
+
+   #rnk > img {
+       display: block;
+       width: 40px;
+       height: 40px;
+       margin: 10px auto;
+   }
+
+   #rnk > div {
+       display: block;
+       text-align: center;
+       font-size: 0.7rem;
+   }
+
+   /* 프로필 내용 */
+   .prf_box {
+       /* border: 1px solid black; */
+       width: 70px;
+       height: 70px;
+       border-radius: 10px;
+       background-color: #EEE;
+   }
+
+   .prf_box > div:nth-child(1) {
+       font-weight: bold;
+       text-align: center;
+       font-size: 0.7rem;
+       margin-top: 5px;
+       
+   }
+
+   .prf_box > div:nth-child(2) {
+       text-align: center;
+       font-size: 0.9rem;
+       font-weight: bold;
+       margin-top: 20px;
+   }
+
+   .prf_box:nth-child(2) {
+       position: absolute;
+       top: 100px;
+       left: 45px;
+
+       text-align: center;
+       font-size: 1.2rem;
+       font-weight: bold;
+   }
+   .prf_box:nth-child(3) {
+       position: absolute;
+       top: 100px;
+       right: 45px;
+
+       text-align: center;
+       font-size: 1.2rem;
+       font-weight: bold;
+   }
+
+   .prf_box:nth-child(4) {
+       position: absolute;
+       top: 180px;
+       left: 45px;
+
+       text-align: center;
+       font-size: 1.2rem;
+       font-weight: bold;
+   }
+.prf_box:nth-child(5) {
+     position: absolute;
+     top: 180px;
+     right: 45px;
+
+     text-align: center;
+     font-size: 1.2rem;
+     font-weight: bold;
+ }
+ 
