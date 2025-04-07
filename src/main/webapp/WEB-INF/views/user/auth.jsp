@@ -14,7 +14,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/auth/auth.css">
 <script>
-	const contextPath = '${pageContext.request.contextPath}';
+	window.contextPath = '${pageContext.request.contextPath}';
 </script>
 </head>
 <body class="login-page">

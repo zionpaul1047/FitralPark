@@ -1,23 +1,22 @@
 let isIdChecked = false;
 let lastCheckedId = "";
-const contextPath = window.contextPath || "";
 
-function moveToRegister() {
-	document.getElementById("login").style.display = "none";
-	document.getElementById("signup").style.display = "block";
-}
+window.moveToRegister = function () {
+	switchForm("signup");
+};
 
-function moveToLogin() {
-  // 모든 폼 숨김
-  const forms = document.querySelectorAll(".accounts_forms");
-  forms.forEach((form) => {
-    form.style.display = "none";
-  });
+window.moveToLogin = function () {
+	switchForm("login");
+};
 
-  // 로그인 폼만 표시
-  const loginForm = document.getElementById("login");
-  if (loginForm) loginForm.style.display = "block";
-}
+window.switchForm = function (formIdToShow) {
+	const forms = document.querySelectorAll(".accounts_forms");
+	forms.forEach((form) => {
+		form.style.display = "none";
+	});
+	document.getElementById(formIdToShow).style.display = "block";
+};
+
 
 function redirectToRegister(e) {
 	e.preventDefault();
