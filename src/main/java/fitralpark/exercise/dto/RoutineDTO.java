@@ -19,14 +19,10 @@ public class RoutineDTO {
     private String memberNickname;
     private String memberId;
     private String views;
-<<<<<<< HEAD
     private String publicCheck;
     private String favoriteCheck;
     private String creatorId;
     private String recommend;
     private String disrecommend;
     
-    
-=======
->>>>>>> origin/HN2
 }

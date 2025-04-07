@@ -38,7 +38,7 @@
 					<a href="#">운동 관리</a>
 					<ul class="sub_menu">
 						<li><a href="#">운동 계획캘린더</a></li>
-						<li><a href="#">운동 라이브러리</a></li>
+						<li><a href="${pageContext.request.contextPath}/exerciseRecommend.do">운동 라이브러리</a></li>
 						<li><a href="#">피트럴맵</a></li>
 					</ul>
 				</li>

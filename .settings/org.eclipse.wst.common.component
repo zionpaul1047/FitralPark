@@ -1,31 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-<<<<<<< HEAD
-                
-    
-    
-    <wb-module deploy-name="FitralPark">
-                                
-        
-        
-        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
-                                
-        
-        
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                                
-        
-        
-        <property name="context-root" value="fitralpark"/>
-                                
-        
-        
-        <property name="java-output-path" value="/FitralPark/build/classes"/>
-                            
-    
-    
-    </wb-module>
-            
-=======
                     
     
     
@@ -41,8 +14,6 @@
         
         
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-                
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
                                         
         
@@ -61,7 +32,6 @@
     </wb-module>
                 
 
->>>>>>> origin/HN2
 
 
 </project-modules>

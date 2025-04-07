@@ -12,12 +12,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-<<<<<<< HEAD
 import fitralpark.exercise.dto.ExerciseRecordDTO;
-=======
-import fitralpark.common.utils.DBUtil;
->>>>>>> origin/HN2
 import fitralpark.exercise.dto.RoutineDTO;
+import fitralpark.exercise.dto.RoutineExerciseDTO;
 
 public class RoutineDAO {
 	
@@ -115,7 +112,6 @@ public class RoutineDAO {
 		return null;
 	}
 	
-<<<<<<< HEAD
 	public ArrayList<RoutineExerciseDTO> exerciseList(String routineNo) {
 		
 		try {
@@ -490,92 +486,5 @@ public class RoutineDAO {
 
 	    return list;
 	}
-
-	public void editFavorite(String routineNo, String memberId) {
-		
-		private DataSource dataSource;
-
-		try {
-
-            Connection conn = dataSource.getConnection();
-
-            String sql = "select count(*) as cnt from diet_bookmark where diet_no = ? and member_id = ?";
-
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, routineNo);
-            pstmt.setString(2, memberId);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                System.out.println(rs.getInt("cnt"));
-                if (rs.getInt("cnt") > 0) {
-
-                    // delete bookmark
-                    delFavorite(routineNo, memberId);
-
-                } else {
-
-                    // add bookmark
-                    addFavorite(routineNo, memberId);
-
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-	}
-=======
-	
->>>>>>> origin/HN2
-	
-	public void addFavorite(String routineNo, String memberId) {
-        String sql = "INSERT INTO diet_bookmark (DIET_BOOKMARK_NO, diet_no, member_id, regdate) VALUES (seq_diet_bookmark.nextVal, ?, ?, SYSDATE)";
-
-        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, routineNo);
-            pstmt.setString(2, memberId);
-            System.out.println("result: " + pstmt.executeUpdate());
-
-        } catch (SQLException e) {
-            throw new RuntimeException("즐겨찾기 추가 오류", e);
-        }
-    }
-	
-	public void delFavorite(String routineNo, String memberId) {
-        String sql = "DELETE FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
-
-        try (Connection conn = dataSource.getConnection();
-        		PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, routineNo);
-            pstmt.setString(2, memberId);
-            pstmt.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException("즐겨찾기 삭제 오류", e);
-        }
-    }
-	
-	public boolean isBookmarked(int dietNo, String memberId) throws SQLException {
-        String sql = "SELECT COUNT(*) FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, dietNo);
-            pstmt.setString(2, memberId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1) > 0;
-                }
-            }
-        }
-        return false;
-    }
-	
-	
-
-
 
 }

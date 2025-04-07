@@ -12,7 +12,7 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 	<style>
 	
-		body {
+        body {
 			background-color: rgb(218, 243, 211);
 		}
 	
@@ -134,8 +134,8 @@
 		}
 		
 		.action-buttons {
-			display: flex;
-			justify-content: flex-end;
+            display: flex;
+            justify-content: flex-end;
 			margin: 10px auto;
 		}
 
@@ -196,7 +196,7 @@
         .action-buttons button:hover {
             background-color: #f0f0f0;
         }
-        
+
         .pagination {
             display: flex;
             justify-content: center;
@@ -249,16 +249,16 @@
     <c:set var="endIndex" value="${startIndex + 9}" />
 
     <table id="exercise-table">
-        <thead>
-            <tr>
+            <thead>
+                <tr>
                 <th><input type="checkbox" id="exercise_check_all"></th>
                 <th>운동명</th>
                 <th>운동 카테고리</th>
                 <th>운동 부위</th>
                 <th>소모 열량(kcal)</th>
-                <th>즐겨찾기</th>
-            </tr>
-        </thead>
+                    <th>즐겨찾기</th>
+                </tr>
+            </thead>
         <tbody>
             <c:forEach items="${exerciseList}" var="ex" begin="${startIndex}" end="${endIndex}">
                 <tr id="tr_ex_${ex.exerciseNo}">
@@ -322,10 +322,10 @@
                         <button type="button" class="rudBtn" onclick="editCustomExercise('${customex.customExerciseNo}', '${customex.customExerciseName}', '${customex.customExerciseCategoryNo}', '${customex.customExercisePartNo}', '${customex.customCaloriesPerUnit}')"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button type="button" class="rudBtn" onclick="deleteCustomExercise('${customex.customExerciseNo}')"><i class="fa-solid fa-x"></i></button>
                     </td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
 
     <div class="pagination">
         <c:forEach begin="1" end="${customTotalPages}" var="page">
@@ -414,7 +414,7 @@
                     <span><i class="fa-solid fa-plus"></i></span> 등록하기
                 </button>
             </div>
-        </form>
+    </form>
     </div>
 
     <div class="buttons-row">
