@@ -90,30 +90,30 @@
 		<div class="ranking-box">이달의 랭킹</div>
 		<ul class="ranking-list">
 			<li><span class="rank">1위</span> <span class="user">김계란</span> <span
-				class="score">150분</span></li>
+				class="score">150점</span></li>
 			<li><span class="rank">2위</span> <span class="user">압도적1위</span>
-				<span class="score">120분</span></li>
-			<li><span class="rank">3위</span> <span class="user">회원님원판치워주세요</span>
-				<span class="score">110분</span></li>
+				<span class="score">120점</span></li>
+			<li><span class="rank">3위</span> <span class="user">Abcd</span>
+				<span class="score">110점</span></li>
 			<li><span class="rank">4위</span> <span class="user">깐계란</span> <span
-				class="score">110분</span></li>
-			<li><span class="rank">5위</span> <span class="user">깐계란</span> <span
-				class="score">110분</span></li>
+				class="score">110점</span></li>
+			<li><span class="rank">5위</span> <span class="user">zionpaul</span> <span
+				class="score">10점</span></li>
 			<!-- 추가 항목 -->
 		</ul>
 
 		<div class="ranking-box">금주의 랭킹</div>
 		<ul class="ranking-list">
-			<li><span class="rank">1위</span> <span class="user">삶은계란</span>
-				<span class="score">150분</span></li>
-			<li><span class="rank">2위</span> <span class="user">맥반석</span> <span
-				class="score">120분</span></li>
-			<li><span class="rank">3위</span> <span class="user">오리알</span> <span
-				class="score">110분</span></li>
-			<li><span class="rank">4위</span> <span class="user">오리알</span> <span
-				class="score">110분</span></li>
-			<li><span class="rank">5위</span> <span class="user">오리알</span> <span
-				class="score">110분</span></li>
+			<li><span class="rank">1위</span> <span class="user">김계란</span> <span
+				class="score">150점</span></li>
+			<li><span class="rank">2위</span> <span class="user">압도적1위</span>
+				<span class="score">120점</span></li>
+			<li><span class="rank">3위</span> <span class="user">Abcd</span>
+				<span class="score">110점</span></li>
+			<li><span class="rank">4위</span> <span class="user">깐계란</span> <span
+				class="score">110점</span></li>
+			<li><span class="rank">5위</span> <span class="user">zionpaul</span> <span
+				class="score">10점</span></li>
 			<!-- 추가 항목 -->
 		</ul>
 	</div>
