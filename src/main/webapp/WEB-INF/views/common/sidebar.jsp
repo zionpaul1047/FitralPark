@@ -32,25 +32,25 @@
             <li class="open">
                 <a href="">
                     
-                    의료진 <br>소개
+                    식단 <br>라이브러리
                 </a>
             </li>
             <li class="open">
                 <a href="">
                     
-                    전화번호 <br>안내
+                    운동 <br>라이브러리
                 </a>
             </li>
             <li class="open">
                 <a href="">
                     
-                    진료시간
+                    운동계획 <br>캘린더
                 </a>
             </li>
             <li class="open">
                 <a href="">
                     
-                    오시는길
+                    식품검색
                 </a>
             </li>
             <li class="setup">
