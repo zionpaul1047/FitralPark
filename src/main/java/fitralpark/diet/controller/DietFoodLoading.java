@@ -65,6 +65,7 @@ public class DietFoodLoading extends HttpServlet {
 
             // 검색X
             list = dao.getFoods(begin, end, memberId);
+            System.out.println(list);
 
             //커스텀푸드로 변경
             

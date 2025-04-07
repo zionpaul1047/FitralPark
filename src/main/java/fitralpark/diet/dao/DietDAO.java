@@ -69,15 +69,9 @@ public class DietDAO {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
 
-                    DietDTO diet = new DietDTO(rs.getInt("diet_no"),
-                            rs.getString("diet_name"),
-                            rs.getString("regdate"),
-                            rs.getInt("diet_total_kcal"),
-                            rs.getString("meal_classify"),
-                            rs.getString("creator_id"),
-                            rs.getInt("diet_bookmark_no"),
-                            rs.getString("food_name"),
-                            rs.getInt("enerc"),
+                    DietDTO diet = new DietDTO(rs.getInt("diet_no"), rs.getString("diet_name"), rs.getString("regdate"),
+                            rs.getInt("diet_total_kcal"), rs.getString("meal_classify"), rs.getString("creator_id"),
+                            rs.getInt("diet_bookmark_no"), rs.getString("food_name"), rs.getInt("enerc"),
                             Integer.parseInt(rs.getString("food_size")) // int 변환
                     );
                     diets.add(diet);
@@ -593,16 +587,16 @@ public class DietDAO {
             pstmt.setString(1, dietNo);
 
             ResultSet rs = pstmt.executeQuery();
-            
+
             HashMap<String, Integer> map = new HashMap<String, Integer>();
-            
+
             if (rs.next()) {
-                
+
                 map.put("recommend", rs.getInt("recommend"));
                 map.put("disrecommend", rs.getInt("disrecommend"));
-                
+
             }
-            
+
             return map;
 
         } catch (Exception e) {
@@ -612,7 +606,6 @@ public class DietDAO {
         return null;
     }
 
-    
     /*
      * public List<DietDTO> getFoods(int begin, int end, String memberId) { String
      * sql = """ SELECT n.food_cd, n.food_name, n.foodlv4_name,
@@ -655,27 +648,28 @@ public class DietDAO {
 
     public List<DietDTO> getFoods(int begin, int end, String memberId) {
         String sql = """
-                SELECT
-        n.food_cd,
-        n.food_name,
-        n.foodlv4_name,
-        REGEXP_REPLACE(n.nut_con_str_qua, '[^0-9]', '') AS nut_con_str_qua_numeric, 
-        COALESCE(n.enerc, 0) AS enerc,       
-        COALESCE(n.protein, 0) AS protein,   
-        COALESCE(n.fatce, 0) AS fatce,       
-        COALESCE(n.chocdf, 0) AS chocdf,    
-        COALESCE(n.sugar, 0) AS sugar,       
-        COALESCE(n.na, 0) AS na,
-        f.food_no,
-        COALESCE(b.food_bookmark_no, 0) AS food_bookmark_no
-    FROM individual_diet_record_food_nutrient n
-    INNER JOIN food f
-        ON n.food_cd = f.food_cd
-    LEFT JOIN food_bookmark b
-        ON f.food_no = b.food_no
-        AND b.member_id = ?
-    ORDER BY n.food_name
-""";
+                                SELECT
+                        n.food_cd,
+                        n.food_name,
+                        n.foodlv4_name,
+                        REGEXP_REPLACE(n.nut_con_str_qua, '[^0-9]', '') AS nut_con_str_qua_numeric,
+                        COALESCE(n.enerc, 0) AS enerc,
+                        COALESCE(n.protein, 0) AS protein,
+                        COALESCE(n.fatce, 0) AS fatce,
+                        COALESCE(n.chocdf, 0) AS chocdf,
+                        COALESCE(n.sugar, 0) AS sugar,
+                        COALESCE(n.na, 0) AS na,
+                        f.food_no,
+                        COALESCE(b.food_bookmark_no, 0) AS food_bookmark_no
+                    FROM individual_diet_record_food_nutrient n
+                    INNER JOIN food f
+                        ON n.food_cd = f.food_cd
+                    LEFT JOIN food_bookmark b
+                        ON f.food_no = b.food_no
+                        AND b.member_id = ?
+                    WHERE ROWNUM <= 10
+                    ORDER BY n.food_name
+                """;
 
         List<DietDTO> foods = new ArrayList<>();
 
@@ -685,37 +679,30 @@ public class DietDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
+                    
                     DietDTO dto = new DietDTO();
-                    // 음식 정보 매핑
                     dto.setFood_cd(rs.getString("food_cd"));
                     dto.setFood_name(rs.getString("food_name"));
-                    dto.setFOODLV4_NAME(rs.getString("FOODLV4_NAME"));
-
-                    // 용량: null → "0" 처리
-                    String nutConStrQua = rs.getString("NUT_CON_STR_QUA");
-                    dto.setNUT_CON_STR_QUA(nutConStrQua != null ? nutConStrQua : "0");
-
-                    // 영양소 정보 (COALESCE로 이미 0 처리됨)
-                    dto.setEnerc(rs.getInt("enerc"));
-                    dto.setProtein(rs.getInt("protein"));
-                    dto.setFatce(rs.getInt("fatce"));
-                    dto.setChocdf(rs.getInt("chocdf"));
-                    dto.setSugar(rs.getInt("sugar"));
-                    dto.setNa(rs.getInt("na"));
-
-                    // food_no와 북마크 정보
+                    dto.setFoodlv4_name(rs.getString("foodlv4_name"));
+                    dto.setNut_con_str_qua(rs.getString("nut_con_str_qua_numeric"));
+                    dto.setEnerc(rs.getDouble("enerc"));
+                    dto.setProtein(rs.getDouble("protein"));
+                    dto.setFatce(rs.getDouble("fatce"));
+                    dto.setChocdf(rs.getDouble("chocdf"));
+                    dto.setSugar(rs.getDouble("sugar"));
+                    dto.setNa(rs.getDouble("na"));
                     dto.setFood_no(rs.getInt("food_no"));
                     dto.setFood_bookmark_no(rs.getInt("food_bookmark_no"));
 
                     foods.add(dto);
                 }
+                
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException("음식 데이터 조회 오류", e);
         }
 
         return foods.isEmpty() ? new ArrayList<>() : foods;
     }
 
 }
-        

@@ -434,15 +434,15 @@ body {
                         <tr>
                             <td><input type="checkbox" data-id="${dto.food_cd}"></td>
                             <td>${dto.food_name}</td>
-                            <td>${dto.foodLv4Nm}</td>
-                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.foodlv4_name}</td>
+                            <td>${dto.nut_con_str_qua}</td>
+                            <td>${dto.enerc}</td>
                             <td>${dto.chocdf}</td>
-                            <td>${dto.prot}</td>
+                            <td>${dto.protein}</td>
                             <td>${dto.fatce}</td>
                             <td>${dto.sugar}</td>
-                            <td>${dto.nat}</td>
+                            <td>${dto.na}</td>
                             <td>
-                            ${dto.diet_bookmark_no}
                                 <button class="star-btn" data-id="${dto.food_no}">
                                     ${dto.food_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
@@ -468,18 +468,18 @@ body {
                 </thead>
                 <tbody id="custom-food-data">
                     <!-- 데이터는 JavaScript로 동적 생성 -->
-                    <c:forEach items="${list}" var="dto">
+                    <c:forEach items="${list2}" var="dto">
                         <tr>
                             <td><input type="checkbox" data-id="${dto.food_cd}"></td>
                             <td>${dto.food_name}</td>
-                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.foodlv4_name}</td>
+                            <td>${dto.nut_con_str_qua}</td>
                             <td>${dto.chocdf}</td>
-                            <td>${dto.prot}</td>
+                            <td>${dto.protein}</td>
                             <td>${dto.fatce}</td>
                             <td>${dto.sugar}</td>
-                            <td>${dto.nat}</td>
+                            <td>${dto.na}</td>
                             <td>
-                            ${dto.diet_bookmark_no}
                                 <button class="star-btn" data-id="${dto.diet_no}">
                                     ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
