@@ -49,36 +49,36 @@ public class DietDTO {
     //individual_diet_record_food_nutrient
     private String food_cd;
     private String food_name;
-    private String foodLv4_name;
-    private String foodLv5_Cd;
-    private String foodLv6_Cd;
-    private String nut_con_srtr_qua;
-    private int enerc;
-    private int water;
-    private int protein;
-    private int fatce;
-    private int ash;
-    private int chocdf;
-    private int sugar;
-    private int fibtg;
-    private int ca;
-    private int fe;
-    private int p;
-    private int k;
-    private int na;
-    private int vitarae;
-    private int retinol;
-    private int cartb;
-    private int thia;
-    private int ribf;
-    private int nia;
-    private int vitc;
-    private int vitd;
+    private String foodlv4_name;
+    private String foodlv5_Cd;
+    private String foodlv6_Cd;
+    private String nut_con_str_qua;
+    private Double enerc;
+    private Double water;
+    private Double protein;
+    private Double fatce;
+    private Double ash;
+    private Double chocdf;
+    private Double sugar;
+    private Double fibtg;
+    private Double ca;
+    private Double fe;
+    private Double p;
+    private Double k;
+    private Double na;
+    private Double vitarae;
+    private Double retinol;
+    private Double cartb;
+    private Double thia;
+    private Double ribf;
+    private Double nia;
+    private Double vitc;
+    private Double vitd;
     private int food_size;
-    private int fasat;
+    private Double fasat;
     private String rest_name;
-    private int fatrn;
-    private int chole;
+    private Double fatrn;
+    private Double chole;
     
     //custom_food
     private int custom_food_no;
@@ -137,6 +137,7 @@ public class DietDTO {
  // 음식 상세 정보 리스트 (food_name, enerc, food_size)
     private List<FoodDetail> foodDetails = new ArrayList<>();
 
+
     @Getter
     @Setter
     @ToString
@@ -160,7 +161,7 @@ public class DietDTO {
  // 생성자
     public DietDTO(int diet_no, String diet_name, String regdate, int diet_total_kcal,
                    String meal_classify, String creator_id, int diet_bookmark_no,
-                   String food_name, int enerc, int food_size) {
+                   String food_name, Double enerc, int food_size) {
         this.diet_no = diet_no;
         this.diet_name = diet_name;
         this.regdate = regdate;
@@ -216,6 +217,9 @@ public class DietDTO {
  this.diet_category = dietCategory; // 초기화 추가
  this.diet_bookmark_no = dietBookmarkNo;
 }
+
+
+
 
 
  

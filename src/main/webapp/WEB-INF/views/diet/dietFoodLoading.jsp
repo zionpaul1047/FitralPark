@@ -366,7 +366,7 @@ body {
     margin-bottom: 20px;
 }
 
-.custom-food-table th, .food-table td {
+.custom-food-table th, .custom-food-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: center;
@@ -420,11 +420,11 @@ body {
                         <th>대표 음식명</th>
                         <th>용량(g)</th>
                         <th>열량(kcal)</th>
-                        <th>탄수화물</th>
-                        <th>단백질</th>
-                        <th>지방</th>
-                        <th>당류</th>
-                        <th>나트륨</th>
+                        <th>탄수화물(g)</th>
+                        <th>단백질(g)</th>
+                        <th>지방(g)</th>
+                        <th>당류(g)</th>
+                        <th>나트륨(mg)</th>
                         <th>즐겨찾기</th>
                     </tr>
                 </thead>
@@ -434,15 +434,15 @@ body {
                         <tr>
                             <td><input type="checkbox" data-id="${dto.food_cd}"></td>
                             <td>${dto.food_name}</td>
-                            <td>${dto.foodLv4Nm}</td>
-                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.foodlv4_name}</td>
+                            <td>${dto.nut_con_str_qua}</td>
+                            <td>${dto.enerc}</td>
                             <td>${dto.chocdf}</td>
-                            <td>${dto.prot}</td>
+                            <td>${dto.protein}</td>
                             <td>${dto.fatce}</td>
                             <td>${dto.sugar}</td>
-                            <td>${dto.nat}</td>
+                            <td>${dto.na}</td>
                             <td>
-                            ${dto.diet_bookmark_no}
                                 <button class="star-btn" data-id="${dto.food_no}">
                                     ${dto.food_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
@@ -458,34 +458,81 @@ body {
                         <th>음식명</th>
                         <th>용량(g)</th>
                         <th>열량(kcal)</th>
-                        <th>탄수화물</th>
-                        <th>단백질</th>
-                        <th>지방</th>
-                        <th>당류</th>
-                        <th>나트륨</th>
+                        <th>탄수화물(g)</th>
+                        <th>단백질(g)</th>
+                        <th>지방(g)</th>
+                        <th>당류(g)</th>
+                        <th>나트륨(mg)</th>
                         <th>즐겨찾기</th>
                     </tr>
                 </thead>
                 <tbody id="custom-food-data">
+                        <tr>
+                            <td><input type="checkbox" data-id=""></td>
+                            <td>닭가슴살</td>
+                            <td>100</td>
+                            <td>165</td>
+                            <td>0</td>
+                            <td>31</td>
+                            <td>3.6</td>
+                            <td>0</td>
+                            <td>74</td>
+                            <td>
+                                <button class="star-btn" >★
+                                   </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-id=""></td>
+                            <td>사과</td>
+                            <td>100</td>
+                            <td>48</td>
+                            <td>12.76</td>
+                            <td>1</td>
+                            <td>3.6</td>
+                            <td>10.1</td>
+                            <td>0</td>
+                            <td>
+                                <button class="star-btn" >★
+                                   </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" data-id=""></td>
+                            <td>오렌지</td>
+                            <td>100</td>
+                            <td>47</td>
+                            <td>0</td>
+                            <td>11</td>
+                            <td>3.6</td>
+                            <td>9.35</td>
+                            <td>74</td>
+                            <td>
+                                <button class="star-btn" >★
+                                   </button>
+                            </td>
+                        </tr>
+                </tbody>
+                <%-- <tbody id="custom-food-data">
                     <!-- 데이터는 JavaScript로 동적 생성 -->
-                    <c:forEach items="${list}" var="dto">
+                    <c:forEach items="${list2}" var="dto">
                         <tr>
                             <td><input type="checkbox" data-id="${dto.food_cd}"></td>
                             <td>${dto.food_name}</td>
-                            <td>${dto.nut_con_srtr_qua}</td>
+                            <td>${dto.foodlv4_name}</td>
+                            <td>${dto.nut_con_str_qua}</td>
                             <td>${dto.chocdf}</td>
-                            <td>${dto.prot}</td>
+                            <td>${dto.protein}</td>
                             <td>${dto.fatce}</td>
                             <td>${dto.sugar}</td>
-                            <td>${dto.nat}</td>
+                            <td>${dto.na}</td>
                             <td>
-                            ${dto.diet_bookmark_no}
                                 <button class="star-btn" data-id="${dto.diet_no}">
                                     ${dto.diet_bookmark_no > 0 ? '★' : '☆'}</button>
                             </td>
                         </tr>
                     </c:forEach>
-                </tbody>
+                </tbody> --%>
             </table>
 
             <c:if test="${isSearch}">
