@@ -36,6 +36,8 @@ public class QnaPostEdit extends HttpServlet {
             return;
         }
         
+        
+        
         CommunityDAO dao = new CommunityDAO();
         
         try {
@@ -53,7 +55,7 @@ public class QnaPostEdit extends HttpServlet {
                 resp.setContentType("text/html; charset=UTF-8");
                 PrintWriter writer = resp.getWriter();
                 writer.println("<script>");
-                writer.println("alert('본인이 작성한 글만 수정할 수 있습니다.');");
+                writer.println("alert('수정 권한이 없습니다.');");
                 writer.println("history.back();");
                 writer.println("</script>");
                 writer.close();

@@ -18,7 +18,7 @@ import fitralpark.user.dto.UserDTO;
 public class QnaPostDeleteOK extends HttpServlet {
     
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         
         req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
@@ -52,7 +52,7 @@ public class QnaPostDeleteOK extends HttpServlet {
             if (!userDto.getMemberId().equals(dto.getCreator_id())) {
                 PrintWriter writer = resp.getWriter();
                 writer.println("<script>");
-                writer.println("alert('본인이 작성한 글만 삭제할 수 있습니다.');");
+                writer.println("alert('삭제 권한이 없습니다.');");
                 writer.println("history.back();");
                 writer.println("</script>");
                 writer.close();
