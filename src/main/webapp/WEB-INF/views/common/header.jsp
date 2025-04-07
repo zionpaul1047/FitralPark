@@ -29,15 +29,15 @@
 				<li class="menu_col">
 					<a href="#">식단 관리</a>
 					<ul class="sub_menu">
-						<li><a href="#">식단 계획캘린더</a></li>
-						<li><a href="${pageContext.request.contextPath}/diet/dietRecommend.do">식단 라이브러리</a></li>
-						<li><a href="#">식단 분석</a></li>
+						<li><a href="#" class="unembodiment_menu">식단 계획캘린더</a></li>
+						<li><a href="${pageContext.request.contextPath}/dietRecommend.do">식단 라이브러리</a></li>
+						<li><a href="#" class="unembodiment_menu">식단 분석</a></li>
 					</ul>
 				</li>
 				<li class="menu_col">
 					<a href="#">운동 관리</a>
 					<ul class="sub_menu">
-						<li><a href="#">운동 계획캘린더</a></li>
+						<li><a href="${pageContext.request.contextPath}/exerciseList.do">운동 계획캘린더</a></li>
 						<li><a href="#">운동 라이브러리</a></li>
 						<li><a href="#">피트럴맵</a></li>
 					</ul>
@@ -46,8 +46,8 @@
 					<a href="#">영양정보 관리</a>
 					<ul class="sub_menu">
 						<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
-						<li><a href="">영양 성분비교</a></li>
-						<li><a href="">비타민 정보</a></li>
+						<li><a href="#" class="unembodiment_menu">영양 성분비교</a></li>
+						<li><a href="#" class="unembodiment_menu">비타민 정보</a></li>
 					</ul>
 				</li>
 				<li class="menu_col">
@@ -99,7 +99,7 @@
 						
 						
 						<li class="icon_menu">
-							<a href="#"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
+							<a href="${pageContext.request.contextPath}/dashboard.do"><img src="${pageContext.request.contextPath}/assets/images/icon/dashboard (2).png" alt="대시보드" style="width: 24px; height: 24px;"></a>
 						</li>
 						<li class="icon_menu">
 							<a href="${pageContext.request.contextPath}/dashboard.do"><img src="${pageContext.request.contextPath}/assets/images/icon/people.png" alt="마이페이지" style="width: 24px; height: 24px;"></a>
@@ -165,16 +165,16 @@
 
 			<li><a href="">식단 관리</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">식단 계획캘린더</a></li>
-					<li><a href="">식단 라이브러리</a></li>
-					<li><a href="">식단 분석</a></li>
+					<li><a href="#" class="unembodiment_menu">식단 계획캘린더</a></li>
+					<li><a href="${pageContext.request.contextPath}/dietRecommend.do"">식단 라이브러리</a></li>
+					<li><a href="#" class="unembodiment_menu">식단 분석</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 
 			<!-- depth01 -->
 			<li><a href="">운동 관리</a> <!-- depth02 -->
 				<ul class="depth02">
-					<li><a href="">운동 계획캘린더</a></li>
+					<li><a href="${pageContext.request.contextPath}/exerciseList.do">운동 계획캘린더</a></li>
 					<li><a href="">운동 루틴만들기</a></li>
 					<li><a href="">운동 라이브러리</a></li>
 					<li><a href="">피트럴맵</a></li>
@@ -185,8 +185,8 @@
 			<li><a href="">식품 영양정보</a> <!-- depth02 -->
 				<ul class="depth02">
 					<li><a href="${pageContext.request.contextPath}/nutrition/foodsearch.do">식품 검색</a></li>
-					<li><a href="">영양 성분비교</a></li>
-					<li><a href="">비타민 정보</a></li>
+					<li><a href="#" class="unembodiment_menu">영양 성분비교</a></li>
+					<li><a href="#" class="unembodiment_menu">비타민 정보</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
 
@@ -203,7 +203,6 @@
 			<li><a href="${pageContext.request.contextPath}/dashboard.do">마이페이지</a> <!-- depth02 -->
 				<ul class="depth02">
 					<li><a href="${pageContext.request.contextPath}/dashboard.do">대시보드</a></li>
-					<li><a href="#">나의활동</a></li>
 					<li><a href="${pageContext.request.contextPath}/mdfyuserinfo.do">회원정보수정</a></li>
 				</ul> <!--  //depth02--></li>
 			<!-- //depth01 -->
