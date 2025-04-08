@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 회원정보 수정 처리 서블릿
+ * @author 한가람
+ */
 @WebServlet("/modfyuserinfook.do")
 public class ModfyUserInfoOk extends HttpServlet {
 	@Override

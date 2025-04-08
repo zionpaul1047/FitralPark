@@ -17,9 +17,13 @@ import fitralpark.user.dto.DashTodayDietDTO;
 import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.DashTodayIntakeDTO;
 import fitralpark.user.dto.UserDTO;
-
+/**
+ * 마이페이지-대시보드 화면을 출력하는 서블릿
+ * @author 한가람
+ */
 @WebServlet("/dashboard.do")
 public class DashBoardController extends HttpServlet {
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		

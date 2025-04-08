@@ -23,13 +23,20 @@ import fitralpark.user.dto.DashTodayExerciseDTO;
 import fitralpark.user.dto.DashTodayIntakeDTO;
 import fitralpark.user.dto.UserDTO;
 
-
+/***
+ * User서비스의 DB처리를 위한 DAO 클래스 
+ * @author 한가람, 이지온
+ */
 public class UserDAO {
 	private Connection conn;
 	private Statement stat;
 	private PreparedStatement pstat;
 	private ResultSet rs;
 	
+	/**
+	 * UserDAO 생성자로, 커넥션풀에서 Connection 객체와 Statement 객체를 얻는다.
+	 * @author 한가람
+	 */
 	public UserDAO() {
 		try {
 			Context ctx = new InitialContext();
@@ -45,7 +52,10 @@ public class UserDAO {
 		}
 		
 	}
-	
+	/**
+	 * 얻어온 Connection 객체를 반환한다. 
+	 * @author 한가람
+	 */
 	public void close() {
 		try {
 			this.conn.close();
@@ -94,6 +104,12 @@ public class UserDAO {
 	}
 
 	// 회원 정보 수정 (UPDATE)
+	/**
+	 * 얻어온 파라미터 객체안의 회원정보로 데이터를 수정한다.
+	 * @author 한가람
+	 * @param dto 회원의 id와 수정할(to-be) 패스워드, 닉네임, 연락처, 이메일, 주소 정보가 담긴 UserDTO 객체 
+	 * @return 데이터 수정 후 실행 결과값을 반환. 성공 시 1, 실패 시 0을 반환한다.
+	 */
 	public int updateMember(UserDTO dto) {
 		
 		try {
@@ -126,7 +142,12 @@ public class UserDAO {
 
 		return 0;
 	}
-
+	/**
+	 * 대시보드에서 보여줄 회원의 정보를 조회한다.
+	 * @author 한가람
+	 * @param dto 회원의 id가 담긴 UserDTO 객체 
+	 * @return 개인정보(사용자이름, 배경사진 파일명, 키, 몸무게, 나이, 성별), 오늘의 운동정보(운동명, 세트당 횟수, 세트, 중량, 운동시간, 운동생성구분, 운동번호) 리스트, 오늘의 식단정보(끼니구분, 식단번호, 식단의 음식리스트(음식명, 섭취량, 음식생성구분, 음식번호)), 일주일간의 운동 집계 정보(기록일, 총계획수, 계획되지않은 운동기록수, 완료한 운동기록수, 미완료한 운동기록수, 달성률), 일주일간의 식사 집계 정보(기록일, 총계획수, 계획되지 않은 식사기록 수, 완료한 식사기록 수, 미완료한 식사기록 수, 달성률) 을 반환한다. 
+	 */
 	public DashDTO getDashInfo(UserDTO userdto) {
 		try {
 			String id = userdto.getMemberId();
@@ -630,7 +651,12 @@ public class UserDAO {
 		}
 		return false;
 	}
-
+	/***
+	 * 사용자의 조회할 달의 기록된 신체기록을 조회한다.
+	 * @author 한가람
+	 * @param inputDto 회원의 id와 조회할 달의 정보가 담긴 DashPhysicalHistDTO 객체 
+	 * @return 해당 달의 등록일, 키, 몸무게 정보를 반환한다.
+	 */
 	//신체기록 조회
 	public ArrayList<DashPhysicalHistDTO> getPhysicalHist(DashPhysicalHistDTO inputDto) {
 		String id = inputDto.getId();
@@ -673,7 +699,13 @@ public class UserDAO {
 		
 		return null;
 	}
-
+	/***
+	 * 자신의 신체기록(키, 몸무게)을 기록한다.
+	 * @author 한가람
+	 * @param inputDto 회원의 아이디와 수정할(to-be) 키, 몸무게 정보가 담긴 DashPhysicalHistDTO 객체 
+	 * @return 데이터 입력 후 실행 결과값을 반환. 성공 시 1, 실패 시 0을 반환한다.
+	 */
+	
 	public int putPhysicalHist(DashPhysicalHistDTO inputDto) {
 		String id = inputDto.getId();
 		String height = inputDto.getHeight();
@@ -700,7 +732,12 @@ public class UserDAO {
 		return 0;
 		
 	}
-
+	/**
+	 * 사용자가 계획한 해당 운동을 수행했음을 기록한다.
+	 * @author 한가람
+	 * @param dto 회원의 id와 기록할 운동의 운동생성구분, 운동번호, 세트, 세트당 횟수, 중량, 운동시간 정보가 담긴 ExerciseRecordDTO 객체 
+	 * @return 데이터 기록 후 실행 결과값을 반환. 성공 시 1, 실패 시 0, 이미 데이터가 있으면 -1을 반환한다.
+	 */
 	//오늘의 운동 완료
 	public int tdyRecordExcs(ExerciseRecordDTO dto) {
 		
@@ -817,8 +854,13 @@ public class UserDAO {
 		return 0;
 	}
 
+	/**
+	 * 사용자가 계획한 해당 식사를 수행했음을 기록한다.
+	 * @author 한가람
+	 * @param dto 회원의 id와 기록할 식사의 끼니구분, 식단번호, 음식리스트(음식생성구분, 음식번호, 섭취량) 정보가 담긴 ArrayList<IntakeRecordDTO> 객체 
+	 * @return 데이터 기록 후 실행 결과값을 반환. 성공 시 1, 실패 시 0, 이미 데이터가 있으면 -1을 반환한다.
+	 */
 	//오늘의 운동 완료
-	
 	public int tdyRecordIntake(ArrayList<IntakeRecordDTO> dtoList) {
 		//반환 값: 성공: 1, 실패:0, 이미 데이터 있음: -1
 		try {
@@ -1019,7 +1061,12 @@ public class UserDAO {
 	    }
 	    return dto;
 	}
-
+	/**
+	 * 회원정보 수정 시 사용자의 개인정보를 가져온다
+	 * @author 한가람
+	 * @param id 회원의 id
+	 * @return 사용자 id, 이름, 주민등록번호, 닉네임, 연락처, 연락처 직접입력 구분, 이메일, 이메일 도메인 직접입력 구분, 주소 정보를 반환한다.
+	 */
 	public UserDTO getUserInfo(String id) {
 		try {
 			UserDTO dto = new UserDTO();

@@ -20,6 +20,10 @@ import org.json.simple.parser.JSONParser;
 import fitralpark.diet.dto.IntakeRecordDTO;
 import fitralpark.user.dao.UserDAO;
 
+/**
+ * 대시보드에서 계획한 식사를 완료 처리하기 위한 Ajax용 서블릿
+ * @author 한가람
+ */
 @WebServlet("/dashrecordintake.do")
 public class DashRecordIntake extends HttpServlet {
 	@Override

@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 마이페이지-회원정보수정 화면을 출력하는 서블릿
+ * @author 한가람
+ */
 @WebServlet("/mdfyuserinfo.do")
 public class MdfyUserInfoController extends HttpServlet {
 	@Override

@@ -4,6 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * 회원 정보를 담을 DTO 클래스
+ * @author 한가람, 이지온
+ */
+
 @Getter
 @Setter
 @ToString

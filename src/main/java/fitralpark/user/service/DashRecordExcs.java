@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.user.dao.UserDAO;
 
+/**
+ * 대시보드에서 계획한 운동을 완료 처리하기 위한 Ajax용 서블릿
+ * @author 한가람
+ */
 @WebServlet("/dashrecordexcs.do")
 public class DashRecordExcs extends HttpServlet {
 	@Override

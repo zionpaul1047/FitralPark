@@ -16,6 +16,10 @@ import org.json.simple.JSONObject;
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.DashPhysicalHistDTO;
 
+/**
+ * 대시보드에서 신체정보를 조회를 위한 Ajax용 서블릿
+ * @author 한가람
+ */
 @WebServlet("/dashphysicalinfo.do")
 public class DashPhysicalInfo extends HttpServlet {
 	@Override

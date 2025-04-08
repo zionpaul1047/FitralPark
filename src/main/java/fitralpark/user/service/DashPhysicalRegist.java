@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import fitralpark.user.dao.UserDAO;
 import fitralpark.user.dto.DashPhysicalHistDTO;
-
+/**
+ * 대시보드에서 신체정보 기록을 위한 Ajax용 서블릿
+ * @author 한가람
+ */
 @WebServlet("/dashphysicalregist.do")
 public class DashPhysicalRegist extends HttpServlet {
 	@Override
