@@ -30,6 +30,7 @@ CREATE TABLE member (
 	tel             VARCHAR2(30)   NOT NULL,     -- 연락처
 	email           VARCHAR2(40)   NOT NULL,     -- email
 	address         VARCHAR2(200)  NULL,     -- 주소
+	report_cnt 		NUMBER		  default 0     NOT NULL,
 	fitness_score   NUMBER        default 0     NOT NULL,     -- 운동 점수
 	community_score NUMBER        default 0     NOT NULL,     -- 커뮤니티 점수
 	restrict_check  NUMBER        default 0     NOT NULL check ( restrict_check IN (0, 1) ),     -- 활동제한여부
