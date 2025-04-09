@@ -10,8 +10,20 @@ import javax.naming.*;
 import javax.sql.DataSource;
 import fitralpark.diet.dto.DietDTO;
 
+
+/**
+ * 데이터베이스와 상호작용하여 식단 데이터를 관리하는 DAO 클래스입니다.
+ * DataSource를 통해 DB 연결을 관리하며, 다양한 CRUD 작업을 제공합니다.
+ */
+
 public class DietDAO {
     private final DataSource dataSource; // DataSource 주입
+    
+    /**
+     * 기본 생성자. JNDI를 통해 DataSource를 초기화합니다.
+     *
+     * @throws RuntimeException DB 연결 실패 시 발생
+     */
 
     public DietDAO() {
         try {
@@ -23,6 +35,15 @@ public class DietDAO {
         }
     }
 
+    /**
+     * 특정 범위의 식단 데이터를 조회합니다.
+     *
+     * @param begin 조회 시작 인덱스
+     * @param end 조회 종료 인덱스
+     * @param memberId 회원 ID
+     * @return 조회된 식단 목록
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public List<DietDTO> getDiets(int begin, int end, String memberId) {
         String sql = """
                     SELECT * FROM (
@@ -83,6 +104,13 @@ public class DietDAO {
         return diets.isEmpty() ? new ArrayList<>() : diets; // null 대신 빈 리스트 반환
     }
 
+    /**
+     * 특정 회원의 식단 즐겨찾기를 반환합니다.
+     *
+     * @param memberId 회원 ID
+     * @return 총 식단 수
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public int getTotalCount(String memberId) {
         String sql = """
                     SELECT COUNT(*)
@@ -106,6 +134,14 @@ public class DietDAO {
         return 0;
     }
 
+    
+    /**
+     * 특정 식단 번호에 해당하는 이름을 반환합니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 식단 이름 (없을 경우 "Unknown Diet")
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public String getDietName(int dietNo) {
         String sql = "SELECT diet_name FROM diet WHERE diet_no = ?";
 
@@ -125,6 +161,13 @@ public class DietDAO {
         return "Unknown Diet";
     }
 
+    /**
+     * 특정 식단 번호에 포함된 음식 상세 정보를 조회합니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 음식 상세 정보 목록 (음식명, 열량, 음식 크기 포함)
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public List<Map<String, Object>> getFoodDetails(int dietNo) {
         String sql = """
                             SELECT
@@ -170,6 +213,21 @@ public class DietDAO {
         return foods;
     }
 
+    /**
+     * 다양한 조건을 기반으로 식단을 검색합니다.
+     *
+     * @param calorieMin 최소 칼로리
+     * @param calorieMax 최대 칼로리
+     * @param mealClassify 식사 분류 (아침, 점심 등)
+     * @param searchTerm 검색어
+     * @param favoriteFilter 즐겨찾기 필터 여부
+     * @param myMealFilter 내가 만든 식단 필터 여부
+     * @param memberId 회원 ID
+     * @param begin 조회 시작 인덱스
+     * @param end 조회 종료 인덱스
+     * @return 검색된 식단 목록
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public List<DietDTO> searchDiets(int calorieMin, int calorieMax, String mealClassify, String searchTerm,
             boolean favoriteFilter, boolean myMealFilter, String memberId, int begin, int end) {
         String sql = """
@@ -216,6 +274,13 @@ public class DietDAO {
         return diets;
     }
 
+
+    /**
+     * 즐겨찾기를 추가하거나 제거합니다.
+     *
+     * @param dietNo 식단 번호
+     * @param memberId 회원 ID
+     */
     public void editBookmark(String dietNo, String memberId) {
 
         try {
@@ -250,7 +315,14 @@ public class DietDAO {
         }
 
     }
-
+    
+    /**
+     * 특정 식단 번호와 회원 ID를 기반으로 즐겨찾기를 추가합니다.
+     *
+     * @param dietNo 식단 번호
+     * @param memberId 회원 ID
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public void addBookmark(String dietNo, String memberId) {
         String sql = "INSERT INTO diet_bookmark (DIET_BOOKMARK_NO, diet_no, member_id, regdate) VALUES (seq_diet_bookmark.nextVal, ?, ?, SYSDATE)";
 
@@ -264,7 +336,14 @@ public class DietDAO {
             throw new RuntimeException("즐겨찾기 추가 오류", e);
         }
     }
-
+    
+    /**
+     * 특정 식단 번호와 회원 ID를 기반으로 즐겨찾기를 제거합니다.
+     *
+     * @param dietNo 식단 번호
+     * @param memberId 회원 ID
+     * @throws RuntimeException SQL 실행 중 오류 발생 시
+     */
     public void deleteBookmark(String dietNo, String memberId) {
         String sql = "DELETE FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
 
@@ -278,7 +357,15 @@ public class DietDAO {
             throw new RuntimeException("즐겨찾기 삭제 오류", e);
         }
     }
-
+    
+    /**
+     * 특정 식단이 즐겨찾기 상태인지 확인합니다.
+     *
+     * @param dietNo 식단 번호
+     * @param memberId 회원 ID
+     * @return 즐겨찾기 여부 (true/false)
+     * @throws SQLException SQL 실행 중 오류 발생 시
+     */
     public boolean isBookmarked(int dietNo, String memberId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM diet_bookmark WHERE diet_no = ? AND member_id = ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -293,8 +380,15 @@ public class DietDAO {
         return false;
     }
 
-    // 여기까지 됨
 
+    /**
+     * 추천 식단 라이브러리 목록을 조회합니다.
+     *
+     * @param begin 조회 시작 인덱스
+     * @param end 조회 종료 인덱스
+     * @param memberId 회원 ID
+     * @return 추천 식단 목록
+     */
     public List<DietDTO> getRecommendDiets(int begin, int end, String memberId) {
         String sql = """
                     SELECT * FROM (
@@ -351,6 +445,12 @@ public class DietDAO {
         return diets;
     }
 
+    /**
+     * 특정 식단 번호에 포함된 음식의 영양소 정보를 조회합니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 음식 영양소 정보 목록 (열량, 단백질, 탄수화물 등 포함)
+     */
     public List<Map<String, Object>> getFoodNuts(int dietNo) {
         String sql = """
                                     SELECT
@@ -414,7 +514,12 @@ public class DietDAO {
         return foods;
     }
 
-    // 식단의 추천/비추천 정보를 가져오는 메서드
+    /**
+     * 특정 식단의 추천 및 비추천 수를 조회합니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 추천 및 비추천 수를 포함하는 맵 (recommend, disrecommend 키 사용)
+     */
     public Map<String, Object> getDietRecommendInfo(int dietNo) {
         String sql = "SELECT recommend, disrecommend FROM diet WHERE diet_no = ?";
         Map<String, Object> result = new HashMap<>();
@@ -439,7 +544,12 @@ public class DietDAO {
         return result;
     }
 
-    // 조회수 증가 메서드
+    /**
+     * 특정 식단의 조회수를 증가시킵니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 업데이트된 조회수 값
+     */
     public int incrementViews(int dietNo) {
         String sql = "UPDATE diet SET views = views + 1 WHERE diet_no = ?";
         String selectSql = "SELECT views FROM diet WHERE diet_no = ?";
@@ -466,7 +576,12 @@ public class DietDAO {
         return updatedViews;
     }
 
-    // 추천수 증가 메서드
+    /**
+     * 특정 식단의 추천수를 증가시킵니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 업데이트된 추천수 값
+     */
     public int incrementRecommend(int dietNo) {
         String sql = "UPDATE diet SET recommend = recommend + 1 WHERE diet_no = ?";
         String selectSql = "SELECT recommend FROM diet WHERE diet_no = ?";
@@ -493,7 +608,12 @@ public class DietDAO {
         return updatedRecommend;
     }
 
-    // 비추천수 증가 메서드
+    /**
+     * 특정 식단의 비추천수를 증가시킵니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 업데이트된 비추천수 값
+     */
     public int incrementDisrecommend(int dietNo) {
         String sql = "UPDATE diet SET disrecommend = disrecommend + 1 WHERE diet_no = ?";
         String selectSql = "SELECT disrecommend FROM diet WHERE diet_no = ?";
@@ -520,6 +640,21 @@ public class DietDAO {
         return updatedDisrecommend;
     }
 
+    /**
+     * 다양한 조건을 기반으로 추천 식단을 검색합니다.
+     *
+     * @param calorieMin 최소 칼로리
+     * @param calorieMax 최대 칼로리
+     * @param mealClassify 식사 분류 (아침, 점심 등)
+     * @param searchTerm 검색어
+     * @param dietCategory 식단 카테고리
+     * @param favoriteFilter 즐겨찾기 필터 여부
+     * @param myMealFilter 내가 만든 식단 필터 여부
+     * @param memberId 회원 ID
+     * @param begin 조회 시작 인덱스
+     * @param end 조회 종료 인덱스
+     * @return 검색된 추천 식단 목록
+     */
     public List<DietDTO> searchRecomDiets(int calorieMin, int calorieMax, String mealClassify, String searchTerm,
             String dietCategory, boolean favoriteFilter, boolean myMealFilter, String memberId, int begin, int end) {
         String sql = """
@@ -578,6 +713,12 @@ public class DietDAO {
         return diets;
     }
 
+    /**
+     * 특정 식단의 추천/비추천 수를 조회합니다.
+     *
+     * @param dietNo 식단 번호
+     * @return 추천 및 비추천 수를 포함하는 맵 (recommend 및 disrecommend 키 사용)
+     */
     public HashMap<String, Integer> getCount(String dietNo) {
 
         String sql = "select recommend, disrecommend from diet where diet_no = ?";
@@ -606,46 +747,14 @@ public class DietDAO {
         return null;
     }
 
-    /*
-     * public List<DietDTO> getFoods(int begin, int end, String memberId) { String
-     * sql = """ SELECT n.food_cd, n.food_name, n.foodlv4_name,
-     * REGEXP_REPLACE(n.nut_con_str_qua, '[^0-9]', '') AS nut_con_str_qua_numeric,
-     * COALESCE(n.enerc, 0) AS enerc, COALESCE(n.protein, 0) AS protein,
-     * COALESCE(n.fatce, 0) AS fatce, COALESCE(n.chocdf, 0) AS chocdf,
-     * COALESCE(n.sugar, 0) AS sugar, COALESCE(n.na, 0) AS na, f.food_no,
-     * COALESCE(b.food_bookmark_no, 0) AS food_bookmark_no FROM
-     * individual_diet_record_food_nutrient n INNER JOIN food f ON n.food_cd =
-     * f.food_cd LEFT JOIN food_bookmark b ON f.food_no = b.food_no AND b.member_id
-     * = ? ORDER BY n.food_name """;
-     * 
-     * List<DietDTO> foods = new ArrayList<>();
-     * 
-     * try (Connection conn = dataSource.getConnection(); PreparedStatement pstmt =
-     * conn.prepareStatement(sql)) {
-     * 
-     * pstmt.setString(1, memberId);
-     * 
-     * try (ResultSet rs = pstmt.executeQuery()) { while (rs.next()) { DietDTO dto =
-     * new DietDTO(); // 음식 정보 매핑 dto.setFood_cd(rs.getString("food_cd"));
-     * dto.setFood_name(rs.getString("food_name"));
-     * dto.setFoodLv4Nm(rs.getString("foodLv4Nm"));
-     * 
-     * // 용량: null → "0" 처리 String nutConStrQua = rs.getString("nut_con_srtr_qua");
-     * dto.setNut_con_srtr_qua(nutConStrQua != null ? nutConStrQua : "0");
-     * 
-     * // 영양소 정보 (COALESCE로 이미 0 처리됨) dto.setEnerc(rs.getInt("enerc"));
-     * dto.setProt(rs.getInt("protein")); dto.setFatce(rs.getInt("fatce"));
-     * dto.setChocdf(rs.getInt("chocdf")); dto.setSugar(rs.getInt("sugar"));
-     * dto.setNat(rs.getInt("na"));
-     * 
-     * // food_no와 북마크 정보 dto.setFood_no(rs.getInt("food_no"));
-     * dto.setFood_bookmark_no(rs.getInt("food_bookmark_no"));
-     * 
-     * foods.add(dto); } } } catch (SQLException e) { e.printStackTrace(); }
-     * 
-     * return foods.isEmpty() ? new ArrayList<>() : foods; }
+    /**
+     * 특정 회원 ID를 기반으로 음식 데이터를 조회합니다.
+     *
+     * @param begin 조회 시작 인덱스
+     * @param end 조회 종료 인덱스
+     * @param memberId 회원 ID
+     * @return 음식 데이터 목록 (DietDTO 객체 리스트)
      */
-
     public List<DietDTO> getFoods(int begin, int end, String memberId) {
         String sql = """
                                 SELECT

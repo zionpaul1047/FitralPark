@@ -13,11 +13,32 @@ import javax.servlet.http.HttpSession;
 import fitralpark.diet.dao.DietDAO;
 import fitralpark.diet.dto.DietDTO;
 
+/**
+ * DietRecommendationController 서블릿 클래스는 추천 식단 데이터를 조회하고 클라이언트에게 전달하는 역할을 합니다.
+ * 
+ * <p>이 클래스는 다음과 같은 주요 기능을 제공합니다:
+ * <ul>
+ *   <li>추천 식단 목록 조회</li>
+ *   <li>검색 조건에 따른 추천 식단 필터링</li>
+ *   <li>JSP 페이지로 데이터 전달</li>
+ * </ul>
+ */
 @WebServlet("/dietRecommend.do")
 public class DietRecommendationController extends HttpServlet {
     
     private final int PAGE_SIZE = 10;
-
+    
+    /**
+     * GET 요청을 처리하는 메서드입니다.
+     *
+     * <p>클라이언트의 요청 파라미터를 기반으로 추천 식단 데이터를 조회하고,
+     * JSP 페이지로 전달합니다. 검색 조건이 있을 경우 필터링된 데이터를 반환합니다.
+     *
+     * @param req HttpServletRequest 객체 (클라이언트 요청 정보 포함)
+     * @param resp HttpServletResponse 객체 (클라이언트 응답 정보 포함)
+     * @throws ServletException 서블릿 처리 중 오류 발생 시
+     * @throws IOException 입출력 처리 중 오류 발생 시
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -48,7 +69,11 @@ public class DietRecommendationController extends HttpServlet {
 
         if (req.getParameter("searchTerm") != null && !req.getParameter("searchTerm").equals("")) {
 
-            // 검색O
+            // O
+
+            /**
+             * 검색 조건에 따라 추천 식단 데이터를 조회합니다.
+             */
 
             // 파라미터 추출
             int calorieMin = Integer.parseInt(req.getParameter("calorieMin"));
@@ -66,6 +91,9 @@ public class DietRecommendationController extends HttpServlet {
         } else {
 
             // 검색X
+            /**
+             * 검색 조건 없이 추천 식단 데이터를 조회합니다.
+             */
             list = dao.getRecommendDiets(begin, end, memberId);
             
             req.setAttribute("isSearch", true);
@@ -75,6 +103,9 @@ public class DietRecommendationController extends HttpServlet {
         int totalCount = dao.getTotalCount(memberId);
         int totalPages = (int) Math.ceil((double) totalCount / PAGE_SIZE);
         
+        /**
+         * 요청 속성 설정 및 JSP로 포워딩합니다.
+         */
 
         req.setAttribute("list", list);
         req.setAttribute("currentPage", currentPage);
