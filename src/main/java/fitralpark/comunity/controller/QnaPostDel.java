@@ -15,6 +15,9 @@ import fitralpark.user.dto.UserDTO;
 
 /**
 	Q&A 게시글 삭제 페이지 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @WebServlet("/qnaPostDel.do")
 public class QnaPostDel extends HttpServlet {

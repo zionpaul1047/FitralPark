@@ -17,6 +17,9 @@ import fitralpark.user.dto.UserDTO;
 
 /**
 	자유 게시글 삭제 수행을 위한 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @WebServlet("/bulletinPostDelOK.do") 
 public class BulletinPostDelOK extends HttpServlet {

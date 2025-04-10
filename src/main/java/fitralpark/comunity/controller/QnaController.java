@@ -14,6 +14,9 @@ import fitralpark.comunity.dto.CommunityDTO;
 
 /**
 	Q&A 게시판 페이지 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @WebServlet("/qnaList.do")
 public class QnaController extends HttpServlet {

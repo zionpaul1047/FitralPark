@@ -17,6 +17,9 @@ import fitralpark.user.dto.UserDTO;
 
 /**
 	Community파트의 DAO입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 public class CommunityDAO {
 

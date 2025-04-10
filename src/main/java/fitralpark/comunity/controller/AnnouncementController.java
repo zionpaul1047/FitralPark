@@ -16,6 +16,9 @@ import fitralpark.comunity.dto.CommunityDTO;
 
 /**
 	공지사항 게시판 페이지 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
  */
 @WebServlet("/announcementList.do")
 public class AnnouncementController extends HttpServlet {

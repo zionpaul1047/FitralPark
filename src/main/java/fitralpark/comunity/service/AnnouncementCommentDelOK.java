@@ -16,6 +16,9 @@ import fitralpark.comunity.dto.CommunityDTO;
 
 /**
 	공지사항 댓글 삭제 수행을 위한 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @WebServlet("/announcementCommentDelOK.do")
 public class AnnouncementCommentDelOK extends HttpServlet {

@@ -8,6 +8,9 @@ import lombok.ToString;
 
 /**
 	Community 파트의 DTO입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @Getter
 @Setter

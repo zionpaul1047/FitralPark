@@ -16,6 +16,9 @@ import fitralpark.user.dto.UserDTO;
 
 /**
 	공지사항 댓글 작성 및 추천/비추천 수행을 위한 서블릿 클래스입니다.
+	
+	@author 김형년
+   	@since 2025.04.10
 */
 @WebServlet("/announcementPostOK.do")
 public class AnnouncementPostOK extends HttpServlet {
