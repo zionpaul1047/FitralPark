@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
+/**
+	자유 게시글 편집 수행을 위한 서블릿 클래스입니다.
+*/
 @WebServlet("/bulletinPostEditOK.do")
 public class BulletinPostEditOK extends HttpServlet {
 

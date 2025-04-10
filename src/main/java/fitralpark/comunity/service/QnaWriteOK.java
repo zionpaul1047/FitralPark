@@ -14,6 +14,9 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	Q&A 게시글 작성 수행을 위한 서블릿 클래스입니다.
+*/
 @WebServlet("/qnaWriteOK.do")
 public class QnaWriteOK extends HttpServlet {
     

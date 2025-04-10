@@ -14,6 +14,9 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	자유 게시글 댓글 작성 및 추천/비추천 수행을 위한 서블릿 클래스입니다.
+*/
 @WebServlet("/bulletinPostOK.do")
 public class BulletinPostOK extends HttpServlet {
 
