@@ -437,7 +437,7 @@ public class DietDAO {
 
                     diets.add(diet);
                 }
-            }
+            }   
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -793,7 +793,7 @@ public class DietDAO {
                     dto.setFood_cd(rs.getString("food_cd"));
                     dto.setFood_name(rs.getString("food_name"));
                     dto.setFoodlv4_name(rs.getString("foodlv4_name"));
-                    dto.setNut_con_str_qua(rs.getString("nut_con_str_qua_numeric"));
+                    dto.setNut_con_str_qua(rs.getString("nut_con_str_qua"));
                     dto.setEnerc(rs.getDouble("enerc"));
                     dto.setProtein(rs.getDouble("protein"));
                     dto.setFatce(rs.getDouble("fatce"));
