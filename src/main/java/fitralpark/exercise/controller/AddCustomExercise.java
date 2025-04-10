@@ -16,7 +16,7 @@ import fitralpark.user.dto.UserDTO;
  * 
  * @author 김진혁
  * 
- * @description 사용자 정의 운동을 추가하는 서블릿 클래스입니다.
+ * description 사용자 정의 운동을 추가하는 서블릿 클래스입니다.
  */
 @WebServlet("/exercise/addCustomExercise.do")
 public class AddCustomExercise extends HttpServlet {

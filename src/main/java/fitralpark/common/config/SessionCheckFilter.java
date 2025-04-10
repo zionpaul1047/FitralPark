@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  * <ul>
  *   <li>필터 대상: 전체 경로 ({@code "/*"})</li>
  *   <li>예외 경로: 로그인/회원가입/정적 자원/카카오 API 등</li>
- *   <li>보호 경로: 마이페이지, 게시판, 운동, Q&A 등 주요 기능</li>
+ *   <li>보호 경로: 마이페이지, 게시판, 운동, Q and A 등 주요 기능</li>
  * </ul>
  * 
  * <p><b>세션 속성:</b> {@code loginRequired}, {@code redirectAfterLogin}</p>

@@ -76,7 +76,7 @@ public class UserDAO {
 	 * @author 이지온
 	 * @param dto 회원 정보가 담긴 UserDTO 객체
 	 * @return 삽입 성공 시 1, 실패 시 0 반환
-	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public int insertMember(UserDTO dto) {
 		String sql = "INSERT INTO member (member_no, member_id, pw, member_nickname, member_name, personalnumber, tel, email, address, member_pic, background_pic, allergy, fitness_score, community_score, restrict_check, withdraw_check, mentor_check, admin_check, plan_public_check) "
@@ -656,7 +656,7 @@ public class UserDAO {
 	 * @author 이지온
 	 * @param id 중복 여부를 확인할 회원 아이디
 	 * @return 아이디가 이미 존재하면 {@code true}, 존재하지 않으면 {@code false}
-	 * @throws SQLException 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public boolean isDuplicateId(String id) {
 		String sql = "SELECT COUNT(*) FROM member WHERE member_id = ?";
@@ -1038,7 +1038,7 @@ public class UserDAO {
 	 * @param id 로그인 시도할 사용자 아이디
 	 * @param pw 로그인 시도할 사용자 비밀번호 (현재는 평문 비교)
 	 * @return 로그인 성공 시 {@link UserDTO} 객체, 실패 시 {@code null}
-	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public UserDTO login(String id, String pw) {
 	    UserDTO dto = null;
@@ -1178,7 +1178,7 @@ public class UserDAO {
 	 * @param name 회원 이름
 	 * @param email 회원 이메일
 	 * @return 일치하는 회원이 존재하면 아이디 문자열, 존재하지 않으면 {@code null}
-	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public String findIdByNameAndEmail(String name, String email) {
 	    String sql = "SELECT member_id FROM member WHERE member_name = ? AND email = ?";
@@ -1210,7 +1210,7 @@ public class UserDAO {
 	 * @param id 비밀번호를 변경할 회원 아이디
 	 * @param newPassword 새 비밀번호 문자열 (현재는 평문, 추후 암호화 예정)
 	 * @return 비밀번호 업데이트 성공 시 1, 실패 또는 대상 없음 시 0
-	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public int updatePassword(String id, String newPassword) {
 	    int result = 0;
@@ -1243,7 +1243,7 @@ public class UserDAO {
 	 * @param id 확인할 회원 아이디
 	 * @param email 확인할 회원 이메일
 	 * @return 일치하는 회원이 존재하면 {@code true}, 그렇지 않으면 {@code false}
-	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 * throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
 	 */
 	public boolean checkUserByIdAndEmail(String id, String email) {
 	    boolean result = false;
