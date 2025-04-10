@@ -66,7 +66,18 @@ public class UserDAO {
 	}
 	
 
-	// 회원 가입 (INSERT)
+	/**
+	 * 신규 회원 정보를 데이터베이스에 등록합니다.
+	 * <p>
+	 * 입력된 {@link UserDTO} 객체의 필드 값을 바탕으로 INSERT 쿼리를 실행하여
+	 * MEMBER 테이블에 회원 데이터를 저장합니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param dto 회원 정보가 담긴 UserDTO 객체
+	 * @return 삽입 성공 시 1, 실패 시 0 반환
+	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public int insertMember(UserDTO dto) {
 		String sql = "INSERT INTO member (member_no, member_id, pw, member_nickname, member_name, personalnumber, tel, email, address, member_pic, background_pic, allergy, fitness_score, community_score, restrict_check, withdraw_check, mentor_check, admin_check, plan_public_check) "
 				+ "VALUES (SEQMEMBER.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -635,6 +646,18 @@ public class UserDAO {
 		return null;
 	}
 	// 아이디 중복 확인
+	/**
+	 * 입력된 아이디가 이미 회원 테이블에 존재하는지 확인합니다.
+	 * <p>
+	 * member 테이블에서 주어진 아이디의 개수를 조회하여
+	 * 중복 여부를 반환합니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param id 중복 여부를 확인할 회원 아이디
+	 * @return 아이디가 이미 존재하면 {@code true}, 존재하지 않으면 {@code false}
+	 * @throws SQLException 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public boolean isDuplicateId(String id) {
 		String sql = "SELECT COUNT(*) FROM member WHERE member_id = ?";
 		try (Connection conn = DBUtil.getConnection(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -998,6 +1021,25 @@ public class UserDAO {
 		
 		return 0;
 	}
+	
+	
+	/**
+	 * 주어진 아이디와 비밀번호로 회원 정보를 조회하여 로그인 처리합니다.
+	 * <p>
+	 * 로그인에 성공하면 해당 회원의 주요 정보를 담은 {@link UserDTO} 객체를 반환하며,
+	 * 실패 시 {@code null}을 반환합니다.
+	 * 이 메서드는 회원의 나이, 성별, 신체 정보, 랭킹 정보 등을 함께 조회하여 DTO에 저장합니다.
+	 * </p>
+	 *
+	 * <p><b>※ 비밀번호는 현재 평문 비교 방식으로 처리되고 있으며,
+	 * 추후 {@code BCrypt} 암호화 방식으로 교체될 예정입니다.</b></p>
+	 *
+	 * @author 이지온
+	 * @param id 로그인 시도할 사용자 아이디
+	 * @param pw 로그인 시도할 사용자 비밀번호 (현재는 평문 비교)
+	 * @return 로그인 성공 시 {@link UserDTO} 객체, 실패 시 {@code null}
+	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public UserDTO login(String id, String pw) {
 	    UserDTO dto = null;
 	    try {
@@ -1125,6 +1167,19 @@ public class UserDAO {
 		return null;
 	}
 
+	/**
+	 * 입력된 이름과 이메일을 기준으로 회원의 아이디를 조회합니다.
+	 * <p>
+	 * member 테이블에서 이름과 이메일이 모두 일치하는 회원을 검색하여,
+	 * 해당 회원의 {@code member_id}를 반환합니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param name 회원 이름
+	 * @param email 회원 이메일
+	 * @return 일치하는 회원이 존재하면 아이디 문자열, 존재하지 않으면 {@code null}
+	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public String findIdByNameAndEmail(String name, String email) {
 	    String sql = "SELECT member_id FROM member WHERE member_name = ? AND email = ?";
 	    try (Connection conn = DBUtil.getConnection();
@@ -1145,6 +1200,18 @@ public class UserDAO {
 	
 
 	// 비밀번호 변경 메서드
+	/**
+	 * 주어진 아이디에 해당하는 회원의 비밀번호를 새 비밀번호로 수정합니다.
+	 * <p>
+	 * 현재는 평문 비밀번호를 저장하고 있으며, 추후 보안을 위해 암호화 방식({@code BCrypt})으로 전환될 예정입니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param id 비밀번호를 변경할 회원 아이디
+	 * @param newPassword 새 비밀번호 문자열 (현재는 평문, 추후 암호화 예정)
+	 * @return 비밀번호 업데이트 성공 시 1, 실패 또는 대상 없음 시 0
+	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public int updatePassword(String id, String newPassword) {
 	    int result = 0;
 	    Connection conn = null;
@@ -1166,6 +1233,18 @@ public class UserDAO {
 	}
 
 	// 사용자 ID + 이메일 일치 여부 확인
+	/**
+	 * 입력된 아이디와 이메일이 일치하는 회원이 존재하는지 확인합니다.
+	 * <p>
+	 * 비밀번호 찾기 등의 인증 절차에서 회원 본인 여부를 검증하기 위한 메서드입니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param id 확인할 회원 아이디
+	 * @param email 확인할 회원 이메일
+	 * @return 일치하는 회원이 존재하면 {@code true}, 그렇지 않으면 {@code false}
+	 * @throws SQLException 데이터베이스 연결 또는 쿼리 실행 중 예외가 발생할 수 있음
+	 */
 	public boolean checkUserByIdAndEmail(String id, String email) {
 	    boolean result = false;
 	    Connection conn = null;
@@ -1191,6 +1270,18 @@ public class UserDAO {
 
 
 	//자원 해제를 위한 유틸리티 메서드
+	/**
+	 * 데이터베이스 작업 후 사용한 리소스(Connection, PreparedStatement, ResultSet)를 안전하게 닫습니다.
+	 * <p>
+	 * 각 리소스는 {@code null} 여부를 검사한 후 개별적으로 닫히며,
+	 * 예외가 발생하더라도 무시하고 다음 리소스를 계속 정리합니다.
+	 * </p>
+	 * 
+	 * @author 이지온
+	 * @param conn 닫을 DB 연결 객체 (Connection)
+	 * @param pstmt 닫을 SQL 실행 객체 (PreparedStatement)
+	 * @param rs 닫을 결과 집합 객체 (ResultSet)
+	 */
 	private void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
 	    try { if (rs != null) rs.close(); } catch (Exception e) {}
 	    try { if (pstmt != null) pstmt.close(); } catch (Exception e) {}

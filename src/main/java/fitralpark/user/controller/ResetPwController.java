@@ -7,10 +7,35 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+/**
+ * 인증번호 검증 후 비밀번호를 재설정하는 서블릿입니다.
+ * <p>
+ * 사용자가 입력한 인증번호와 세션에 저장된 인증번호를 비교하여 일치할 경우,
+ * 새 비밀번호를 DB에 반영합니다. 처리 결과는 alert 창을 통해 사용자에게 안내됩니다.
+ * </p>
+ *
+ * URL: {@code /reset-pw.do}
+ * 요청 방식: {@code POST}
+ * 
+ * <p><b>세션 사용 키:</b> {@code pwAuthCode}, {@code pwResetUserId}</p>
+ *
+ * @author 이지온
+ */
 @WebServlet("/reset-pw.do")
 public class ResetPwController extends HttpServlet {
 
+    /**
+     * 비밀번호 재설정 요청을 처리합니다.
+     * <p>
+     * 세션에 저장된 인증번호 및 사용자 ID와 클라이언트가 입력한 값을 비교하여 검증 후,
+     * 비밀번호를 업데이트합니다. 성공 시 세션을 정리하고 로그인 페이지로 이동시킵니다.
+     * </p>
+     *
+     * @param req HTTP POST 요청 (파라미터: {@code authCode}, {@code newPassword}, {@code confirmPassword})
+     * @param resp 처리 결과에 따른 JavaScript 기반 응답
+     * @throws ServletException 서블릿 처리 중 예외 발생 시
+     * @throws IOException 입출력 처리 중 예외 발생 시
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

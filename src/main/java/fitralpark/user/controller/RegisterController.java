@@ -8,10 +8,40 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-
+/**
+ * 회원가입 요청을 처리하는 서블릿입니다.
+ * <p>
+ * 클라이언트로부터 전달받은 회원 정보를 수집하여 유효성을 검증한 후,
+ * 데이터베이스에 회원 정보를 저장하고 결과에 따라 알림창을 통해 피드백을 제공합니다.
+ * </p>
+ *
+ * URL: {@code /register.do}
+ * 
+ * <ul>
+ *   <li>요청 방식: {@code POST}</li>
+ *   <li>요청 파라미터: {@code id}, {@code password}, {@code name}, {@code nickname}, {@code jumin1}, {@code jumin2_first}, {@code jumin2_rest}, {@code phoneX}, {@code email}, {@code address}</li>
+ *   <li>응답 방식: HTML + JavaScript (alert + 리다이렉트)</li>
+ * </ul>
+ *
+ * <p><b>서버 측 유효성 검사 수행 항목:</b> 아이디, 비밀번호, 닉네임, 주민번호, 이메일, 전화번호</p>
+ * 
+ * @author 이지온
+ */
 @WebServlet("/register.do")
 public class RegisterController extends HttpServlet {
 
+    /**
+     * 회원가입 폼으로부터 전달된 데이터를 처리합니다.
+     * <p>
+     * 입력값을 수집 및 정리한 후, 서버 유효성 검사를 거쳐 DTO 객체를 생성하고
+     * DB에 회원 정보를 삽입합니다. 성공 여부에 따라 alert 창 및 리다이렉션을 처리합니다.
+     * </p>
+     *
+     * @param req 회원가입 정보를 포함한 HTTP POST 요청
+     * @param resp 처리 결과에 따른 JavaScript 기반 응답
+     * @throws ServletException 서블릿 처리 중 예외 발생 시
+     * @throws IOException 입출력 처리 중 예외 발생 시
+     */
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

@@ -15,8 +15,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * 로그인 보호 필터 - 보호 경로에 대해 로그인 상태인지 확인 - 미로그인 시 로그인 팝업 트리거용 속성 저장 - 로그인 성공 시 해당 속성
- * 제거
+ * 로그인 세션 체크 필터입니다.
+ * <p>
+ * 특정 보호된 경로에 접근할 경우 사용자가 로그인되어 있는지 확인하고,
+ * 로그인되지 않은 경우 세션에 로그인 요구 속성을 추가한 후 로그인 페이지로 리다이렉트하거나,
+ * AJAX 요청인 경우 401 에러를 응답합니다.
+ * </p>
+ * 
+ * <ul>
+ *   <li>필터 대상: 전체 경로 ({@code "/*"})</li>
+ *   <li>예외 경로: 로그인/회원가입/정적 자원/카카오 API 등</li>
+ *   <li>보호 경로: 마이페이지, 게시판, 운동, Q&A 등 주요 기능</li>
+ * </ul>
+ * 
+ * <p><b>세션 속성:</b> {@code loginRequired}, {@code redirectAfterLogin}</p>
+ * 
+ * @author 이지온
  */
 @WebFilter("/*")
 public class SessionCheckFilter implements Filter {
@@ -46,6 +60,19 @@ public class SessionCheckFilter implements Filter {
 			// test
 			"/qnaList.do" };
 
+    /**
+     * 요청 경로에 따라 로그인 여부를 확인하고, 보호 경로 접근 시 인증을 요구합니다.
+     * <p>
+     * 로그인되지 않은 사용자가 보호된 경로에 접근하면 세션에 {@code loginRequired}와 {@code redirectAfterLogin}을 설정한 후,
+     * 일반 요청은 메인 페이지({@code /index.do})로 리다이렉트하고, AJAX 요청은 401 에러를 응답합니다.
+     * </p>
+     *
+     * @param request  필터링할 요청
+     * @param response 필터링할 응답
+     * @param chain    다음 필터 또는 서블릿으로 요청 전달
+     * @throws IOException 요청/응답 처리 중 I/O 오류 발생 시
+     * @throws ServletException 필터 처리 중 서블릿 예외 발생 시
+     */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -106,11 +133,17 @@ public class SessionCheckFilter implements Filter {
 
 		chain.doFilter(request, response);
 	}
-
+    /**
+     * 필터 초기화 메서드
+     *
+     * @param filterConfig 필터 설정 객체
+     */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
-
+    /**
+     * 필터 종료 처리 메서드
+     */
 	@Override
 	public void destroy() {
 	}
