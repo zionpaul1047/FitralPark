@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
-//커뮤니티 자유게시판 관련 컨트롤러
+
+/**
+	자유게시판 페이지 서블릿 클래스입니다.
+*/
 @WebServlet("/bulletinList.do")
 public class BulletinController extends HttpServlet {
 

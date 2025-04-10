@@ -14,6 +14,9 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	공지사항 작성 수행을 위한 서블릿 클래스입니다.
+*/
 @WebServlet("/announcementWriteOK.do")
 public class AnnouncementWriteOK extends HttpServlet {
     

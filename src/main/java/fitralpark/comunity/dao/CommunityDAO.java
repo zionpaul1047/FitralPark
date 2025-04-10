@@ -15,7 +15,9 @@ import javax.sql.DataSource;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
-//(DB 접근 DAO 클래스 자리)
+/**
+	Community파트의 DAO입니다.
+*/
 public class CommunityDAO {
 
 	private Connection conn;

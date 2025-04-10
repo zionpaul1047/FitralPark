@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
+/**
+	Q&A 게시판 페이지 서블릿 클래스입니다.
+*/
 @WebServlet("/qnaList.do")
 public class QnaController extends HttpServlet {
 

@@ -13,6 +13,9 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	Q&A 게시글 삭제 페이지 서블릿 클래스입니다.
+*/
 @WebServlet("/qnaPostDel.do")
 public class QnaPostDel extends HttpServlet {
     

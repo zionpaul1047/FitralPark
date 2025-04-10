@@ -15,6 +15,9 @@ import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	자유 게시글 편집 페이지 클래스입니다.
+*/
 @WebServlet("/bulletinPostEdit.do")
 public class BulletinPostEdit extends HttpServlet {
 

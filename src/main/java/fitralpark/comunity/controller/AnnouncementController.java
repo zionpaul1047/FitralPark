@@ -1,6 +1,7 @@
 package fitralpark.comunity.controller;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.comunity.dto.CommunityDTO;
 
-//커뮤니티 자유게시판 관련 컨트롤러
+
+/**
+	공지사항 게시판 페이지 서블릿 클래스입니다.
+ */
 @WebServlet("/announcementList.do")
 public class AnnouncementController extends HttpServlet {
 

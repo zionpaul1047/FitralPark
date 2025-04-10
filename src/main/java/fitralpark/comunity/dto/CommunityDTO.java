@@ -6,6 +6,9 @@ import lombok.ToString;
 
 //(데이터 전달 DTO 클래스 자리)
 
+/**
+	Community 파트의 DTO입니다.
+*/
 @Getter
 @Setter
 @ToString

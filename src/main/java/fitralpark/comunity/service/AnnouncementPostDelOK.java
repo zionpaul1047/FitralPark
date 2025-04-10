@@ -13,6 +13,9 @@ import javax.servlet.http.HttpSession;
 import fitralpark.comunity.dao.CommunityDAO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+	공지사항 게시글 삭제 수행을 위한 서블릿 클래스입니다.
+*/
 @WebServlet("/announcementPostDelOK.do")
 public class AnnouncementPostDelOK extends HttpServlet {
     @Override

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpSession;
 
 import fitralpark.user.dto.UserDTO;
 
+/**
+	신고버튼 페이지 서블릿 클래스입니다.
+*/
 @WebServlet("/report.do")
 public class Report extends HttpServlet {
     
