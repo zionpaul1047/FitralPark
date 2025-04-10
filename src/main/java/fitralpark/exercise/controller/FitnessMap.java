@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 클래스 설명: 지도에 피트니스 정보를 제공해주는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/fitnessmap.do")
 public class FitnessMap extends HttpServlet {
 

@@ -17,6 +17,12 @@ import fitralpark.exercise.dto.ExerciseDTO;
 import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 클래스 설명: 운동에 관한 기능을 구현한 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 //(DB 접근 DAO 클래스 자리)
 public class ExerciseDAO {
 	

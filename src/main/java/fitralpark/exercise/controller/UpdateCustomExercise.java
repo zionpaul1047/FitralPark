@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import fitralpark.exercise.dao.ExerciseDAO;
 
+/**
+ * 클래스 설명: 사용자 운동 목록을 수정하는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/updateCustomExercise.do")
 public class UpdateCustomExercise extends HttpServlet {
     @Override

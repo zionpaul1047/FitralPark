@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 클래스 설명: 운동 목록을 보여주는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 //운동 기록, 운동 라이브러리 관련 컨트롤러
 @WebServlet("/exerciseList.do")
 public class ExerciseController extends HttpServlet {

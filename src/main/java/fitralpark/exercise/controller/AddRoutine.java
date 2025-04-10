@@ -18,6 +18,12 @@ import com.google.gson.JsonObject;
 import fitralpark.exercise.dao.RoutineDAO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 클래스 설명: 운동 몇 세트, 횟수, 시간, 중량을 입력하고, 루틴 생성을 하는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/addRoutine.do")
 public class AddRoutine extends HttpServlet {
     

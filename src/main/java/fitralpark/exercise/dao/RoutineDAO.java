@@ -16,6 +16,12 @@ import fitralpark.exercise.dto.ExerciseRecordDTO;
 import fitralpark.exercise.dto.RoutineDTO;
 import fitralpark.exercise.dto.RoutineExerciseDTO;
 
+/**
+ * 클래스 설명: 운동 루틴에 관한 기능을 구현한 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 public class RoutineDAO {
 	
 	private Connection conn;

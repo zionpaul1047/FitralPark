@@ -15,6 +15,12 @@ import com.google.gson.JsonObject;
 import fitralpark.exercise.dao.RoutineDAO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 클래스 설명: 루틴 즐겨찾기를 등록하는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/toggleFavorite.do")
 public class ToggleFavoriteController extends HttpServlet {
 

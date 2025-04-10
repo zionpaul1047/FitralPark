@@ -11,6 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import fitralpark.exercise.dao.ExerciseDAO;
 
+/**
+ * 클래스 설명: 사용자 운동 목록을 삭제하는 서블릿입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/deleteCustomExercise.do")
 public class DeleteCustomExercise extends HttpServlet {
     

@@ -16,6 +16,12 @@ import fitralpark.exercise.dao.RoutineDAO;
 import fitralpark.exercise.dto.RoutineDTO;
 import fitralpark.exercise.dto.RoutineExerciseDTO;
 
+/**
+ * 클래스 설명: 루틴 추천 페이지에 루틴 이름을 클릭하면 팝업창으로 운동 정보를 보여주는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/getExerciseList.do")
 public class GetExerciseListController extends HttpServlet {
 

@@ -14,6 +14,12 @@ import fitralpark.exercise.dao.ExerciseDAO;
 import fitralpark.exercise.dto.ExerciseDTO;
 import fitralpark.user.dto.UserDTO;
 
+/**
+ * 클래스 설명: 루틴 생성 페이지에 운동 불러오기를 눌렀을때 팝업창이 생성되고 운동 목록을 보여주는 서블릿 클래스입니다.
+ * 
+ * @author 김진혁
+ * @since 2025.04.10
+ */
 @WebServlet("/exercise/routineAddExerciseList.do")
 public class RoutineAddExerciseList extends HttpServlet {
 
